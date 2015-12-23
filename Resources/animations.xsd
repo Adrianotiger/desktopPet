@@ -32,7 +32,7 @@
             </xsd:sequence>
           </xsd:complexType>
         </xsd:element>
-        <xsd:element name='spawn'>
+        <xsd:element name='spawn' maxOccurs='100'>
           <xsd:complexType>
             <xsd:sequence>
               <xsd:element name='x' type='xsd:string' minOccurs='1' maxOccurs='1' />
