@@ -1,6 +1,7 @@
 ﻿using DesktopPet;
 using System;
 using System.Drawing;
+using System.IO;
 using System.Threading;
 using System.Windows.Forms;
 
@@ -242,7 +243,25 @@ namespace desktopPet
             string[] files = (string[])e.Data.GetData(DataFormats.FileDrop);
             foreach (string file in files)
             {
-                AddDebugInfo(DEBUG_TYPE.info, file); 
+                AddDebugInfo(DEBUG_TYPE.info, file);
+                for(int i=0;i<iSheeps;i++)
+                {
+                    sheeps[i].Close();
+                    sheeps[i].Dispose();
+                }
+                iSheeps = 0;
+                xml = new Xml();
+                animations = new Animations(xml);
+
+                DesktopPet.Properties.Settings.Default.xml = File.ReadAllText(file);
+                DesktopPet.Properties.Settings.Default.Save();
+
+                xml.readXML();
+
+                timer1.Tag = "A";
+                timer1.Enabled = true;
+
+                break;
             }
         }
 
@@ -251,6 +270,36 @@ namespace desktopPet
             if(debug != null)
             {
                 debug.AddDebugInfo(type, text);
+            }
+        }
+
+        private void button2_Click(object sender, EventArgs e)
+        {
+            FormOptions formoptions = new FormOptions();
+            switch(formoptions.ShowDialog())
+            {
+                case DialogResult.Retry:
+                    AddDebugInfo(DEBUG_TYPE.warning, "restoring default XML");
+                    for (int i = 0; i < iSheeps; i++)
+                    {
+                        sheeps[i].Close();
+                        sheeps[i].Dispose();
+                    }
+                    iSheeps = 0;
+                    xml = new Xml();
+                    animations = new Animations(xml);
+
+                    DesktopPet.Properties.Settings.Default.xml = "";
+                    DesktopPet.Properties.Settings.Default.Home = "";
+                    DesktopPet.Properties.Settings.Default.Icon = "";
+                    DesktopPet.Properties.Settings.Default.Images = "";
+                    DesktopPet.Properties.Settings.Default.Save();
+
+                    xml.readXML();
+
+                    timer1.Tag = "A";
+                    timer1.Enabled = true;
+                    break;
             }
         }
     }

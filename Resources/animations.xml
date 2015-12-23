@@ -35,6 +35,7 @@
     <sequence repeat="20" repeatfrom="0">
       <frame>2</frame>
       <frame>3</frame>
+      <next probability="2" only="window">11</next>
       <next probability="10" only="taskbar">7</next>
       <next probability="90">1</next>
     </sequence>
@@ -197,6 +198,7 @@
       <frame>70</frame>
       <frame>6</frame>
       <next probability="20">2</next>
+      <next probability="5">7</next>
       <next probability="80">1</next>
     </sequence>
   </animation>
@@ -209,14 +211,13 @@
     </start>
     <end>
       <x>0</x>
-      <y>-4</y>
-      <interval>500</interval>
+      <y>-2</y>
+      <interval>1000</interval>
     </end>
     <sequence repeat="0" repeatfrom="0">
+      <frame>46</frame>
       <frame>47</frame>
       <frame>47</frame>
-      <frame>47</frame>
-      <frame>1</frame>
       <next probability="100">1</next>
     </sequence>
   </animation>
@@ -224,19 +225,66 @@
     <name>fall hard</name>
     <start>
       <x>0</x>
-      <y>0</y>
-      <interval>100</interval>
+      <y>2</y>
+      <interval>200</interval>
     </start>
     <end>
       <x>0</x>
-      <y>0</y>
+      <y>-2</y>
       <interval>500</interval>
     </end>
     <sequence repeat="0" repeatfrom="0">
       <frame>48</frame>
       <frame>48</frame>
       <frame>48</frame>
+      <frame>48</frame>
       <frame>47</frame>
+      <next probability="100">1</next>
+    </sequence>
+  </animation>
+  <animation id="11">
+    <name>pissa</name>
+    <start>
+      <x>0</x>
+      <y>0</y>
+      <interval>200</interval>
+    </start>
+    <end>
+      <x>0</x>
+      <y>0</y>
+      <interval>200</interval>
+    </end>
+    <sequence repeat="5+random/10" repeatfrom="5">
+      <frame>3</frame>
+      <frame>12</frame>
+      <frame>13</frame>
+      <frame>103</frame>
+      <frame>104</frame>
+      <frame>105</frame>
+      <frame>106</frame>
+      <next probability="100">12</next>
+    </sequence>
+  </animation>
+  <animation id="12">
+    <name>pissb</name>
+    <start>
+      <x>0</x>
+      <y>0</y>
+      <interval>200</interval>
+    </start>
+    <end>
+      <x>0</x>
+      <y>0</y>
+      <interval>200</interval>
+    </end>
+    <sequence repeat="0" repeatfrom="0">
+      <frame>104</frame>
+      <frame>105</frame>
+      <frame>104</frame>
+      <frame>104</frame>
+      <frame>103</frame>
+      <frame>13</frame>
+      <frame>12</frame>
       <next probability="100">1</next>
     </sequence>
   </animation>

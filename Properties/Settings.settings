@@ -11,7 +11,7 @@
     <Setting Name="Icon" Type="System.String" Scope="User">
       <Value Profile="(Default)" />
     </Setting>
-    <Setting Name="xml" Type="System.Xml.XmlDocument" Scope="User">
+    <Setting Name="xml" Type="System.String" Scope="User">
       <Value Profile="(Default)" />
     </Setting>
   </Settings>

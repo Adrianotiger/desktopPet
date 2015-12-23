@@ -63,22 +63,44 @@ namespace desktopPet
             settings.Schemas.Add(schema);
             settings.ValidationType = ValidationType.Schema;
 
-            XmlReader reader = XmlReader.Create(new StringReader(DesktopPet.Properties.Resources.animations), settings);
             xmlDoc = new XmlDocument();
-            try
-            {
-                xmlDoc.Load(reader);
-
-                // the following call to Validate succeeds.
-                xmlDoc.Validate(eventHandler);
-            }
-            catch(Exception ex)
-            {
-                Form1.AddDebugInfo(Form1.DEBUG_TYPE.error, "XML error: " + ex.ToString());
-            }
 
             xmlNS = new XmlNamespaceManager(xmlDoc.NameTable);
             xmlNS.AddNamespace("pet", "http://esheep.petrucci.ch/");
+
+            XmlReader reader = null;
+
+            // try to load local xml
+            try
+            {
+                reader = XmlReader.Create(new StringReader(DesktopPet.Properties.Settings.Default.xml), settings);
+                xmlDoc.Load(reader);
+                xmlDoc.Validate(eventHandler);
+                DesktopPet.Properties.Settings.Default.Home = xmlDoc.SelectSingleNode("//pet:animations/pet:header/pet:home", xmlNS).InnerText;
+                DesktopPet.Properties.Settings.Default.Images = xmlDoc.SelectSingleNode("//pet:animations/pet:image/pet:png", xmlNS).InnerText;
+                DesktopPet.Properties.Settings.Default.Icon = xmlDoc.SelectSingleNode("//pet:animations/pet:header/pet:icon", xmlNS).InnerText;
+            }
+            catch (Exception ex)
+            {
+                xmlDoc.RemoveAll();
+                Form1.AddDebugInfo(Form1.DEBUG_TYPE.error, "User XML error: " + ex.ToString());
+            }
+            //XmlReader reader = XmlReader.Create(new StringReader(DesktopPet.Properties.Resources.animations), settings);
+
+            if (xmlDoc.ChildNodes.Count <= 0)
+            {
+                try
+                {
+                    reader = XmlReader.Create(new StringReader(DesktopPet.Properties.Resources.animations), settings);
+
+                    xmlDoc.Load(reader);
+                    xmlDoc.Validate(eventHandler);
+                }
+                catch (Exception ex)
+                {
+                    Form1.AddDebugInfo(Form1.DEBUG_TYPE.error, "XML error: " + ex.ToString());
+                }
+            }
 
             readImages();
 
@@ -272,7 +294,7 @@ namespace desktopPet
             sText = sText.Replace("areaH", Screen.PrimaryScreen.WorkingArea.Height.ToString());
             sText = sText.Replace("imageW", (FullImage.Width / images.xImages).ToString());
             sText = sText.Replace("imageH", (FullImage.Height / images.yImages).ToString());
-            sText = sText.Replace("//pet:random", rand.Next(0, 100).ToString());
+            sText = sText.Replace("random", rand.Next(0, 100).ToString());
 
             var v = dt.Compute(sText, "");
             double dv;
@@ -290,7 +312,8 @@ namespace desktopPet
 
         private void readImages()
         {
-            if (DesktopPet.Properties.Settings.Default.xml == null || DesktopPet.Properties.Settings.Default.xml.InnerText.Length < 100)
+            /*
+            if (DesktopPet.Properties.Settings.Default.xml == null || DesktopPet.Properties.Settings.Default.xml.Length < 100)
             {
                 Form1.AddDebugInfo(Form1.DEBUG_TYPE.info, "loading user animation");
                 xmlDoc.LoadXml(DesktopPet.Properties.Resources.animations);
@@ -298,8 +321,9 @@ namespace desktopPet
             else
             {
                 Form1.AddDebugInfo(Form1.DEBUG_TYPE.warning, "no user xml, loading default");
-                xmlDoc.LoadXml(DesktopPet.Properties.Settings.Default.xml.InnerText);
+                xmlDoc.LoadXml(DesktopPet.Properties.Settings.Default.xml);
             }
+            */
 
             try
             {

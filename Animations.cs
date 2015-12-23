@@ -136,8 +136,15 @@ namespace desktopPet
 
         public TAnimation AddAnimation(int ID, string name)
         {
-            Form1.AddDebugInfo(Form1.DEBUG_TYPE.info, "adding animation: " + name);
-            SheepAnimations.Add(ID, new TAnimation(name, ID));
+            try
+            {
+                SheepAnimations.Add(ID, new TAnimation(name, ID));
+                Form1.AddDebugInfo(Form1.DEBUG_TYPE.info, "adding animation: " + name);
+            }
+            catch(Exception ex)
+            {
+                Form1.AddDebugInfo(Form1.DEBUG_TYPE.info, "unable to add animation: " + ex.Message);
+            }
             return SheepAnimations[ID];
         }
 
@@ -171,11 +178,11 @@ namespace desktopPet
             percent = 0;
             foreach (TSpawn spawn in SheepSpawn.Values)
             {
+                percent += spawn.Probability;
                 if (percent >= randValue)
                 {
                     return spawn;
                 }
-                percent += spawn.Probability;
             }
             return SheepSpawn.First().Value;
         }
@@ -213,14 +220,14 @@ namespace desktopPet
                 int iRandMax = 0;
                 foreach (TNextAnimation anim in list)
                 {
-                    if (anim.only != TNextAnimation.TOnly.NONE && (anim.only & where) > 0) continue;
+                    if (anim.only != TNextAnimation.TOnly.NONE && (anim.only & where) == 0) continue;
 
                     iRandMax += anim.Probability;
                 }
                 iVal = rand.Next(0, iRandMax);
                 foreach (TNextAnimation anim in list)
                 {
-                    if (anim.only != TNextAnimation.TOnly.NONE && (anim.only & where) > 0) continue;
+                    if (anim.only != TNextAnimation.TOnly.NONE && (anim.only & where) == 0) continue;
 
                     iSum += anim.Probability;
                     if (iSum >= iVal)
@@ -229,7 +236,10 @@ namespace desktopPet
                         break;
                     }
                 }
-                UpdateAnimationValues(iDefaultID);
+                if (iDefaultID > 0)
+                {
+                    UpdateAnimationValues(iDefaultID);
+                }
                 return iDefaultID;
             }
             else

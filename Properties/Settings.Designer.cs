@@ -61,9 +61,10 @@ namespace DesktopPet.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        public global::System.Xml.XmlDocument xml {
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string xml {
             get {
-                return ((global::System.Xml.XmlDocument)(this["xml"]));
+                return ((string)(this["xml"]));
             }
             set {
                 this["xml"] = value;

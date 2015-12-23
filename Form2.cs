@@ -155,9 +155,16 @@ namespace desktopPet
 
         private void SetNewAnimation(int id)
         {
-            iAnimationStep = -1;
-            CurrentAnimation = Animations.GetAnimation(id);
-            timer1.Interval = CurrentAnimation.Start.Interval.GetValue();
+            if (id < 0)  // no animation found, spawn!
+            {
+                Play(false);
+            }
+            else
+            {
+                iAnimationStep = -1;
+                CurrentAnimation = Animations.GetAnimation(id);
+                timer1.Interval = CurrentAnimation.Start.Interval.GetValue();
+            }
         }
 
         private void NextStep()
@@ -171,6 +178,7 @@ namespace desktopPet
                 int index = ((iAnimationStep - CurrentAnimation.Sequence.Frames.Count + CurrentAnimation.Sequence.RepeatFrom) % (CurrentAnimation.Sequence.Frames.Count - CurrentAnimation.Sequence.RepeatFrom)) + CurrentAnimation.Sequence.RepeatFrom;
                 pictureBox1.Image = imageList1.Images[CurrentAnimation.Sequence.Frames[index]]; 
             }
+
             timer1.Interval = CurrentAnimation.Start.Interval.Value + ((CurrentAnimation.End.Interval.Value - CurrentAnimation.Start.Interval.Value) * iAnimationStep / CurrentAnimation.Sequence.TotalSteps);
 
             if (bDragging)
@@ -180,8 +188,9 @@ namespace desktopPet
                 return;
             }
 
-            int x = CurrentAnimation.Start.X.Value + ((CurrentAnimation.End.X.Value - CurrentAnimation.Start.X.Value) * iAnimationStep / CurrentAnimation.Sequence.TotalSteps);
-            int y = CurrentAnimation.Start.Y.Value + ((CurrentAnimation.End.Y.Value - CurrentAnimation.Start.Y.Value) * iAnimationStep / CurrentAnimation.Sequence.TotalSteps);
+            int x = CurrentAnimation.Start.X.Value + ((CurrentAnimation.End.X.Value - CurrentAnimation.Start.X.Value) * iAnimationStep / (CurrentAnimation.Sequence.TotalSteps - 1));
+            int y = CurrentAnimation.Start.Y.Value + ((CurrentAnimation.End.Y.Value - CurrentAnimation.Start.Y.Value) * iAnimationStep / (CurrentAnimation.Sequence.TotalSteps - 1));
+            bool bNewAnimation = false;
             if (!bMoveLeft) x = -x;
             
             if(x < 0)   // moving left
@@ -192,6 +201,7 @@ namespace desktopPet
                     {
                         x = -Left;
                         SetNewAnimation(Animations.SetNextBorderAnimation(CurrentAnimation.ID, TNextAnimation.TOnly.VERTICAL));
+                        bNewAnimation = true;
                     }
                 }
                 else
@@ -203,6 +213,7 @@ namespace desktopPet
                         {
                             x = -Left + rct.Left;
                             SetNewAnimation(Animations.SetNextBorderAnimation(CurrentAnimation.ID, TNextAnimation.TOnly.WINDOW));
+                            bNewAnimation = true;
                         }
                     }
                 }
@@ -215,6 +226,7 @@ namespace desktopPet
                     {
                         x = Screen.PrimaryScreen.WorkingArea.Width - Width - Left;
                         SetNewAnimation(Animations.SetNextBorderAnimation(CurrentAnimation.ID, TNextAnimation.TOnly.VERTICAL));
+                        bNewAnimation = true;
                     }
                 }
                 else
@@ -226,6 +238,7 @@ namespace desktopPet
                         {
                             x = rct.Right - Width - Left;
                             SetNewAnimation(Animations.SetNextBorderAnimation(CurrentAnimation.ID, TNextAnimation.TOnly.WINDOW));
+                            bNewAnimation = true;
                         }
                     }
                 }
@@ -237,6 +250,7 @@ namespace desktopPet
                     if (Top + y > Screen.PrimaryScreen.WorkingArea.Height - Height) // border detected!
                     {
                         SetNewAnimation(Animations.SetNextBorderAnimation(CurrentAnimation.ID, TNextAnimation.TOnly.TASKBAR));
+                        bNewAnimation = true;
                         y = Screen.PrimaryScreen.WorkingArea.Height - Top - Height;
                     }
                     else
@@ -245,6 +259,7 @@ namespace desktopPet
                         if (iWindowTop > 0)
                         {
                             SetNewAnimation(Animations.SetNextBorderAnimation(CurrentAnimation.ID, TNextAnimation.TOnly.WINDOW));
+                            bNewAnimation = true;
                             y = iWindowTop - Top - Height;
                         }
                     }
@@ -270,16 +285,25 @@ namespace desktopPet
                 }
                 else
                 {
-                    SetNewAnimation(Animations.SetNextSequenceAnimation(CurrentAnimation.ID, Top + Height + y >= Screen.PrimaryScreen.WorkingArea.Height ? TNextAnimation.TOnly.TASKBAR : TNextAnimation.TOnly.NONE));
+                    SetNewAnimation(Animations.SetNextSequenceAnimation(CurrentAnimation.ID, Top + Height + y >= Screen.PrimaryScreen.WorkingArea.Height - 2 ? TNextAnimation.TOnly.TASKBAR : TNextAnimation.TOnly.NONE));
                 }
+                bNewAnimation = true;
             }
-            if(CurrentAnimation.Gravity)
+            else if(CurrentAnimation.Gravity)
             {
                 if(hwndWindow == (IntPtr)0)
                 {
                     if(Top + y < Screen.PrimaryScreen.WorkingArea.Height - Height)
                     {
-                        SetNewAnimation(Animations.SetNextGravityAnimation(CurrentAnimation.ID, TNextAnimation.TOnly.NONE));
+                        if(Top + y + 3 >= Screen.PrimaryScreen.WorkingArea.Height - Height) // allow 3 pixels to move without fall
+                        {
+                            y = Screen.PrimaryScreen.WorkingArea.Height - Top - Height;
+                        }
+                        else
+                        {
+                            SetNewAnimation(Animations.SetNextGravityAnimation(CurrentAnimation.ID, TNextAnimation.TOnly.NONE));
+                            bNewAnimation = true;
+                        }
                     }
                 }
                 else
@@ -288,8 +312,15 @@ namespace desktopPet
                     {
                         hwndWindow = (IntPtr)0;
                         SetNewAnimation(Animations.SetNextGravityAnimation(CurrentAnimation.ID, TNextAnimation.TOnly.WINDOW));
+                        bNewAnimation = true;
                     }
                 }
+            }
+
+            if(bNewAnimation)
+            {
+                timer1.Interval = CurrentAnimation.Start.Interval.Value;
+                pictureBox1.Image = imageList1.Images[CurrentAnimation.Sequence.Frames[0]];
             }
 
             Left += x;
