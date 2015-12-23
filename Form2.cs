@@ -130,12 +130,14 @@ namespace desktopPet
         
         public void Kill()
         {
-            //SetNewAnimation(AnimationType.Die);
+            if(Animations.AnimationKill > 1)
+                SetNewAnimation(Animations.AnimationKill);
         }
 
-        public void Whats()
+        public void Sync()
         {
-            //SetNewAnimation(AnimationType.What);
+            if (Animations.AnimationSync > 1)
+                SetNewAnimation(Animations.AnimationSync);
         }
 
         private void timer1_Tick(object sender, EventArgs e)
@@ -340,12 +342,13 @@ namespace desktopPet
 
                 if (IsWindowVisible(hWnd))
                 {
-                    if (!GetTitleBarInfo(hWnd, ref titleBarInfo)) return true;
-                    if ((titleBarInfo.rgstate[0] & 0x00008000) > 0) return true;    // invisible
-
                     StringBuilder sTitle = new StringBuilder(128);
                     GetWindowText(hWnd, sTitle, 128);
 
+                    if (sTitle.ToString() == "Sheep") ;
+                    else if (!GetTitleBarInfo(hWnd, ref titleBarInfo)) return true;
+                    else if ((titleBarInfo.rgstate[0] & 0x00008000) > 0) return true;    // invisible
+                    
                     if (sTitle.Length > 0)
                     {
                         windows[hWnd] = sTitle.ToString();
@@ -361,7 +364,7 @@ namespace desktopPet
                     //Console.WriteLine("Window title: {0}", window.Value);
 
                     if (Top + Height < rct.Top && Top + Height + y >= rct.Top &&
-                        Left >= rct.Left && Left + Width <= rct.Right &&
+                        Left >= rct.Left - Width / 2 && Left + Width <= rct.Right + Width / 2 &&
                         Top > 30)
                     {
                         hwndWindow = window.Key;
@@ -382,176 +385,6 @@ namespace desktopPet
         }
 
         /*
-        private void Walk(int step)
-        {
-            pictureBox1.Image = imageList1.Images[2 + step % 2];
-            if (bMoveLeft)
-            {
-                this.Left -= 4;
-                if ((int)hwndWindow != 0)
-                {
-                    RECT rct;
-                    if (CheckTopWindow(true))
-                    {
-                        hwndWindow = (IntPtr)0;
-                        SetNewAnimation(AnimationType.FallWinDown);
-                    }
-                    else if (GetWindowRect(new HandleRef(this, hwndWindow), out rct))
-                    {
-                        if (this.Top < rct.Top - 45 || this.Top > rct.Top - 25)
-                        {
-                            SetNewAnimation(AnimationType.FallWinDown);
-                        }
-                        else if (this.Left < rct.Left - 5)
-                        {
-                            this.Left = rct.Left - 5;
-                            SetNewAnimation(AnimationType.Rotate1);
-                        }
-                    }
-                    else
-                    {
-                        hwndWindow = (IntPtr)0;
-                        SetNewAnimation(AnimationType.FallWinDown);
-                    }
-                }
-                else if (this.Left <= 0)
-                {
-                    this.Left = 0;
-                    SetNewAnimation(AnimationType.Rotate1);
-                }
-            }
-            else
-            {
-                this.Left += 4;
-                if ((int)hwndWindow != 0)
-                {
-                    RECT rct;
-                    if (CheckTopWindow(true))
-                    {
-                        hwndWindow = (IntPtr)0;
-                        SetNewAnimation(AnimationType.FallWinDown);
-                    }
-                    else if (GetWindowRect(new HandleRef(this, hwndWindow), out rct))
-                    {
-                        if (this.Top < rct.Top - 45 || this.Top > rct.Top - 25)
-                        {
-                            SetNewAnimation(AnimationType.FallWinDown);
-                        }
-                        else if (this.Right > rct.Right - 35)
-                        {
-                            this.Left = rct.Right - 35;
-                            SetNewAnimation(AnimationType.Rotate1);
-                        }
-                    }
-                    else
-                    {
-                        hwndWindow = (IntPtr)0;
-                        SetNewAnimation(AnimationType.FallWinDown);
-                    }
-                }
-                else if (this.Left >= Screen.PrimaryScreen.WorkingArea.Width - 40)
-                {
-                    this.Left = Screen.PrimaryScreen.WorkingArea.Width - 40;
-                    SetNewAnimation(AnimationType.Rotate1);
-                }
-            }
-            
-            if (step > 20)
-            {
-                int rand = GetRandomNumber();
-
-                if (rand == 0)
-                    SetNewAnimation(AnimationType.Sleep1);
-                else if(rand == 1)
-                    SetNewAnimation(AnimationType.Sleep2);
-                else if (rand == 2 && (int)hwndWindow != 0)
-                    SetNewAnimation(AnimationType.Piss);
-                else if (rand < 8 && (int)hwndWindow == 0)
-                    SetNewAnimation(AnimationType.Run);
-                else if (rand < 9 && (int)hwndWindow == 0)
-                    SetNewAnimation(AnimationType.Exit1);
-                else
-                    SetNewAnimation(AnimationType.Walk);
-            }
-        }
-
-        private void Run(int step)
-        {
-            pictureBox1.Image = imageList1.Images[4 + step % 2];
-            if (bMoveLeft)
-            {
-                this.Left -= 10;
-
-                if (this.Left <= 0)
-                {
-                    this.Left = 0;
-                    SetNewAnimation(AnimationType.Boing);
-                }
-            }
-            else
-            {
-                this.Left += 10;
-
-                if (this.Left >= Screen.PrimaryScreen.WorkingArea.Width - 40)
-                {
-                    this.Left = Screen.PrimaryScreen.WorkingArea.Width - 40;
-                    SetNewAnimation(AnimationType.Boing);
-                }
-            }
-
-            if (step >= 25)
-            {
-                if(GetRandomNumber() < 5)
-                    SetNewAnimation(AnimationType.Run);
-                else
-                    SetNewAnimation(AnimationType.Walk);
-            }
-        }
-
-        private void Boing(int step)
-        {
-            int[] iPos = { 62, 62, 62, 63, 64, 65, 66, 67, 68, 69, 70, 63, 64, 65, 66, 67, 68, 69, 70, 3, 3, 3, 3, 3 };
-            pictureBox1.Image = imageList1.Images[iPos[step]];
-            if (step > 2 && step < 20)
-            {
-                if (bMoveLeft) this.Left += 5;
-                else this.Left -= 5;
-            }
-
-            if (step >= 21)
-            {
-                if(GetRandomNumber() < 2)
-                    SetNewAnimation(AnimationType.Run);
-                else if (GetRandomNumber() < 15)
-                    SetNewAnimation(AnimationType.Rotate1);
-                else
-                    SetNewAnimation(AnimationType.Walk);
-            }
-        }
-
-        private void Piss(int step)
-        {
-            if (step < 6)
-            {
-                int[] iPos = { 3, 12, 13, 103, 104, 105, 106 };
-                pictureBox1.Image = imageList1.Images[iPos[step]];
-            }
-            else if (step < 40)
-            {
-                pictureBox1.Image = imageList1.Images[105 + (step % 2)];
-            }
-            else
-            {
-                int[] iPos = { 104, 104, 104, 13, 13, 13, 13, 12, 3, 3, 3, 3 };
-                pictureBox1.Image = imageList1.Images[iPos[step - 40]];
-                if (step > 49)
-                {
-                    SetNewAnimation(AnimationType.Walk);
-                }
-            }
-            
-        }
-
         private void Exit1(int step)
         {
             if (step == 0)
@@ -687,198 +520,7 @@ namespace desktopPet
                 this.Close();
             }
         }
-
-        private void ChangeDirection(int step)
-        {
-            pictureBox1.Image = imageList1.Images[9 + step % 3];
-            if (step == 0)
-            {
-                for (int i = 0; i < imageList1.Images.Count; i++)
-                {
-                    if (i == 9 + 0 || i == 9 + 1 || i == 9 + 2) continue;
-                    Image im = imageList1.Images[i];
-                    im.RotateFlip(RotateFlipType.RotateNoneFlipX);
-                    imageList1.Images[i] = im;
-                }
-            }
-            if (step >= 2)
-            {
-                pictureBox1.Update();
-                for (int i = 9; i < 9 + 3; i++)
-                {
-                    Image im = imageList1.Images[i];
-                    im.RotateFlip(RotateFlipType.RotateNoneFlipX);
-                    imageList1.Images[i] = im;
-                }
-                bMoveLeft = !bMoveLeft;
-                SetNewAnimation(AnimationType.Walk);
-            }
-        }
-
-
-        private void Fall(int step)
-        {
-            pictureBox1.Image = imageList1.Images[46];
-
-            if (step < 40)
-                this.Top += step / 2;
-            else 
-                this.Top += 20;
-
-            RECT rct;
-            Dictionary<IntPtr, String> windows = new Dictionary<IntPtr, String>();
-            TITLEBARINFO titleBarInfo = new TITLEBARINFO();
-            titleBarInfo.cbSize = Marshal.SizeOf(titleBarInfo);
-
-            EnumWindows(delegate(IntPtr hWnd, int lParam)
-            {
-                if (hWnd == this.Handle) return true;
-
-                if (IsWindowVisible(hWnd))
-                {
-                    if (!GetTitleBarInfo(hWnd, ref titleBarInfo)) return true;
-                    if ((titleBarInfo.rgstate[0] & 0x00008000) > 0) return true;    // invisible
-                    
-                    StringBuilder sTitle = new StringBuilder(128);
-                    GetWindowText(hWnd, sTitle, 128);
-
-                    if (sTitle.Length > 0)
-                    {
-                        windows[hWnd] = sTitle.ToString();
-                    }
-                }
-                return true;
-            }, 0);
-
-            foreach (KeyValuePair<IntPtr, string> window in windows)
-            {
-                if (GetWindowRect(new HandleRef(this, window.Key), out rct))
-                {
-                    //Console.WriteLine("Window title: {0}", window.Value);
-
-                    if (this.Top >= rct.Top - 10 && this.Top <= rct.Top + 20 &&
-                        this.Left >= rct.Left && this.Left + 40 <= rct.Right && 
-                        this.Top > 30)
-                    {
-                        hwndWindow = window.Key;
-                        if (!CheckTopWindow(false))
-                        {
-                            this.Top = rct.Top - 39;
-                            ShowWindow(window.Key, 0);
-                            ShowWindow(window.Key, 5);
-                            Thread.Sleep(100);
-                            SetNewAnimation(AnimationType.Walk);
-                            return;
-                        }
-                        else
-                        {
-                            hwndWindow = (IntPtr)0;
-                        }
-                    }
-                }
-            }
-            
-            if (this.Top > Screen.PrimaryScreen.WorkingArea.Height - 40)
-            {
-                this.Top = Screen.PrimaryScreen.WorkingArea.Height - 39;
-                if (timer1.Interval < 500)
-                {
-                    if(step > 40)
-                    {
-                        pictureBox1.Image = imageList1.Images[48];
-                    }
-                    else
-                    {
-                        pictureBox1.Image = imageList1.Images[47];
-                    }
-                    timer1.Interval = 1000;
-                }
-                else
-                {
-                    SetNewAnimation(AnimationType.Walk);
-                }
-            }
-        }
-
-        private void Die(int step)
-        {
-            if(step <= 0) pictureBox1.Image = imageList1.Images[80];
-            else          pictureBox1.Image = imageList1.Images[96];
-            if (step > 10 && step <= 20)
-            {
-                this.Opacity = 1.0 - (step - 10) / 10.0;
-            }
-        }
-
-        private void What(int step)
-        {
-            pictureBox1.Image = imageList1.Images[50 + step % 2];
-            
-            if (step > 10)
-            {
-                SetNewAnimation(AnimationType.Walk);
-            }
-        }
-
-        private void Sleep1(int step)
-        {
-            if (step <= 11)
-            {
-                int[] iPos = { 3, 37, 38, 39, 39, 38, 37, 77, 78, 79, 80, 1 };
-                pictureBox1.Image = imageList1.Images[iPos[step]];
-                pictureBox1.Tag = 0;
-                timer1.Interval = 150 + GetRandomNumber();
-            }
-            else if (pictureBox1.Tag.ToString() == "0")
-            {
-                if (step > 50 && GetRandomNumber() < 2)
-                {
-                    pictureBox1.Tag = step;
-                    timer1.Interval = 300;
-                }
-            }
-            else
-            {
-                int iBaseStep = Int32.Parse(pictureBox1.Tag.ToString());
-                int[] iPos = { 56, 57, 58, 59, 39, 39, 38, 37, 3, 3, 3, 3, 3 };
-                pictureBox1.Image = imageList1.Images[iPos[step - iBaseStep]];
-
-                if (step - iBaseStep > 10)
-                {
-                    SetNewAnimation(AnimationType.Walk);
-                }
-            }
-        }
-
-        private void Sleep2(int step)
-        {
-            if (step <= 16)
-            {
-                int[] iPos = { 3, 3, 9, 10, 10, 10, 10, 34, 35, 35, 34, 34, 35, 35, 36, 35, 36 };
-                pictureBox1.Image = imageList1.Images[iPos[step]];
-                pictureBox1.Tag = 0;
-                timer1.Interval = 150 + GetRandomNumber();
-            }
-            else if (pictureBox1.Tag.ToString() == "0")
-            {
-                if (step > 50 && GetRandomNumber() < 2)
-                {
-                    pictureBox1.Tag = step;
-                    timer1.Interval = 300;
-                }
-            }
-            else
-            {
-                int iBaseStep = Int32.Parse(pictureBox1.Tag.ToString());
-                int[] iPos = { 35, 35, 35, 34, 10, 9, 3, 107, 108, 107, 108, 107, 3, 3, 3 };
-                pictureBox1.Image = imageList1.Images[iPos[step - iBaseStep]];
-
-                if (step - iBaseStep > 13)
-                {
-                    SetNewAnimation(AnimationType.Walk);
-                }
-            }
-        }
+        
         */
         
         private bool CheckTopWindow(bool bCheck)
@@ -892,7 +534,9 @@ namespace desktopPet
                 if (bCheck)
                 {
                     if (rctO.Top > Top + Height + 2) return true;
-                    if (rctO.Top < Top + Height - 2) return true;
+                    else if (rctO.Top < Top + Height - 2) return true;
+                    else if (rctO.Left > Left + Width - 5) return true;
+                    else if (rctO.Right < Left + 5) return true;
                 }
 
                 TITLEBARINFO titleBarInfo = new TITLEBARINFO();
@@ -906,7 +550,7 @@ namespace desktopPet
 
                     if (GetTitleBarInfo(hwnd2, ref titleBarInfo))
                     {
-                        if (sTitle.Length > 0 && GetWindowRect(new HandleRef(this, hwnd2), out rct) && titleBarInfo.rcTitleBar.Bottom > 0)
+                        if (sTitle.Length > 0 && GetWindowRect(new HandleRef(this, hwnd2), out rct) && (titleBarInfo.rcTitleBar.Bottom > 0 || sTitle.ToString() == "sheep"))
                         {
                             if (rct.Top < rctO.Top && rct.Bottom > rctO.Top)
                             {

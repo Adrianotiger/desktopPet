@@ -43,6 +43,9 @@
       <next probability="2" only="window">11</next>
       <next probability="10" only="taskbar">7</next>
       <next probability="90">1</next>
+      <next probability="10">15</next>
+      <next probability="5">17</next>
+      <next probability="10">19</next>
     </sequence>
     <border>
       <next probability="100">2</next>
@@ -290,6 +293,189 @@
       <frame>103</frame>
       <frame>13</frame>
       <frame>12</frame>
+      <next probability="100">1</next>
+    </sequence>
+  </animation>
+  <animation id="13">
+    <name>kill</name>
+    <start>
+      <x>0</x>
+      <y>0</y>
+      <interval>200</interval>
+    </start>
+    <end>
+      <x>0</x>
+      <y>0</y>
+      <interval>200</interval>
+    </end>
+    <sequence repeat="20" repeatfrom="1">
+      <frame>3</frame>
+      <frame>96</frame>
+      <frame>96</frame>
+      <next probability="100">1</next>
+    </sequence>
+  </animation>
+  <animation id="14">
+    <name>sync</name>
+    <start>
+      <x>0</x>
+      <y>0</y>
+      <interval>30</interval>
+    </start>
+    <end>
+      <x>0</x>
+      <y>0</y>
+      <interval>100</interval>
+    </end>
+    <sequence repeat="12" repeatfrom="0">
+      <frame>50</frame>
+      <frame>51</frame>
+      <next probability="100">1</next>
+    </sequence>
+  </animation>
+  <animation id="15">
+    <name>sleep1a</name>
+    <start>
+      <x>0</x>
+      <y>0</y>
+      <interval>1000</interval>
+    </start>
+    <end>
+      <x>0</x>
+      <y>0</y>
+      <interval>200</interval>
+    </end>
+    <sequence repeat="random/5+10" repeatfrom="8">
+      <frame>3</frame>
+      <frame>107</frame>
+      <frame>108</frame>
+      <frame>107</frame>
+      <frame>108</frame>
+      <frame>31</frame>
+      <frame>32</frame>
+      <frame>33</frame>
+      <frame>0</frame>
+      <frame>1</frame>
+      <next probability="100">16</next>
+    </sequence>
+  </animation>
+  <animation id="16">
+    <name>sleep1b</name>
+    <start>
+      <x>0</x>
+      <y>0</y>
+      <interval>200</interval>
+    </start>
+    <end>
+      <x>0</x>
+      <y>0</y>
+      <interval>200</interval>
+    </end>
+    <sequence repeat="0" repeatfrom="0">
+      <frame>0</frame>
+      <frame>80</frame>
+      <frame>79</frame>
+      <frame>78</frame>
+      <frame>77</frame>
+      <frame>37</frame>
+      <frame>38</frame>
+      <frame>39</frame>
+      <frame>38</frame>
+      <frame>37</frame>
+      <frame>6</frame>
+      <next probability="100">1</next>
+    </sequence>
+  </animation>
+  <animation id="17">
+    <name>sleep2a</name>
+    <start>
+      <x>0</x>
+      <y>0</y>
+      <interval>200</interval>
+    </start>
+    <end>
+      <x>0</x>
+      <y>0</y>
+      <interval>200</interval>
+    </end>
+    <sequence repeat="random/10+5" repeatfrom="6">
+      <frame>3</frame>
+      <frame>6</frame>
+      <frame>7</frame>
+      <frame>8</frame>
+      <frame>8</frame>
+      <frame>7</frame>
+      <frame>8</frame>
+      <frame>8</frame>
+      <next probability="100">18</next>
+    </sequence>
+  </animation>
+  <animation id="18">
+    <name>sleep2b</name>
+    <start>
+      <x>0</x>
+      <y>0</y>
+      <interval>200</interval>
+    </start>
+    <end>
+      <x>0</x>
+      <y>0</y>
+      <interval>200</interval>
+    </end>
+    <sequence repeat="0" repeatfrom="0">
+      <frame>8</frame>
+      <frame>7</frame>
+      <frame>6</frame>
+      <next probability="100">7</next>
+    </sequence>
+  </animation>
+  <animation id="19">
+    <name>sleep3a</name>
+    <start>
+      <x>0</x>
+      <y>0</y>
+      <interval>200</interval>
+    </start>
+    <end>
+      <x>0</x>
+      <y>0</y>
+      <interval>200</interval>
+    </end>
+    <sequence repeat="random/10+20" repeatfrom="7">
+      <frame>3</frame>
+      <frame>9</frame>
+      <frame>10</frame>
+      <frame>34</frame>
+      <frame>35</frame>
+      <frame>34</frame>
+      <frame>35</frame>
+      <frame>36</frame>
+      <frame>36</frame>
+      <next probability="100">20</next>
+    </sequence>
+  </animation>
+  <animation id="20">
+    <name>sleep3b</name>
+    <start>
+      <x>0</x>
+      <y>0</y>
+      <interval>200</interval>
+    </start>
+    <end>
+      <x>0</x>
+      <y>0</y>
+      <interval>200</interval>
+    </end>
+    <sequence repeat="0" repeatfrom="0">
+      <frame>35</frame>
+      <frame>36</frame>
+      <frame>36</frame>
+      <frame>35</frame>
+      <frame>34</frame>
+      <frame>34</frame>
+      <frame>34</frame>
+      <frame>10</frame>
+      <frame>9</frame>
       <next probability="100">1</next>
     </sequence>
   </animation>

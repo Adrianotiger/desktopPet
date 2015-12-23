@@ -135,6 +135,8 @@ namespace desktopPet
                                     {
                                         case "fall": animations.AnimationFall = id; break;
                                         case "drag": animations.AnimationDrag = id; break;
+                                        case "kill": animations.AnimationKill = id; break;
+                                        case "sync": animations.AnimationSync = id; break;
                                     }
                                     break;
                         case "start":

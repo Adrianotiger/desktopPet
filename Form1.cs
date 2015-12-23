@@ -104,7 +104,7 @@ namespace desktopPet
                 AddDebugInfo(DEBUG_TYPE.info, "Info pressed");
                 do
                 {
-                    res = MessageBox.Show("Application Version 1.0 (beta 0.1)\nAdriano Petrucci\n____________________________\nAnimation pack from: " + xml.headerInfo.Author + "\nInfo: " + xml.headerInfo.Info + "\nVersion: " + xml.headerInfo.Version, xml.headerInfo.Title, MessageBoxButtons.AbortRetryIgnore, MessageBoxIcon.Exclamation);
+                    res = MessageBox.Show("Application Version 1.0 (beta 0.5)\nAdriano Petrucci\n____________________________\nAnimation pack from: " + xml.headerInfo.Author + "\nInfo: " + xml.headerInfo.Info + "\nVersion: " + xml.headerInfo.Version, xml.headerInfo.Title, MessageBoxButtons.AbortRetryIgnore, MessageBoxIcon.Exclamation);
                     if (res == DialogResult.Retry)
                     {
                         button1_Click(sender, e);
@@ -113,7 +113,7 @@ namespace desktopPet
                     {
                         for (int i = 0; i < iSheeps; i++)
                         {
-                            sheeps[i].Whats();
+                            sheeps[i].Sync();
                         }
                     }
                 } while (res == DialogResult.Retry);
@@ -127,6 +127,7 @@ namespace desktopPet
             {
                 AddDebugInfo(DEBUG_TYPE.info, "exit application pressed");
                 timer1.Tag = "0";
+                timer1.Interval = 1200;
                 timer1.Enabled = true;
                 Opacity = 0.0;
                 for (int i = 0; i < iSheeps; i++)
@@ -138,18 +139,28 @@ namespace desktopPet
 
         private void pictureBox2_MouseEnter(object sender, EventArgs e)
         {
-            Opacity = 1.0;
-            button2.Visible = true;
+            if (Opacity > 0.1)
+            {
+                Opacity = 1.0;
+                button2.Visible = true;
+            }
         }
 
         private void pictureBox2_MouseLeave(object sender, EventArgs e)
         {
-            Opacity = 0.8;
-            new Thread(new ThreadStart(() =>
+            if (Opacity > 0.8)
             {
-                Thread.Sleep(1200);
-                Invoke(new Action(() => { if (Opacity < 1.0) button2.Visible = false; }));
-            })).Start();
+                Opacity = 0.8;
+                new Thread(new ThreadStart(() =>
+                {
+                    Thread.Sleep(1200);
+                    try
+                    {
+                        Invoke(new Action(() => { if (Opacity < 1.0) button2.Visible = false; }));
+                    }
+                    catch (Exception) { }
+                })).Start();
+            }
         }
 
         private void pictureBox2_MouseMove(object sender, MouseEventArgs e)

@@ -125,6 +125,8 @@ namespace desktopPet
         
         public int AnimationDrag = 1;
         public int AnimationFall = 1;
+        public int AnimationKill = 1;
+        public int AnimationSync = 1;
 
         public Animations(Xml xml)
         {
