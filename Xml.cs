@@ -83,12 +83,14 @@ namespace desktopPet
             catch (Exception ex)
             {
                 xmlDoc.RemoveAll();
-                Form1.AddDebugInfo(Form1.DEBUG_TYPE.error, "User XML error: " + ex.ToString());
+                Form1.AddDebugInfo(Form1.DEBUG_TYPE.warning, "User XML error: " + ex.ToString());
             }
             //XmlReader reader = XmlReader.Create(new StringReader(DesktopPet.Properties.Resources.animations), settings);
 
             if (xmlDoc.ChildNodes.Count <= 0)
             {
+                Form1.AddDebugInfo(Form1.DEBUG_TYPE.info, "Loading default XML animation");
+
                 try
                 {
                     reader = XmlReader.Create(new StringReader(DesktopPet.Properties.Resources.animations), settings);
@@ -99,6 +101,7 @@ namespace desktopPet
                 catch (Exception ex)
                 {
                     Form1.AddDebugInfo(Form1.DEBUG_TYPE.error, "XML error: " + ex.ToString());
+                    MessageBox.Show("FATAL ERROR reading XML file: " + ex.Message, "ERROR", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
             }
 
