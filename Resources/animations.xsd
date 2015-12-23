@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xsd:schema
+    elementFormDefault="qualified"
+    attributeFormDefault="unqualified"
+    targetNamespace="http://esheep.petrucci.ch/"
+    xmlns="http://esheep.petrucci.ch/"
+    xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+
+  <xsd:element name='animations'>
+    <xsd:complexType>
+      <xsd:sequence>
+        <xsd:element name='header' minOccurs='1' maxOccurs='1'>
+          <xsd:complexType>
+            <xsd:sequence>
+              <xsd:element name='author' type='xsd:string' minOccurs='1' maxOccurs='1' />
+              <xsd:element name='title' type='xsd:string' minOccurs='1' maxOccurs='1' />
+              <xsd:element name='version' type='xsd:string' minOccurs='1' maxOccurs='1' />
+              <xsd:element name='info' type='xsd:string' minOccurs='1' maxOccurs='1' />
+              <xsd:element name='application' type='xsd:integer' minOccurs='1' maxOccurs='1' />
+              <xsd:element name='home' type='xsd:string' minOccurs='1' maxOccurs='1' />
+              <xsd:element name='icon' type='xsd:string' minOccurs='1' maxOccurs='1' />
+            </xsd:sequence>
+          </xsd:complexType>
+        </xsd:element>
+        <xsd:element name='image'>
+          <xsd:complexType>
+            <xsd:sequence>
+              <xsd:element name='tilesx' type='xsd:integer' minOccurs='1' maxOccurs='1' />
+              <xsd:element name='tilesy' type='xsd:integer' minOccurs='1' maxOccurs='1' />
+              <xsd:element name='png' type='xsd:string' minOccurs='1' maxOccurs='1' />
+              <xsd:element name='transparency' type='xsd:string' minOccurs='1' maxOccurs='1' />
+            </xsd:sequence>
+          </xsd:complexType>
+        </xsd:element>
+        <xsd:element name='spawn'>
+          <xsd:complexType>
+            <xsd:sequence>
+              <xsd:element name='x' type='xsd:string' minOccurs='1' maxOccurs='1' />
+              <xsd:element name='y' type='xsd:string' minOccurs='1' maxOccurs='1' />
+              <xsd:element name='next' maxOccurs='1'>
+                <xsd:complexType>
+                  <xsd:simpleContent>
+                    <xsd:extension base='xsd:integer'>
+                      <xsd:attribute name="probability" type="xsd:integer" />
+                    </xsd:extension>
+                  </xsd:simpleContent>
+                </xsd:complexType>
+              </xsd:element>
+            </xsd:sequence>
+            <xsd:attribute name="probability" type="xsd:integer"/>
+            <xsd:attribute name="id" type="xsd:int"/>
+          </xsd:complexType>
+        </xsd:element>
+        <xsd:element name='animation' minOccurs='1' maxOccurs='256'>
+          <xsd:complexType>
+            <xsd:sequence>
+              <xsd:element name='name' type='xsd:string' minOccurs='1' maxOccurs='1' />
+              <xsd:element name='start' minOccurs='1' maxOccurs='1'>
+                <xsd:complexType>
+                  <xsd:sequence>
+                    <xsd:element name='x' type='xsd:string' minOccurs='1' maxOccurs='1' />
+                    <xsd:element name='y' type='xsd:string' minOccurs='1' maxOccurs='1' />
+                    <xsd:element name='interval' type='xsd:string' minOccurs='1' maxOccurs='1' />
+                  </xsd:sequence>
+                </xsd:complexType>
+              </xsd:element>
+              <xsd:element name='end' minOccurs='0' maxOccurs='1'>
+                <xsd:complexType>
+                  <xsd:sequence>
+                    <xsd:element name='x' type='xsd:string' minOccurs='1' maxOccurs='1' />
+                    <xsd:element name='y' type='xsd:string' minOccurs='1' maxOccurs='1' />
+                    <xsd:element name='interval' type='xsd:string' minOccurs='1' maxOccurs='1' />
+                  </xsd:sequence>
+                </xsd:complexType>
+              </xsd:element>
+              <xsd:element name='sequence' minOccurs='1' maxOccurs='1'>
+                <xsd:complexType>
+                  <xsd:sequence>
+                    <xsd:element name='frame' type='xsd:integer' minOccurs='1' maxOccurs='512' />
+                    <xsd:element ref='next' maxOccurs='100' />
+                    <xsd:element name='action' type='xsd:string' minOccurs='0' maxOccurs='64' />
+                  </xsd:sequence>
+                  <xsd:attribute name="repeat" type="xsd:string"/>
+                  <xsd:attribute name="repeatfrom" type="xsd:integer"/>
+                </xsd:complexType>
+              </xsd:element>
+              <xsd:element name='border' minOccurs='0' maxOccurs='1'>
+                <xsd:complexType>
+                  <xsd:sequence>
+                    <xsd:element ref='next' />
+                  </xsd:sequence>
+                </xsd:complexType>
+              </xsd:element>
+              <xsd:element name='gravity' minOccurs='0' maxOccurs='1'>
+                <xsd:complexType>
+                  <xsd:sequence>
+                    <xsd:element ref='next' />
+                  </xsd:sequence>
+                </xsd:complexType>
+              </xsd:element>
+            </xsd:sequence>
+            <xsd:attribute name="id" type="xsd:integer"/>
+          </xsd:complexType>
+        </xsd:element>
+      </xsd:sequence>
+    </xsd:complexType>
+  </xsd:element>
+  <xsd:simpleType name="curr">
+    <xsd:restriction base="xsd:string">
+      <xsd:enumeration value="taskbar" />
+      <xsd:enumeration value="window" />
+      <xsd:enumeration value="horizontal" />
+      <xsd:enumeration value="horizontal+" />
+      <xsd:enumeration value="vertical" />
+    </xsd:restriction>
+  </xsd:simpleType>
+  <xsd:element name="next">
+    <xsd:complexType>
+      <xsd:simpleContent>
+        <xsd:extension base='xsd:integer'>
+          <xsd:attribute name="probability" type="xsd:integer" />
+          <xsd:attribute name="only" type="curr" />
+        </xsd:extension>
+      </xsd:simpleContent>
+    </xsd:complexType>
+  </xsd:element>
+  <xsd:element name="only">
+    <xsd:complexType>
+      <xsd:choice minOccurs="0" maxOccurs="unbounded">
+        <xsd:element ref="next" />
+      </xsd:choice>
+    </xsd:complexType>
+  </xsd:element>
+</xsd:schema>
