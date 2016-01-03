@@ -17,20 +17,20 @@ namespace DesktopPet
 
         }
 
-        public void AddDebugInfo(Form1.DEBUG_TYPE type, string text)
+        public void AddDebugInfo(StartUp.DEBUG_TYPE type, string text)
         {
             ListViewItem item = new ListViewItem(DateTime.Now.ToLongTimeString());
-            if(type == Form1.DEBUG_TYPE.info)
+            if(type == StartUp.DEBUG_TYPE.info)
             {
                 item.ForeColor = Color.White;
                 if (checkBox1.Checked) listView1.Items.Add(item);
             }
-            else if(type == Form1.DEBUG_TYPE.warning)
+            else if(type == StartUp.DEBUG_TYPE.warning)
             {
                 item.ForeColor = Color.Yellow;
                 if (checkBox2.Checked) listView1.Items.Add(item);
             }
-            else if(type == Form1.DEBUG_TYPE.error)
+            else if(type == StartUp.DEBUG_TYPE.error)
             {
                 item.ForeColor = Color.Salmon;
                 if (checkBox3.Checked) listView1.Items.Add(item);

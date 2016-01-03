@@ -46,10 +46,10 @@ namespace desktopPet
             switch (e.Severity)
             {
                 case XmlSeverityType.Error:
-                    Form1.AddDebugInfo(Form1.DEBUG_TYPE.error, "XSD validation: " + e.Message);
+                    StartUp.AddDebugInfo(StartUp.DEBUG_TYPE.error, "XSD validation: " + e.Message);
                     break;
                 case XmlSeverityType.Warning:
-                    Form1.AddDebugInfo(Form1.DEBUG_TYPE.warning, "XSD validation: " + e.Message);
+                    StartUp.AddDebugInfo(StartUp.DEBUG_TYPE.warning, "XSD validation: " + e.Message);
                     break;
             }
 
@@ -83,13 +83,13 @@ namespace desktopPet
             catch (Exception ex)
             {
                 xmlDoc.RemoveAll();
-                Form1.AddDebugInfo(Form1.DEBUG_TYPE.warning, "User XML error: " + ex.ToString());
+                StartUp.AddDebugInfo(StartUp.DEBUG_TYPE.warning, "User XML error: " + ex.ToString());
             }
             //XmlReader reader = XmlReader.Create(new StringReader(DesktopPet.Properties.Resources.animations), settings);
 
             if (xmlDoc.ChildNodes.Count <= 0)
             {
-                Form1.AddDebugInfo(Form1.DEBUG_TYPE.info, "Loading default XML animation");
+                StartUp.AddDebugInfo(StartUp.DEBUG_TYPE.info, "Loading default XML animation");
 
                 try
                 {
@@ -100,7 +100,7 @@ namespace desktopPet
                 }
                 catch (Exception ex)
                 {
-                    Form1.AddDebugInfo(Form1.DEBUG_TYPE.error, "XML error: " + ex.ToString());
+                    StartUp.AddDebugInfo(StartUp.DEBUG_TYPE.error, "XML error: " + ex.ToString());
                     MessageBox.Show("FATAL ERROR reading XML file: " + ex.Message, "ERROR", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
             }
@@ -309,7 +309,7 @@ namespace desktopPet
             }
             else
             {
-                Form1.AddDebugInfo(Form1.DEBUG_TYPE.error, "Unable to parse integer: " + sText);
+                StartUp.AddDebugInfo(StartUp.DEBUG_TYPE.error, "Unable to parse integer: " + sText);
             }
             
             return iRet;
@@ -320,12 +320,12 @@ namespace desktopPet
             /*
             if (DesktopPet.Properties.Settings.Default.xml == null || DesktopPet.Properties.Settings.Default.xml.Length < 100)
             {
-                Form1.AddDebugInfo(Form1.DEBUG_TYPE.info, "loading user animation");
+                StartUp.AddDebugInfo(StartUp.DEBUG_TYPE.info, "loading user animation");
                 xmlDoc.LoadXml(DesktopPet.Properties.Resources.animations);
             }
             else
             {
-                Form1.AddDebugInfo(Form1.DEBUG_TYPE.warning, "no user xml, loading default");
+                StartUp.AddDebugInfo(StartUp.DEBUG_TYPE.warning, "no user xml, loading default");
                 xmlDoc.LoadXml(DesktopPet.Properties.Settings.Default.xml);
             }
             */
@@ -334,11 +334,11 @@ namespace desktopPet
             {
                 if (DesktopPet.Properties.Settings.Default.Home.Length < 100) throw new InvalidDataException();
                 bitmapHome = new MemoryStream(Convert.FromBase64String(DesktopPet.Properties.Settings.Default.Home));
-                Form1.AddDebugInfo(Form1.DEBUG_TYPE.info, "user home image loaded");
+                StartUp.AddDebugInfo(StartUp.DEBUG_TYPE.info, "user home image loaded");
             }
             catch (Exception)
             {
-                Form1.AddDebugInfo(Form1.DEBUG_TYPE.warning, "home image not found, loading default");
+                StartUp.AddDebugInfo(StartUp.DEBUG_TYPE.warning, "home image not found, loading default");
                 try
                 {
                     XmlNode node = xmlDoc.SelectSingleNode("//pet:animations/pet:header/pet:home", xmlNS);
@@ -359,11 +359,11 @@ namespace desktopPet
             {
                 if (DesktopPet.Properties.Settings.Default.Images.Length < 2) throw new InvalidDataException();
                 images.bitmapImages = new MemoryStream(Convert.FromBase64String(DesktopPet.Properties.Settings.Default.Images));
-                Form1.AddDebugInfo(Form1.DEBUG_TYPE.info, "user images loaded");
+                StartUp.AddDebugInfo(StartUp.DEBUG_TYPE.info, "user images loaded");
             }
             catch (Exception)
             {
-                Form1.AddDebugInfo(Form1.DEBUG_TYPE.warning, "user images not found, loading defaults");
+                StartUp.AddDebugInfo(StartUp.DEBUG_TYPE.warning, "user images not found, loading defaults");
                 try
                 {
                     XmlNode node = xmlDoc.SelectSingleNode("//pet:animations/pet:image/pet:png", xmlNS);
@@ -397,11 +397,11 @@ namespace desktopPet
             {
                 if (DesktopPet.Properties.Settings.Default.Icon.Length < 100) throw new InvalidDataException();
                 bitmapIcon = new MemoryStream(Convert.FromBase64String(DesktopPet.Properties.Settings.Default.Icon));
-                Form1.AddDebugInfo(Form1.DEBUG_TYPE.info, "user icon loaded");
+                StartUp.AddDebugInfo(StartUp.DEBUG_TYPE.info, "user icon loaded");
             }
             catch (Exception)
             {
-                Form1.AddDebugInfo(Form1.DEBUG_TYPE.warning, "no user icon, loading default");
+                StartUp.AddDebugInfo(StartUp.DEBUG_TYPE.warning, "no user icon, loading default");
                 try
                 {
                     XmlNode node = xmlDoc.SelectSingleNode("//pet:animations/pet:header/pet:icon", xmlNS);

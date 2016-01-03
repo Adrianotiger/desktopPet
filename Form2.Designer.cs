@@ -63,6 +63,7 @@
             // 
             // Form2
             // 
+            this.AllowDrop = true;
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.Magenta;
@@ -79,6 +80,8 @@
             this.Text = "Sheep";
             this.TopMost = true;
             this.TransparencyKey = System.Drawing.Color.Magenta;
+            this.DragDrop += new System.Windows.Forms.DragEventHandler(this.Form2_DragDrop);
+            this.DragEnter += new System.Windows.Forms.DragEventHandler(this.Form2_DragEnter);
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             this.ResumeLayout(false);
 

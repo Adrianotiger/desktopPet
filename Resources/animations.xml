@@ -43,9 +43,9 @@
       <next probability="2" only="window">11</next>
       <next probability="10" only="taskbar">7</next>
       <next probability="90">1</next>
-      <next probability="10">15</next>
-      <next probability="5">17</next>
-      <next probability="10">19</next>
+      <next probability="6">15</next>
+      <next probability="3">17</next>
+      <next probability="6">19</next>
     </sequence>
     <border>
       <next probability="100">2</next>
@@ -175,7 +175,7 @@
       <next probability="80">1</next>
     </sequence>
     <border>
-      <next probability="100">8</next>
+      <next probability="100" only="vertical">8</next>
     </border>
     <gravity>
       <next probability="100">5</next>

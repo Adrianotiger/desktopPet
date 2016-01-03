@@ -52,13 +52,21 @@ namespace desktopPet
             public int Bottom;      // y position of lower-right corner
         }
 
+            // Current step in the animation-frames list
         int iAnimationStep;
+            // Current Animation structure
         TAnimation CurrentAnimation;
+            // Handle to the current window, if this value is 0, the sheep is NOT walking on a window
         IntPtr hwndWindow = (IntPtr)0;
+            // If sheep is walking to left
         bool bMoveLeft = true;
+            // ToDo: formX is the second sprite used for secondary animations (example: bath or flower)
         //Form2 formX = null;
+            // Animations class
         Animations Animations;
+            // Xml class
         Xml Xml;
+            // If the pet is in dragging mode
         bool bDragging = false;
 
         public Form2()
@@ -72,6 +80,7 @@ namespace desktopPet
             Xml = xml;
             InitializeComponent();
             Visible = false;
+            Opacity = 0.0;
         }
 
         protected override CreateParams CreateParams
@@ -123,6 +132,7 @@ namespace desktopPet
             Top = spawn.Start.Y.GetValue();
             Left = spawn.Start.X.GetValue();
             Visible = true;
+            Opacity = 1.0;
             SetNewAnimation(spawn.Next);
             
             timer1.Enabled = true;
@@ -581,6 +591,25 @@ namespace desktopPet
 
         private void pictureBox1_Click(object sender, EventArgs e)
         {
+
+        }
+
+        private void Form2_DragEnter(object sender, DragEventArgs e)
+        {
+            StartUp.AddDebugInfo(StartUp.DEBUG_TYPE.info, "dragging file...");
+            if (e.Data.GetDataPresent(DataFormats.FileDrop)) e.Effect = DragDropEffects.Copy;
+
+        }
+
+        private void Form2_DragDrop(object sender, DragEventArgs e)
+        {
+            StartUp.AddDebugInfo(StartUp.DEBUG_TYPE.info, "files dragged:");
+            string[] files = (string[])e.Data.GetData(DataFormats.FileDrop);
+            foreach (string file in files)
+            {
+                Program.Mainthread.LoadNewXML(file);
+                break;  // Currently only 1 file, in future maybe more animations at the same time
+            }
 
         }
     }

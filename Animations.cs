@@ -141,11 +141,11 @@ namespace desktopPet
             try
             {
                 SheepAnimations.Add(ID, new TAnimation(name, ID));
-                Form1.AddDebugInfo(Form1.DEBUG_TYPE.info, "adding animation: " + name);
+                StartUp.AddDebugInfo(StartUp.DEBUG_TYPE.info, "adding animation: " + name);
             }
             catch(Exception ex)
             {
-                Form1.AddDebugInfo(Form1.DEBUG_TYPE.info, "unable to add animation: " + ex.Message);
+                StartUp.AddDebugInfo(StartUp.DEBUG_TYPE.info, "unable to add animation: " + ex.Message);
             }
             return SheepAnimations[ID];
         }
@@ -157,7 +157,7 @@ namespace desktopPet
 
         public TSpawn AddSpawn(int ID, int probability, string name)
         {
-            Form1.AddDebugInfo(Form1.DEBUG_TYPE.info, "adding spawn: " + name);
+            StartUp.AddDebugInfo(StartUp.DEBUG_TYPE.info, "adding spawn: " + name);
             SheepSpawn.Add(ID, new TSpawn(name, probability));
             return SheepSpawn[ID];
         }
@@ -196,19 +196,19 @@ namespace desktopPet
 
         public int SetNextBorderAnimation(int animationID, TNextAnimation.TOnly where)
         {
-            Form1.AddDebugInfo(Form1.DEBUG_TYPE.info, "border detected");
+            StartUp.AddDebugInfo(StartUp.DEBUG_TYPE.info, "border detected");
             return SetNextGeneralAnimation(SheepAnimations[animationID].EndBorder, where);
         }
 
         public int SetNextSequenceAnimation(int animationID, TNextAnimation.TOnly where)
         {
-            Form1.AddDebugInfo(Form1.DEBUG_TYPE.info, "animation is over");
+            StartUp.AddDebugInfo(StartUp.DEBUG_TYPE.info, "animation is over");
             return SetNextGeneralAnimation(SheepAnimations[animationID].EndAnimation, where);
         }
 
         public int SetNextGravityAnimation(int animationID, TNextAnimation.TOnly where)
         {
-            Form1.AddDebugInfo(Form1.DEBUG_TYPE.info, "gravity detected");
+            StartUp.AddDebugInfo(StartUp.DEBUG_TYPE.info, "gravity detected");
             return SetNextGeneralAnimation(SheepAnimations[animationID].EndGravity, where);
         }
 
@@ -246,7 +246,7 @@ namespace desktopPet
             }
             else
             {
-                Form1.AddDebugInfo(Form1.DEBUG_TYPE.error, "no next animation found");
+                StartUp.AddDebugInfo(StartUp.DEBUG_TYPE.error, "no next animation found");
                 UpdateAnimationValues(list[0].ID);
                 return list[0].ID;
             }
@@ -281,7 +281,7 @@ namespace desktopPet
                 SheepAnimations[id] = ani;
             }
 
-            Form1.AddDebugInfo(Form1.DEBUG_TYPE.info, "new animation: " + ani.Name);
+            StartUp.AddDebugInfo(StartUp.DEBUG_TYPE.info, "new animation: " + ani.Name);
         }
     }
 }

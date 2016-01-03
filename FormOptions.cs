@@ -21,5 +21,10 @@ namespace DesktopPet
             this.DialogResult = DialogResult.Retry;
             Close();
         }
+
+        private void FormOptions_Load(object sender, EventArgs e)
+        {
+
+        }
     }
 }
