@@ -28,6 +28,8 @@ namespace desktopPet
         public TValue X;
         public TValue Y;
         public TValue Interval;
+        public int OffsetY;
+        public double Opacity;
     }
 
     public struct TNextAnimation

@@ -19,7 +19,6 @@ You can download the original <a href='Resources/animations.xml'>animations.xml<
 What you need are:
 <ul>
 <li>1 application icon (.ico file)
-<li>1 home image: this is show on the bottom right of your screen and allows you to add more sheeps or kill them. (.png something like 200x200 px)
 <li>1 animation image: an image with transparency with all possible positions. (.png not too big... Something like 1000x500 px)
 </ul><br />
 For more info about editing the xml file and add your own pet, fallow the <a href='../../wiki/'>Wiki</a> page.<br />

@@ -5,9 +5,6 @@
     <Setting Name="Images" Type="System.String" Scope="User">
       <Value Profile="(Default)" />
     </Setting>
-    <Setting Name="Home" Type="System.String" Scope="User">
-      <Value Profile="(Default)" />
-    </Setting>
     <Setting Name="Icon" Type="System.String" Scope="User">
       <Value Profile="(Default)" />
     </Setting>

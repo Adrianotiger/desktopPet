@@ -29,7 +29,6 @@ namespace desktopPet
         XmlNamespaceManager xmlNS;
         public Header headerInfo;
         public Images images;
-        public MemoryStream bitmapHome;
         public MemoryStream bitmapIcon;
 
         private Bitmap FullImage;
@@ -76,7 +75,6 @@ namespace desktopPet
                 reader = XmlReader.Create(new StringReader(DesktopPet.Properties.Settings.Default.xml), settings);
                 xmlDoc.Load(reader);
                 xmlDoc.Validate(eventHandler);
-                DesktopPet.Properties.Settings.Default.Home = xmlDoc.SelectSingleNode("//pet:animations/pet:header/pet:home", xmlNS).InnerText;
                 DesktopPet.Properties.Settings.Default.Images = xmlDoc.SelectSingleNode("//pet:animations/pet:image/pet:png", xmlNS).InnerText;
                 DesktopPet.Properties.Settings.Default.Icon = xmlDoc.SelectSingleNode("//pet:animations/pet:header/pet:icon", xmlNS).InnerText;
             }
@@ -149,6 +147,14 @@ namespace desktopPet
                                     ani.Start.Interval.Compute = node2.SelectSingleNode(".//pet:interval", xmlNS).InnerText;
                                     ani.Start.Interval.Random = (ani.Start.Interval.Compute.IndexOf("random") >= 0);
                                     ani.Start.Interval.Value = parseValue(ani.Start.Interval.Compute);
+                                    if (node2.SelectSingleNode(".//pet:offsety", xmlNS) != null)
+                                        ani.Start.OffsetY = int.Parse(node2.SelectSingleNode(".//pet:offsety", xmlNS).InnerText);
+                                    else
+                                        ani.Start.OffsetY = 0;
+                                    if (node2.SelectSingleNode(".//pet:opacity", xmlNS) != null)
+                                        ani.Start.Opacity = double.Parse(node2.SelectSingleNode(".//pet:opacity", xmlNS).InnerText);
+                                    else
+                                        ani.Start.Opacity = 1.0;
                                     break;
                         case "end":
                                     ani.End.X.Compute = node2.SelectSingleNode(".//pet:x", xmlNS).InnerText;
@@ -160,6 +166,14 @@ namespace desktopPet
                                     ani.End.Interval.Compute = node2.SelectSingleNode(".//pet:interval", xmlNS).InnerText;
                                     ani.End.Interval.Random = (ani.End.Interval.Compute.IndexOf("random") >= 0);
                                     ani.End.Interval.Value = parseValue(ani.End.Interval.Compute);
+                                    if (node2.SelectSingleNode(".//pet:offsety", xmlNS) != null)
+                                        ani.End.OffsetY = int.Parse(node2.SelectSingleNode(".//pet:offsety", xmlNS).InnerText);
+                                    else
+                                        ani.End.OffsetY = 0;
+                                    if (node2.SelectSingleNode(".//pet:opacity", xmlNS) != null)
+                                        ani.End.Opacity = double.Parse(node2.SelectSingleNode(".//pet:opacity", xmlNS).InnerText);
+                                    else
+                                        ani.End.Opacity = 1.0;
                                     break;
                         case "sequence":
                                     ani.Sequence.RepeatFrom = int.Parse(node2.Attributes["repeatfrom"].InnerText);
@@ -188,6 +202,7 @@ namespace desktopPet
                                                 case "horizontal": where = TNextAnimation.TOnly.HORIZONTAL; break;
                                                 case "horizontal+": where = TNextAnimation.TOnly.HORIZONTAL_; break;
                                                 case "vertical": where = TNextAnimation.TOnly.VERTICAL; break;
+                                                default: where = TNextAnimation.TOnly.NONE; break;
                                             }
                                         }
                                         ani.EndAnimation.Add(
@@ -329,32 +344,7 @@ namespace desktopPet
                 xmlDoc.LoadXml(DesktopPet.Properties.Settings.Default.xml);
             }
             */
-
-            try
-            {
-                if (DesktopPet.Properties.Settings.Default.Home.Length < 100) throw new InvalidDataException();
-                bitmapHome = new MemoryStream(Convert.FromBase64String(DesktopPet.Properties.Settings.Default.Home));
-                StartUp.AddDebugInfo(StartUp.DEBUG_TYPE.info, "user home image loaded");
-            }
-            catch (Exception)
-            {
-                StartUp.AddDebugInfo(StartUp.DEBUG_TYPE.warning, "home image not found, loading default");
-                try
-                {
-                    XmlNode node = xmlDoc.SelectSingleNode("//pet:animations/pet:header/pet:home", xmlNS);
-                    if (node != null)
-                    {
-                        DesktopPet.Properties.Settings.Default.Home = node.InnerText;
-                        DesktopPet.Properties.Settings.Default.Save();
-                    }
-                }
-                catch (Exception ex)
-                {
-                    MessageBox.Show(ex.Message);
-                }
-                bitmapHome = new MemoryStream(Convert.FromBase64String(DesktopPet.Properties.Settings.Default.Home));
-            }
-
+            
             try
             {
                 if (DesktopPet.Properties.Settings.Default.Images.Length < 2) throw new InvalidDataException();

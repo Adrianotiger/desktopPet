@@ -69,6 +69,10 @@ namespace desktopPet
             // If the pet is in dragging mode
         bool bDragging = false;
 
+        int iOffsetY = 0;
+        int iPosX = 0;
+        int iPosY = 0;
+
         public Form2()
         {
             InitializeComponent();
@@ -104,9 +108,7 @@ namespace desktopPet
             pictureBox1.Top = 0;
             pictureBox1.Left = 0;
             pictureBox1.Tag = 0;
-
-            Top = Screen.PrimaryScreen.WorkingArea.Height - y;
-            Left = Screen.PrimaryScreen.WorkingArea.Width;
+            
             iAnimationStep = 0;
 
             Show();
@@ -131,6 +133,9 @@ namespace desktopPet
             TSpawn spawn = Animations.GetRandomSpawn();
             Top = spawn.Start.Y.GetValue();
             Left = spawn.Start.X.GetValue();
+            iPosX = Left;
+            iPosY = Top;
+            iOffsetY = 0;
             Visible = true;
             Opacity = 1.0;
             SetNewAnimation(spawn.Next);
@@ -192,11 +197,12 @@ namespace desktopPet
             }
 
             timer1.Interval = CurrentAnimation.Start.Interval.Value + ((CurrentAnimation.End.Interval.Value - CurrentAnimation.Start.Interval.Value) * iAnimationStep / CurrentAnimation.Sequence.TotalSteps);
+            Opacity = CurrentAnimation.Start.Opacity + ((CurrentAnimation.End.Opacity - CurrentAnimation.Start.Opacity) * iAnimationStep / CurrentAnimation.Sequence.TotalSteps);
 
             if (bDragging)
             {
-                Left = Cursor.Position.X - Width / 2;
-                Top = Cursor.Position.Y + 2;
+                iPosX = Left = Cursor.Position.X - Width / 2;
+                iPosY = Top = Cursor.Position.Y + 2;
                 return;
             }
 
@@ -209,9 +215,9 @@ namespace desktopPet
             {
                 if (hwndWindow == (IntPtr)0)
                 {
-                    if (Left + x < 0)    // left screen border!
+                    if (iPosX + x < 0)    // left screen border!
                     {
-                        x = -Left;
+                        x = -iPosX;
                         SetNewAnimation(Animations.SetNextBorderAnimation(CurrentAnimation.ID, TNextAnimation.TOnly.VERTICAL));
                         bNewAnimation = true;
                     }
@@ -221,9 +227,9 @@ namespace desktopPet
                     RECT rct;
                     if (GetWindowRect(new HandleRef(this, hwndWindow), out rct))
                     {
-                        if (Left + x < rct.Left)    // left window border!
+                        if (iPosX + x < rct.Left)    // left window border!
                         {
-                            x = -Left + rct.Left;
+                            x = -iPosX + rct.Left;
                             SetNewAnimation(Animations.SetNextBorderAnimation(CurrentAnimation.ID, TNextAnimation.TOnly.WINDOW));
                             bNewAnimation = true;
                         }
@@ -234,9 +240,9 @@ namespace desktopPet
             {
                 if (hwndWindow == (IntPtr)0)
                 {
-                    if (Left + x + Width > Screen.PrimaryScreen.WorkingArea.Width)    // right screen border!
+                    if (iPosX + x + Width > Screen.PrimaryScreen.WorkingArea.Width)    // right screen border!
                     {
-                        x = Screen.PrimaryScreen.WorkingArea.Width - Width - Left;
+                        x = Screen.PrimaryScreen.WorkingArea.Width - Width - iPosX;
                         SetNewAnimation(Animations.SetNextBorderAnimation(CurrentAnimation.ID, TNextAnimation.TOnly.VERTICAL));
                         bNewAnimation = true;
                     }
@@ -246,9 +252,9 @@ namespace desktopPet
                     RECT rct;
                     if (GetWindowRect(new HandleRef(this, hwndWindow), out rct))
                     {
-                        if (Left + x + Width > rct.Right)    // right window border!
+                        if (iPosX + x + Width > rct.Right)    // right window border!
                         {
-                            x = rct.Right - Width - Left;
+                            x = rct.Right - Width - iPosX;
                             SetNewAnimation(Animations.SetNextBorderAnimation(CurrentAnimation.ID, TNextAnimation.TOnly.WINDOW));
                             bNewAnimation = true;
                         }
@@ -259,11 +265,11 @@ namespace desktopPet
             {
                 if (CurrentAnimation.EndBorder.Count > 0)
                 {
-                    if (Top + y > Screen.PrimaryScreen.WorkingArea.Height - Height) // border detected!
+                    if (iPosY + y > Screen.PrimaryScreen.WorkingArea.Height - Height) // border detected!
                     {
                         SetNewAnimation(Animations.SetNextBorderAnimation(CurrentAnimation.ID, TNextAnimation.TOnly.TASKBAR));
                         bNewAnimation = true;
-                        y = Screen.PrimaryScreen.WorkingArea.Height - Top - Height;
+                        y = Screen.PrimaryScreen.WorkingArea.Height - iPosY - Height;
                     }
                     else
                     {
@@ -272,7 +278,7 @@ namespace desktopPet
                         {
                             SetNewAnimation(Animations.SetNextBorderAnimation(CurrentAnimation.ID, TNextAnimation.TOnly.WINDOW));
                             bNewAnimation = true;
-                            y = iWindowTop - Top - Height;
+                            y = iWindowTop - iPosY - Height;
                         }
                     }
                 }
@@ -297,7 +303,7 @@ namespace desktopPet
                 }
                 else
                 {
-                    SetNewAnimation(Animations.SetNextSequenceAnimation(CurrentAnimation.ID, Top + Height + y >= Screen.PrimaryScreen.WorkingArea.Height - 2 ? TNextAnimation.TOnly.TASKBAR : TNextAnimation.TOnly.NONE));
+                    SetNewAnimation(Animations.SetNextSequenceAnimation(CurrentAnimation.ID, iPosY + Height + y >= Screen.PrimaryScreen.WorkingArea.Height - 2 ? TNextAnimation.TOnly.TASKBAR : TNextAnimation.TOnly.NONE));
                 }
                 bNewAnimation = true;
             }
@@ -305,11 +311,11 @@ namespace desktopPet
             {
                 if(hwndWindow == (IntPtr)0)
                 {
-                    if(Top + y < Screen.PrimaryScreen.WorkingArea.Height - Height)
+                    if(iPosY + y < Screen.PrimaryScreen.WorkingArea.Height - Height)
                     {
-                        if(Top + y + 3 >= Screen.PrimaryScreen.WorkingArea.Height - Height) // allow 3 pixels to move without fall
+                        if(iPosY + y + 3 >= Screen.PrimaryScreen.WorkingArea.Height - Height) // allow 3 pixels to move without fall
                         {
-                            y = Screen.PrimaryScreen.WorkingArea.Height - Top - Height;
+                            y = Screen.PrimaryScreen.WorkingArea.Height - iPosY - Height;
                         }
                         else
                         {
@@ -335,8 +341,11 @@ namespace desktopPet
                 pictureBox1.Image = imageList1.Images[CurrentAnimation.Sequence.Frames[0]];
             }
 
-            Left += x;
-            Top += y;
+            iPosX += x;
+            iPosY += y;
+
+            Left = iPosX;
+            Top = iPosY + iOffsetY;
         }
 
         private int FallDetect(int y)
@@ -355,7 +364,7 @@ namespace desktopPet
                     StringBuilder sTitle = new StringBuilder(128);
                     GetWindowText(hWnd, sTitle, 128);
 
-                    if (sTitle.ToString() == "Sheep") ;
+                    if (sTitle.ToString() == "Sheep") { }
                     else if (!GetTitleBarInfo(hWnd, ref titleBarInfo)) return true;
                     else if ((titleBarInfo.rgstate[0] & 0x00008000) > 0) return true;    // invisible
                     
@@ -373,9 +382,9 @@ namespace desktopPet
                 {
                     //Console.WriteLine("Window title: {0}", window.Value);
 
-                    if (Top + Height < rct.Top && Top + Height + y >= rct.Top &&
-                        Left >= rct.Left - Width / 2 && Left + Width <= rct.Right + Width / 2 &&
-                        Top > 30)
+                    if (iPosY + Height < rct.Top && iPosY + Height + y >= rct.Top &&
+                        iPosX >= rct.Left - Width / 2 && iPosX + Width <= rct.Right + Width / 2 &&
+                        iPosY > 30)
                     {
                         hwndWindow = window.Key;
                         if (!CheckTopWindow(false))
@@ -543,10 +552,10 @@ namespace desktopPet
 
                 if (bCheck)
                 {
-                    if (rctO.Top > Top + Height + 2) return true;
-                    else if (rctO.Top < Top + Height - 2) return true;
-                    else if (rctO.Left > Left + Width - 5) return true;
-                    else if (rctO.Right < Left + 5) return true;
+                    if (rctO.Top > iPosY + Height + 2) return true;
+                    else if (rctO.Top < iPosY + Height - 2) return true;
+                    else if (rctO.Left > iPosX + Width - 5) return true;
+                    else if (rctO.Right < iPosX + 5) return true;
                 }
 
                 TITLEBARINFO titleBarInfo = new TITLEBARINFO();
@@ -564,7 +573,7 @@ namespace desktopPet
                         {
                             if (rct.Top < rctO.Top && rct.Bottom > rctO.Top)
                             {
-                                if (rct.Left < Left && rct.Right > Left + 40 && iAnimationStep > 4) return true;
+                                if (rct.Left < iPosX && rct.Right > iPosX + 40 && iAnimationStep > 4) return true;
                             }
                         }
                     }

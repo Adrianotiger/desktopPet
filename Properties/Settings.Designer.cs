@@ -38,18 +38,6 @@ namespace DesktopPet.Properties {
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("")]
-        public string Home {
-            get {
-                return ((string)(this["Home"]));
-            }
-            set {
-                this["Home"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("")]
         public string Icon {
             get {
                 return ((string)(this["Icon"]));

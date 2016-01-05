@@ -234,7 +234,6 @@ namespace desktopPet
                     animations = new Animations(xml);
 
                     DesktopPet.Properties.Settings.Default.xml = "";
-                    DesktopPet.Properties.Settings.Default.Home = "";
                     DesktopPet.Properties.Settings.Default.Icon = "";
                     DesktopPet.Properties.Settings.Default.Images = "";
                     DesktopPet.Properties.Settings.Default.Save();
