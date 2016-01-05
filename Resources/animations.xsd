@@ -17,7 +17,7 @@
               <xsd:element name='version' type='xsd:string' minOccurs='1' maxOccurs='1' />
               <xsd:element name='info' type='xsd:string' minOccurs='1' maxOccurs='1' />
               <xsd:element name='application' type='xsd:integer' minOccurs='1' maxOccurs='1' />
-              <xsd:element name='home' type='xsd:string' minOccurs='1' maxOccurs='1' />
+              <xsd:element name='home' type='xsd:string' minOccurs='0' maxOccurs='1' />
               <xsd:element name='icon' type='xsd:string' minOccurs='1' maxOccurs='1' />
             </xsd:sequence>
           </xsd:complexType>
