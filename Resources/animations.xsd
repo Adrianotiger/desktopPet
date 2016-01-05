@@ -11,7 +11,7 @@
       <xsd:sequence>
         <xsd:element name='header' minOccurs='1' maxOccurs='1'>
           <xsd:complexType>
-            <xsd:sequence>
+            <xsd:all>
               <xsd:element name='author' type='xsd:string' minOccurs='1' maxOccurs='1' />
               <xsd:element name='title' type='xsd:string' minOccurs='1' maxOccurs='1' />
               <xsd:element name='version' type='xsd:string' minOccurs='1' maxOccurs='1' />
@@ -19,17 +19,17 @@
               <xsd:element name='application' type='xsd:integer' minOccurs='1' maxOccurs='1' />
               <xsd:element name='home' type='xsd:string' minOccurs='0' maxOccurs='1' />
               <xsd:element name='icon' type='xsd:string' minOccurs='1' maxOccurs='1' />
-            </xsd:sequence>
+            </xsd:all>
           </xsd:complexType>
         </xsd:element>
         <xsd:element name='image'>
           <xsd:complexType>
-            <xsd:sequence>
+            <xsd:all>
               <xsd:element name='tilesx' type='xsd:integer' minOccurs='1' maxOccurs='1' />
               <xsd:element name='tilesy' type='xsd:integer' minOccurs='1' maxOccurs='1' />
               <xsd:element name='png' type='xsd:string' minOccurs='1' maxOccurs='1' />
               <xsd:element name='transparency' type='xsd:string' minOccurs='1' maxOccurs='1' />
-            </xsd:sequence>
+            </xsd:all>
           </xsd:complexType>
         </xsd:element>
         <xsd:element name='spawn' maxOccurs='100'>
@@ -53,7 +53,7 @@
         </xsd:element>
         <xsd:element name='animation' minOccurs='1' maxOccurs='256'>
           <xsd:complexType>
-            <xsd:sequence>
+            <xsd:all>
               <xsd:element name='name' type='xsd:string' minOccurs='1' maxOccurs='1' />
               <xsd:element name='start' minOccurs='1' maxOccurs='1'>
                 <xsd:complexType>
@@ -98,7 +98,7 @@
                   </xsd:sequence>
                 </xsd:complexType>
               </xsd:element>
-            </xsd:sequence>
+            </xsd:all>
             <xsd:attribute name="id" type="xsd:integer"/>
           </xsd:complexType>
         </xsd:element>
