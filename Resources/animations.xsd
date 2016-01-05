@@ -129,11 +129,11 @@
               </xsd:element>
               <xsd:element name='sequence' minOccurs='1' maxOccurs='1'>
                 <xsd:complexType>
-                  <xsd:any>
+                  <xsd:all>
                     <xsd:element name='frame' type='xsd:integer' minOccurs='1' maxOccurs='512' />
                     <xsd:element name='action' type='xsd:string' minOccurs='0' maxOccurs='64' />
                     <xsd:element ref='next' maxOccurs='100' />
-                  </xsd:any>
+                  </xsd:all>
                   <xsd:attribute name="repeat" type="xsd:string"/>
                   <xsd:attribute name="repeatfrom" type="xsd:integer"/>
                 </xsd:complexType>
