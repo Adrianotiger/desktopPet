@@ -107,6 +107,7 @@
   </xsd:element>
   <xsd:simpleType name="curr">
     <xsd:restriction base="xsd:string">
+      <xsd:enumeration value="none" />
       <xsd:enumeration value="taskbar" />
       <xsd:enumeration value="window" />
       <xsd:enumeration value="horizontal" />
