@@ -84,7 +84,7 @@
         </xsd:element>
         <xsd:element name='spawn' maxOccurs='100'>
           <xsd:complexType>
-            <xsd:sequence>
+            <xsd:all>
               <xsd:element name='x' type='xsd:string' minOccurs='1' maxOccurs='1' />
               <xsd:element name='y' type='xsd:string' minOccurs='1' maxOccurs='1' />
               <xsd:element name='next' maxOccurs='1'>
@@ -96,7 +96,7 @@
                   </xsd:simpleContent>
                 </xsd:complexType>
               </xsd:element>
-            </xsd:sequence>
+            </xsd:all>
             <xsd:attribute name="probability" type="xsd:integer"/>
             <xsd:attribute name="id" type="xsd:int"/>
           </xsd:complexType>
@@ -107,24 +107,24 @@
               <xsd:element name='name' type='xsd:string' minOccurs='1' maxOccurs='1' />
               <xsd:element name='start' minOccurs='1' maxOccurs='1'>
                 <xsd:complexType>
-                  <xsd:sequence>
+                  <xsd:all>
                     <xsd:element name='x' type='xsd:string' minOccurs='1' maxOccurs='1' />
                     <xsd:element name='y' type='xsd:string' minOccurs='1' maxOccurs='1' />
                     <xsd:element name='offsety' type='xsd:integer' minOccurs='0' maxOccurs='1' />
                     <xsd:element name='opacity' type='xsd:double' minOccurs='0' maxOccurs='1' />
                     <xsd:element name='interval' type='xsd:string' minOccurs='1' maxOccurs='1' />
-                  </xsd:sequence>
+                  </xsd:all>
                 </xsd:complexType>
               </xsd:element>
               <xsd:element name='end' minOccurs='0' maxOccurs='1'>
                 <xsd:complexType>
-                  <xsd:sequence>
+                  <xsd:all>
                     <xsd:element name='x' type='xsd:string' minOccurs='1' maxOccurs='1' />
                     <xsd:element name='y' type='xsd:string' minOccurs='1' maxOccurs='1' />
                     <xsd:element name='offsety' type='xsd:integer' minOccurs='0' maxOccurs='1' />
                     <xsd:element name='opacity' type='xsd:double' minOccurs='0' maxOccurs='1' />
                     <xsd:element name='interval' type='xsd:string' minOccurs='1' maxOccurs='1' />
-                  </xsd:sequence>
+                  </xsd:all>
                 </xsd:complexType>
               </xsd:element>
               <xsd:element name='sequence' minOccurs='1' maxOccurs='1'>
