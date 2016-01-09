@@ -25,6 +25,11 @@
                   <xsd:documentation>Title of the animation, used on the webpage.</xsd:documentation>
                 </xsd:annotation>
               </xsd:element>
+              <xsd:element name='petname' type='xsd:string' minOccurs='1' maxOccurs='1'>
+                <xsd:annotation>
+                  <xsd:documentation>Name of your pet. Displayed on the contextmenu.</xsd:documentation>
+                </xsd:annotation>
+              </xsd:element>
               <xsd:element name='version' type='xsd:string' minOccurs='1' maxOccurs='1'>
                 <xsd:annotation>
                   <xsd:documentation>Insert the application version, 0.1 for a beta. Once it is published you can't change it anymore.</xsd:documentation>
