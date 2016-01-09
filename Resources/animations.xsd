@@ -40,11 +40,6 @@
                   <xsd:documentation>Info about the animation, write some sentences, credits and your email if you want.</xsd:documentation>
                 </xsd:annotation>
               </xsd:element>
-              <xsd:element name='petname' type='xsd:string' minOccurs='0' maxOccurs='1'>
-                <xsd:annotation>
-                  <xsd:documentation>Name of the pet, used in the context menu.</xsd:documentation>
-                </xsd:annotation>
-              </xsd:element>
               <xsd:element name='application' type='xsd:integer' minOccurs='1' maxOccurs='1'>
                 <xsd:annotation>
                   <xsd:documentation>Application version, this must be set to 1, because this is the current and only version.</xsd:documentation>
