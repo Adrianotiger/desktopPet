@@ -4,6 +4,7 @@ using System.Text;
 using System.Windows.Forms;
 using System.Runtime.InteropServices;
 using System.Collections.Generic;
+using System.IO;
 
 namespace desktopPet
 {
@@ -142,6 +143,27 @@ namespace desktopPet
             
             timer1.Enabled = true;
         }
+
+        public void PlayChild(int aniID)
+        {
+            TChild child = Animations.GetAnimationChild(aniID);
+
+            timer1.Enabled = false;
+
+            iAnimationStep = 0;
+            hwndWindow = (IntPtr)0;
+            
+            Top = child.Position.Y.GetValue();
+            Left = child.Position.X.GetValue();
+            iPosX = Left;
+            iPosY = Top;
+            iOffsetY = 0;
+            Visible = true;
+            Opacity = 1.0;
+            SetNewAnimation(child.Next);
+
+            timer1.Enabled = true;
+        }
         
         public void Kill()
         {
@@ -159,9 +181,16 @@ namespace desktopPet
         {
             timer1.Enabled = false;
             if (iAnimationStep < 0) iAnimationStep = 0;
-            NextStep();
-            iAnimationStep++;
-            timer1.Enabled = true;
+            try
+            {
+                NextStep();
+                iAnimationStep++;
+                timer1.Enabled = true;
+            }
+            catch(Exception) // if form is closed timer could continue to tick (why?)
+            {
+                return;
+            }
         }
 
         private int GetRandomNumber()
@@ -180,6 +209,21 @@ namespace desktopPet
             {
                 iAnimationStep = -1;
                 CurrentAnimation = Animations.GetAnimation(id);
+                if(Animations.HasAnimationChild(id))
+                {
+                    if (Name != "child")
+                    {
+                        TChild childInfo = Animations.GetAnimationChild(id);
+                        Form2 child = new Form2(Animations, Xml);
+                        for(int i=0;i<imageList1.Images.Count-1;i++)
+                        {
+                            child.addImage(imageList1.Images[i]);
+                        }
+                        child.Name = "child";
+                        child.Show(Width, Height);
+                        child.PlayChild(id);
+                    }
+                }
                 timer1.Interval = CurrentAnimation.Start.Interval.GetValue();
             }
         }
@@ -198,6 +242,7 @@ namespace desktopPet
 
             timer1.Interval = CurrentAnimation.Start.Interval.Value + ((CurrentAnimation.End.Interval.Value - CurrentAnimation.Start.Interval.Value) * iAnimationStep / CurrentAnimation.Sequence.TotalSteps);
             Opacity = CurrentAnimation.Start.Opacity + ((CurrentAnimation.End.Opacity - CurrentAnimation.Start.Opacity) * iAnimationStep / CurrentAnimation.Sequence.TotalSteps);
+            iOffsetY = CurrentAnimation.Start.OffsetY + ((CurrentAnimation.End.OffsetY - CurrentAnimation.Start.OffsetY) * iAnimationStep / CurrentAnimation.Sequence.TotalSteps);
 
             if (bDragging)
             {
@@ -286,6 +331,7 @@ namespace desktopPet
 
             if (iAnimationStep >= CurrentAnimation.Sequence.TotalSteps - 1) // animation over
             {
+                int iNextAni = -1;
                 if(CurrentAnimation.Sequence.Action == "flip")
                 {
                     // flip all images
@@ -299,13 +345,32 @@ namespace desktopPet
                 }
                 if(hwndWindow != (IntPtr)0)
                 {
-                    SetNewAnimation(Animations.SetNextSequenceAnimation(CurrentAnimation.ID, TNextAnimation.TOnly.WINDOW));
+                    iNextAni = Animations.SetNextSequenceAnimation(CurrentAnimation.ID, TNextAnimation.TOnly.WINDOW);
                 }
                 else
                 {
-                    SetNewAnimation(Animations.SetNextSequenceAnimation(CurrentAnimation.ID, iPosY + Height + y >= Screen.PrimaryScreen.WorkingArea.Height - 2 ? TNextAnimation.TOnly.TASKBAR : TNextAnimation.TOnly.NONE));
+                    iNextAni = Animations.SetNextSequenceAnimation(CurrentAnimation.ID, iPosY + Height + y >= Screen.PrimaryScreen.WorkingArea.Height - 2 ? TNextAnimation.TOnly.TASKBAR : TNextAnimation.TOnly.NONE);
                 }
-                bNewAnimation = true;
+                if (iNextAni >= 0)
+                {
+                    SetNewAnimation(iNextAni);
+                    bNewAnimation = true;
+                }
+                else
+                {
+                    if(Name=="child")
+                    {
+                        timer1.Stop();
+                        timer1.Enabled = false;
+                        StartUp.AddDebugInfo(StartUp.DEBUG_TYPE.info, "removing child");
+                        Hide();
+                        Close();
+                    }
+                    else
+                    {
+                        Play(false);
+                    }
+                }
             }
             else if(CurrentAnimation.Gravity)
             {
@@ -616,7 +681,7 @@ namespace desktopPet
             string[] files = (string[])e.Data.GetData(DataFormats.FileDrop);
             foreach (string file in files)
             {
-                Program.Mainthread.LoadNewXML(file);
+                Program.Mainthread.LoadNewXMLFromString(File.ReadAllText(file));
                 break;  // Currently only 1 file, in future maybe more animations at the same time
             }
 

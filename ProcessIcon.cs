@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Windows.Forms;
-using DesktopPet.Properties;
 using System.Drawing;
 
 namespace desktopPet //SystemTrayApp
@@ -43,10 +42,11 @@ namespace desktopPet //SystemTrayApp
         /// <summary>
         /// Displays the icon in the system tray.
         /// </summary>
-        public void SetIcon(System.IO.MemoryStream icon)
+        public void SetIcon(System.IO.MemoryStream icon, string petName, string aboutAuthor, string aboutTitle, string aboutVersion, string aboutInfo)
         {
             ni.Icon = new Icon(icon, 32, 32);
-            ContextMenus.UpdateIcon(ni.Icon);
+            ContextMenus.UpdateIcon(ni.Icon, petName, aboutAuthor, aboutTitle, aboutVersion, aboutInfo);
+            ni.Text = petName + " Desktop Pet";
         }
 
         /// <summary>

@@ -55,10 +55,15 @@ namespace desktopPet
             }
             
                 // Read XML file and start new sheep in 1 second
-            xml.readXML();
+            if(!xml.readXML())
+            {
+                DesktopPet.Properties.Settings.Default.xml = DesktopPet.Properties.Resources.animations;
+                DesktopPet.Properties.Settings.Default.Save();
+                xml.readXML();
+            }
 
                 // Set animation icon
-            pi.SetIcon(xml.bitmapIcon);
+            pi.SetIcon(xml.bitmapIcon, xml.headerInfo.PetName, xml.headerInfo.Author, xml.headerInfo.Title, xml.headerInfo.Version, xml.headerInfo.Info);
 
                 // Wait 1 second, before starting first animation
             timer1.Tag = "A";
@@ -157,16 +162,16 @@ namespace desktopPet
                 Application.Exit();
             }
         }
-
+        
         /// <summary>
-        /// Load new XML (from webpage or dragging the XML file to a sheep)
+        /// Load new XML (from XML string)
         /// </summary>
-        /// <param name="fileName">Name of the XML file.</param>
-        public void LoadNewXML(string fileName)
+        /// <param name="strXml">A string with the xml content.</param>
+        public void LoadNewXMLFromString(string strXml)
         {
-            AddDebugInfo(DEBUG_TYPE.info, fileName);
+            AddDebugInfo(DEBUG_TYPE.info, "load new XML string");
 
-                // Close all sheeps
+            // Close all sheeps
             for (int i = 0; i < iSheeps; i++)
             {
                 sheeps[i].Close();
@@ -178,12 +183,17 @@ namespace desktopPet
             xml = new Xml();
             animations = new Animations(xml);
 
-            DesktopPet.Properties.Settings.Default.xml = File.ReadAllText(fileName);
+            DesktopPet.Properties.Settings.Default.xml = strXml;
             DesktopPet.Properties.Settings.Default.Save();
 
-            xml.readXML();
+            if (!xml.readXML())
+            {
+                DesktopPet.Properties.Settings.Default.xml = DesktopPet.Properties.Resources.animations;
+                DesktopPet.Properties.Settings.Default.Save();
+                xml.readXML();
+            }
 
-            pi.SetIcon(xml.bitmapIcon);
+            pi.SetIcon(xml.bitmapIcon, xml.headerInfo.PetName, xml.headerInfo.Author, xml.headerInfo.Title, xml.headerInfo.Version, xml.headerInfo.Info);
 
             timer1.Tag = "A";
             timer1.Enabled = true;
@@ -224,24 +234,11 @@ namespace desktopPet
             {
                 case DialogResult.Retry:
                     AddDebugInfo(DEBUG_TYPE.warning, "restoring default XML");
-                    for (int i = 0; i < iSheeps; i++)
-                    {
-                        sheeps[i].Close();
-                        sheeps[i].Dispose();
-                    }
-                    iSheeps = 0;
-                    xml = new Xml();
-                    animations = new Animations(xml);
 
-                    DesktopPet.Properties.Settings.Default.xml = "";
                     DesktopPet.Properties.Settings.Default.Icon = "";
                     DesktopPet.Properties.Settings.Default.Images = "";
-                    DesktopPet.Properties.Settings.Default.Save();
 
-                    xml.readXML();
-
-                    timer1.Tag = "A";
-                    timer1.Enabled = true;
+                    LoadNewXMLFromString("");
                     break;
             }
         }

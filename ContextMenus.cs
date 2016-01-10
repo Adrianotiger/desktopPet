@@ -14,8 +14,15 @@ namespace desktopPet
         /// Is the About box displayed?
         /// </summary>
         bool isAboutLoaded = false;
+        bool isOptionLoaded = false;
 
         static ToolStripMenuItem newSheepMenuItem;
+        static ToolStripMenuItem closeSheepMenuItem;
+
+        static string author;
+        static string version;
+        static string title;
+        static string info;
 
         /// <summary>
         /// Creates this instance.
@@ -55,11 +62,11 @@ namespace desktopPet
             menu.Items.Add(sep);
 
             // Exit.
-            item = new ToolStripMenuItem();
-            item.Text = "&Remove Sheep and Close";
-            item.Click += new EventHandler(Exit_Click);
-            item.Image = Resources.exit;
-            menu.Items.Add(item);
+            closeSheepMenuItem = new ToolStripMenuItem();
+            closeSheepMenuItem.Text = "&Remove Sheep and Close";
+            closeSheepMenuItem.Click += new EventHandler(Exit_Click);
+            closeSheepMenuItem.Image = Resources.exit;
+            menu.Items.Add(closeSheepMenuItem);
 
             return menu;
         }
@@ -67,9 +74,17 @@ namespace desktopPet
         /// Set a new icon in the context menu with the new pet
         /// </summary>
         /// <param name="newIcon">Icon with the new image.</param>
-        static public void UpdateIcon(Icon newIcon)
+        /// <param name="petName">Name of the pet, to show in the contextmenu.</param>
+        static public void UpdateIcon(Icon newIcon, string petName, string aboutAuthor, string aboutTitle, string aboutVersion, string aboutInfo)
         {
+            newSheepMenuItem.Text = "&Add new " + petName;
             newSheepMenuItem.Image = newIcon.ToBitmap();
+            closeSheepMenuItem.Text = "&Remove " + petName + " and Close";
+
+            author = aboutAuthor;
+            title = aboutTitle;
+            version = aboutVersion;
+            info = aboutInfo;
         }
 
         /// <summary>
@@ -93,14 +108,21 @@ namespace desktopPet
             if (!isAboutLoaded)
             {
                 isAboutLoaded = true;
-                new DesktopPet.AboutBox().ShowDialog();
+                DesktopPet.AboutBox box = new DesktopPet.AboutBox();
+                box.FillData(author, title, version, info);
+                box.ShowDialog();
                 isAboutLoaded = false;
             }
         }
 
         void Options_Click(object sender, EventArgs e)
         {
-            Program.Mainthread.OpenOptionDialog();
+            if (!isOptionLoaded)
+            {
+                isOptionLoaded = true;
+                Program.Mainthread.OpenOptionDialog();
+                isOptionLoaded = false;
+            }
         }
 
         /// <summary>

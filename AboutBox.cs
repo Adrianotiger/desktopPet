@@ -9,6 +9,26 @@ namespace DesktopPet
         public AboutBox()
         {
             InitializeComponent();
+
+            string version = "";
+            version = Application.ProductVersion;
+            Text = Text.Replace("XXX", version);
+        }
+
+        public void FillData(string author, string title, string version, string info)
+        {
+            info = info.Replace("[br]", "\n");
+            while(info.IndexOf("[link:")>0)
+            {
+                int iPos = info.IndexOf("[link:");
+                string link = info.Substring(iPos + 6, info.IndexOf("]", iPos + 5) - iPos - 6);
+                info = info.Substring(0, iPos) + link + info.Substring(info.IndexOf("]", iPos+5) + 1);
+            }
+
+            label_author.Text = author;
+            label_title.Text = title;
+            label_version.Text = version;
+            richTextBox1.Text = info;
         }
 
         private void AboutBox_Load(object sender, EventArgs e)
@@ -32,6 +52,18 @@ namespace DesktopPet
         {
                 // cancel pressed (easter egg: synchronize all sheeps)
             desktopPet.Program.Mainthread.SyncSheeps();
+            Close();
+        }
+
+        private void linkLabel2_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        {
+            // link pressed
+            Process.Start("https://github.com/Adrianotiger/desktopPet");
+        }
+
+        private void richTextBox1_LinkClicked(object sender, LinkClickedEventArgs e)
+        {
+            Process.Start(e.LinkText);
         }
     }
 }

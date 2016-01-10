@@ -1,4 +1,5 @@
-﻿using System;
+﻿using desktopPet;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -25,6 +26,17 @@ namespace DesktopPet
         private void FormOptions_Load(object sender, EventArgs e)
         {
 
+        }
+
+        private void webBrowser1_DocumentCompleted(object sender, WebBrowserDocumentCompletedEventArgs e)
+        {
+            WebBrowser web = (WebBrowser)sender;
+            string s = web.DocumentText;
+            if(s.Substring(0, 5) == "-XML-")
+            {
+                Program.Mainthread.LoadNewXMLFromString(s.Substring(5));
+                this.Close();
+            }
         }
     }
 }

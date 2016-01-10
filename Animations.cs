@@ -117,10 +117,18 @@ namespace desktopPet
         }
     }
 
+    public struct TChild
+    {
+        public TMovement Position;
+        public int AnimationID;
+        public int Next;
+    }
+
     public class Animations
     {
         public Dictionary<int, TAnimation> SheepAnimations;
         public Dictionary<int, TSpawn> SheepSpawn;
+        public Dictionary<int, TChild> SheepChild;
 
         Random rand;
         public static Xml Xml;
@@ -134,6 +142,7 @@ namespace desktopPet
         {
             SheepAnimations = new Dictionary<int, TAnimation>(64);   // Reserve space for 64 animations, more are added automatically
             SheepSpawn = new Dictionary<int, TSpawn>(8);
+            SheepChild = new Dictionary<int, TChild>(8);
             rand = new Random();
             Xml = xml;
         }
@@ -169,6 +178,18 @@ namespace desktopPet
             SheepSpawn[ID] = spawn;
         }
 
+        public TChild AddChild(int ID, string name)
+        {
+            StartUp.AddDebugInfo(StartUp.DEBUG_TYPE.info, "adding child");
+            SheepChild.Add(ID, new TChild());
+            return SheepChild[ID];
+        }
+
+        public void SaveChild(TChild child, int ID)
+        {
+            SheepChild[ID] = child;
+        }
+
         public TSpawn GetRandomSpawn()
         {
             int percent = 0;
@@ -194,6 +215,16 @@ namespace desktopPet
         public TAnimation GetAnimation(int id)
         {
             return SheepAnimations[id];
+        }
+
+        public TChild GetAnimationChild(int id)
+        {
+            return SheepChild[id];
+        }
+
+        public bool HasAnimationChild(int id)
+        {
+            return SheepChild.ContainsKey(id);
         }
 
         public int SetNextBorderAnimation(int animationID, TNextAnimation.TOnly where)
@@ -249,8 +280,7 @@ namespace desktopPet
             else
             {
                 StartUp.AddDebugInfo(StartUp.DEBUG_TYPE.error, "no next animation found");
-                UpdateAnimationValues(list[0].ID);
-                return list[0].ID;
+                return -1;  // a new spawn is requested
             }
         }
 

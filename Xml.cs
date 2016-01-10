@@ -13,6 +13,7 @@ namespace desktopPet
         public string Author;
         public string Title;
         public string Version;
+        public string PetName;
         public string Info;
     };
 
@@ -32,7 +33,9 @@ namespace desktopPet
         public MemoryStream bitmapIcon;
 
         private Bitmap FullImage;
-        
+
+        int iRandomSpawn = 10;
+
         public Xml()
         {
             headerInfo = new Header();
@@ -54,7 +57,7 @@ namespace desktopPet
 
         }
 
-        public void readXML()
+        public bool readXML()
         {
             XmlReaderSettings settings = new XmlReaderSettings();
             ValidationEventHandler eventHandler = new ValidationEventHandler(ValidationEventHandler);
@@ -68,6 +71,10 @@ namespace desktopPet
             xmlNS.AddNamespace("pet", "http://esheep.petrucci.ch/");
 
             XmlReader reader = null;
+            bool bError = false;
+
+            Random rand = new Random();
+            iRandomSpawn = rand.Next(0, 100);
 
             // try to load local xml
             try
@@ -82,6 +89,10 @@ namespace desktopPet
             {
                 xmlDoc.RemoveAll();
                 StartUp.AddDebugInfo(StartUp.DEBUG_TYPE.warning, "User XML error: " + ex.ToString());
+                if (xmlDoc.ChildNodes.Count > 0)
+                {
+                    MessageBox.Show("Error parsing animation XML:" + ex.ToString(), "XML error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
             }
             //XmlReader reader = XmlReader.Create(new StringReader(DesktopPet.Properties.Resources.animations), settings);
 
@@ -102,21 +113,38 @@ namespace desktopPet
                     MessageBox.Show("FATAL ERROR reading XML file: " + ex.Message, "ERROR", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
             }
+            
+            try
+            {
+                readImages();
 
-            readImages();
+                images.xImages = int.Parse(xmlDoc.SelectSingleNode("//pet:animations/pet:image/pet:tilesx", xmlNS).InnerText);
+                images.yImages = int.Parse(xmlDoc.SelectSingleNode("//pet:animations/pet:image/pet:tilesy", xmlNS).InnerText);
 
-            images.xImages = int.Parse(xmlDoc.SelectSingleNode("//pet:animations/pet:image/pet:tilesx", xmlNS).InnerText);
-            images.yImages = int.Parse(xmlDoc.SelectSingleNode("//pet:animations/pet:image/pet:tilesy", xmlNS).InnerText);
+                headerInfo.Author = xmlDoc.SelectSingleNode("//pet:animations/pet:header/pet:author", xmlNS).InnerText;
+                headerInfo.Title = xmlDoc.SelectSingleNode("//pet:animations/pet:header/pet:title", xmlNS).InnerText;
+                headerInfo.Info = xmlDoc.SelectSingleNode("//pet:animations/pet:header/pet:info", xmlNS).InnerText;
+                headerInfo.Version = xmlDoc.SelectSingleNode("//pet:animations/pet:header/pet:version", xmlNS).InnerText;
+                headerInfo.PetName = xmlDoc.SelectSingleNode("//pet:animations/pet:header/pet:petname", xmlNS).InnerText;
+                if (headerInfo.PetName.Length > 16) headerInfo.PetName = headerInfo.PetName.Substring(0, 16);
+            }
+            catch(Exception ex)
+            {
+                StartUp.AddDebugInfo(StartUp.DEBUG_TYPE.error, "Error reading XML: " + ex.Message);
+                bError = true;
+            }
 
-            headerInfo.Author = xmlDoc.SelectSingleNode("//pet:animations/pet:header/pet:author", xmlNS).InnerText;
-            headerInfo.Title = xmlDoc.SelectSingleNode("//pet:animations/pet:header/pet:title", xmlNS).InnerText;
-            headerInfo.Info = xmlDoc.SelectSingleNode("//pet:animations/pet:header/pet:info", xmlNS).InnerText;
-            headerInfo.Version = xmlDoc.SelectSingleNode("//pet:animations/pet:header/pet:version", xmlNS).InnerText;
+            if(bError)
+            {
+                MessageBox.Show("Error, can't load animations file. The original pet will be loaded", "XML error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+
+            return !bError;
         }
 
         public void loadAnimations(Animations animations)
         {
-            XmlNodeList nodes = xmlDoc.SelectNodes("//pet:animations/pet:animation", xmlNS);
+            XmlNodeList nodes = xmlDoc.SelectNodes("//pet:animations/pet:animations/pet:animation", xmlNS);
             foreach (XmlNode node in nodes)
             {
                 int id = int.Parse(node.Attributes["id"].InnerText);
@@ -138,15 +166,9 @@ namespace desktopPet
                                     }
                                     break;
                         case "start":
-                                    ani.Start.X.Compute = node2.SelectSingleNode(".//pet:x", xmlNS).InnerText;
-                                    ani.Start.X.Random = (ani.Start.X.Compute.IndexOf("random") >= 0);
-                                    ani.Start.X.Value = parseValue(ani.Start.X.Compute);
-                                    ani.Start.Y.Compute = node2.SelectSingleNode(".//pet:y", xmlNS).InnerText;
-                                    ani.Start.Y.Random = (ani.Start.Y.Compute.IndexOf("random") >= 0);
-                                    ani.Start.Y.Value = parseValue(ani.Start.Y.Compute);
-                                    ani.Start.Interval.Compute = node2.SelectSingleNode(".//pet:interval", xmlNS).InnerText;
-                                    ani.Start.Interval.Random = (ani.Start.Interval.Compute.IndexOf("random") >= 0);
-                                    ani.Start.Interval.Value = parseValue(ani.Start.Interval.Compute);
+                                    ani.Start.X = getXMLCompute(node2.SelectSingleNode(".//pet:x", xmlNS).InnerText);
+                                    ani.Start.Y = getXMLCompute(node2.SelectSingleNode(".//pet:y", xmlNS).InnerText);
+                                    ani.Start.Interval = getXMLCompute(node2.SelectSingleNode(".//pet:interval", xmlNS).InnerText);
                                     if (node2.SelectSingleNode(".//pet:offsety", xmlNS) != null)
                                         ani.Start.OffsetY = int.Parse(node2.SelectSingleNode(".//pet:offsety", xmlNS).InnerText);
                                     else
@@ -157,15 +179,9 @@ namespace desktopPet
                                         ani.Start.Opacity = 1.0;
                                     break;
                         case "end":
-                                    ani.End.X.Compute = node2.SelectSingleNode(".//pet:x", xmlNS).InnerText;
-                                    ani.End.X.Random = (ani.End.X.Compute.IndexOf("random") >= 0);
-                                    ani.End.X.Value = parseValue(ani.End.X.Compute);
-                                    ani.End.Y.Compute = node2.SelectSingleNode(".//pet:y", xmlNS).InnerText;
-                                    ani.End.Y.Random = (ani.End.Y.Compute.IndexOf("random") >= 0);
-                                    ani.End.Y.Value = parseValue(ani.End.Y.Compute);
-                                    ani.End.Interval.Compute = node2.SelectSingleNode(".//pet:interval", xmlNS).InnerText;
-                                    ani.End.Interval.Random = (ani.End.Interval.Compute.IndexOf("random") >= 0);
-                                    ani.End.Interval.Value = parseValue(ani.End.Interval.Compute);
+                                    ani.End.X = getXMLCompute(node2.SelectSingleNode(".//pet:x", xmlNS).InnerText);
+                                    ani.End.Y = getXMLCompute(node2.SelectSingleNode(".//pet:y", xmlNS).InnerText);
+                                    ani.End.Interval = getXMLCompute(node2.SelectSingleNode(".//pet:interval", xmlNS).InnerText);
                                     if (node2.SelectSingleNode(".//pet:offsety", xmlNS) != null)
                                         ani.End.OffsetY = int.Parse(node2.SelectSingleNode(".//pet:offsety", xmlNS).InnerText);
                                     else
@@ -177,11 +193,9 @@ namespace desktopPet
                                     break;
                         case "sequence":
                                     ani.Sequence.RepeatFrom = int.Parse(node2.Attributes["repeatfrom"].InnerText);
-                                    ani.Sequence.Repeat.Compute = node2.Attributes["repeat"].InnerText;
                                     if(node2.SelectSingleNode(".//pet:action", xmlNS) != null)
                                         ani.Sequence.Action = node2.SelectSingleNode(".//pet:action", xmlNS).InnerText;
-                                    ani.Sequence.Repeat.Random = (ani.Sequence.Repeat.Compute.IndexOf("random") >= 0);
-                                    ani.Sequence.Repeat.Value = parseValue(ani.Sequence.Repeat.Compute);
+                                    ani.Sequence.Repeat = getXMLCompute(node2.Attributes["repeat"].InnerText);
                                     foreach (XmlNode node3 in node2.SelectNodes(".//pet:frame", xmlNS))
                                     {
                                         ani.Sequence.Frames.Add(int.Parse(node3.InnerText));
@@ -269,7 +283,7 @@ namespace desktopPet
                 animations.SaveAnimation(ani, id);
             }
 
-            nodes = xmlDoc.SelectNodes("//pet:animations/pet:spawn", xmlNS);
+            nodes = xmlDoc.SelectNodes("//pet:animations/pet:spawns/pet:spawn", xmlNS);
             foreach (XmlNode node in nodes)
             {
                 int id = int.Parse(node.Attributes["id"].InnerText);
@@ -280,14 +294,10 @@ namespace desktopPet
                     switch (node2.Name)
                     {
                         case "x":
-                                    ani.Start.X.Compute = node2.InnerText;
-                                    ani.Start.X.Random = (ani.Start.X.Compute.IndexOf("random") >= 0);
-                                    ani.Start.X.Value = parseValue(ani.Start.X.Compute);
+                                    ani.Start.X = getXMLCompute(node2.InnerText);
                                     break;
                         case "y":
-                                    ani.Start.Y.Compute = node2.InnerText;
-                                    ani.Start.Y.Random = (ani.Start.Y.Compute.IndexOf("random") >= 0);
-                                    ani.Start.Y.Value = parseValue(ani.Start.Y.Compute);
+                                    ani.Start.Y = getXMLCompute(node2.InnerText);
                                     break;
                         case "direction":
                                     string sDirection = node2.InnerText;
@@ -300,6 +310,42 @@ namespace desktopPet
                 }
                 animations.SaveSpawn(ani, id);
             }
+
+            nodes = xmlDoc.SelectNodes("//pet:animations/pet:childs/pet:child", xmlNS);
+            foreach (XmlNode node in nodes)
+            {
+                int id = int.Parse(node.Attributes["animationid"].InnerText);
+                TChild aniChild = animations.AddChild(id, id.ToString());
+                aniChild.AnimationID = id;
+
+                foreach (XmlNode node2 in node.ChildNodes)
+                {
+                    switch (node2.Name)
+                    {
+                        case "x":
+                            aniChild.Position.X = getXMLCompute(node2.InnerText);
+                            break;
+                        case "y":
+                            aniChild.Position.Y = getXMLCompute(node2.InnerText);
+                            break;
+                        case "next":
+                            aniChild.Next = int.Parse(node2.InnerText);
+                            break;
+                    }
+                }
+                animations.SaveChild(aniChild, id);
+            }
+        }
+
+        public TValue getXMLCompute(string text)
+        {
+            TValue v;
+
+            v.Compute = text;
+            v.Random = (v.Compute.IndexOf("random") >= 0 || v.Compute.IndexOf("randS") >= 0);
+            v.Value = parseValue(v.Compute);
+
+            return v;
         }
 
         public int parseValue(string sText)
@@ -315,7 +361,8 @@ namespace desktopPet
             sText = sText.Replace("imageW", (FullImage.Width / images.xImages).ToString());
             sText = sText.Replace("imageH", (FullImage.Height / images.yImages).ToString());
             sText = sText.Replace("random", rand.Next(0, 100).ToString());
-
+            sText = sText.Replace("randS", iRandomSpawn.ToString());
+            
             var v = dt.Compute(sText, "");
             double dv;
             if (double.TryParse(v.ToString(), out dv))

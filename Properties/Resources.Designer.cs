@@ -79,7 +79,7 @@ namespace DesktopPet.Properties {
         ///    &lt;version&gt;1.0&lt;/version&gt;
         ///    &lt;info&gt;Some info texts&lt;/info&gt;
         ///    &lt;application&gt;1&lt;/application&gt;
-        ///    &lt;home&gt;&lt;![CDATA[iVBORw0KGgoAAAANSUhEUgAAAIAAAAB2CAYAAAAA9ZvPAAAA [rest of string was truncated]&quot;;.
+        ///    &lt;icon&gt;&lt;![CDATA[AAABAAIAEBAAAAAAIABoBAAAJgAAACAgAAAAACAAqBAAAI4E [rest of string was truncated]&quot;;.
         /// </summary>
         internal static string animations {
             get {
@@ -100,9 +100,8 @@ namespace DesktopPet.Properties {
         ///    &lt;xsd:complexType&gt;
         ///      &lt;xsd:sequence&gt;
         ///        &lt;xsd:element name=&apos;header&apos; minOccurs=&apos;1&apos; maxOccurs=&apos;1&apos;&gt;
-        ///          &lt;xsd:complexType&gt;
-        ///            &lt;xsd:sequence&gt;
-        ///              &lt;xsd:element name=&apos;autho [rest of string was truncated]&quot;;.
+        ///          &lt;xsd:annotation&gt;
+        ///            &lt;xsd:documentation&gt;Main informations about this Pet.&lt;/x [rest of string was truncated]&quot;;.
         /// </summary>
         internal static string animations1 {
             get {
