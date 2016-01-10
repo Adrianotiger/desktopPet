@@ -82,84 +82,112 @@
             </xsd:all>
           </xsd:complexType>
         </xsd:element>
-        <xsd:element name='spawn' maxOccurs='100'>
+
+        <xsd:element name='spawns'>
           <xsd:complexType>
-            <xsd:all>
-              <xsd:element name='x' type='xsd:string' minOccurs='1' maxOccurs='1' />
-              <xsd:element name='y' type='xsd:string' minOccurs='1' maxOccurs='1' />
-              <xsd:element name='next' maxOccurs='1'>
+            <xsd:sequence>
+              <xsd:element name='spawn' maxOccurs='unbounded'>
                 <xsd:complexType>
-                  <xsd:simpleContent>
-                    <xsd:extension base='xsd:integer'>
-                      <xsd:attribute name="probability" type="xsd:integer" />
-                    </xsd:extension>
-                  </xsd:simpleContent>
+                  <xsd:all>
+                    <xsd:element name='x' type='xsd:string' minOccurs='1' maxOccurs='1' />
+                    <xsd:element name='y' type='xsd:string' minOccurs='1' maxOccurs='1' />
+                    <xsd:element name='next' maxOccurs='1'>
+                      <xsd:complexType>
+                        <xsd:simpleContent>
+                          <xsd:extension base='xsd:integer'>
+                            <xsd:attribute name="probability" type="xsd:integer" />
+                          </xsd:extension>
+                        </xsd:simpleContent>
+                      </xsd:complexType>
+                    </xsd:element>
+                  </xsd:all>
+                  <xsd:attribute name="probability" type="xsd:integer"/>
+                  <xsd:attribute name="id" type="xsd:int"/>
                 </xsd:complexType>
               </xsd:element>
-            </xsd:all>
-            <xsd:attribute name="probability" type="xsd:integer"/>
-            <xsd:attribute name="id" type="xsd:int"/>
+            </xsd:sequence>
           </xsd:complexType>
         </xsd:element>
-        <xsd:element name='animation' minOccurs='1' maxOccurs='256'>
+
+        <xsd:element name='animations'>
           <xsd:complexType>
-            <xsd:all>
-              <xsd:element name='name' type='xsd:string' minOccurs='1' maxOccurs='1' />
-              <xsd:element name='start' minOccurs='1' maxOccurs='1'>
+            <xsd:sequence>
+              <xsd:element name='animation' minOccurs='1' maxOccurs='unbounded'>
+                <xsd:complexType>
+                  <xsd:all>
+                    <xsd:element name='name' type='xsd:string' minOccurs='1' maxOccurs='1' />
+                    <xsd:element name='start' minOccurs='1' maxOccurs='1'>
+                      <xsd:complexType>
+                        <xsd:group ref="step"/>
+                      </xsd:complexType>
+                    </xsd:element>
+                    <xsd:element name='end' minOccurs='0' maxOccurs='1'>
+                      <xsd:complexType>
+                        <xsd:group ref="step"/>
+                      </xsd:complexType>
+                    </xsd:element>
+                    <xsd:element name='sequence' minOccurs='1' maxOccurs='1'>
+                      <xsd:complexType>
+                        <xsd:choice maxOccurs="unbounded">
+                          <xsd:element name='frame' type='xsd:integer' minOccurs='1' />
+                          <xsd:element name='action' type='xsd:string' minOccurs='0' />
+                          <xsd:element ref='next' />
+                        </xsd:choice>
+                        <xsd:attribute name="repeat" type="xsd:string"/>
+                        <xsd:attribute name="repeatfrom" type="xsd:integer"/>
+                      </xsd:complexType>
+                    </xsd:element>
+                    <xsd:element name='border' minOccurs='0' maxOccurs='1'>
+                      <xsd:complexType>
+                        <xsd:sequence>
+                          <xsd:element ref='next' />
+                        </xsd:sequence>
+                      </xsd:complexType>
+                    </xsd:element>
+                    <xsd:element name='gravity' minOccurs='0' maxOccurs='1'>
+                      <xsd:complexType>
+                        <xsd:sequence>
+                          <xsd:element ref='next' />
+                        </xsd:sequence>
+                      </xsd:complexType>
+                    </xsd:element>
+                  </xsd:all>
+                  <xsd:attribute name="id" type="xsd:integer"/>
+                </xsd:complexType>
+              </xsd:element>
+            </xsd:sequence>
+          </xsd:complexType>
+        </xsd:element>
+
+        <xsd:element name='childs'>
+          <xsd:complexType>
+            <xsd:sequence>
+              <xsd:element name='child' minOccurs='0' maxOccurs='unbounded'>
                 <xsd:complexType>
                   <xsd:all>
                     <xsd:element name='x' type='xsd:string' minOccurs='1' maxOccurs='1' />
                     <xsd:element name='y' type='xsd:string' minOccurs='1' maxOccurs='1' />
-                    <xsd:element name='offsety' type='xsd:integer' minOccurs='0' maxOccurs='1' />
-                    <xsd:element name='opacity' type='xsd:double' minOccurs='0' maxOccurs='1' />
-                    <xsd:element name='interval' type='xsd:string' minOccurs='1' maxOccurs='1' />
+                    <xsd:element name='next' maxOccurs='1'>
+                      <xsd:complexType>
+                        <xsd:simpleContent>
+                          <xsd:extension base='xsd:integer'>
+                            <xsd:attribute name="probability" type="xsd:integer" />
+                          </xsd:extension>
+                        </xsd:simpleContent>
+                      </xsd:complexType>
+                    </xsd:element>
                   </xsd:all>
+                  <xsd:attribute name="animationid" type="xsd:int"/>
                 </xsd:complexType>
               </xsd:element>
-              <xsd:element name='end' minOccurs='0' maxOccurs='1'>
-                <xsd:complexType>
-                  <xsd:all>
-                    <xsd:element name='x' type='xsd:string' minOccurs='1' maxOccurs='1' />
-                    <xsd:element name='y' type='xsd:string' minOccurs='1' maxOccurs='1' />
-                    <xsd:element name='offsety' type='xsd:integer' minOccurs='0' maxOccurs='1' />
-                    <xsd:element name='opacity' type='xsd:double' minOccurs='0' maxOccurs='1' />
-                    <xsd:element name='interval' type='xsd:string' minOccurs='1' maxOccurs='1' />
-                  </xsd:all>
-                </xsd:complexType>
-              </xsd:element>
-              <xsd:element name='sequence' minOccurs='1' maxOccurs='1'>
-                <xsd:complexType>
-                  <xsd:choice maxOccurs="unbounded">
-                    <xsd:element name='frame' type='xsd:integer' minOccurs='1' />
-                    <xsd:element name='action' type='xsd:string' minOccurs='0' />
-                    <xsd:element ref='next' />
-                  </xsd:choice>
-                  <xsd:attribute name="repeat" type="xsd:string"/>
-                  <xsd:attribute name="repeatfrom" type="xsd:integer"/>
-                </xsd:complexType>
-              </xsd:element>
-              <xsd:element name='border' minOccurs='0' maxOccurs='1'>
-                <xsd:complexType>
-                  <xsd:sequence>
-                    <xsd:element ref='next' />
-                  </xsd:sequence>
-                </xsd:complexType>
-              </xsd:element>
-              <xsd:element name='gravity' minOccurs='0' maxOccurs='1'>
-                <xsd:complexType>
-                  <xsd:sequence>
-                    <xsd:element ref='next' />
-                  </xsd:sequence>
-                </xsd:complexType>
-              </xsd:element>
-            </xsd:all>
-            <xsd:attribute name="id" type="xsd:integer"/>
+            </xsd:sequence>
           </xsd:complexType>
         </xsd:element>
       </xsd:sequence>
     </xsd:complexType>
   </xsd:element>
-  <xsd:simpleType name="curr">
+  
+  <xsd:simpleType name="borderType">
     <xsd:restriction base="xsd:string">
       <xsd:enumeration value="none" />
       <xsd:enumeration value="taskbar" />
@@ -169,16 +197,28 @@
       <xsd:enumeration value="vertical" />
     </xsd:restriction>
   </xsd:simpleType>
+
+  <xsd:group name="step">
+    <xsd:all>
+      <xsd:element name='x' type='xsd:string' minOccurs='1' maxOccurs='1' />
+      <xsd:element name='y' type='xsd:string' minOccurs='1' maxOccurs='1' />
+      <xsd:element name='offsety' type='xsd:integer' minOccurs='0' maxOccurs='1' default='0' />
+      <xsd:element name='opacity' type='xsd:double' minOccurs='0' maxOccurs='1' default='1.0' />
+      <xsd:element name='interval' type='xsd:string' minOccurs='1' maxOccurs='1' />
+    </xsd:all>
+  </xsd:group>
+  
   <xsd:element name="next">
     <xsd:complexType>
       <xsd:simpleContent>
         <xsd:extension base='xsd:integer'>
           <xsd:attribute name="probability" type="xsd:integer" />
-          <xsd:attribute name="only" type="curr" />
+          <xsd:attribute name="only" type="borderType" />
         </xsd:extension>
       </xsd:simpleContent>
     </xsd:complexType>
   </xsd:element>
+  
   <xsd:element name="only">
     <xsd:complexType>
       <xsd:choice minOccurs="0" maxOccurs="unbounded">
