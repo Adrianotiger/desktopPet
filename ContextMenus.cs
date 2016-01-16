@@ -105,7 +105,11 @@ namespace desktopPet
         /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
         void About_Click(object sender, EventArgs e)
         {
-            if (!isAboutLoaded)
+            if(isOptionLoaded)
+            {
+
+            }
+            else if (!isAboutLoaded)
             {
                 isAboutLoaded = true;
                 DesktopPet.AboutBox box = new DesktopPet.AboutBox();
@@ -117,7 +121,11 @@ namespace desktopPet
 
         void Options_Click(object sender, EventArgs e)
         {
-            if (!isOptionLoaded)
+            if(isAboutLoaded)
+            {
+
+            }
+            else if (!isOptionLoaded)
             {
                 isOptionLoaded = true;
                 Program.Mainthread.OpenOptionDialog();

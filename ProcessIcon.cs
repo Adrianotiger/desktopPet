@@ -7,7 +7,7 @@ namespace desktopPet //SystemTrayApp
     /// <summary>
     /// 
     /// </summary>
-    public class ProcessIcon : IDisposable
+    public sealed class ProcessIcon : IDisposable
     {
         /// <summary>
         /// The NotifyIcon object.

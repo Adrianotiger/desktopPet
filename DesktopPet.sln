@@ -4,6 +4,8 @@ VisualStudioVersion = 14.0.24720.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DesktopPet", "DesktopPet.csproj", "{87663C46-C416-4AED-971B-7A16624C1F1D}"
 EndProject
+Project("{54435603-DBB4-11D2-8724-00A0C9A8B90C}") = "Setup", "Installer\Setup\Setup.vdproj", "{25271A10-1B75-4F35-927D-8A806C12B0E1}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x86 = Debug|x86
@@ -14,6 +16,8 @@ Global
 		{87663C46-C416-4AED-971B-7A16624C1F1D}.Debug|x86.Build.0 = Debug|x86
 		{87663C46-C416-4AED-971B-7A16624C1F1D}.Release|x86.ActiveCfg = Release|x86
 		{87663C46-C416-4AED-971B-7A16624C1F1D}.Release|x86.Build.0 = Release|x86
+		{25271A10-1B75-4F35-927D-8A806C12B0E1}.Debug|x86.ActiveCfg = Debug
+		{25271A10-1B75-4F35-927D-8A806C12B0E1}.Release|x86.ActiveCfg = Release
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

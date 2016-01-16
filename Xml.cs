@@ -24,13 +24,17 @@ namespace desktopPet
         public int yImages;
     };
 
-    public class Xml
+    public sealed class Xml : IDisposable
     {
         XmlDocument xmlDoc;
         XmlNamespaceManager xmlNS;
         public Header headerInfo;
         public Images images;
         public MemoryStream bitmapIcon;
+
+        public int parentX;
+        public int parentY;
+        public bool parentFlipped;
 
         private Bitmap FullImage;
 
@@ -41,8 +45,18 @@ namespace desktopPet
             headerInfo = new Header();
             xmlDoc = new XmlDocument();
             images = new Images();
+
+            parentX = -1;
+            parentY = -1;
+            parentFlipped = false;
         }
 
+        public void Dispose()
+        {
+            bitmapIcon.Dispose();
+            FullImage.Dispose();
+        }
+        
         static void ValidationEventHandler(object sender, ValidationEventArgs e)
         {
             switch (e.Severity)
@@ -360,6 +374,8 @@ namespace desktopPet
             sText = sText.Replace("areaH", Screen.PrimaryScreen.WorkingArea.Height.ToString());
             sText = sText.Replace("imageW", (FullImage.Width / images.xImages).ToString());
             sText = sText.Replace("imageH", (FullImage.Height / images.yImages).ToString());
+            sText = sText.Replace("imageX", (parentX).ToString());
+            sText = sText.Replace("imageY", (parentY).ToString());
             sText = sText.Replace("random", rand.Next(0, 100).ToString());
             sText = sText.Replace("randS", iRandomSpawn.ToString());
             

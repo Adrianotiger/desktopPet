@@ -17,7 +17,10 @@ namespace DesktopPet
 
         public void FillData(string author, string title, string version, string info)
         {
-            info = info.Replace("[br]", "\n");
+            while (info.IndexOf("[br]") > 0)
+            {
+                info = info.Replace("[br]", "\n");
+            }
             while(info.IndexOf("[link:")>0)
             {
                 int iPos = info.IndexOf("[link:");

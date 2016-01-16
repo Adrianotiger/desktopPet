@@ -7,7 +7,7 @@ using System.Windows.Forms;
 
 namespace desktopPet
 {
-    public class StartUp
+    public sealed class StartUp : IDisposable
     {
             // Maximal sheeps (too much sheeps will cover too much the screen and would not be nice to see)
         public const int MAX_SHEEPS = 16;
@@ -71,6 +71,11 @@ namespace desktopPet
             timer1.Interval = 1000;
             timer1.Enabled = true;
         }
+
+        public void Dispose()
+        {
+            xml.Dispose();
+        }
         
         public void AddSheep()
         {
@@ -120,8 +125,8 @@ namespace desktopPet
         public void KillSheeps(bool exit)
         {
             AddDebugInfo(DEBUG_TYPE.info, "Killing all sheeps");
-
             timer1.Tag = "0";
+            pi.Dispose();
 
             Random rand = new Random();
             for (int i = 0; i < iSheeps; i++)

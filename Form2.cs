@@ -10,50 +10,7 @@ namespace desktopPet
 {
     public partial class Form2 : Form
     {
-        [DllImport("user32.dll")]
-        [return: MarshalAs(UnmanagedType.Bool)]
-        static extern bool GetWindowRect(HandleRef hWnd, out RECT lpRect);
-        
-        [DllImport("user32.dll")]
-        private static extern bool EnumWindows(EnumWindowsProc enumFunc, int lParam);
-
-        [DllImport("USER32.DLL")]
-        private static extern bool IsWindowVisible(IntPtr hWnd);
-
-        [DllImport("USER32.DLL")]
-        private static extern int GetWindowText(IntPtr hWnd, StringBuilder lpString, int nMaxCount);
-
-        [DllImport("USER32.DLL")]
-        private static extern bool GetTitleBarInfo(IntPtr hWnd, ref TITLEBARINFO pti);
-
-        [DllImport("USER32.DLL")]
-        private static extern bool ShowWindow(IntPtr hWnd, int nCmdShow);
-
-        [DllImport("USER32.DLL")]
-        private static extern IntPtr GetWindow(IntPtr hWnd, int nCmdShow);
-                
-        delegate bool EnumThreadDelegate(IntPtr hWnd, IntPtr lParam);
-        private delegate bool EnumWindowsProc(IntPtr hWnd, int lParam);
-
-        [StructLayout(LayoutKind.Sequential)]
-        internal struct TITLEBARINFO
-        {
-            public int cbSize;
-            public RECT rcTitleBar;
-            [MarshalAs(UnmanagedType.ByValArray, SizeConst = 6)]
-            public int[] rgstate;
-        }
-
-        [StructLayout(LayoutKind.Sequential)]
-        public struct RECT
-        {
-            public int Left;        // x position of upper-left corner
-            public int Top;         // y position of upper-left corner
-            public int Right;       // x position of lower-right corner
-            public int Bottom;      // y position of lower-right corner
-        }
-
-            // Current step in the animation-frames list
+        // Current step in the animation-frames list
         int iAnimationStep;
             // Current Animation structure
         TAnimation CurrentAnimation;
@@ -83,6 +40,19 @@ namespace desktopPet
         {
             Animations = animations;
             Xml = xml;
+            InitializeComponent();
+            Visible = false;
+            Opacity = 0.0;
+        }
+
+        public Form2(Animations animations, Xml xml, Point parentPos, bool parentFlipped)
+        {
+            Animations = animations;
+            Xml = xml;
+            Xml.parentX = parentPos.X;
+            Xml.parentY = parentPos.Y;
+            Xml.parentFlipped = parentFlipped;
+            bMoveLeft = !parentFlipped;
             InitializeComponent();
             Visible = false;
             Opacity = 0.0;
@@ -154,7 +124,10 @@ namespace desktopPet
             hwndWindow = (IntPtr)0;
             
             Top = child.Position.Y.GetValue();
-            Left = child.Position.X.GetValue();
+            if (bMoveLeft)
+                Left = child.Position.X.GetValue();
+            else
+                Left = Screen.PrimaryScreen.Bounds.Width - child.Position.X.GetValue() - Width;
             iPosX = Left;
             iPosY = Top;
             iOffsetY = 0;
@@ -187,8 +160,10 @@ namespace desktopPet
                 iAnimationStep++;
                 timer1.Enabled = true;
             }
-            catch(Exception) // if form is closed timer could continue to tick (why?)
+            catch(Exception ex) // if form is closed timer could continue to tick (why?)
             {
+                if(Name != "child")
+                    MessageBox.Show("Fatal Error: " + ex.Message, "App error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
             }
         }
@@ -214,7 +189,7 @@ namespace desktopPet
                     if (Name != "child")
                     {
                         TChild childInfo = Animations.GetAnimationChild(id);
-                        Form2 child = new Form2(Animations, Xml);
+                        Form2 child = new Form2(Animations, Xml, new Point(Left, Top), !bMoveLeft);
                         for(int i=0;i<imageList1.Images.Count-1;i++)
                         {
                             child.addImage(imageList1.Images[i]);
@@ -269,8 +244,8 @@ namespace desktopPet
                 }
                 else
                 {
-                    RECT rct;
-                    if (GetWindowRect(new HandleRef(this, hwndWindow), out rct))
+                    NativeMethods.RECT rct;
+                    if (NativeMethods.GetWindowRect(new HandleRef(this, hwndWindow), out rct))
                     {
                         if (iPosX + x < rct.Left)    // left window border!
                         {
@@ -294,8 +269,8 @@ namespace desktopPet
                 }
                 else
                 {
-                    RECT rct;
-                    if (GetWindowRect(new HandleRef(this, hwndWindow), out rct))
+                    NativeMethods.RECT rct;
+                    if (NativeMethods.GetWindowRect(new HandleRef(this, hwndWindow), out rct))
                     {
                         if (iPosX + x + Width > rct.Right)    // right window border!
                         {
@@ -415,22 +390,22 @@ namespace desktopPet
 
         private int FallDetect(int y)
         {
-            RECT rct;
+            NativeMethods.RECT rct;
             Dictionary<IntPtr, string> windows = new Dictionary<IntPtr, string>();
-            TITLEBARINFO titleBarInfo = new TITLEBARINFO();
+            NativeMethods.TITLEBARINFO titleBarInfo = new NativeMethods.TITLEBARINFO();
             titleBarInfo.cbSize = Marshal.SizeOf(titleBarInfo);
 
-            EnumWindows(delegate (IntPtr hWnd, int lParam)
+            NativeMethods.EnumWindows(delegate (IntPtr hWnd, int lParam)
             {
                 if (hWnd == Handle) return true;
 
-                if (IsWindowVisible(hWnd))
+                if (NativeMethods.IsWindowVisible(hWnd))
                 {
                     StringBuilder sTitle = new StringBuilder(128);
-                    GetWindowText(hWnd, sTitle, 128);
+                    NativeMethods.GetWindowText(hWnd, sTitle, 128);
 
                     if (sTitle.ToString() == "Sheep") { }
-                    else if (!GetTitleBarInfo(hWnd, ref titleBarInfo)) return true;
+                    else if (!NativeMethods.GetTitleBarInfo(hWnd, ref titleBarInfo)) return true;
                     else if ((titleBarInfo.rgstate[0] & 0x00008000) > 0) return true;    // invisible
                     
                     if (sTitle.Length > 0)
@@ -439,11 +414,11 @@ namespace desktopPet
                     }
                 }
                 return true;
-            }, 0);
+            }, (IntPtr)0);
 
             foreach (KeyValuePair<IntPtr, string> window in windows)
             {
-                if (GetWindowRect(new HandleRef(this, window.Key), out rct))
+                if (NativeMethods.GetWindowRect(new HandleRef(this, window.Key), out rct))
                 {
                     //Console.WriteLine("Window title: {0}", window.Value);
 
@@ -454,8 +429,8 @@ namespace desktopPet
                         hwndWindow = window.Key;
                         if (!CheckTopWindow(false))
                         {
-                            ShowWindow(window.Key, 0);
-                            ShowWindow(window.Key, 5);
+                            NativeMethods.ShowWindow(window.Key, 0);
+                            NativeMethods.ShowWindow(window.Key, 5);
                             return rct.Top;
                         }
                         else
@@ -611,9 +586,9 @@ namespace desktopPet
         {
             if ((int)hwndWindow != 0)
             {
-                RECT rctO;
-                RECT rct;
-                GetWindowRect(new HandleRef(this, hwndWindow), out rctO);
+                NativeMethods.RECT rctO;
+                NativeMethods.RECT rct;
+                NativeMethods.GetWindowRect(new HandleRef(this, hwndWindow), out rctO);
 
                 if (bCheck)
                 {
@@ -623,18 +598,18 @@ namespace desktopPet
                     else if (rctO.Right < iPosX + 5) return true;
                 }
 
-                TITLEBARINFO titleBarInfo = new TITLEBARINFO();
+                NativeMethods.TITLEBARINFO titleBarInfo = new NativeMethods.TITLEBARINFO();
                 titleBarInfo.cbSize = Marshal.SizeOf(titleBarInfo);
 
-                IntPtr hwnd2 = GetWindow(hwndWindow, 3);
+                IntPtr hwnd2 = NativeMethods.GetWindow(hwndWindow, 3);
                 while (hwnd2 != (IntPtr)0)
                 {
                     StringBuilder sTitle = new StringBuilder(128);
-                    GetWindowText(hwnd2, sTitle, 128);
+                    NativeMethods.GetWindowText(hwnd2, sTitle, 128);
 
-                    if (GetTitleBarInfo(hwnd2, ref titleBarInfo))
+                    if (NativeMethods.GetTitleBarInfo(hwnd2, ref titleBarInfo))
                     {
-                        if (sTitle.Length > 0 && GetWindowRect(new HandleRef(this, hwnd2), out rct) && (titleBarInfo.rcTitleBar.Bottom > 0 || sTitle.ToString() == "sheep"))
+                        if (sTitle.Length > 0 && NativeMethods.GetWindowRect(new HandleRef(this, hwnd2), out rct) && (titleBarInfo.rcTitleBar.Bottom > 0 || sTitle.ToString() == "sheep"))
                         {
                             if (rct.Top < rctO.Top && rct.Bottom > rctO.Top)
                             {
@@ -642,7 +617,7 @@ namespace desktopPet
                             }
                         }
                     }
-                    hwnd2 = GetWindow(hwnd2, 3);
+                    hwnd2 = NativeMethods.GetWindow(hwnd2, 3);
                 }
             }
             return false;
@@ -686,5 +661,57 @@ namespace desktopPet
             }
 
         }
+    }
+
+    internal static class NativeMethods
+    //public partial class Form2 : Form
+    {
+        [DllImport("user32.dll", CharSet = CharSet.Auto)]
+        [return: MarshalAs(UnmanagedType.Bool)]
+        internal static extern bool GetWindowRect(HandleRef hWnd, out RECT lpRect);
+
+        [DllImport("user32.dll")]
+        [return: MarshalAs(UnmanagedType.Bool)]
+        internal static extern bool EnumWindows(EnumWindowsProc enumFunc, IntPtr lParam);
+
+        [DllImport("user32.dll")]
+        [return: MarshalAs(UnmanagedType.Bool)]
+        internal static extern bool IsWindowVisible(IntPtr hWnd);
+
+        [DllImport("user32.dll", CharSet = CharSet.Unicode)]
+        internal static extern int GetWindowText(IntPtr hWnd, StringBuilder lpString, int nMaxCount);
+
+        [DllImport("user32.dll")]
+        [return: MarshalAs(UnmanagedType.Bool)]
+        internal static extern bool GetTitleBarInfo(IntPtr hWnd, ref TITLEBARINFO pti);
+
+        [DllImport("user32.dll")]
+        [return: MarshalAs(UnmanagedType.Bool)]
+        internal static extern bool ShowWindow(IntPtr hWnd, int nCmdShow);
+
+        [DllImport("user32.dll")]
+        internal static extern IntPtr GetWindow(IntPtr hWnd, int nCmdShow);
+
+        [StructLayout(LayoutKind.Sequential)]
+        internal struct TITLEBARINFO
+        {
+            public int cbSize;
+            public RECT rcTitleBar;
+            [MarshalAs(UnmanagedType.ByValArray, SizeConst = 6)]
+            public int[] rgstate;
+        }
+
+        [StructLayout(LayoutKind.Sequential)]
+        public struct RECT
+        {
+            public int Left;        // x position of upper-left corner
+            public int Top;         // y position of upper-left corner
+            public int Right;       // x position of lower-right corner
+            public int Bottom;      // y position of lower-right corner
+        }
+
+        [return: MarshalAs(UnmanagedType.Bool)]
+        internal delegate bool EnumWindowsProc(IntPtr hWnd, int lParam);
+        //delegate bool EnumThreadDelegate(IntPtr hWnd, IntPtr lParam);
     }
 }
