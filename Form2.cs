@@ -10,41 +10,90 @@ namespace desktopPet
 {
     public partial class Form2 : Form
     {
-        // Current step in the animation-frames list
+            /// <summary>
+            /// Current step in the animation-frames list.
+            /// </summary>
+            /// <remarks>
+            /// Every animation has a defined quantity of steps. They are calculated from:
+            /// - Quantity of frames
+            /// - Repeat count and repeat from
+            /// If an animation has 10 different frames and frame 5 to 9 are repeted 8 times, the total of steps is 10 + 5 * 8 = 50 steps.
+            /// Once the last step was reached, the next animation will be started. If now animation is set, the SPAWN will be executed.
+            /// </remarks>
         int iAnimationStep;
-            // Current Animation structure
+            /// <summary>
+            /// Structure with all informations about the current animation.
+            /// </summary>
         TAnimation CurrentAnimation;
-            // Handle to the current window, if this value is 0, the sheep is NOT walking on a window
+            /// <summary>
+            /// Handle to the current window. If this value is 0, the sheep is NOT walking on a window.
+            /// </summary>
         IntPtr hwndWindow = (IntPtr)0;
-            // If sheep is walking to left
+            /// <summary>
+            /// If sheep is walking to left  (default).
+            /// </summary>
+            /// <remarks>
+            /// The original eSheep was a japanese application. So it was normal to see something from right to left.
+            /// To leave the same characteristic, moveLeft is set to true. But it doesn't matter, because the sprite and movements gives the direction...
+            /// </remarks>
         bool bMoveLeft = true;
-            // ToDo: formX is the second sprite used for secondary animations (example: bath or flower)
-        //Form2 formX = null;
-            // Animations class
+            /// <summary>
+            /// Animations class. The entire animation and its values are described here.
+            /// </summary>
         Animations Animations;
-            // Xml class
+            /// <summary>
+            /// Xml class. Xml parser and functionality are stored here.
+            /// </summary>
         Xml Xml;
-            // If the pet is in dragging mode
+            /// <summary>
+            /// If the pet is in dragging mode (user is holding the pet with the mouse)
+            /// </summary>
         bool bDragging = false;
-
+            /// <summary>
+            /// Offset Y - Sprite size is taken and not the single image. So, over the taskbar or over the windows, the pet could be 1-2 pixels over the border if you didn't drawn it on the bottom of the sprite frame.
+            /// With this offset, you can re-place the pet or you can give them an offset so that it is positioned over the window (for example if you want to show a girl sitting over the taskbar, you need this function)
+            /// </summary>
         int iOffsetY = 0;
+            /// <summary>
+            /// Current X position of the form. Because an offset can be used, this is the origin of the sprite (not like Form2.Left) before an offset was interpolated with the form position.
+            /// </summary>
         int iPosX = 0;
+            /// <summary>
+            /// Current Y position of the form. Because an offset can be used, this is the origin of the sprite (not like Form2.Top) before an offset was interpolated with the form position.
+            /// </summary>
         int iPosY = 0;
 
+            /// <summary>
+            /// Form constructor. This is never called. 
+            /// Form2(Animations animations, Xml xml) -> Called when a new sheep is generated
+            /// Form2(Animations animations, Xml xml, Point parentPos, bool parentFlipped) -> Called when a Child is generated
+            /// </summary>
         public Form2()
         {
             InitializeComponent();
         }
 
+            /// <summary>
+            /// Form constructor.  Called when a new sheep is generated. 
+            /// </summary>
+            /// <param name="animations">Animation class, with all values.</param>
+            /// <param name="xml">Xml class, with xml functions</param>
         public Form2(Animations animations, Xml xml)
         {
             Animations = animations;
             Xml = xml;
             InitializeComponent();
-            Visible = false;
+            Visible = false;            // Is invisible at beginning (we don't know where this sprite should be positioned)
             Opacity = 0.0;
         }
 
+            /// <summary>
+            /// Form constructor. Called when a Child is generated. 
+            /// </summary>
+            /// <param name="animations">Animation class, with all values.</param>
+            /// <param name="xml">Xml class, with xml functions</param>
+            /// <param name="parentPos">Position of the parent - used to detect where the child should be positioned</param>
+            /// <param name="parentFlipped">If parent is flipped. If true, the child image will also be flipped</param>
         public Form2(Animations animations, Xml xml, Point parentPos, bool parentFlipped)
         {
             Animations = animations;
@@ -54,10 +103,14 @@ namespace desktopPet
             Xml.parentFlipped = parentFlipped;
             bMoveLeft = !parentFlipped;
             InitializeComponent();
-            Visible = false;
+            Visible = false;            // Is invisible at beginning (we don't know where this sprite should be positioned)
             Opacity = 0.0;
         }
 
+            /// <summary>
+            /// Whith this overrided function, it is possible to remove the application from the ALT-TAB list.
+            /// This, because it is not nice to see 10 times the same sheep when you press ALT-TAB (with 10 sheeps walking on your screen).
+            /// </summary>
         protected override CreateParams CreateParams
         {
             get
@@ -69,13 +122,19 @@ namespace desktopPet
             }
         }
 
-        public void Show(int x, int y)
+            /// <summary>
+            /// Once the form was created, this is the next function to call.
+            /// It will set the size of the pet. Form will still be invisible because it has an opacity of 0.0.
+            /// </summary>
+            /// <param name="w">Single frame width</param>
+            /// <param name="h">Single frame height</param>
+        public void Show(int w, int h)
         {
-            Width = x;
-            Height = y;
+            Width = w;
+            Height = h;
 
-            pictureBox1.Width = x;
-            pictureBox1.Height = y;
+            pictureBox1.Width = w;
+            pictureBox1.Height = h;
             pictureBox1.Top = 0;
             pictureBox1.Left = 0;
             pictureBox1.Tag = 0;
@@ -85,6 +144,11 @@ namespace desktopPet
             Show();
         }
 
+            /// <summary>
+            /// Once the form was created and resized, this is the next function to call.
+            /// This function is called for every single image in the sprite sheet and will be saved in the Image List component.
+            /// </summary>
+            /// <param name="im">Single frame image, beginning from top left to bottom right</param>
         public void addImage(Image im)
         {
             if(imageList1.Images.Count == 0)
@@ -94,36 +158,46 @@ namespace desktopPet
             imageList1.Images.Add(im);
         }
 
+            /// <summary>
+            /// Once the form was created, resized and all images was set, this is the next function to call.
+            /// It will initialize all variables and start the first animation (SPAWN).
+            /// </summary>
+            /// <param name="first">If it is playing a spawn for the first time. Does not have any functionality for the moment.</param>
         public void Play(bool first)
         {
-            timer1.Enabled = false;
+            timer1.Enabled = false;                     // Stop the timer
 
-            iAnimationStep = 0;
-            hwndWindow = (IntPtr)0;
+            iAnimationStep = 0;                         // First step
+            hwndWindow = (IntPtr)0;                     // It is not over a window
 
-            TSpawn spawn = Animations.GetRandomSpawn();
+            TSpawn spawn = Animations.GetRandomSpawn(); // Get a random SPAWN, to setting the form properties
             Top = spawn.Start.Y.GetValue();
             Left = spawn.Start.X.GetValue();
             iPosX = Left;
             iPosY = Top;
             iOffsetY = 0;
-            Visible = true;
+            Visible = true;                             // Now we can show the form
             Opacity = 1.0;
-            SetNewAnimation(spawn.Next);
+            SetNewAnimation(spawn.Next);                // Set next animation
             
-            timer1.Enabled = true;
+            timer1.Enabled = true;                      // Enable the timer (interval is well known now)
         }
 
+            /// <summary>
+            /// If this form is a child, this function is called instead of Play().
+            /// It will initialize all variables and start the first animation using CHILD, not SPAWN.
+            /// </summary>
+            /// <param name="aniID">Animation playing by the parent (child will synchronize to this animation).</param>
         public void PlayChild(int aniID)
         {
             TChild child = Animations.GetAnimationChild(aniID);
 
-            timer1.Enabled = false;
-
-            iAnimationStep = 0;
-            hwndWindow = (IntPtr)0;
+            timer1.Enabled = false;                     // Stop the timer
+               
+            iAnimationStep = 0;                         // First step
+            hwndWindow = (IntPtr)0;                     // It is not over a window
             
-            Top = child.Position.Y.GetValue();
+            Top = child.Position.Y.GetValue();          // Set position. If parent is flipped, mirror the position
             if (bMoveLeft)
                 Left = child.Position.X.GetValue();
             else
@@ -131,25 +205,43 @@ namespace desktopPet
             iPosX = Left;
             iPosY = Top;
             iOffsetY = 0;
-            Visible = true;
+            Visible = true;                             // Now we can show this child
             Opacity = 1.0;
-            SetNewAnimation(child.Next);
+            SetNewAnimation(child.Next);                // Set next animation to play
 
-            timer1.Enabled = true;
+            timer1.Enabled = true;                      // Enable timer (interval is known, now)
         }
-        
+
+            /// <summary>
+            /// If application is closed, all forms have still 1 second to show something (change animation).
+            /// </summary>
+            /// <remarks>
+            /// Kill, Sync, Drag and Fall are "Key-names" in the XML file. If you use one of them, this program will automatically run the animation linked to this names.
+            /// </remarks>
         public void Kill()
         {
             if(Animations.AnimationKill > 1)
                 SetNewAnimation(Animations.AnimationKill);
         }
 
+            /// <summary>
+            /// If user press the CANCEL button in the about box, all pets are synchronized executing the SYNC-animation.
+            /// </summary>
+            /// <remarks>
+            /// Kill, Sync, Drag and Fall are "Key-names" in the XML file. If you use one of them, this program will automatically run the animation linked to this names.
+            /// </remarks>
         public void Sync()
         {
             if (Animations.AnimationSync > 1)
                 SetNewAnimation(Animations.AnimationSync);
         }
 
+            /// <summary>
+            /// Timer tick. The entire animation is drived through this timer. The interval is set in the XML animation file.
+            /// </summary>
+            /// <remarks>
+            /// On each tick, the next step is called. If it fails an error message will be show and the animation will stop.
+            /// </remarks>
         private void timer1_Tick(object sender, EventArgs e)
         {
             timer1.Enabled = false;
@@ -168,11 +260,13 @@ namespace desktopPet
             }
         }
 
+        /*
         private int GetRandomNumber()
         {
             Random Rand = new Random();
             return Rand.Next(0, 100);
         }
+        */ 
 
         private void SetNewAnimation(int id)
         {
