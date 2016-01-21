@@ -129,7 +129,7 @@
                     <xsd:element name='sequence' minOccurs='1' maxOccurs='1'>
                       <xsd:complexType>
                         <xsd:choice maxOccurs="unbounded">
-                          <xsd:element name='frame' type='xsd:integer' minOccurs='2' maxOccurs='unbounded' />
+                          <xsd:element name='frame' type='xsd:integer' minOccurs='1' maxOccurs='unbounded' />
                           <xsd:element name='action' type='xsd:string' minOccurs='0' />
                           <xsd:element ref='next' />
                         </xsd:choice>
