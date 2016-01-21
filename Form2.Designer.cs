@@ -1,4 +1,4 @@
-﻿namespace desktopPet
+﻿namespace DesktopPet
 {
     partial class Form2
     {

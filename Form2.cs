@@ -6,8 +6,13 @@ using System.Runtime.InteropServices;
 using System.Collections.Generic;
 using System.IO;
 
-namespace desktopPet
+namespace DesktopPet
 {
+        /// <summary>
+        /// Form2 is the main class (form) of the pet. 
+        /// An ImageList will contains all images and a Timer will move the pet after a defined interval.
+        /// The animations of this form is loaded from an XML.
+        /// </summary>
     public partial class Form2 : Form
     {
             /// <summary>
@@ -17,7 +22,7 @@ namespace desktopPet
             /// Every animation has a defined quantity of steps. They are calculated from:
             /// - Quantity of frames
             /// - Repeat count and repeat from
-            /// If an animation has 10 different frames and frame 5 to 9 are repeted 8 times, the total of steps is 10 + 5 * 8 = 50 steps.
+            /// If an animation has 10 different frames and frame 5 to 9 are repeated 8 times, the total of steps is 10 + 5 * 8 = 50 steps.
             /// Once the last step was reached, the next animation will be started. If now animation is set, the SPAWN will be executed.
             /// </remarks>
         int iAnimationStep;
@@ -33,7 +38,7 @@ namespace desktopPet
             /// If sheep is walking to left  (default).
             /// </summary>
             /// <remarks>
-            /// The original eSheep was a japanese application. So it was normal to see something from right to left.
+            /// The original eSheep was a Japanese application. So it was normal to see something from right to left.
             /// To leave the same characteristic, moveLeft is set to true. But it doesn't matter, because the sprite and movements gives the direction...
             /// </remarks>
         bool bMoveLeft = true;
@@ -108,7 +113,7 @@ namespace desktopPet
         }
 
             /// <summary>
-            /// Whith this overrided function, it is possible to remove the application from the ALT-TAB list.
+            /// With this overridden function, it is possible to remove the application from the ALT-TAB list.
             /// This, because it is not nice to see 10 times the same sheep when you press ALT-TAB (with 10 sheeps walking on your screen).
             /// </summary>
         protected override CreateParams CreateParams
@@ -237,7 +242,7 @@ namespace desktopPet
         }
 
             /// <summary>
-            /// Timer tick. The entire animation is drived through this timer. The interval is set in the XML animation file.
+            /// Timer tick. The entire animation is droved through this timer. The interval is set in the XML animation file.
             /// </summary>
             /// <remarks>
             /// On each tick, the next step is called. If it fails an error message will be show and the animation will stop.
@@ -259,14 +264,6 @@ namespace desktopPet
                 return;
             }
         }
-
-        /*
-        private int GetRandomNumber()
-        {
-            Random Rand = new Random();
-            return Rand.Next(0, 100);
-        }
-        */ 
 
         private void SetNewAnimation(int id)
         {
@@ -381,19 +378,35 @@ namespace desktopPet
                 {
                     if (iPosY + y > Screen.PrimaryScreen.WorkingArea.Height - Height) // border detected!
                     {
+                        y = Screen.PrimaryScreen.WorkingArea.Height - iPosY - Height;
                         SetNewAnimation(Animations.SetNextBorderAnimation(CurrentAnimation.ID, TNextAnimation.TOnly.TASKBAR));
                         bNewAnimation = true;
-                        y = Screen.PrimaryScreen.WorkingArea.Height - iPosY - Height;
                     }
                     else
                     {
                         int iWindowTop = FallDetect(y);
                         if (iWindowTop > 0)
                         {
+                            y = iWindowTop - iPosY - Height;
                             SetNewAnimation(Animations.SetNextBorderAnimation(CurrentAnimation.ID, TNextAnimation.TOnly.WINDOW));
                             bNewAnimation = true;
-                            y = iWindowTop - iPosY - Height;
+                            if(CurrentAnimation.Start.Y.Value != 0)
+                            {
+                                hwndWindow = (IntPtr)0;
+                            }
                         }
+                    }
+                }
+            }
+            else if(y < 0)
+            {
+                if (CurrentAnimation.EndBorder.Count > 0)
+                {
+                    if (iPosY < 0) // border detected!
+                    {
+                        y = 0;
+                        SetNewAnimation(Animations.SetNextBorderAnimation(CurrentAnimation.ID, TNextAnimation.TOnly.HORIZONTAL));
+                        bNewAnimation = true;
                     }
                 }
             }
@@ -571,108 +584,6 @@ namespace desktopPet
                 }
             }
         }
-
-        private void Water(int step)
-        {
-            if (step == 0)
-            {
-                this.TopMost = true;
-                formX = new Form2();
-                formX.addImage(imageList1.Images[146]);
-                formX.addImage(imageList1.Images[147]);
-                formX.addImage(imageList1.Images[148]);
-                formX.Enabled = false;
-                formX.Show();
-                if (bMoveLeft)
-                {
-                    formX.Top = Screen.PrimaryScreen.WorkingArea.Height - 40;
-                    formX.Left = (Screen.PrimaryScreen.WorkingArea.Width / 150) * GetRandomNumber() + 200;
-                    this.Left = Screen.PrimaryScreen.WorkingArea.Width + 60;
-                    this.Top = Screen.PrimaryScreen.WorkingArea.Height - (this.Left + 40 - formX.Left);
-                }
-                else
-                {
-                    formX.Top = Screen.PrimaryScreen.WorkingArea.Height - 40;
-                    formX.Left = Screen.PrimaryScreen.WorkingArea.Width - (Screen.PrimaryScreen.WorkingArea.Width / 150) * GetRandomNumber() - 200;
-                    this.Left = -60;
-                    this.Top = Screen.PrimaryScreen.WorkingArea.Height - (-this.Left + 40 + formX.Left);
-                }
-
-                timer1.Interval = 40;
-
-                formX.PlayWater((Screen.PrimaryScreen.WorkingArea.Height - this.Top) / 5 - 3);
-                formX.SetTopLevel(true);
-                formX.TopMost = true;
-                this.SetTopLevel(true);
-            }
-            else if(step < 20)
-            {
-                pictureBox1.Image = imageList1.Images[134];
-                if (bMoveLeft)
-                    this.Left -= 5;
-                else
-                    this.Left += 5;
-                this.Top += 5;
-            }
-            else if (134 + (step - 20) / 10 < 145)
-            {
-                pictureBox1.Image = imageList1.Images[134 + (step - 20) / 10];
-                if (bMoveLeft)
-                    this.Left -= 5;
-                else
-                    this.Left += 5;
-                this.Top += 5;
-            }
-            else
-            {
-                if (this.Top >= Screen.PrimaryScreen.WorkingArea.Height - 45)
-                    pictureBox1.Image = imageList1.Images[173];
-                else
-                    pictureBox1.Image = imageList1.Images[144 + ((step / 7) % 2)];
-
-                if (bMoveLeft)
-                    this.Left -= 5;
-                else
-                    this.Left += 5;
-                this.Top += 5;
-
-                if (this.Top >= Screen.PrimaryScreen.WorkingArea.Height)
-                {
-                    this.Top  = Screen.PrimaryScreen.WorkingArea.Height - 40;
-                    if (bMoveLeft)
-                        this.Left += 45;
-                    else
-                        this.Left -= 45;
-                    SetNewAnimation(AnimationType.Walk);
-                }
-            }
-            
-        }
-
-        private void WaterX(int step)
-        {
-            if (step < iWaterSteps - 2)
-            {
-                pictureBox1.Image = imageList1.Images[0];
-            }
-            else if (step == iWaterSteps - 2)
-            {
-                timer1.Interval = 150;
-                pictureBox1.Image = imageList1.Images[1];
-            }
-            else if (step == iWaterSteps - 1)
-            {
-                pictureBox1.Image = imageList1.Images[2];
-            }
-            else if (step == iWaterSteps)
-            {
-                pictureBox1.Image = imageList1.Images[1];
-            }
-            else
-            {
-                this.Close();
-            }
-        }
         
         */
         
@@ -758,7 +669,6 @@ namespace desktopPet
     }
 
     internal static class NativeMethods
-    //public partial class Form2 : Form
     {
         [DllImport("user32.dll", CharSet = CharSet.Auto)]
         [return: MarshalAs(UnmanagedType.Bool)]
@@ -806,6 +716,5 @@ namespace desktopPet
 
         [return: MarshalAs(UnmanagedType.Bool)]
         internal delegate bool EnumWindowsProc(IntPtr hWnd, int lParam);
-        //delegate bool EnumThreadDelegate(IntPtr hWnd, IntPtr lParam);
     }
 }

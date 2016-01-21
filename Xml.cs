@@ -6,32 +6,78 @@ using System.Data;
 using System.Drawing;
 using System.Xml.Schema;
 
-namespace desktopPet
+namespace DesktopPet
 {
+        /// <summary>
+        /// Main informations about the animation XML. This information is taken from the loaded xml file.
+        /// </summary>
+        /// <remarks>Once the XML was loaded, it is possible to see the header info in the about box.</remarks>
     public struct Header
     {
+            /// <summary>
+            /// Author of the animation
+            /// </summary>
         public string Author;
+            /// <summary>
+            /// Title of the animation
+            /// </summary>
         public string Title;
+            /// <summary>
+            /// Version of the animation (is a string and developer can insert what he want)
+            /// </summary> 
         public string Version;
+            /// <summary>
+            /// PetName. Similar to Title but shorter (max 16 chars). "eSheep" word will be replaced with this one in the context menu.
+            /// </summary>
         public string PetName;
+            /// <summary>
+            ///  Information (About and Copyright information) about the animation and the author
+            /// </summary>
         public string Info;
     };
 
+        /// <summary>
+        /// Sprite sheet (PNG with all possible positions)
+        /// </summary>
     public struct Images
     {
+            /// <summary>
+            /// Memory stream containing the PNG sprite sheet
+            /// </summary>
         public MemoryStream bitmapImages;
+            /// <summary>
+            /// Total images horizontally (position counts in the X axis)
+            /// </summary>
         public int xImages;
+            /// <summary>
+            /// Total images vertically (position counts in the Y axis)
+            /// </summary>
         public int yImages;
     };
 
     public sealed class Xml : IDisposable
     {
+            /// <summary>
+            /// XML Document, containing the animations xml
+            /// </summary>
         XmlDocument xmlDoc;
+            /// <summary>
+            /// XML Namespace, to check if xml is valid
+            /// </summary>
         XmlNamespaceManager xmlNS;
+            /// <summary>
+            /// Informations about the animation, see <see cref="Header"/>
+            /// </summary>
         public Header headerInfo;
+            /// <summary>
+            /// Structure with the sprite sheet informations
+            /// </summary>
         public Images images;
+            /// <summary>
+            /// A memory stream containing the animation icon. This is visible in the taskbar and tray icon.
+            /// </summary>
         public MemoryStream bitmapIcon;
-
+            
         public int parentX;
         public int parentY;
         public bool parentFlipped;
@@ -301,7 +347,7 @@ namespace desktopPet
             foreach (XmlNode node in nodes)
             {
                 int id = int.Parse(node.Attributes["id"].InnerText);
-                TSpawn ani = animations.AddSpawn(id, int.Parse(node.Attributes["probability"].InnerText), id.ToString());
+                TSpawn ani = animations.AddSpawn(id, int.Parse(node.Attributes["probability"].InnerText));
 
                 foreach (XmlNode node2 in node.ChildNodes)
                 {
@@ -312,10 +358,6 @@ namespace desktopPet
                                     break;
                         case "y":
                                     ani.Start.Y = getXMLCompute(node2.InnerText);
-                                    break;
-                        case "direction":
-                                    string sDirection = node2.InnerText;
-                                    ani.MoveLeft = (sDirection == "left");
                                     break;
                         case "next":
                                     ani.Next = int.Parse(node2.InnerText);
@@ -329,7 +371,7 @@ namespace desktopPet
             foreach (XmlNode node in nodes)
             {
                 int id = int.Parse(node.Attributes["animationid"].InnerText);
-                TChild aniChild = animations.AddChild(id, id.ToString());
+                TChild aniChild = animations.AddChild(id);
                 aniChild.AnimationID = id;
 
                 foreach (XmlNode node2 in node.ChildNodes)

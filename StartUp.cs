@@ -1,11 +1,9 @@
-﻿using DesktopPet;
-using System;
+﻿using System;
 using System.Drawing;
-using System.IO;
 using System.Threading;
 using System.Windows.Forms;
 
-namespace desktopPet
+namespace DesktopPet
 {
     public sealed class StartUp : IDisposable
     {

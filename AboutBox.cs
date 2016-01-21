@@ -4,8 +4,14 @@ using System.Windows.Forms;
 
 namespace DesktopPet
 {
+        /// <summary>
+        /// Information about application and current XML animation file
+        /// </summary>
     public partial class AboutBox : Form
     {
+            /// <summary>
+            /// Initialize form and get application version
+            /// </summary>
         public AboutBox()
         {
             InitializeComponent();
@@ -15,6 +21,17 @@ namespace DesktopPet
             Text = Text.Replace("XXX", version);
         }
 
+            /// <summary>
+            /// Called from parent to fill all labels on the form
+            /// </summary>
+            /// <param name="author">Author of the XML animation</param>
+            /// <param name="title">Title of the animation (got from XML file)</param>
+            /// <param name="version">Animation version (got from XML file)</param>
+            /// <param name="info">Animation infos (got from XML file). Contains author and copyright information.</param>
+            /// <remarks>In the info, you can't use HTML tags. But you can use:
+            /// [br] to add a line break 
+            /// [link:http:/...] to add a line break
+            /// </remarks>
         public void FillData(string author, string title, string version, string info)
         {
             while (info.IndexOf("[br]") > 0)
@@ -34,36 +51,52 @@ namespace DesktopPet
             richTextBox1.Text = info;
         }
 
-        private void AboutBox_Load(object sender, EventArgs e)
+            /// <summary>
+            /// OK was pressed. Close About dialog.
+            /// </summary>
+            /// <param name="sender">Caller object</param>
+            /// <param name="e">Events</param>
+        private void button_ok_Click(object sender, EventArgs e)
         {
-
-        }
-
-        private void button1_Click(object sender, EventArgs e)
-        {
-                // ok pressed
             Close();
         }
 
+            /// <summary>
+            /// http://esheep.petrucci.ch was pressed, a webpage with this link will be opened
+            /// </summary>
+            /// <param name="sender">Caller object</param>
+            /// <param name="e">Information about the link click event</param>
         private void linkLabel1_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
-                // link pressed
             Process.Start("http://esheep.petrucci.ch");
         }
 
+            /// <summary>
+            /// Cancel was pressed. Synchronize pets and close about dialog.
+            /// </summary>
+            /// <param name="sender">Caller object</param>
+            /// <param name="e">Click events</param>
         private void button2_Click(object sender, EventArgs e)
         {
-                // cancel pressed (easter egg: synchronize all sheeps)
-            desktopPet.Program.Mainthread.SyncSheeps();
+            Program.Mainthread.SyncSheeps();
             Close();
         }
 
+            /// <summary>
+            /// https://github.com/Adrianotiger/desktopPet was pressed, a webpage with this link will be opened
+            /// </summary>
+            /// <param name="sender">Caller object</param>
+            /// <param name="e">Information about the link click event</param>
         private void linkLabel2_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
-            // link pressed
             Process.Start("https://github.com/Adrianotiger/desktopPet");
         }
 
+            /// <summary>
+            /// Link on the richTextbox was pressed. Open it in the browser.
+            /// </summary>
+            /// <param name="sender">Caller as object</param>
+            /// <param name="e">Information about the link click event</param>
         private void richTextBox1_LinkClicked(object sender, LinkClickedEventArgs e)
         {
             Process.Start(e.LinkText);

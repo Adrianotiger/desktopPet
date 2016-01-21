@@ -2,7 +2,7 @@
 using System.Windows.Forms;
 using System.Drawing;
 
-namespace desktopPet //SystemTrayApp
+namespace DesktopPet //SystemTrayApp
 {
     /// <summary>
     /// 

@@ -3,7 +3,7 @@ using System.Windows.Forms;
 using DesktopPet.Properties;
 using System.Drawing;
 
-namespace desktopPet
+namespace DesktopPet
 {
     /// <summary>
     /// 

@@ -2,7 +2,7 @@
 using System.Threading;
 using System.Windows.Forms;
 
-namespace desktopPet
+namespace DesktopPet
 {
     static class Program
     {
