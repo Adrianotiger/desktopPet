@@ -139,16 +139,16 @@
                     </xsd:element>
                     <xsd:element name='border' minOccurs='0' maxOccurs='1'>
                       <xsd:complexType>
-                        <xsd:sequence>
+                        <xsd:choice maxOccurs="10">
                           <xsd:element ref='next' />
-                        </xsd:sequence>
+                        </xsd:choice>
                       </xsd:complexType>
                     </xsd:element>
                     <xsd:element name='gravity' minOccurs='0' maxOccurs='1'>
                       <xsd:complexType>
-                        <xsd:sequence>
+                        <xsd:choice maxOccurs="10">
                           <xsd:element ref='next' />
-                        </xsd:sequence>
+                        </xsd:choice>
                       </xsd:complexType>
                     </xsd:element>
                   </xsd:all>
