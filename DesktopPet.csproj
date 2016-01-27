@@ -155,6 +155,7 @@
     </EmbeddedResource>
     <None Include="app.config" />
     <None Include="DesktopPet_TemporaryKey.pfx" />
+    <None Include="Docs\Documentation.chm" />
     <None Include="Properties\app.manifest" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
@@ -181,7 +182,6 @@
     <Content Include="icon.ico" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Docs\" />
     <Folder Include="Tools\" />
   </ItemGroup>
   <ItemGroup>

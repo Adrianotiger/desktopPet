@@ -2,30 +2,30 @@
 using System.Windows.Forms;
 using System.Drawing;
 
-namespace DesktopPet //SystemTrayApp
+namespace DesktopPet
 {
-    /// <summary>
-    /// 
-    /// </summary>
+        /// <summary>
+        /// System Tray Icon. Shows an icon on the Taskbar to allow a ContextMenu.
+        /// </summary>
     public sealed class ProcessIcon : IDisposable
     {
-        /// <summary>
-        /// The NotifyIcon object.
-        /// </summary>
+            /// <summary>
+            /// The NotifyIcon object.
+            /// </summary>
         NotifyIcon ni;
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="ProcessIcon"/> class.
-        /// </summary>
+            /// <summary>
+            /// Initializes a new instance of the <see cref="ProcessIcon"/> class.
+            /// </summary>
         public ProcessIcon()
         {
             // Instantiate the NotifyIcon object.
             ni = new NotifyIcon();
         }
 
-        /// <summary>
-        /// Displays the icon in the system tray.
-        /// </summary>
+            /// <summary>
+            /// Displays the icon in the system tray.
+            /// </summary>
         public void Display()
         {
             // Put the icon in the system tray and allow it react to mouse clicks.			
@@ -39,9 +39,9 @@ namespace DesktopPet //SystemTrayApp
             ni.ContextMenuStrip = new ContextMenus().Create();
         }
 
-        /// <summary>
-        /// Displays the icon in the system tray.
-        /// </summary>
+            /// <summary>
+            /// Displays the icon in the system tray.
+            /// </summary>
         public void SetIcon(System.IO.MemoryStream icon, string petName, string aboutAuthor, string aboutTitle, string aboutVersion, string aboutInfo)
         {
             ni.Icon = new Icon(icon, 32, 32);
@@ -49,20 +49,20 @@ namespace DesktopPet //SystemTrayApp
             ni.Text = petName + " Desktop Pet";
         }
 
-        /// <summary>
-        /// Releases unmanaged and - optionally - managed resources
-        /// </summary>
+            /// <summary>
+            /// Releases unmanaged and - optionally - managed resources
+            /// </summary>
         public void Dispose()
         {
             // When the application closes, this will remove the icon from the system tray immediately.
             ni.Dispose();
         }
 
-        /// <summary>
-        /// Handles the MouseClick event of the ni control.
-        /// </summary>
-        /// <param name="sender">The source of the event.</param>
-        /// <param name="e">The <see cref="System.Windows.Forms.MouseEventArgs"/> instance containing the event data.</param>
+            /// <summary>
+            /// Handles the MouseClick event of the ni control.
+            /// </summary>
+            /// <param name="sender">The source of the event.</param>
+            /// <param name="e">The <see cref="System.Windows.Forms.MouseEventArgs"/> instance containing the event data.</param>
         void ni_MouseClick(object sender, MouseEventArgs e)
         {
             // Handle mouse button clicks.
@@ -73,6 +73,11 @@ namespace DesktopPet //SystemTrayApp
             }
         }
 
+            /// <summary>
+            /// A double click will automatically start a new pet.
+            /// </summary>
+            /// <param name="sender">Caller as object.</param>
+            /// <param name="e">Mouse event values.</param>
         void ni_MouseDoubleClick(object sender, MouseEventArgs e)
         {
             // Handle mouse button clicks.

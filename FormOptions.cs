@@ -1,32 +1,38 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
 using System.Windows.Forms;
 
 namespace DesktopPet
 {
+        /// <summary>
+        /// Application options. Need a redesign, so it is not documented.
+        /// </summary>
+        /// <preliminary/>
     public partial class FormOptions : Form
     {
+            /// <summary>
+            /// Constructor
+            /// </summary>
         public FormOptions()
         {
             InitializeComponent();
         }
 
+            /// <summary>
+            /// Restore default animation. Will restore the animation delivered with the app.
+            /// </summary>
+            /// <param name="sender">Caller object.</param>
+            /// <param name="e">Click event values.</param>
         private void button1_Click(object sender, EventArgs e)
         {
-            this.DialogResult = DialogResult.Retry;
+            DialogResult = DialogResult.Retry;
             Close();
         }
-
-        private void FormOptions_Load(object sender, EventArgs e)
-        {
-
-        }
-
+        
+            /// <summary>
+            /// New page was loaded. Check if page starts with the -XML- key. If so, the page will be converted to an xml.
+            /// </summary>
+            /// <param name="sender">Caller as object.</param>
+            /// <param name="e">Webpage event values.</param>
         private void webBrowser1_DocumentCompleted(object sender, WebBrowserDocumentCompletedEventArgs e)
         {
             WebBrowser web = (WebBrowser)sender;
@@ -34,7 +40,7 @@ namespace DesktopPet
             if(s.Substring(0, 5) == "-XML-")
             {
                 Program.Mainthread.LoadNewXMLFromString(s.Substring(5));
-                this.Close();
+                Close();
             }
         }
     }

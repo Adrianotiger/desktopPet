@@ -367,7 +367,7 @@ namespace DesktopPet
         /// <summary>
         /// Add another animation to the animations dictionary. Animations are defined in the XML.
         /// <seealso cref="AddSpawn(int, int)"/>
-        /// <seealso cref="AddChild(int, string)"/>
+        /// <seealso cref="AddChild(int)"/>
         /// </summary>
         /// <param name="ID">Animation unique ID</param>
         /// <param name="name">Animation name</param>
@@ -399,7 +399,7 @@ namespace DesktopPet
             /// <summary>
             /// Add another spawn to the spawn dictionary. Spawns are defined in the XML.
             /// <seealso cref="AddAnimation(int, string)"/>
-            /// <seealso cref="AddChild(int, string)"/>
+            /// <seealso cref="AddChild(int)"/>
             /// </summary>
             /// <param name="ID">Spawn unique ID.</param>
             /// <param name="probability">Probability this spawn will be taken.</param>

@@ -80,7 +80,6 @@
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Options";
             this.TopMost = true;
-            this.Load += new System.EventHandler(this.FormOptions_Load);
             this.groupBox1.ResumeLayout(false);
             this.ResumeLayout(false);
 

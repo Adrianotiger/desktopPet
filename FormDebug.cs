@@ -3,19 +3,26 @@ using System.Drawing;
 using System.Windows.Forms;
 
 namespace DesktopPet
-{
+{ 
+        /// <summary>
+        /// Debug form. If you start the application pressing the SHIFT-key a debug window will be started.<br />
+        /// With this window, you can see what is happening to your pet.
+        /// </summary>
     public partial class FormDebug : Form
     {
+            /// <summary>
+            /// Constructor of this form.
+            /// </summary>
         public FormDebug()
         {
             InitializeComponent();
         }
 
-        private void FormDebug_Load(object sender, EventArgs e)
-        {
-
-        }
-
+            /// <summary>
+            /// Add a debug information line to the window.
+            /// </summary>
+            /// <param name="type">Line type: info, warning or error.</param>
+            /// <param name="text">Text to display in the window.</param>
         public void AddDebugInfo(StartUp.DEBUG_TYPE type, string text)
         {
             ListViewItem item = new ListViewItem(DateTime.Now.ToLongTimeString());
@@ -36,11 +43,6 @@ namespace DesktopPet
             }
             item.SubItems.Add(text);
             item.EnsureVisible();
-        }
-
-        private void listView1_SelectedIndexChanged(object sender, EventArgs e)
-        {
-
         }
     }
 }
