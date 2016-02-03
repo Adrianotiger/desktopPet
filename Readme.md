@@ -14,8 +14,12 @@ In this way, this pet is able to walk, run, etc around your working screen area 
 <h1>Download</h1>
 You can download a compiled Windows EXE from this page:
 <a href='http://esheep.petrucci.ch'>http://esheep.petrucci.ch</a>
+There is also a documentation for the entire code:
+<a href='https://github.com/Adrianotiger/desktopPet/tree/master/Docs'>API Docs</a>
 <h1>Want to create your own mate/pet?</h1>
-You can download the original <a href='Resources/animations.xml'>animations.xml</a> and create your own desktop mate/pet.<br />
+The easy and fast way is to use the online editor:
+<a href='http://esheep.petrucci.ch/?pagina=editor'>Online editor</a>.
+But you can also download the original <a href='Resources/animations.xml'>animations.xml</a> and create your own desktop mate/pet.<br />
 What you need are:
 <ul>
 <li>1 application icon (.ico file)
