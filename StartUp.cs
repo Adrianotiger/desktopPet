@@ -76,8 +76,8 @@ namespace DesktopPet
         public StartUp(ProcessIcon processIcon)
         {
             pi = processIcon;
-
-                // Init XML class
+            
+            // Init XML class
             xml = new Xml();
                 // Init Animations class
             animations = new Animations(xml);

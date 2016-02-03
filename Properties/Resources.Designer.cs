@@ -71,15 +71,14 @@ namespace DesktopPet.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to &lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot;?&gt;
+        ///   Looks up a localized string similar to &lt;?xml version=&quot;1.0&quot;?&gt;
         ///&lt;animations xmlns=&quot;http://esheep.petrucci.ch/&quot; xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot; xsi:schemaLocation=&quot;http://esheep.petrucci.ch/ https://raw.githubusercontent.com/Adrianotiger/desktopPet/master/Resources/animations.xsd&quot;&gt;
-        ///  &lt;header&gt;
-        ///    &lt;author&gt;Adriano&lt;/author&gt;
-        ///    &lt;title&gt;sheep&lt;/title&gt;
-        ///    &lt;version&gt;1.0&lt;/version&gt;
-        ///    &lt;info&gt;Some info texts&lt;/info&gt;
-        ///    &lt;application&gt;1&lt;/application&gt;
-        ///    &lt;icon&gt;&lt;![CDATA[AAABAAIAEBAAAAAAIABoBAAAJgAAACAgAAAAACAAqBAAAI4E [rest of string was truncated]&quot;;.
+        ///&lt;header&gt;
+        ///&lt;author&gt;Adriano&lt;/author&gt;
+        ///&lt;title&gt;eSheep 64bit&lt;/title&gt;
+        ///&lt;petname&gt;eSheep&lt;/petname&gt;
+        ///&lt;version&gt;1.3&lt;/version&gt;
+        ///&lt;info&gt;Open source project for the lovely eSheep.[br] For more info, visit my webpage [link:http://esheep.petrucci.ch] [br]Image rip by LiL_ [rest of string was truncated]&quot;;.
         /// </summary>
         internal static string animations {
             get {
@@ -136,6 +135,16 @@ namespace DesktopPet.Properties {
             get {
                 object obj = ResourceManager.GetObject("icon", resourceCulture);
                 return ((System.Drawing.Icon)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap install {
+            get {
+                object obj = ResourceManager.GetObject("install", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
             }
         }
         

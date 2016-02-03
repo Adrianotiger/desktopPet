@@ -108,6 +108,12 @@
     </Compile>
     <Compile Include="Animations.cs" />
     <Compile Include="ContextMenus.cs" />
+    <Compile Include="Install.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Install.Designer.cs">
+      <DependentUpon>Install.cs</DependentUpon>
+    </Compile>
     <Compile Include="ProcessIcon.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
@@ -148,6 +154,9 @@
     <EmbeddedResource Include="FormOptions.resx">
       <DependentUpon>FormOptions.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Install.resx">
+      <DependentUpon>Install.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <SubType>Designer</SubType>
@@ -172,6 +181,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Images\exit.png" />
+    <None Include="Images\install.png" />
     <None Include="Images\option.png" />
     <Content Include="Images\about.png" />
     <Content Include="Images\esheep.png" />

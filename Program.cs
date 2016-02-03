@@ -38,14 +38,22 @@ namespace DesktopPet
             Application.EnableVisualStyles();
             // if you like to wait a few seconds in case that the instance is just 
             // shutting down
-            if (!mutex.WaitOne(TimeSpan.FromSeconds(1), false))
+            try
             {
-                iMutexIndex = 1;
-                if (!mutex2.WaitOne(TimeSpan.FromSeconds(1), false))
+                if (!mutex.WaitOne(TimeSpan.FromSeconds(1), false))
                 {
-                    MessageBox.Show("Application is already running! Only 2 instances are allowed.", "Information", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                    return;
+                    iMutexIndex = 1;
+                    if (!mutex2.WaitOne(TimeSpan.FromSeconds(1), false))
+                    {
+                        MessageBox.Show("Application is already running! Only 2 instances are allowed.", "Information", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                        return;
+                    }
                 }
+            }
+            catch(Exception ex)
+            {
+                MessageBox.Show("Can't execute application: " + ex.Message);
+                return;
             }
 
             Application.SetCompatibleTextRenderingDefault(false);

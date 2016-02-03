@@ -472,8 +472,33 @@ namespace DesktopPet
                     return spawn;
                 }
             }
+
                 // If no spawn was returned, return the first spawn in the dictionary
-            return SheepSpawn.First().Value;
+            if (SheepSpawn.Count > 0)
+            {
+                return SheepSpawn.First().Value;
+            }
+            else
+            {
+                TSpawn retSpawn;
+                if (SheepAnimations.Count > 0)
+                    retSpawn.Next = SheepAnimations.First().Key;
+                else
+                    retSpawn.Next = 1;
+                retSpawn.Probability = 100;
+                retSpawn.Start.X.Compute = "0";
+                retSpawn.Start.X.Random = false;
+                retSpawn.Start.X.Value = 0;
+                retSpawn.Start.Y.Compute = "0";
+                retSpawn.Start.Y.Random = false;
+                retSpawn.Start.Y.Value = 0;
+                retSpawn.Start.Opacity = 1.0;
+                retSpawn.Start.Interval.Compute = "1000";
+                retSpawn.Start.Interval.Random = false;
+                retSpawn.Start.Interval.Value = 1000;
+                retSpawn.Start.OffsetY = 0;
+                return retSpawn;
+            }
         }
 
             /// <summary>

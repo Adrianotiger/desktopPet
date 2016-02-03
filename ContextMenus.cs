@@ -30,10 +30,15 @@ namespace DesktopPet
             /// Close Menu Item: if another pet was downloaded, the text of this item will change.
             /// </summary>
         static ToolStripMenuItem closeSheepMenuItem;
-
+        
             /// <summary>
-            /// A value to set in the About dialog: author.
+            /// Install functions and form.
             /// </summary>
+        Install installForm;
+
+        /// <summary>
+        /// A value to set in the About dialog: author.
+        /// </summary>
         static string author;
             /// <summary>
             /// A value to set in the About dialog: animation version.
@@ -59,7 +64,10 @@ namespace DesktopPet
             ToolStripMenuItem item;
             ToolStripSeparator sep;
             
-                // Item: New Sheep.
+            // Create install class
+            installForm = new Install();
+            
+            // Item: New Sheep.
             newSheepMenuItem = new ToolStripMenuItem();
             newSheepMenuItem.Text = "&Add new Sheep";
             newSheepMenuItem.Click += new EventHandler(AddNewSheep_Click);
@@ -74,7 +82,21 @@ namespace DesktopPet
             item.Image = Resources.option;
             menu.Items.Add(item);
 
-                // Item: About.
+                // Item: Separator.
+            sep = new ToolStripSeparator();
+            menu.Items.Add(sep);
+            
+               // Item: About.
+            item = new ToolStripMenuItem();
+            if (!installForm.IsApplicationInstalled())
+                item.Text = "&Install application...";
+            else
+                item.Text = "Repair/&Uninstall...";
+            item.Click += new EventHandler(InstallApplication);
+            item.Image = installForm.Icon.ToBitmap();
+            menu.Items.Add(item);
+            
+            // Item: About.
             item = new ToolStripMenuItem();
             item.Text = "A&bout";
             item.Click += new EventHandler(About_Click);
@@ -129,10 +151,20 @@ namespace DesktopPet
         }
 
             /// <summary>
-            /// Handles the Click event of the About control. Open a dialog if no other dialog is still opened.
+            /// Open the window form to install this application on the computer.
             /// </summary>
             /// <param name="sender">The source of the event.</param>
             /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
+        void InstallApplication(object sender, EventArgs e)
+        {
+            installForm.ShowInstallation();
+        }
+
+        /// <summary>
+        /// Handles the Click event of the About control. Open a dialog if no other dialog is still opened.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
         void About_Click(object sender, EventArgs e)
         {
             if(isOptionLoaded)

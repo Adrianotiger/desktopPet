@@ -510,6 +510,8 @@ namespace DesktopPet
             if(bNewAnimation)
             {
                 timer1.Interval = 1;    // execute immediately the first step of the next animation.
+                x = 0;                  // don't move the pet, if a new animation must be started
+                y = 0;                  //  "
                 pictureBox1.Image = imageList1.Images[CurrentAnimation.Sequence.Frames[0]];
             }
 
