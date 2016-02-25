@@ -5,6 +5,7 @@ using System.Windows.Forms;
 using System.Data;
 using System.Drawing;
 using System.Xml.Schema;
+using System.Globalization;
 
 namespace DesktopPet
 {
@@ -210,8 +211,8 @@ namespace DesktopPet
             {
                 readImages();
 
-                images.xImages = int.Parse(xmlDoc.SelectSingleNode("//pet:animations/pet:image/pet:tilesx", xmlNS).InnerText);
-                images.yImages = int.Parse(xmlDoc.SelectSingleNode("//pet:animations/pet:image/pet:tilesy", xmlNS).InnerText);
+                images.xImages = int.Parse(xmlDoc.SelectSingleNode("//pet:animations/pet:image/pet:tilesx", xmlNS).InnerText, CultureInfo.InvariantCulture);
+                images.yImages = int.Parse(xmlDoc.SelectSingleNode("//pet:animations/pet:image/pet:tilesy", xmlNS).InnerText, CultureInfo.InvariantCulture);
 
                 headerInfo.Author = xmlDoc.SelectSingleNode("//pet:animations/pet:header/pet:author", xmlNS).InnerText;
                 headerInfo.Title = xmlDoc.SelectSingleNode("//pet:animations/pet:header/pet:title", xmlNS).InnerText;
@@ -244,7 +245,7 @@ namespace DesktopPet
                 // for each animation
             foreach (XmlNode node in nodes)
             {
-                int id = int.Parse(node.Attributes["id"].InnerText);
+                int id = int.Parse(node.Attributes["id"].InnerText, CultureInfo.InvariantCulture);
                 TAnimation ani = animations.AddAnimation(id, id.ToString());
                 ani.Border = false;
                 ani.Gravity = false;
@@ -267,11 +268,11 @@ namespace DesktopPet
                                     ani.Start.Y = getXMLCompute(node2.SelectSingleNode(".//pet:y", xmlNS).InnerText);
                                     ani.Start.Interval = getXMLCompute(node2.SelectSingleNode(".//pet:interval", xmlNS).InnerText);
                                     if (node2.SelectSingleNode(".//pet:offsety", xmlNS) != null)
-                                        ani.Start.OffsetY = int.Parse(node2.SelectSingleNode(".//pet:offsety", xmlNS).InnerText);
+                                        ani.Start.OffsetY = int.Parse(node2.SelectSingleNode(".//pet:offsety", xmlNS).InnerText, CultureInfo.InvariantCulture);
                                     else
                                         ani.Start.OffsetY = 0;
                                     if (node2.SelectSingleNode(".//pet:opacity", xmlNS) != null)
-                                        ani.Start.Opacity = double.Parse(node2.SelectSingleNode(".//pet:opacity", xmlNS).InnerText);
+                                        ani.Start.Opacity = double.Parse(node2.SelectSingleNode(".//pet:opacity", xmlNS).InnerText, CultureInfo.InvariantCulture);
                                     else
                                         ani.Start.Opacity = 1.0;
                                     break;
@@ -280,16 +281,16 @@ namespace DesktopPet
                                     ani.End.Y = getXMLCompute(node2.SelectSingleNode(".//pet:y", xmlNS).InnerText);
                                     ani.End.Interval = getXMLCompute(node2.SelectSingleNode(".//pet:interval", xmlNS).InnerText);
                                     if (node2.SelectSingleNode(".//pet:offsety", xmlNS) != null)
-                                        ani.End.OffsetY = int.Parse(node2.SelectSingleNode(".//pet:offsety", xmlNS).InnerText);
+                                        ani.End.OffsetY = int.Parse(node2.SelectSingleNode(".//pet:offsety", xmlNS).InnerText, CultureInfo.InvariantCulture);
                                     else
                                         ani.End.OffsetY = 0;
                                     if (node2.SelectSingleNode(".//pet:opacity", xmlNS) != null)
-                                        ani.End.Opacity = double.Parse(node2.SelectSingleNode(".//pet:opacity", xmlNS).InnerText);
+                                        ani.End.Opacity = double.Parse(node2.SelectSingleNode(".//pet:opacity", xmlNS).InnerText, CultureInfo.InvariantCulture);
                                     else
                                         ani.End.Opacity = 1.0;
                                     break;
                         case "sequence":
-                                    ani.Sequence.RepeatFrom = int.Parse(node2.Attributes["repeatfrom"].InnerText);
+                                    ani.Sequence.RepeatFrom = int.Parse(node2.Attributes["repeatfrom"].InnerText, CultureInfo.InvariantCulture);
                                     if(node2.SelectSingleNode(".//pet:action", xmlNS) != null)
                                         ani.Sequence.Action = node2.SelectSingleNode(".//pet:action", xmlNS).InnerText;
                                     ani.Sequence.Repeat = getXMLCompute(node2.Attributes["repeat"].InnerText);
@@ -318,8 +319,8 @@ namespace DesktopPet
                                         }
                                         ani.EndAnimation.Add(
                                             new TNextAnimation(
-                                                int.Parse(node3.InnerText),
-                                                int.Parse(node3.Attributes["probability"].InnerText),
+                                                int.Parse(node3.InnerText, CultureInfo.InvariantCulture),
+                                                int.Parse(node3.Attributes["probability"].InnerText, CultureInfo.InvariantCulture),
                                                 where
                                             )
                                         );
@@ -343,8 +344,8 @@ namespace DesktopPet
                                         ani.Border = true;
                                         ani.EndBorder.Add(
                                             new TNextAnimation(
-                                                int.Parse(node3.InnerText),
-                                                int.Parse(node3.Attributes["probability"].InnerText),
+                                                int.Parse(node3.InnerText, CultureInfo.InvariantCulture),
+                                                int.Parse(node3.Attributes["probability"].InnerText, CultureInfo.InvariantCulture),
                                                 where
                                             )
                                         );
@@ -368,8 +369,8 @@ namespace DesktopPet
                                         ani.Gravity = true;
                                         ani.EndGravity.Add(
                                             new TNextAnimation(
-                                                int.Parse(node3.InnerText),
-                                                int.Parse(node3.Attributes["probability"].InnerText),
+                                                int.Parse(node3.InnerText, CultureInfo.InvariantCulture),
+                                                int.Parse(node3.Attributes["probability"].InnerText, CultureInfo.InvariantCulture),
                                                 where
                                             )
                                         );
@@ -384,8 +385,8 @@ namespace DesktopPet
             nodes = xmlDoc.SelectNodes("//pet:animations/pet:spawns/pet:spawn", xmlNS);
             foreach (XmlNode node in nodes)
             {
-                int id = int.Parse(node.Attributes["id"].InnerText);
-                TSpawn ani = animations.AddSpawn(id, int.Parse(node.Attributes["probability"].InnerText));
+                int id = int.Parse(node.Attributes["id"].InnerText, CultureInfo.InvariantCulture);
+                TSpawn ani = animations.AddSpawn(id, int.Parse(node.Attributes["probability"].InnerText, CultureInfo.InvariantCulture));
 
                 foreach (XmlNode node2 in node.ChildNodes)
                 {
@@ -398,7 +399,7 @@ namespace DesktopPet
                                     ani.Start.Y = getXMLCompute(node2.InnerText);
                                     break;
                         case "next":
-                                    ani.Next = int.Parse(node2.InnerText);
+                                    ani.Next = int.Parse(node2.InnerText, CultureInfo.InvariantCulture);
                                     break;
                     }
                 }
@@ -409,7 +410,7 @@ namespace DesktopPet
             nodes = xmlDoc.SelectNodes("//pet:animations/pet:childs/pet:child", xmlNS);
             foreach (XmlNode node in nodes)
             {
-                int id = int.Parse(node.Attributes["animationid"].InnerText);
+                int id = int.Parse(node.Attributes["animationid"].InnerText, CultureInfo.InvariantCulture);
                 TChild aniChild = animations.AddChild(id);
                 aniChild.AnimationID = id;
 
@@ -424,7 +425,7 @@ namespace DesktopPet
                             aniChild.Position.Y = getXMLCompute(node2.InnerText);
                             break;
                         case "next":
-                            aniChild.Next = int.Parse(node2.InnerText);
+                            aniChild.Next = int.Parse(node2.InnerText, CultureInfo.InvariantCulture);
                             break;
                     }
                 }
@@ -463,16 +464,16 @@ namespace DesktopPet
             DataTable dt = new DataTable();
             Random rand = new Random();
 
-            sText = sText.Replace("screenW", Screen.PrimaryScreen.Bounds.Width.ToString());
-            sText = sText.Replace("screenH", Screen.PrimaryScreen.Bounds.Height.ToString());
-            sText = sText.Replace("areaW", Screen.PrimaryScreen.WorkingArea.Width.ToString());
-            sText = sText.Replace("areaH", Screen.PrimaryScreen.WorkingArea.Height.ToString());
-            sText = sText.Replace("imageW", (FullImage.Width / images.xImages).ToString());
-            sText = sText.Replace("imageH", (FullImage.Height / images.yImages).ToString());
-            sText = sText.Replace("imageX", (parentX).ToString());
-            sText = sText.Replace("imageY", (parentY).ToString());
-            sText = sText.Replace("random", rand.Next(0, 100).ToString());
-            sText = sText.Replace("randS", iRandomSpawn.ToString());
+            sText = sText.Replace("screenW", Screen.PrimaryScreen.Bounds.Width.ToString(CultureInfo.InvariantCulture));
+            sText = sText.Replace("screenH", Screen.PrimaryScreen.Bounds.Height.ToString(CultureInfo.InvariantCulture));
+            sText = sText.Replace("areaW", Screen.PrimaryScreen.WorkingArea.Width.ToString(CultureInfo.InvariantCulture));
+            sText = sText.Replace("areaH", Screen.PrimaryScreen.WorkingArea.Height.ToString(CultureInfo.InvariantCulture));
+            sText = sText.Replace("imageW", (FullImage.Width / images.xImages).ToString(CultureInfo.InvariantCulture));
+            sText = sText.Replace("imageH", (FullImage.Height / images.yImages).ToString(CultureInfo.InvariantCulture));
+            sText = sText.Replace("imageX", (parentX).ToString(CultureInfo.InvariantCulture));
+            sText = sText.Replace("imageY", (parentY).ToString(CultureInfo.InvariantCulture));
+            sText = sText.Replace("random", rand.Next(0, 100).ToString(CultureInfo.InvariantCulture));
+            sText = sText.Replace("randS", iRandomSpawn.ToString(CultureInfo.InvariantCulture));
             
             var v = dt.Compute(sText, "");
             double dv;

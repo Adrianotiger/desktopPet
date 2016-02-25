@@ -400,7 +400,7 @@ namespace DesktopPet
                 {
                     if (iPosY + y > Screen.PrimaryScreen.WorkingArea.Height - Height) // border detected!
                     {
-                        y = Screen.PrimaryScreen.WorkingArea.Height - iPosY - Height;
+                        y = Screen.PrimaryScreen.WorkingArea.Height - iPosY - Height + iOffsetY;
                         SetNewAnimation(Animations.SetNextBorderAnimation(CurrentAnimation.ID, TNextAnimation.TOnly.TASKBAR));
                         bNewAnimation = true;
                     }
@@ -409,7 +409,7 @@ namespace DesktopPet
                         int iWindowTop = FallDetect(y);
                         if (iWindowTop > 0)
                         {
-                            y = iWindowTop - iPosY - Height;
+                            y = iWindowTop - iPosY - Height + iOffsetY;
                             SetNewAnimation(Animations.SetNextBorderAnimation(CurrentAnimation.ID, TNextAnimation.TOnly.WINDOW));
                             bNewAnimation = true;
                             if(CurrentAnimation.Start.Y.Value != 0)
@@ -511,7 +511,7 @@ namespace DesktopPet
             {
                 timer1.Interval = 1;    // execute immediately the first step of the next animation.
                 x = 0;                  // don't move the pet, if a new animation must be started
-                y = 0;                  //  "
+                //y = 0;                  //  if falling, set the pet to the new position
                 pictureBox1.Image = imageList1.Images[CurrentAnimation.Sequence.Frames[0]];
             }
 
