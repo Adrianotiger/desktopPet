@@ -101,11 +101,11 @@ namespace DesktopPet
 
                 // Set animation icon
             pi.SetIcon(xml.bitmapIcon, 
-                        xml.headerInfo.PetName, 
-                        xml.headerInfo.Author, 
-                        xml.headerInfo.Title, 
-                        xml.headerInfo.Version, 
-                        xml.headerInfo.Info
+                        xml.AnimationXML.Header.Petname, 
+                        xml.AnimationXML.Header.Author, 
+                        xml.AnimationXML.Header.Title, 
+                        xml.AnimationXML.Header.Version, 
+                        xml.AnimationXML.Header.Info
                         );
 
                 // Wait 1 second, before starting first animation
@@ -137,27 +137,27 @@ namespace DesktopPet
                     // ToDo: maybe a better way would be store the imageList in this class and each form can access the
                     //       images from this class. This will save some memory in the RAM.
                 Bitmap bmpOriginal = new Bitmap(xml.images.bitmapImages);
-                int iXSize = bmpOriginal.Width / xml.images.xImages;
-                int iYSize = bmpOriginal.Height / xml.images.yImages;
+                int iXSize = bmpOriginal.Width / xml.AnimationXML.Image.TilesX;
+                int iYSize = bmpOriginal.Height / xml.AnimationXML.Image.TilesY;
                 sheeps[iSheeps] = new Form2(animations, xml);
                 sheeps[iSheeps].Show(iXSize, iYSize);
                 
                 AddDebugInfo(DEBUG_TYPE.info, "new pet...");
 
-                for (int i = 0; i < xml.images.xImages * xml.images.yImages; i++)
+                for (int i = 0; i < xml.AnimationXML.Image.TilesX * xml.AnimationXML.Image.TilesY; i++)
                 {
-                    Rectangle cropArea = new Rectangle(0 + iXSize * (i % xml.images.xImages), 0 + iYSize * (i / xml.images.xImages), iXSize, iYSize);
+                    Rectangle cropArea = new Rectangle(0 + iXSize * (i % xml.AnimationXML.Image.TilesX), 0 + iYSize * (i / xml.AnimationXML.Image.TilesX), iXSize, iYSize);
                     Bitmap bmpImage = new Bitmap(iXSize, iYSize, bmpOriginal.PixelFormat);
                     using (Graphics graphics = Graphics.FromImage(bmpImage))
                     {
                         Rectangle destRectangle = new Rectangle(0, 0, iXSize, iYSize);
-                        Rectangle sourceRectangle = new Rectangle(0 + iXSize * (i % xml.images.xImages), 0 + iYSize * (i / xml.images.xImages), iXSize, iYSize);
+                        Rectangle sourceRectangle = new Rectangle(0 + iXSize * (i % xml.AnimationXML.Image.TilesX), 0 + iYSize * (i / xml.AnimationXML.Image.TilesX), iXSize, iYSize);
                         graphics.DrawImage(bmpOriginal, destRectangle, sourceRectangle, GraphicsUnit.Pixel);
                     }
                     sheeps[iSheeps].addImage(bmpImage);
                 }
 
-                AddDebugInfo(DEBUG_TYPE.info, (xml.images.xImages * xml.images.yImages).ToString() + " frames added");
+                AddDebugInfo(DEBUG_TYPE.info, (xml.AnimationXML.Image.TilesX * xml.AnimationXML.Image.TilesY).ToString() + " frames added");
 
                     // Start the animation of the pet
                 sheeps[iSheeps].Play(true);
@@ -255,7 +255,13 @@ namespace DesktopPet
                 xml.readXML();
             }
 
-            pi.SetIcon(xml.bitmapIcon, xml.headerInfo.PetName, xml.headerInfo.Author, xml.headerInfo.Title, xml.headerInfo.Version, xml.headerInfo.Info);
+            pi.SetIcon(
+                xml.bitmapIcon, 
+                xml.AnimationXML.Header.Petname, 
+                xml.AnimationXML.Header.Author, 
+                xml.AnimationXML.Header.Title, 
+                xml.AnimationXML.Header.Version, 
+                xml.AnimationXML.Header.Info);
 
                 // start animation in 1 second.
             timer1.Tag = "A";

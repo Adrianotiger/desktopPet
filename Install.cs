@@ -7,6 +7,10 @@ using System.Windows.Forms;
 
 namespace DesktopPet
 {
+        /// <summary>
+        /// Window form for the installer/Repair/Uninstaller. Will add shortcuts to windows.
+        /// </summary>
+        /// <preliminary/>
     public partial class Install : Form
     {
             /// <summary>

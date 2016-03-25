@@ -6,36 +6,353 @@ using System.Data;
 using System.Drawing;
 using System.Xml.Schema;
 using System.Globalization;
+using System.Xml.Serialization;
 
 namespace DesktopPet
 {
         /// <summary>
+        /// This Node class is used to store the XML data using the serialize function.
+        /// </summary>
+        /// <remarks>Once the XML was loaded, it is possible to see the header info in the about box.</remarks>
+    [XmlRoot("animations", Namespace= "http://esheep.petrucci.ch/", IsNullable=false)]
+    public class RootNode
+    {
+            /// <summary>
+            /// Main informations about the animation XML. 
+            /// </summary>
+        [XmlElement("header")]
+        public HeaderNode Header;
+            /// <summary>
+            /// Information about the sprite image.
+            /// </summary>
+        [XmlElement("image")]
+        public ImageNode Image;
+            /// <summary>
+            /// List of spawns. 
+            /// </summary>
+        [XmlElement("spawns")]
+        public SpawnsNode Spawns;
+            /// <summary>
+            /// List of animations. 
+            /// </summary>
+        [XmlElement("animations")]
+        public AnimationsNode Animations;
+            /// <summary>
+            /// List of child animations. 
+            /// </summary>
+        [XmlElement("childs")]
+        public ChildsNode Childs;
+    }
+
+
+        /// <summary>
         /// Main informations about the animation XML. This information is taken from the loaded xml file.
         /// </summary>
         /// <remarks>Once the XML was loaded, it is possible to see the header info in the about box.</remarks>
-    public struct Header
+    public class HeaderNode
     {
             /// <summary>
             /// Author of the animation.
             /// </summary>
+        [XmlElement("author")]
         public string Author;
             /// <summary>
             /// Title of the animation.
             /// </summary>
+        [XmlElement("title")]
         public string Title;
-            /// <summary>
-            /// Version of the animation (is a string and developer can insert what he want).
-            /// </summary> 
-        public string Version;
             /// <summary>
             /// PetName. Similar to Title but shorter (max 16 chars). "eSheep" word will be replaced with this one in the context menu.
             /// </summary>
-        public string PetName;
+        [XmlElement("petname")]
+        public string Petname;
+            /// <summary>
+            /// Version of the animation (is a string and developer can insert what he want).
+            /// </summary> 
+        [XmlElement("version")]
+        public string Version;
             /// <summary>
             ///  Information (About and Copyright information) about the animation and the author.
             /// </summary>
+        [XmlElement("info")]
         public string Info;
-    };
+            /// <summary>
+            ///  Application version. Used to parse different XML versions.
+            /// </summary>
+        [XmlElement("application")]
+        public string Application;
+            /// <summary>
+            ///  Icon (base64) of the pet, used for the task bar.
+            /// </summary>
+        [XmlElement("icon")]
+        public string Icon;
+    }
+
+        /// <summary>
+        ///  Sprite image
+        /// </summary>
+    public class ImageNode
+    {
+            /// <summary>
+            ///  Quantity of images on the X axis.
+            /// </summary>
+        [XmlElement("tilesx")]
+        public int TilesX;
+            /// <summary>
+            ///  Quantity of images on the Y axis.
+            /// </summary>
+        [XmlElement("tilesy")]
+        public int TilesY;
+            /// <summary>
+            ///  The sprite as base64 string.
+            /// </summary>
+        [XmlElement("png")]
+        public string Png;
+            /// <summary>
+            ///  Color used for the transparency.
+            /// </summary>
+        [XmlElement("transparency")]
+        public string Transparency;
+    }
+
+        /// <summary>
+        ///  Node with a list of spawns.
+        /// </summary>
+    public class SpawnsNode
+    {
+            /// <summary>
+            ///  List of spawn nodes.
+            /// </summary>
+        [XmlElement("spawn")]
+        public SpawnNode[] Spawn;
+    }
+
+        /// <summary>
+        ///  List of animations.
+        /// </summary>
+    public class AnimationsNode
+    {
+            /// <summary>
+            ///  List of animation nodes.
+            /// </summary>
+        [XmlElement("animation")]
+        public AnimationNode[] Animation;
+    }
+
+        /// <summary>
+        ///  List of childs.
+        /// </summary>
+    public class ChildsNode
+    {
+            /// <summary>
+            ///  List of child nodes.
+            /// </summary>
+        [XmlElement("child")]
+        public ChildNode[] Child;
+    }
+
+        /// <summary>
+        ///  Information about the spawn. Used to start the pet on the screen.
+        /// </summary>
+    public class SpawnNode
+    {
+            /// <summary>
+            ///  Unique ID of spawn.
+            /// </summary>
+        [XmlAttribute("id")]
+        public int Id;
+            /// <summary>
+            ///  Probability to use this spawn.
+            /// </summary>
+        [XmlAttribute("probability")]
+        public int Probability;
+            /// <summary>
+            ///  X start position of the pet.
+            /// </summary>
+        [XmlElement("x")]
+        public string X;
+            /// <summary>
+            ///  Y start position of the pet.
+            /// </summary>
+        [XmlElement("y")]
+        public string Y;
+            /// <summary>
+            ///  ID of the next animation.
+            /// </summary>
+        [XmlElement("next")]
+        public NextNode Next;
+    }
+
+        /// <summary>
+        ///  All information of each single animation is stored here.
+        /// </summary>
+    public class AnimationNode
+    {
+            /// <summary>
+            ///  Unique ID, used to set the next animation.
+            /// </summary>
+        [XmlAttribute("id")]
+        public int Id;
+            /// <summary>
+            ///  Name for this animation. With some key-names special actions can be defined. Otherwise it is used for debug purposes.
+            /// </summary>
+        [XmlElement("name")]
+        public string Name;
+            /// <summary>
+            ///  Information about the start position (velocity, opacity, ...).
+            /// </summary>
+        [XmlElement("start")]
+        public MovingNode Start;
+            /// <summary>
+            ///  Information about the end position (velocity, opacity, ...).
+            /// </summary>
+        [XmlElement("end")]
+        public MovingNode End;
+            /// <summary>
+            ///  Sequence of frames to play and information about how to play.
+            /// </summary>
+        [XmlElement("sequence")]
+        public SequenceNode Sequence;
+            /// <summary>
+            ///  What to do if a pet reach a border of the screen or window.
+            /// </summary>
+        [XmlElement("border")]
+        public HitNode Border;
+            /// <summary>
+            ///  What to do if a pet doesn't have any gravity anymore.
+            /// </summary>
+        [XmlElement("gravity")]
+        public HitNode Gravity;
+    }
+
+        /// <summary>
+        ///  This is like a spawn but for second/child animation.
+        /// </summary>
+    public class ChildNode
+    {
+            /// <summary>
+            ///  Id of animation. Once that animation is executed, this child is automatically played.
+            /// </summary>
+        [XmlAttribute("animationid")]
+        public int Id;
+            /// <summary>
+            ///  X position when it is created.
+            /// </summary>
+        [XmlElement("x")]
+        public string X;
+            /// <summary>
+            ///  Y position when it is created.
+            /// </summary>
+        [XmlElement("y")]
+        public string Y;
+            /// <summary>
+            ///  The next animation used for this child.
+            /// </summary>
+        [XmlElement("next")]
+        public int Next;
+    }
+
+        /// <summary>
+        ///  Information about the moves.
+        /// </summary>
+        /// <remarks>
+        ///  There are 2 types: start and end. If a sequence has 10 frame sequences, the other 8 frames will interpolate
+        ///  the values from start and end.
+        /// </remarks>
+    public class MovingNode
+    {
+            /// <summary>
+            ///  How many pixels to move in the X axis.
+            /// </summary>
+        [XmlElement("x")]
+        public string X;
+            /// <summary>
+            ///  How many pixels to move in the Y axis.
+            /// </summary>
+        [XmlElement("y")]
+        public string Y;
+            /// <summary>
+            ///  Graphical offset, from the physical position calculated for the pet.
+            /// </summary>
+        [XmlElement("offsetY")]
+        public int OffsetY;
+            /// <summary>
+            ///  Opacity from 0.0 (invisible) to 1.0 (opaque).
+            /// </summary>
+        [XmlElement("opacity")]
+        public double Opacity=1.0;
+            /// <summary>
+            ///  Interval until the next sequence is executed.
+            /// </summary>
+        [XmlElement("interval")]
+        public string Interval;
+    }
+
+        /// <summary>
+        ///  Sequence node.
+        /// </summary>
+    public class SequenceNode
+    {
+            /// <summary>
+            ///  If repeat is > 0, repeat from indicate from which frame it should be repeated.
+            /// </summary>
+        [XmlAttribute("repeatfrom")]
+        public int RepeatFromFrame;
+            /// <summary>
+            ///  How many times the sequence should be executed (value of 0 or 1 is NO-REPEAT).
+            /// </summary>
+        [XmlAttribute("repeat")]
+        public string RepeatCount;
+            /// <summary>
+            ///  An array of images to show for this sequence.
+            /// </summary>
+        [XmlElement("frame")]
+        public int[] Frame;
+            /// <summary>
+            ///  The next animation, once the sequence is over.
+            /// </summary>
+        [XmlElement("next")]
+        public NextNode[] Next;
+            /// <summary>
+            ///  Action to execute if this animation is over.
+            /// </summary>
+        [XmlElement("action")]
+        public string Action;
+    }
+
+        /// <summary>
+        ///  Hit node indicate an array of next animations if the pet hit a border or has no gravity.
+        /// </summary>
+    public class HitNode
+    {
+            /// <summary>
+            ///  List of next animations.
+            /// </summary>
+        [XmlElement("next")]
+        public NextNode[] Next;
+    }
+
+        /// <summary>
+        ///  Next animation to play. Animation, Border or Gravity have 0 or more Next-nodes.
+        /// </summary>
+    public class NextNode
+    {
+            /// <summary>
+            ///  Probability this will be the next animation.
+            /// </summary>
+        [XmlAttribute("probability")]
+        public int Probability;
+            /// <summary>
+            ///  Only flag, <see cref="TNextAnimation.TOnly"/>.
+            /// </summary>
+        [XmlAttribute("only")]
+        public string OnlyFlag;
+            /// <summary>
+            ///  Next animation ID.
+            /// </summary>
+        [XmlText]
+        public int Value;
+    }
 
         /// <summary>
         /// Sprite sheet (PNG with all possible positions).
@@ -46,14 +363,6 @@ namespace DesktopPet
             /// Memory stream containing the PNG sprite sheet.
             /// </summary>
         public MemoryStream bitmapImages;
-            /// <summary>
-            /// Total images horizontally (position counts in the X axis).
-            /// </summary>
-        public int xImages;
-            /// <summary>
-            /// Total images vertically (position counts in the Y axis).
-            /// </summary>
-        public int yImages;
     };
 
         /// <summary>
@@ -64,15 +373,8 @@ namespace DesktopPet
             /// <summary>
             /// XML Document, containing the animations xml.
             /// </summary>
-        XmlDocument xmlDoc;
-            /// <summary>
-            /// XML Namespace, to check if xml is valid.
-            /// </summary>
-        XmlNamespaceManager xmlNS;
-            /// <summary>
-            /// Informations about the animation, see <see cref="Header"/>.
-            /// </summary>
-        public Header headerInfo;
+        public RootNode AnimationXML;
+
             /// <summary>
             /// Structure with the sprite sheet informations.
             /// </summary>
@@ -108,8 +410,6 @@ namespace DesktopPet
             /// </summary>
         public Xml()
         {
-            headerInfo = new Header();
-            xmlDoc = new XmlDocument();
             images = new Images();
 
             parentX = -1;                   // -1 means it is not a child.
@@ -151,83 +451,59 @@ namespace DesktopPet
             /// <returns>true, if the XML was loaded successfully.</returns>
         public bool readXML()
         {
-            XmlReaderSettings settings = new XmlReaderSettings();
-            ValidationEventHandler eventHandler = new ValidationEventHandler(ValidationEventHandler);
-            XmlSchema schema = XmlSchema.Read(new StringReader(Properties.Resources.animations1), eventHandler);
-            settings.Schemas.Add(schema);
-            settings.ValidationType = ValidationType.Schema;
-
-            xmlDoc = new XmlDocument();
-
-            xmlNS = new XmlNamespaceManager(xmlDoc.NameTable);
-            xmlNS.AddNamespace("pet", "http://esheep.petrucci.ch/");
-
-            XmlReader reader = null;
             bool bError = false;
-
-            Random rand = new Random();
-            iRandomSpawn = rand.Next(0, 100);
-
-                // try to load local xml
+            // Construct an instance of the XmlSerializer with the type
+            // of object that is being deserialized.
+            XmlSerializer mySerializer = new XmlSerializer(typeof(RootNode));
+            // To read the file, create a FileStream.
+            MemoryStream stream = new MemoryStream();
+            StreamWriter writer = new StreamWriter(stream);
+            // Try to load local XML
             try
             {
-                reader = XmlReader.Create(new StringReader(Properties.Settings.Default.xml), settings);
-                xmlDoc.Load(reader);
-                xmlDoc.Validate(eventHandler);
-                Properties.Settings.Default.Images = xmlDoc.SelectSingleNode("//pet:animations/pet:image/pet:png", xmlNS).InnerText;
-                Properties.Settings.Default.Icon = xmlDoc.SelectSingleNode("//pet:animations/pet:header/pet:icon", xmlNS).InnerText;
-            }
-            catch (Exception ex)
-            {
-                xmlDoc.RemoveAll();
-                StartUp.AddDebugInfo(StartUp.DEBUG_TYPE.warning, "User XML error: " + ex.ToString());
-                if (xmlDoc.ChildNodes.Count > 0)
-                {
-                    MessageBox.Show("Error parsing animation XML:" + ex.ToString(), "XML error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                }
-            }
-            
-                // If it was not possible to load the new XML, load the default XML.
-            if (xmlDoc.ChildNodes.Count <= 0)
-            {
-                StartUp.AddDebugInfo(StartUp.DEBUG_TYPE.info, "Loading default XML animation");
+                writer.Write(Properties.Settings.Default.xml);
+                //writer.Write(Properties.Resources.animations);
+                writer.Flush();
+                stream.Position = 0;
+                // Call the Deserialize method and cast to the object type.
+                AnimationXML = (RootNode)mySerializer.Deserialize(stream);
 
-                try
-                {
-                    reader = XmlReader.Create(new StringReader(Properties.Resources.animations), settings);
-
-                    xmlDoc.Load(reader);
-                    xmlDoc.Validate(eventHandler);
-                }
-                catch (Exception ex)
-                {
-                    StartUp.AddDebugInfo(StartUp.DEBUG_TYPE.error, "XML error: " + ex.ToString());
-                    MessageBox.Show("FATAL ERROR reading XML file: " + ex.Message, "ERROR", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                }
-            }
-            
-                // Load images and header info
-            try
-            {
-                readImages();
-
-                images.xImages = int.Parse(xmlDoc.SelectSingleNode("//pet:animations/pet:image/pet:tilesx", xmlNS).InnerText, CultureInfo.InvariantCulture);
-                images.yImages = int.Parse(xmlDoc.SelectSingleNode("//pet:animations/pet:image/pet:tilesy", xmlNS).InnerText, CultureInfo.InvariantCulture);
-
-                headerInfo.Author = xmlDoc.SelectSingleNode("//pet:animations/pet:header/pet:author", xmlNS).InnerText;
-                headerInfo.Title = xmlDoc.SelectSingleNode("//pet:animations/pet:header/pet:title", xmlNS).InnerText;
-                headerInfo.Info = xmlDoc.SelectSingleNode("//pet:animations/pet:header/pet:info", xmlNS).InnerText;
-                headerInfo.Version = xmlDoc.SelectSingleNode("//pet:animations/pet:header/pet:version", xmlNS).InnerText;
-                headerInfo.PetName = xmlDoc.SelectSingleNode("//pet:animations/pet:header/pet:petname", xmlNS).InnerText;
-                if (headerInfo.PetName.Length > 16) headerInfo.PetName = headerInfo.PetName.Substring(0, 16);
+                Properties.Settings.Default.Images = AnimationXML.Image.Png;
+                Properties.Settings.Default.Icon = AnimationXML.Header.Icon;
             }
             catch(Exception ex)
             {
-                StartUp.AddDebugInfo(StartUp.DEBUG_TYPE.error, "Error reading XML: " + ex.Message);
-                bError = true;
+                StartUp.AddDebugInfo(StartUp.DEBUG_TYPE.warning, "User XML error: " + ex.ToString());
+                if (Properties.Settings.Default.xml.Length > 100)
+                {
+                    MessageBox.Show("Error parsing animation XML:" + ex.ToString(), "XML error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+                
+                writer.Write(Properties.Resources.animations);
+                writer.Flush();
+                stream.Position = 0;
+                // Call the Deserialize method and cast to the object type.
+                AnimationXML = (RootNode)mySerializer.Deserialize(stream);
+
+                Properties.Settings.Default.Images = AnimationXML.Image.Png;
+                Properties.Settings.Default.Icon = AnimationXML.Header.Icon;
+            }
+            finally
+            {
+                try
+                {
+                    readImages();
+
+                    if (AnimationXML.Header.Petname.Length > 16) AnimationXML.Header.Petname = AnimationXML.Header.Petname.Substring(0, 16);
+                }
+                catch (Exception ex)
+                {
+                    StartUp.AddDebugInfo(StartUp.DEBUG_TYPE.error, "Error reading XML: " + ex.Message);
+                    bError = true;
+                }
             }
 
-            if(bError)
+            if (bError)
             {
                 MessageBox.Show("Error, can't load animations file. The original pet will be loaded", "XML error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
@@ -241,195 +517,181 @@ namespace DesktopPet
             /// <param name="animations">Animation class where the animations should be saved</param>
         public void loadAnimations(Animations animations)
         {
-            XmlNodeList nodes = xmlDoc.SelectNodes("//pet:animations/pet:animations/pet:animation", xmlNS);
                 // for each animation
-            foreach (XmlNode node in nodes)
+            foreach (AnimationNode node in AnimationXML.Animations.Animation)
             {
-                int id = int.Parse(node.Attributes["id"].InnerText, CultureInfo.InvariantCulture);
-                TAnimation ani = animations.AddAnimation(id, id.ToString());
-                ani.Border = false;
-                ani.Gravity = false;
-                foreach (XmlNode node2 in node.ChildNodes)
+                TAnimation ani = animations.AddAnimation(node.Id, node.Id.ToString());
+                ani.Border = node.Border != null;
+                ani.Gravity = node.Gravity != null;
+
+                ani.Name = node.Name;
+                switch (ani.Name)
                 {
-                    switch (node2.Name)
+                    case "fall": animations.AnimationFall = node.Id; break;
+                    case "drag": animations.AnimationDrag = node.Id; break;
+                    case "kill": animations.AnimationKill = node.Id; break;
+                    case "sync": animations.AnimationSync = node.Id; break;
+                }
+
+                ani.Start.X = getXMLCompute(node.Start.X);
+                ani.Start.Y = getXMLCompute(node.Start.Y);
+                ani.Start.Interval = getXMLCompute(node.Start.Interval);
+                ani.Start.OffsetY = node.Start.OffsetY;
+                ani.Start.Opacity = node.Start.Opacity;
+
+                ani.End.X = getXMLCompute(node.End.X);
+                ani.End.Y = getXMLCompute(node.End.Y);
+                ani.End.Interval = getXMLCompute(node.End.Interval);
+                ani.End.OffsetY = node.End.OffsetY;
+                ani.End.Opacity = node.End.Opacity;
+
+                ani.Sequence.RepeatFrom = node.Sequence.RepeatFromFrame;
+                ani.Sequence.Action = node.Sequence.Action;
+                ani.Sequence.Repeat = getXMLCompute(node.Sequence.RepeatCount);
+                foreach (int frameid in node.Sequence.Frame)
+                {
+                    ani.Sequence.Frames.Add(frameid);
+                }
+                if (ani.Sequence.RepeatFrom > 0)
+                    ani.Sequence.TotalSteps = ani.Sequence.Frames.Count + (ani.Sequence.Frames.Count - ani.Sequence.RepeatFrom - 1) * ani.Sequence.Repeat.Value;
+                else
+                    ani.Sequence.TotalSteps = ani.Sequence.Frames.Count + ani.Sequence.Frames.Count * ani.Sequence.Repeat.Value;
+                if (node.Sequence.Next != null)
+                {
+                    foreach (NextNode nextNode in node.Sequence.Next)
                     {
-                        case "name": 
-                                    ani.Name = node2.InnerText;
-                                    switch(ani.Name)
-                                    {
-                                        case "fall": animations.AnimationFall = id; break;
-                                        case "drag": animations.AnimationDrag = id; break;
-                                        case "kill": animations.AnimationKill = id; break;
-                                        case "sync": animations.AnimationSync = id; break;
-                                    }
-                                    break;
-                        case "start":
-                                    ani.Start.X = getXMLCompute(node2.SelectSingleNode(".//pet:x", xmlNS).InnerText);
-                                    ani.Start.Y = getXMLCompute(node2.SelectSingleNode(".//pet:y", xmlNS).InnerText);
-                                    ani.Start.Interval = getXMLCompute(node2.SelectSingleNode(".//pet:interval", xmlNS).InnerText);
-                                    if (node2.SelectSingleNode(".//pet:offsety", xmlNS) != null)
-                                        ani.Start.OffsetY = int.Parse(node2.SelectSingleNode(".//pet:offsety", xmlNS).InnerText, CultureInfo.InvariantCulture);
-                                    else
-                                        ani.Start.OffsetY = 0;
-                                    if (node2.SelectSingleNode(".//pet:opacity", xmlNS) != null)
-                                        ani.Start.Opacity = double.Parse(node2.SelectSingleNode(".//pet:opacity", xmlNS).InnerText, CultureInfo.InvariantCulture);
-                                    else
-                                        ani.Start.Opacity = 1.0;
-                                    break;
-                        case "end":
-                                    ani.End.X = getXMLCompute(node2.SelectSingleNode(".//pet:x", xmlNS).InnerText);
-                                    ani.End.Y = getXMLCompute(node2.SelectSingleNode(".//pet:y", xmlNS).InnerText);
-                                    ani.End.Interval = getXMLCompute(node2.SelectSingleNode(".//pet:interval", xmlNS).InnerText);
-                                    if (node2.SelectSingleNode(".//pet:offsety", xmlNS) != null)
-                                        ani.End.OffsetY = int.Parse(node2.SelectSingleNode(".//pet:offsety", xmlNS).InnerText, CultureInfo.InvariantCulture);
-                                    else
-                                        ani.End.OffsetY = 0;
-                                    if (node2.SelectSingleNode(".//pet:opacity", xmlNS) != null)
-                                        ani.End.Opacity = double.Parse(node2.SelectSingleNode(".//pet:opacity", xmlNS).InnerText, CultureInfo.InvariantCulture);
-                                    else
-                                        ani.End.Opacity = 1.0;
-                                    break;
-                        case "sequence":
-                                    ani.Sequence.RepeatFrom = int.Parse(node2.Attributes["repeatfrom"].InnerText, CultureInfo.InvariantCulture);
-                                    if(node2.SelectSingleNode(".//pet:action", xmlNS) != null)
-                                        ani.Sequence.Action = node2.SelectSingleNode(".//pet:action", xmlNS).InnerText;
-                                    ani.Sequence.Repeat = getXMLCompute(node2.Attributes["repeat"].InnerText);
-                                    foreach (XmlNode node3 in node2.SelectNodes(".//pet:frame", xmlNS))
-                                    {
-                                        ani.Sequence.Frames.Add(int.Parse(node3.InnerText));
-                                    }
-                                    if(ani.Sequence.RepeatFrom > 0)
-                                        ani.Sequence.TotalSteps = ani.Sequence.Frames.Count + (ani.Sequence.Frames.Count - ani.Sequence.RepeatFrom - 1) * ani.Sequence.Repeat.Value;
-                                    else
-                                        ani.Sequence.TotalSteps = ani.Sequence.Frames.Count + ani.Sequence.Frames.Count * ani.Sequence.Repeat.Value;
-                                    foreach (XmlNode node3 in node2.SelectNodes(".//pet:next", xmlNS))
-                                    {
-                                        TNextAnimation.TOnly where = TNextAnimation.TOnly.NONE;
-                                        if (node3.Attributes["only"] != null)
-                                        {
-                                            switch (node3.Attributes["only"].InnerText)
-                                            {
-                                                case "taskbar": where = TNextAnimation.TOnly.TASKBAR; break;
-                                                case "window": where = TNextAnimation.TOnly.WINDOW; break;
-                                                case "horizontal": where = TNextAnimation.TOnly.HORIZONTAL; break;
-                                                case "horizontal+": where = TNextAnimation.TOnly.HORIZONTAL_; break;
-                                                case "vertical": where = TNextAnimation.TOnly.VERTICAL; break;
-                                                default: where = TNextAnimation.TOnly.NONE; break;
-                                            }
-                                        }
-                                        ani.EndAnimation.Add(
-                                            new TNextAnimation(
-                                                int.Parse(node3.InnerText, CultureInfo.InvariantCulture),
-                                                int.Parse(node3.Attributes["probability"].InnerText, CultureInfo.InvariantCulture),
-                                                where
-                                            )
-                                        );
-                                    }
-                                    break;
-                        case "border":
-                                    foreach (XmlNode node3 in node2.SelectNodes(".//pet:next", xmlNS))
-                                    {
-                                        TNextAnimation.TOnly where = TNextAnimation.TOnly.NONE;
-                                        if (node3.Attributes["only"] != null)
-                                        {
-                                            switch (node3.Attributes["only"].InnerText)
-                                            {
-                                                case "taskbar": where = TNextAnimation.TOnly.TASKBAR; break;
-                                                case "window": where = TNextAnimation.TOnly.WINDOW; break;
-                                                case "horizontal": where = TNextAnimation.TOnly.HORIZONTAL; break;
-                                                case "horizontal+": where = TNextAnimation.TOnly.HORIZONTAL_; break;
-                                                case "vertical": where = TNextAnimation.TOnly.VERTICAL; break;
-                                            }
-                                        }
-                                        ani.Border = true;
-                                        ani.EndBorder.Add(
-                                            new TNextAnimation(
-                                                int.Parse(node3.InnerText, CultureInfo.InvariantCulture),
-                                                int.Parse(node3.Attributes["probability"].InnerText, CultureInfo.InvariantCulture),
-                                                where
-                                            )
-                                        );
-                                    }
-                                    break;
-                        case "gravity":
-                                    foreach (XmlNode node3 in node2.SelectNodes(".//pet:next", xmlNS))
-                                    {
-                                        TNextAnimation.TOnly where = TNextAnimation.TOnly.NONE;
-                                        if (node3.Attributes["only"] != null)
-                                        {
-                                            switch (node3.Attributes["only"].InnerText)
-                                            {
-                                                case "taskbar": where = TNextAnimation.TOnly.TASKBAR; break;
-                                                case "window": where = TNextAnimation.TOnly.WINDOW; break;
-                                                case "horizontal": where = TNextAnimation.TOnly.HORIZONTAL; break;
-                                                case "horizontal+": where = TNextAnimation.TOnly.HORIZONTAL_; break;
-                                                case "vertical": where = TNextAnimation.TOnly.VERTICAL; break;
-                                            }
-                                        }
-                                        ani.Gravity = true;
-                                        ani.EndGravity.Add(
-                                            new TNextAnimation(
-                                                int.Parse(node3.InnerText, CultureInfo.InvariantCulture),
-                                                int.Parse(node3.Attributes["probability"].InnerText, CultureInfo.InvariantCulture),
-                                                where
-                                            )
-                                        );
-                                    }
-                                    break;
+                        TNextAnimation.TOnly where;
+                        switch (nextNode.OnlyFlag)
+                        {
+                            case "taskbar": where = TNextAnimation.TOnly.TASKBAR; break;
+                            case "window": where = TNextAnimation.TOnly.WINDOW; break;
+                            case "horizontal": where = TNextAnimation.TOnly.HORIZONTAL; break;
+                            case "horizontal+": where = TNextAnimation.TOnly.HORIZONTAL_; break;
+                            case "vertical": where = TNextAnimation.TOnly.VERTICAL; break;
+                            default: where = TNextAnimation.TOnly.NONE; break;
+                        }
+
+                        ani.EndAnimation.Add(
+                            new TNextAnimation(
+                                nextNode.Value,
+                                nextNode.Probability,
+                                where
+                            )
+                        );
                     }
                 }
-                animations.SaveAnimation(ani, id);
+
+                if (ani.Border)
+                {
+                    foreach (NextNode nextNode in node.Border.Next)
+                    {
+                        TNextAnimation.TOnly where;
+                        switch (nextNode.OnlyFlag)
+                        {
+                            case "taskbar": where = TNextAnimation.TOnly.TASKBAR; break;
+                            case "window": where = TNextAnimation.TOnly.WINDOW; break;
+                            case "horizontal": where = TNextAnimation.TOnly.HORIZONTAL; break;
+                            case "horizontal+": where = TNextAnimation.TOnly.HORIZONTAL_; break;
+                            case "vertical": where = TNextAnimation.TOnly.VERTICAL; break;
+                            default: where = TNextAnimation.TOnly.NONE; break;
+                        }
+                        ani.Border = true;
+                        ani.EndBorder.Add(
+                            new TNextAnimation(
+                                nextNode.Value,
+                                nextNode.Probability,
+                                where
+                            )
+                        );
+                    }
+                }
+
+                if (ani.Gravity)
+                {
+                    foreach (NextNode nextNode in node.Gravity.Next)
+                    {
+                        TNextAnimation.TOnly where;
+                        switch (nextNode.OnlyFlag)
+                        {
+                            case "taskbar": where = TNextAnimation.TOnly.TASKBAR; break;
+                            case "window": where = TNextAnimation.TOnly.WINDOW; break;
+                            case "horizontal": where = TNextAnimation.TOnly.HORIZONTAL; break;
+                            case "horizontal+": where = TNextAnimation.TOnly.HORIZONTAL_; break;
+                            case "vertical": where = TNextAnimation.TOnly.VERTICAL; break;
+                            default: where = TNextAnimation.TOnly.NONE; break;
+                        }
+                        ani.Gravity = true;
+                        ani.EndGravity.Add(
+                            new TNextAnimation(
+                                nextNode.Value,
+                                nextNode.Probability,
+                                where
+                            )
+                        );
+                    }
+                }
+
+                /* OLD XML parsing:
+                
+                    foreach (XmlNode node3 in node2.SelectNodes(".//pet:next", xmlNS))
+                    {
+                        TNextAnimation.TOnly where = TNextAnimation.TOnly.NONE;
+                        if (node3.Attributes["only"] != null)
+                        {
+                            switch (node3.Attributes["only"].InnerText)
+                            {
+                                case "taskbar": where = TNextAnimation.TOnly.TASKBAR; break;
+                                case "window": where = TNextAnimation.TOnly.WINDOW; break;
+                                case "horizontal": where = TNextAnimation.TOnly.HORIZONTAL; break;
+                                case "horizontal+": where = TNextAnimation.TOnly.HORIZONTAL_; break;
+                                case "vertical": where = TNextAnimation.TOnly.VERTICAL; break;
+                            }
+                        }
+                        ani.Gravity = true;
+                        ani.EndGravity.Add(
+                            new TNextAnimation(
+                                int.Parse(node3.InnerText, CultureInfo.InvariantCulture),
+                                int.Parse(node3.Attributes["probability"].InnerText, CultureInfo.InvariantCulture),
+                                where
+                            )
+                        );
+                    }
+                    break;
+                    */
+                animations.SaveAnimation(ani, node.Id);
             }
 
-                // for each spawn
-            nodes = xmlDoc.SelectNodes("//pet:animations/pet:spawns/pet:spawn", xmlNS);
-            foreach (XmlNode node in nodes)
+            // for each spawn
+            if (AnimationXML.Spawns.Spawn != null)
             {
-                int id = int.Parse(node.Attributes["id"].InnerText, CultureInfo.InvariantCulture);
-                TSpawn ani = animations.AddSpawn(id, int.Parse(node.Attributes["probability"].InnerText, CultureInfo.InvariantCulture));
-
-                foreach (XmlNode node2 in node.ChildNodes)
+                foreach (SpawnNode node in AnimationXML.Spawns.Spawn)
                 {
-                    switch (node2.Name)
-                    {
-                        case "x":
-                                    ani.Start.X = getXMLCompute(node2.InnerText);
-                                    break;
-                        case "y":
-                                    ani.Start.Y = getXMLCompute(node2.InnerText);
-                                    break;
-                        case "next":
-                                    ani.Next = int.Parse(node2.InnerText, CultureInfo.InvariantCulture);
-                                    break;
-                    }
+                    TSpawn ani = animations.AddSpawn(
+                        node.Id,
+                        node.Probability);
+
+                    ani.Start.X = getXMLCompute(node.X);
+                    ani.Start.Y = getXMLCompute(node.Y);
+                    ani.Next = node.Next.Value;
+
+                    animations.SaveSpawn(ani, node.Id);
                 }
-                animations.SaveSpawn(ani, id);
             }
 
-                // for each child
-            nodes = xmlDoc.SelectNodes("//pet:animations/pet:childs/pet:child", xmlNS);
-            foreach (XmlNode node in nodes)
+            // for each child
+            if (AnimationXML.Childs.Child != null)
             {
-                int id = int.Parse(node.Attributes["animationid"].InnerText, CultureInfo.InvariantCulture);
-                TChild aniChild = animations.AddChild(id);
-                aniChild.AnimationID = id;
-
-                foreach (XmlNode node2 in node.ChildNodes)
+                foreach (ChildNode node in AnimationXML.Childs.Child)
                 {
-                    switch (node2.Name)
-                    {
-                        case "x":
-                            aniChild.Position.X = getXMLCompute(node2.InnerText);
-                            break;
-                        case "y":
-                            aniChild.Position.Y = getXMLCompute(node2.InnerText);
-                            break;
-                        case "next":
-                            aniChild.Next = int.Parse(node2.InnerText, CultureInfo.InvariantCulture);
-                            break;
-                    }
+                    TChild aniChild = animations.AddChild(node.Id);
+                    aniChild.AnimationID = node.Id;
+
+                    aniChild.Position.X = getXMLCompute(node.X);
+                    aniChild.Position.Y = getXMLCompute(node.Y);
+                    aniChild.Next = node.Next;
+
+                    animations.SaveChild(aniChild, node.Id);
                 }
-                animations.SaveChild(aniChild, id);
             }
         }
 
@@ -468,8 +730,8 @@ namespace DesktopPet
             sText = sText.Replace("screenH", Screen.PrimaryScreen.Bounds.Height.ToString(CultureInfo.InvariantCulture));
             sText = sText.Replace("areaW", Screen.PrimaryScreen.WorkingArea.Width.ToString(CultureInfo.InvariantCulture));
             sText = sText.Replace("areaH", Screen.PrimaryScreen.WorkingArea.Height.ToString(CultureInfo.InvariantCulture));
-            sText = sText.Replace("imageW", (FullImage.Width / images.xImages).ToString(CultureInfo.InvariantCulture));
-            sText = sText.Replace("imageH", (FullImage.Height / images.yImages).ToString(CultureInfo.InvariantCulture));
+            sText = sText.Replace("imageW", (FullImage.Width / AnimationXML.Image.TilesX).ToString(CultureInfo.InvariantCulture));
+            sText = sText.Replace("imageH", (FullImage.Height / AnimationXML.Image.TilesY).ToString(CultureInfo.InvariantCulture));
             sText = sText.Replace("imageX", (parentX).ToString(CultureInfo.InvariantCulture));
             sText = sText.Replace("imageY", (parentY).ToString(CultureInfo.InvariantCulture));
             sText = sText.Replace("random", rand.Next(0, 100).ToString(CultureInfo.InvariantCulture));
@@ -505,17 +767,13 @@ namespace DesktopPet
                 StartUp.AddDebugInfo(StartUp.DEBUG_TYPE.warning, "user images not found, loading defaults");
                 try
                 {
-                    XmlNode node = xmlDoc.SelectSingleNode("//pet:animations/pet:image/pet:png", xmlNS);
-                    if (node != null)
+                    Properties.Settings.Default.Images = AnimationXML.Image.Png;
+                    int mod4 = Properties.Settings.Default.Images.Length % 4;
+                    if (mod4 > 0)
                     {
-                        Properties.Settings.Default.Images = node.InnerText;
-                        int mod4 = Properties.Settings.Default.Images.Length % 4;
-                        if (mod4 > 0)
-                        {
-                            Properties.Settings.Default.Images += new string('=', 4 - mod4);
-                        }
-                        Properties.Settings.Default.Save();
+                        Properties.Settings.Default.Images += new string('=', 4 - mod4);
                     }
+                    Properties.Settings.Default.Save();
                 }
                 catch (Exception ex)
                 {
@@ -543,17 +801,13 @@ namespace DesktopPet
                 StartUp.AddDebugInfo(StartUp.DEBUG_TYPE.warning, "no user icon, loading default");
                 try
                 {
-                    XmlNode node = xmlDoc.SelectSingleNode("//pet:animations/pet:header/pet:icon", xmlNS);
-                    if (node != null)
+                    Properties.Settings.Default.Icon = AnimationXML.Header.Icon;
+                    int mod4 = Properties.Settings.Default.Icon.Length % 4;
+                    if (mod4 > 0)
                     {
-                        Properties.Settings.Default.Icon = node.InnerText;
-                        int mod4 = Properties.Settings.Default.Icon.Length % 4;
-                        if (mod4 > 0)
-                        {
-                            Properties.Settings.Default.Icon += new string('=', 4 - mod4);
-                        }
-                        Properties.Settings.Default.Save();
+                        Properties.Settings.Default.Icon += new string('=', 4 - mod4);
                     }
+                    Properties.Settings.Default.Save();
                 }
                 catch (Exception ex)
                 {
@@ -567,7 +821,6 @@ namespace DesktopPet
                 {
                     MessageBox.Show(ex.Message);
                 }
-
             }
 
             FullImage = new Bitmap(images.bitmapImages);
