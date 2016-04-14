@@ -21,9 +21,9 @@ namespace DesktopPet
     public struct TValue
     {
             /// <summary>
-            /// If the parsed value contains a random number
+            /// If the parsed value contains a dynamic number
             /// </summary>
-        public bool Random;
+        public bool IsDynamic;
             /// <summary>
             /// String with the expression to compute
             /// </summary>
@@ -40,7 +40,7 @@ namespace DesktopPet
             /// <returns>The value parsed from xml file</returns>
         public int GetValue()
         {
-            if (Random)
+            if (IsDynamic)
             {
                 return Animations.Xml.parseValue(Compute);
             }
@@ -342,9 +342,9 @@ namespace DesktopPet
             /// </summary>
         public int AnimationFall = 1;
             /// <summary>
-            /// Animation ID once the pet should be closed (default: 1) 
+            /// Animation ID once the pet should be closed (default: -1) 
             /// </summary>
-        public int AnimationKill = 1;
+        public int AnimationKill = -1;
             /// <summary>
             /// Animation ID once the cancel button on the about box was pressed (default: 1)
             /// <see cref="AboutBox.button2"/>
@@ -487,14 +487,14 @@ namespace DesktopPet
                     retSpawn.Next = 1;
                 retSpawn.Probability = 100;
                 retSpawn.Start.X.Compute = "0";
-                retSpawn.Start.X.Random = false;
+                retSpawn.Start.X.IsDynamic = false;
                 retSpawn.Start.X.Value = 0;
                 retSpawn.Start.Y.Compute = "0";
-                retSpawn.Start.Y.Random = false;
+                retSpawn.Start.Y.IsDynamic = false;
                 retSpawn.Start.Y.Value = 0;
                 retSpawn.Start.Opacity = 1.0;
                 retSpawn.Start.Interval.Compute = "1000";
-                retSpawn.Start.Interval.Random = false;
+                retSpawn.Start.Interval.IsDynamic = false;
                 retSpawn.Start.Interval.Value = 1000;
                 retSpawn.Start.OffsetY = 0;
                 return retSpawn;
@@ -623,20 +623,20 @@ namespace DesktopPet
         {
             bool bUpdated = false;
             TAnimation ani = SheepAnimations[id];
-            if (ani.Sequence.Repeat.Random)
+            if (ani.Sequence.Repeat.IsDynamic)
             {
                     // Calculate the total steps, based on the repeat values.
                 ani.Sequence.TotalSteps = ani.Sequence.CalculateTotalSteps();
                 bUpdated = true;
             }
-            if(ani.Start.Interval.Random || ani.Start.X.Random || ani.Start.Y.Random)
+            if(ani.Start.Interval.IsDynamic || ani.Start.X.IsDynamic || ani.Start.Y.IsDynamic)
             {
                 ani.Start.Interval.Value = ani.Start.Interval.GetValue();
                 ani.Start.X.Value = ani.Start.X.GetValue();
                 ani.Start.Y.Value = ani.Start.Y.GetValue();
                 bUpdated = true;
             }
-            if (ani.End.Interval.Random || ani.End.X.Random || ani.End.Y.Random)
+            if (ani.End.Interval.IsDynamic || ani.End.X.IsDynamic || ani.End.Y.IsDynamic)
             {
                 ani.End.Interval.Value = ani.End.Interval.GetValue();
                 ani.End.X.Value = ani.End.X.GetValue();

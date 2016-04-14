@@ -204,14 +204,21 @@ namespace DesktopPet
             
             Top = child.Position.Y.GetValue();          // Set position. If parent is flipped, mirror the position
             if (bMoveLeft)
+            {
                 Left = child.Position.X.GetValue();
+            }
             else
-                Left = Screen.PrimaryScreen.Bounds.Width - child.Position.X.GetValue() - Width;
+            {
+                Left = child.Position.X.GetValue();
+            }
             dPosX = Left;
             dPosY = Top;
             dOffsetY = 0.0;
             Visible = true;                             // Now we can show this child
             Opacity = 1.0;
+            pictureBox1.Cursor = Cursors.Default;
+            pictureBox1.MouseDown += (s, e) => { };     // Replace the "drag and drop" functionality
+
             SetNewAnimation(child.Next);                // Set next animation to play
 
             timer1.Enabled = true;                      // Enable timer (interval is known, now)
@@ -225,8 +232,10 @@ namespace DesktopPet
             /// </remarks>
         public void Kill()
         {
-            if(Animations.AnimationKill > 1)
+            if (Animations.AnimationKill > 1)
                 SetNewAnimation(Animations.AnimationKill);
+            else
+                Close();
         }
 
             /// <summary>
@@ -254,14 +263,31 @@ namespace DesktopPet
             try
             {
                 NextStep();
-                iAnimationStep++;
-                timer1.Enabled = true;
+                if (IsDisposed)
+                {
+                    timer1.Enabled = false;
+                }
+                else
+                { 
+                    iAnimationStep++;
+                    timer1.Enabled = true;
+                }
             }
             catch(Exception ex) // if form is closed timer could continue to tick (why?)
             {
-                if(Name != "child")
-                    MessageBox.Show("Fatal Error: " + ex.Message, "App error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                return;
+                //if(Name != "child")
+                if(MessageBox.Show("Fatal Error: " + ex.Message + "\n----------\nPress Cancel for more info", "App error", MessageBoxButtons.OKCancel, MessageBoxIcon.Error) == DialogResult.Cancel)
+                {
+                    String seqIndex = "";
+                    foreach (var item in CurrentAnimation.Sequence.Frames) seqIndex += item + ",";
+
+                        MessageBox.Show(
+                        "Current Animation ID: " + CurrentAnimation.ID + "\n" +
+                        "Current Animation Name: " + CurrentAnimation.Name + "\n" +
+                        "Current Animation Sequence: " + seqIndex + "\n"
+                        );
+
+                }
             }
         }
 
@@ -271,6 +297,7 @@ namespace DesktopPet
             /// <param name="id">Animation ID to play.</param>
         private void SetNewAnimation(int id)
         {
+            if (CurrentAnimation.ID == Animations.AnimationKill) return;
             if (id < 0)  // no animation found, spawn!
             {
                 Play(false);
@@ -286,7 +313,7 @@ namespace DesktopPet
                     {
                         TChild childInfo = Animations.GetAnimationChild(id);
                         Form2 child = new Form2(Animations, Xml, new Point(Left, Top), !bMoveLeft);
-                        for(int i=0;i<imageList1.Images.Count-1;i++)
+                        for(int i=0;i<imageList1.Images.Count;i++)
                         {
                             child.addImage(imageList1.Images[i]);
                         }
@@ -330,7 +357,7 @@ namespace DesktopPet
                 dPosY = Top = Cursor.Position.Y + 2;
                 return;
             }
-
+            
             double x = CurrentAnimation.Start.X.Value;
             double y = CurrentAnimation.Start.Y.Value;
             // if TotalSteps is more than 1, we have to interpolate START and END values)
@@ -350,9 +377,13 @@ namespace DesktopPet
                 {
                     if (dPosX + x < 0)    // left screen border!
                     {
-                        x = -(int)dPosX;
-                        SetNewAnimation(Animations.SetNextBorderAnimation(CurrentAnimation.ID, TNextAnimation.TOnly.VERTICAL));
-                        bNewAnimation = true;
+                        int iBorderAnimation = Animations.SetNextBorderAnimation(CurrentAnimation.ID, TNextAnimation.TOnly.WINDOW);
+                        if (iBorderAnimation >= 0)
+                        {
+                            x = -(int)dPosX;
+                            SetNewAnimation(Animations.SetNextBorderAnimation(CurrentAnimation.ID, TNextAnimation.TOnly.VERTICAL));
+                            bNewAnimation = true;
+                        }
                     }
                 }
                 else
@@ -362,9 +393,18 @@ namespace DesktopPet
                     {
                         if (dPosX + x < rct.Left)    // left window border!
                         {
-                            x = -(int)dPosX + rct.Left;
-                            SetNewAnimation(Animations.SetNextBorderAnimation(CurrentAnimation.ID, TNextAnimation.TOnly.WINDOW));
-                            bNewAnimation = true;
+                            int iBorderAnimation = Animations.SetNextBorderAnimation(CurrentAnimation.ID, TNextAnimation.TOnly.WINDOW);
+                            if (iBorderAnimation >= 0)
+                            {
+                                x = -(int)dPosX + rct.Left;
+                                SetNewAnimation(Animations.SetNextBorderAnimation(CurrentAnimation.ID, TNextAnimation.TOnly.WINDOW));
+                                bNewAnimation = true;
+                            }
+                            else
+                            {
+                                // not anymore on the window
+                                hwndWindow = (IntPtr)0;
+                            }
                         }
                     }
                 }
@@ -375,9 +415,13 @@ namespace DesktopPet
                 {
                     if (dPosX + x + Width > Screen.PrimaryScreen.WorkingArea.Width)    // right screen border!
                     {
-                        x = Screen.PrimaryScreen.WorkingArea.Width - Width - (int)dPosX;
-                        SetNewAnimation(Animations.SetNextBorderAnimation(CurrentAnimation.ID, TNextAnimation.TOnly.VERTICAL));
-                        bNewAnimation = true;
+                        int iBorderAnimation = Animations.SetNextBorderAnimation(CurrentAnimation.ID, TNextAnimation.TOnly.WINDOW);
+                        if (iBorderAnimation >= 0)
+                        {
+                            x = Screen.PrimaryScreen.WorkingArea.Width - Width - (int)dPosX;
+                            SetNewAnimation(Animations.SetNextBorderAnimation(CurrentAnimation.ID, TNextAnimation.TOnly.VERTICAL));
+                            bNewAnimation = true;
+                        }
                     }
                 }
                 else
@@ -387,9 +431,18 @@ namespace DesktopPet
                     {
                         if (dPosX + x + Width > rct.Right)    // right window border!
                         {
-                            x = rct.Right - Width - (int)dPosX;
-                            SetNewAnimation(Animations.SetNextBorderAnimation(CurrentAnimation.ID, TNextAnimation.TOnly.WINDOW));
-                            bNewAnimation = true;
+                            int iBorderAnimation = Animations.SetNextBorderAnimation(CurrentAnimation.ID, TNextAnimation.TOnly.WINDOW);
+                            if (iBorderAnimation >= 0)
+                            {
+                                x = rct.Right - Width - (int)dPosX;
+                                SetNewAnimation(Animations.SetNextBorderAnimation(CurrentAnimation.ID, TNextAnimation.TOnly.WINDOW));
+                                bNewAnimation = true;
+                            }
+                            else
+                            {
+                                    // not anymore on the window
+                                hwndWindow = (IntPtr)0;
+                            }
                         }
                     }
                 }
@@ -453,9 +506,25 @@ namespace DesktopPet
                 }
                 else
                 {
-                    iNextAni = Animations.SetNextSequenceAnimation(CurrentAnimation.ID, dPosY + Height + y >= Screen.PrimaryScreen.WorkingArea.Height - 2 ? TNextAnimation.TOnly.TASKBAR : TNextAnimation.TOnly.NONE);
+                        // If pet is outside the borders, spawn it again.
+                    if (Left <= -Width || Left >= Screen.PrimaryScreen.Bounds.Width)
+                        iNextAni = -1;
+                    else
+                        iNextAni = Animations.SetNextSequenceAnimation(CurrentAnimation.ID, dPosY + Height + y >= Screen.PrimaryScreen.WorkingArea.Height - 2 ? TNextAnimation.TOnly.TASKBAR : TNextAnimation.TOnly.NONE);
                 }
-                if (iNextAni >= 0)
+                if(CurrentAnimation.ID == Animations.AnimationKill)
+                {
+                    double op;
+                    if (timer1.Tag == null || !double.TryParse(timer1.Tag.ToString(), out op)) timer1.Tag = 1.0;
+                    op = double.Parse(timer1.Tag.ToString());
+                    timer1.Tag = op - 0.1;
+                    Opacity = op;
+                    if (op <= 0.1)
+                    {
+                        Close();
+                    }
+                }
+                else if (iNextAni >= 0)
                 {
                     SetNewAnimation(iNextAni);
                     bNewAnimation = true;
@@ -465,10 +534,7 @@ namespace DesktopPet
                         // Child doesn't have a spawn, they will be closed once the animation is over.
                     if(Name=="child")
                     {
-                        timer1.Stop();
-                        timer1.Enabled = false;
                         StartUp.AddDebugInfo(StartUp.DEBUG_TYPE.info, "removing child");
-                        Hide();
                         Close();
                     }
                     else
@@ -659,11 +725,14 @@ namespace DesktopPet
             /// <param name="e">Mouse event values.</param>
         private void pictureBox1_MouseDown(object sender, MouseEventArgs e)
         {
-            hwndWindow = (IntPtr)0;             // Remove window handles
-            TopMost = false;
-            TopMost = true;                     // Set again the topmost
-            bDragging = true;                   // Flag it as dragging pet
-            SetNewAnimation(Animations.AnimationDrag);  // Set the dragging animation (if present)
+            if (e.Button == MouseButtons.Left)
+            {
+                hwndWindow = (IntPtr)0;             // Remove window handles
+                TopMost = false;
+                TopMost = true;                     // Set again the topmost
+                bDragging = true;                   // Flag it as dragging pet
+                SetNewAnimation(Animations.AnimationDrag);  // Set the dragging animation (if present)
+            }
         }
 
             /// <summary>
@@ -673,15 +742,35 @@ namespace DesktopPet
             /// <param name="e">Mouse event values.</param>
         private void pictureBox1_MouseUp(object sender, MouseEventArgs e)
         {
-            SetNewAnimation(Animations.AnimationFall);
+            if (e.Button == MouseButtons.Left)
+            {
+                SetNewAnimation(Animations.AnimationFall);
+            }
             bDragging = false;
         }
-
+        
             /// <summary>
-            /// Pet allows dropping other files. If you drop a XML animation file, the mouse icon will change.
+            /// Mouse double click on pet. From old eSheep, a double click with the right mouse will kill the sheep.
             /// </summary>
             /// <param name="sender">Caller object.</param>
             /// <param name="e">Mouse event values.</param>
+        private void pictureBox1_DoubleClick(object sender, EventArgs e)
+        {
+            MouseEventArgs me = (MouseEventArgs)e;
+            if (me.Button == MouseButtons.Right)
+            {
+                if(!Program.Mainthread.KillSheep(this))
+                {
+                    Close();
+                }
+            }
+        }
+
+        /// <summary>
+        /// Pet allows dropping other files. If you drop a XML animation file, the mouse icon will change.
+        /// </summary>
+        /// <param name="sender">Caller object.</param>
+        /// <param name="e">Mouse event values.</param>
         private void Form2_DragEnter(object sender, DragEventArgs e)
         {
             StartUp.AddDebugInfo(StartUp.DEBUG_TYPE.info, "dragging file...");
@@ -704,11 +793,16 @@ namespace DesktopPet
             }
 
         }
+
+        private void Form2_FormClosed(object sender, FormClosedEventArgs e)
+        {
+            if(!IsDisposed) Dispose();
+        }
     }
 
-        /// <summary>
-        /// Native methods for the windows detection functionality. User32.dll is used for this.
-        /// </summary>
+    /// <summary>
+    /// Native methods for the windows detection functionality. User32.dll is used for this.
+    /// </summary>
     internal static class NativeMethods
     {
             /// <summary>

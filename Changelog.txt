@@ -1,0 +1,31 @@
+﻿CHANGELOG
+============================================================================================
+
+0.9.3.0 - Code
+ - XML Parsing checked if a number could be random to parse it every time. This was replaced with "Dynamic" because also imageX (parent X) has to be parsed each time.
+ - Added Help form
+ - XML: Possibility to get parent position in the animation XML (with imageX and imageY)
+ - XML: If there is no "kill"-animation, the pet will be closed immediately
+ - If there is an error during an animation (freezing), a message will show the error details.
+ - Solved bug: child animation had a sprite frame less than parent.
+ - New: Start the application with a web or local XML animation.
+ - New: If there is a "installpet.xml" on the same path, the application will use this xml for the animation and will remove this file once it was loaded.
+
+0.9.3.0 - Public
+ - Added help to the program
+ - New: Double click with the right mouse button to kill a single pet - the original eSheep had this function.
+ - New: Publish your PET and give this signed app directly with your pet! Hack/Tutorial will be released soon.
+ - Solved bug: Child animations can't be picked up anymore (and converted to pet).
+ - Improved: An animation without border collision cause a respawn, now the pet will respawn only if it is over the screen borders and not on collision.
+ - Improved: Killed pet will fade out (with transparency).
+ - Improved: Allow to start the application up to 2 times instead of only 1 time.
+ - New: command arguments: 
+				- DesktopPet.exe localxml:animation.xml --------> Will load a local animation instead of the sheep
+				- DesktopPet.exe webxml:http://esheep.petrucci.ch/animation.xml  ---------> Will load a web animation instead of the sheep
+				- DesktopPet.exe install=yes ---------> Open directly the install-window
+ 
+
+============================================================================================
+
+0.9.2.0
+- Base Version

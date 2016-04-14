@@ -57,6 +57,7 @@
             this.pictureBox1.Size = new System.Drawing.Size(40, 40);
             this.pictureBox1.TabIndex = 3;
             this.pictureBox1.TabStop = false;
+            this.pictureBox1.DoubleClick += new System.EventHandler(this.pictureBox1_DoubleClick);
             this.pictureBox1.MouseDown += new System.Windows.Forms.MouseEventHandler(this.pictureBox1_MouseDown);
             this.pictureBox1.MouseUp += new System.Windows.Forms.MouseEventHandler(this.pictureBox1_MouseUp);
             // 
@@ -79,6 +80,7 @@
             this.Text = "Sheep";
             this.TopMost = true;
             this.TransparencyKey = System.Drawing.Color.Magenta;
+            this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.Form2_FormClosed);
             this.DragDrop += new System.Windows.Forms.DragEventHandler(this.Form2_DragDrop);
             this.DragEnter += new System.Windows.Forms.DragEventHandler(this.Form2_DragEnter);
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();

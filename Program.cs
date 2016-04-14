@@ -27,11 +27,26 @@ namespace DesktopPet
         /// </summary>
         public static StartUp Mainthread;
 
-            /// <summary>
-            /// The main entry point for the application.
-            /// </summary>
+        /// <summary>
+        /// Argument: load local animation XML.
+        /// </summary>
+        public static string ArgumentLocalXML = "";
+
+        /// <summary>
+        /// Argument: load animation XML from web.
+        /// </summary>
+        public static string ArgumentWebXML = "";
+        
+        /// <summary>
+        /// Argument: open the installer when application starts.
+        /// </summary>
+        public static string ArgumentInstall = "";
+
+        /// <summary>
+        /// The main entry point for the application.
+        /// </summary>
         [STAThread]
-        static void Main()
+        static void Main(string[] args)
         {
             int iMutexIndex = 0;
 
@@ -54,6 +69,37 @@ namespace DesktopPet
             {
                 MessageBox.Show("Can't execute application: " + ex.Message);
                 return;
+            }
+            
+            string SearchStringLocalXml = "localxml=";
+            string SearchStringWebXml = "webxml=";
+            string SearchStringInstall = "install=";
+            foreach (string s in args)
+            {
+                if(s.IndexOf(SearchStringLocalXml) >= 0)
+                {
+                    ArgumentLocalXML = s.Substring(s.IndexOf(SearchStringLocalXml) + SearchStringLocalXml.Length);
+                    if(ArgumentLocalXML.IndexOf(" ") >= 0)
+                    {
+                        ArgumentLocalXML = ArgumentLocalXML.Substring(0, ArgumentLocalXML.IndexOf(" "));
+                    }
+                }
+                else if (s.IndexOf(SearchStringWebXml) >= 0)
+                {
+                    ArgumentWebXML = s.Substring(s.IndexOf(SearchStringWebXml) + SearchStringWebXml.Length);
+                    if (ArgumentWebXML.IndexOf(" ") >= 0)
+                    {
+                        ArgumentWebXML = ArgumentWebXML.Substring(0, ArgumentWebXML.IndexOf(" "));
+                    }
+                }
+                else if (s.IndexOf(SearchStringInstall) >= 0)
+                {
+                    ArgumentInstall = s.Substring(s.IndexOf(SearchStringInstall) + SearchStringInstall.Length);
+                    if (ArgumentInstall.IndexOf(" ") >= 0)
+                    {
+                        ArgumentInstall = ArgumentInstall.Substring(0, ArgumentInstall.IndexOf(" "));
+                    }
+                }
             }
 
             Application.SetCompatibleTextRenderingDefault(false);

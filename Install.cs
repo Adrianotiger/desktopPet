@@ -58,7 +58,9 @@ namespace DesktopPet
             desktopPath = Environment.GetFolderPath(Environment.SpecialFolder.DesktopDirectory);
             startMenuPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.StartMenu), "Programs");
             autostartPath = Environment.GetFolderPath(Environment.SpecialFolder.Startup);
-            CheckUpdates();
+                // Check updates only if the application is installed (so downloads from other page will not notify an update after download)
+            if(IsApplicationInstalled())
+                CheckUpdates();
         }
 
             /// <summary>
@@ -68,7 +70,8 @@ namespace DesktopPet
             /// <param name="e">Arguments values.</param>
         private void Install_Load(object sender, EventArgs e)
         {
-            
+            Text = "Install " + Animations.Xml.AnimationXML.Header.Title;
+            label1.Text = "Install " + Animations.Xml.AnimationXML.Header.Petname;
         }
 
             /// <summary>
@@ -163,6 +166,7 @@ namespace DesktopPet
         private void InstallApplication()
         {
             string sDestExe = installPath + "\\" + appName + ".exe";
+            bool bPersonalIcon = true;
             if (!Directory.Exists(installPath))
             {
                 Directory.CreateDirectory(installPath);
@@ -178,12 +182,42 @@ namespace DesktopPet
                 return;
             }
 
-            string contents = $@"
+            try
+            {
+                FileStream fs = File.OpenWrite(installPath + "\\installpet.xml");
+                fs.Write(System.Text.Encoding.UTF8.GetBytes(Animations.Xml.AnimationXMLString), 0, Animations.Xml.AnimationXMLString.Length);
+                fs.Close();
+
+                fs = File.OpenWrite(installPath + "\\icon.ico");
+                byte[] sIco = Animations.Xml.bitmapIcon.ToArray();
+                fs.Write(sIco, 0, sIco.Length);
+                fs.Close();
+            }
+            catch(Exception)
+            {
+                bPersonalIcon = false;
+            }
+
+            string contents;
+
+            if (bPersonalIcon)
+            {
+                contents = $@"
+[InternetShortcut] 
+URL=file:///{sDestExe.Replace('\\', '/')}
+IconFile={installPath+"\\icon.ico"}
+IconIndex=0 
+            ";
+            }
+            else
+            {
+                contents = $@"
 [InternetShortcut] 
 URL=file:///{sDestExe.Replace('\\', '/')}
 IconFile={sDestExe.Replace('\\', '/')}
 IconIndex=0 
             ";
+            }
 
                 // add to start menu
             if (checkBox1.Checked)

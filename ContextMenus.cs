@@ -9,7 +9,7 @@ namespace DesktopPet
         /// The only way to interact with the application (not the pet itself) is over the context menu.<br />
         /// This menu is available once you press on the tray icon (near the windows clock).
         /// </summary>
-    class ContextMenus
+    class ContextMenus : IDisposable
     {
             /// <summary>
             /// If the about dialog is visible.
@@ -103,7 +103,14 @@ namespace DesktopPet
             item.Image = Resources.about;
             menu.Items.Add(item);
 
-                // Item: Separator.
+            // Item: Help.
+            item = new ToolStripMenuItem();
+            item.Text = "&Help";
+            item.Click += new EventHandler(Help_Click);
+            item.Image = Resources.help;
+            menu.Items.Add(item);
+
+            // Item: Separator.
             sep = new ToolStripSeparator();
             menu.Items.Add(sep);
 
@@ -181,11 +188,22 @@ namespace DesktopPet
             }
         }
 
-            /// <summary>
-            /// Handles the Click event of the Option control. Open a dialog if no other dialog is still opened.
-            /// </summary>
-            /// <param name="sender">The source of the event.</param>
-            /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
+        /// <summary>
+        /// Handles the Click event of the Help control. Open a dialog if no other dialog is still opened.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
+        void Help_Click(object sender, EventArgs e)
+        {
+            FormHelp help = new FormHelp();
+            help.Show();
+        }
+
+        /// <summary>
+        /// Handles the Click event of the Option control. Open a dialog if no other dialog is still opened.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
         void Options_Click(object sender, EventArgs e)
         {
             if(isAboutLoaded)
@@ -210,6 +228,18 @@ namespace DesktopPet
             // Quit without further ado.
             //Application.Exit();
             Program.Mainthread.KillSheeps(true);
+        }
+
+
+        /// <summary>
+        /// Releases unmanaged and - optionally - managed resources
+        /// </summary>
+        public void Dispose()
+        {
+            if(installForm != null)
+            {
+                installForm.Dispose();
+            }
         }
     }
 }

@@ -64,7 +64,7 @@
     </ManifestKeyFile>
   </PropertyGroup>
   <PropertyGroup>
-    <GenerateManifests>true</GenerateManifests>
+    <GenerateManifests>false</GenerateManifests>
   </PropertyGroup>
   <PropertyGroup>
     <TargetZone>LocalIntranet</TargetZone>
@@ -76,13 +76,14 @@
     <SignManifests>false</SignManifests>
   </PropertyGroup>
   <PropertyGroup>
-    <SignAssembly>true</SignAssembly>
+    <SignAssembly>false</SignAssembly>
   </PropertyGroup>
   <PropertyGroup>
     <ManifestTimestampUrl>http://time.certum.pl/</ManifestTimestampUrl>
   </PropertyGroup>
   <PropertyGroup>
-    <AssemblyOriginatorKeyFile>DesktopPet_TemporaryKey.pfx</AssemblyOriginatorKeyFile>
+    <AssemblyOriginatorKeyFile>
+    </AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <PropertyGroup>
     <DelaySign>false</DelaySign>
@@ -108,6 +109,12 @@
     </Compile>
     <Compile Include="Animations.cs" />
     <Compile Include="ContextMenus.cs" />
+    <Compile Include="FormHelp.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FormHelp.Designer.cs">
+      <DependentUpon>FormHelp.cs</DependentUpon>
+    </Compile>
     <Compile Include="Install.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -120,6 +127,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
+    <Compile Include="Settings.cs" />
     <Compile Include="StartUp.cs" />
     <Compile Include="Form2.cs">
       <SubType>Form</SubType>
@@ -144,12 +152,16 @@
     <Compile Include="Xml.cs" />
     <EmbeddedResource Include="AboutBox.resx">
       <DependentUpon>AboutBox.cs</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Form2.resx">
       <DependentUpon>Form2.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="FormDebug.resx">
       <DependentUpon>FormDebug.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FormHelp.resx">
+      <DependentUpon>FormHelp.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="FormOptions.resx">
       <DependentUpon>FormOptions.cs</DependentUpon>
@@ -163,7 +175,6 @@
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
     <None Include="app.config" />
-    <None Include="DesktopPet_TemporaryKey.pfx" />
     <None Include="Docs\Documentation.chm" />
     <None Include="Properties\app.manifest" />
     <None Include="Properties\Settings.settings">
@@ -180,7 +191,10 @@
     </None>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Changelog.txt" />
+    <Content Include="Docs\Help.html" />
     <Content Include="Images\exit.png" />
+    <Content Include="Images\help.png" />
     <None Include="Images\install.png" />
     <None Include="Images\option.png" />
     <Content Include="Images\about.png" />
@@ -213,7 +227,7 @@
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
-    <PostBuildEvent>"C:\Program Files (x86)\Windows Kits\10\bin\x86\signtool" sign /s my /n "Open Source Developer, Adriano Petrucci" /fd sha256 /v /tr http://timestamp.comodoca.com/rfc3161 /td sha256 /as $(TargetPath)
+    <PostBuildEvent>if $(ConfigurationName) == Release "C:\Program Files (x86)\Windows Kits\10\bin\x86\signtool" sign /s my /n "Open Source Developer, Adriano Petrucci" /fd sha256 /v /tr http://timestamp.comodoca.com/rfc3161 /td sha256 /as $(TargetPath)
 </PostBuildEvent>
   </PropertyGroup>
   <PropertyGroup>

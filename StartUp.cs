@@ -113,6 +113,12 @@ namespace DesktopPet
             timer1.Tick += new EventHandler(timer1_Tick);
             timer1.Interval = 1000;
             timer1.Enabled = true;
+
+            if(Program.ArgumentInstall == "yes")
+            {
+                Install install = new Install();
+                install.ShowInstallation();
+            }
         }
 
             /// <summary>
@@ -179,20 +185,69 @@ namespace DesktopPet
             timer1.Tag = "0";
             pi.Dispose();
 
-            Random rand = new Random();
+                // Leave open application to show some kill animations. 
+                // Only if there is a pet on the desktop.
+            if (iSheeps > 0)
+            {
+                Random rand = new Random();
+                for (int i = 0; i < iSheeps; i++)
+                {
+                    Thread.Sleep(rand.Next(100, 200));
+                    sheeps[i].Kill();
+                    Application.DoEvents();
+                }
+                iSheeps = 0;
+
+                if (exit)
+                {
+                    timer1.Interval = 1100;
+                    timer1.Enabled = true;
+                }
+            }
+            else
+            {
+                timer1.Interval = 100;
+                timer1.Enabled = true;
+            }
+        }
+
+            /// <summary>
+            /// Close a single sheep on the desktop.
+            /// </summary>
+            /// <param name="sheep">The sheep-form to close.</param>
+        public bool KillSheep(Form2 sheep)
+        {
+            bool bSheepRemoved = false;
+
+            AddDebugInfo(DEBUG_TYPE.info, "Kill one sheep");
+            
             for (int i = 0; i < iSheeps; i++)
             {
-                Thread.Sleep(rand.Next(100, 200));
-                sheeps[i].Kill();
-                Application.DoEvents();
+                if(sheeps[i] == sheep)
+                {
+                    sheeps[i].Kill();
+                    for (int j = i; j < iSheeps - 1; j++) sheeps[j] = sheeps[j + 1];
+                    iSheeps--;
+                    Application.DoEvents();
+                    bSheepRemoved = true;
+                    break;
+                }
             }
-            iSheeps = 0;
 
-            if (exit)
+            /*
+             * This will close application if all Sheeps are removed. But Maybe the user want see the try icon to add a sheep later.
+             * Maybe in future you can choose 0 to 10 sheeps at startup, so this is commented out for the moment.
+            if (iSheeps <= 0)
             {
+                timer1.Tag = "0";
+                pi.Dispose();
+
                 timer1.Interval = 1100;
                 timer1.Enabled = true;
             }
+            */
+
+            return bSheepRemoved;
         }
 
             /// <summary>

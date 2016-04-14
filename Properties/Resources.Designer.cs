@@ -77,7 +77,7 @@ namespace DesktopPet.Properties {
         ///&lt;author&gt;Adriano&lt;/author&gt;
         ///&lt;title&gt;eSheep 64bit&lt;/title&gt;
         ///&lt;petname&gt;eSheep&lt;/petname&gt;
-        ///&lt;version&gt;1.3&lt;/version&gt;
+        ///&lt;version&gt;1.5&lt;/version&gt;
         ///&lt;info&gt;Open source project for the lovely eSheep.[br] For more info, visit my webpage [link:http://esheep.petrucci.ch] [br]Image rip by LiL_ [rest of string was truncated]&quot;;.
         /// </summary>
         internal static string animations {
@@ -124,6 +124,16 @@ namespace DesktopPet.Properties {
         internal static System.Drawing.Bitmap exit {
             get {
                 object obj = ResourceManager.GetObject("exit", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap help {
+            get {
+                object obj = ResourceManager.GetObject("help", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

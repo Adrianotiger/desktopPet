@@ -376,6 +376,11 @@ namespace DesktopPet
         public RootNode AnimationXML;
 
             /// <summary>
+            /// XML String, used for the current running animation.
+            /// </summary>
+        public string AnimationXMLString;
+
+            /// <summary>
             /// Structure with the sprite sheet informations.
             /// </summary>
         public Images images;
@@ -461,7 +466,38 @@ namespace DesktopPet
             // Try to load local XML
             try
             {
-                writer.Write(Properties.Settings.Default.xml);
+                if(File.Exists(Application.StartupPath + "\\installpet.xml"))
+                {
+                    string sXML = System.Text.Encoding.Default.GetString(File.ReadAllBytes(Application.StartupPath + "\\installpet.xml"));
+                    File.Delete(Application.StartupPath + "\\installpet.xml");
+                    writer.Write(sXML);
+                    AnimationXMLString = sXML;
+                    Properties.Settings.Default.xml = sXML;
+                    Properties.Settings.Default.Save();
+                }
+                else if (Program.ArgumentLocalXML != "")
+                {
+                    string sXML = System.Text.Encoding.Default.GetString(File.ReadAllBytes(Program.ArgumentLocalXML));
+                    writer.Write(sXML);
+                    AnimationXMLString = sXML;
+                }
+                else if (Program.ArgumentWebXML != "")
+                {
+                    System.Net.WebClient client = new System.Net.WebClient();
+                    string sXML = client.DownloadString(Program.ArgumentWebXML);
+                    writer.Write(sXML);
+                    AnimationXMLString = sXML;
+                }
+                else
+                {
+                    writer.Write(Properties.Settings.Default.xml);
+                    AnimationXMLString = Properties.Settings.Default.xml;
+                }
+
+                    // Don't load personal pets anymore
+                Program.ArgumentLocalXML = "";  
+                Program.ArgumentWebXML = "";
+
                 //writer.Write(Properties.Resources.animations);
                 writer.Flush();
                 stream.Position = 0;
@@ -481,6 +517,7 @@ namespace DesktopPet
                 
                 writer.Write(Properties.Resources.animations);
                 writer.Flush();
+                AnimationXMLString = Properties.Resources.animations;
                 stream.Position = 0;
                 // Call the Deserialize method and cast to the object type.
                 AnimationXML = (RootNode)mySerializer.Deserialize(stream);
@@ -705,7 +742,7 @@ namespace DesktopPet
             TValue v;
 
             v.Compute = text;
-            v.Random = (v.Compute.IndexOf("random") >= 0 || v.Compute.IndexOf("randS") >= 0);
+            v.IsDynamic = (v.Compute.IndexOf("random") >= 0 || v.Compute.IndexOf("randS") >= 0 || v.Compute.IndexOf("imageX") >= 0 || v.Compute.IndexOf("imageY") >= 0);
             v.Value = parseValue(v.Compute);
 
             return v;
@@ -726,6 +763,18 @@ namespace DesktopPet
             DataTable dt = new DataTable();
             Random rand = new Random();
 
+                // When adding a child, it is important to place the child on the other side of the parent, if the parent is flipped.
+            if(parentFlipped)
+            {
+                if (sText.IndexOf("-imageW") >= 0)
+                {
+                    sText = sText.Replace("-imageW", "+imageW");
+                }
+                else
+                {
+                    sText = sText.Replace("imageW", "(-imageW)");
+                }
+            }
             sText = sText.Replace("screenW", Screen.PrimaryScreen.Bounds.Width.ToString(CultureInfo.InvariantCulture));
             sText = sText.Replace("screenH", Screen.PrimaryScreen.Bounds.Height.ToString(CultureInfo.InvariantCulture));
             sText = sText.Replace("areaW", Screen.PrimaryScreen.WorkingArea.Width.ToString(CultureInfo.InvariantCulture));
