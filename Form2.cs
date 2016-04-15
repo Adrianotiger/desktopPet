@@ -377,11 +377,11 @@ namespace DesktopPet
                 {
                     if (dPosX + x < 0)    // left screen border!
                     {
-                        int iBorderAnimation = Animations.SetNextBorderAnimation(CurrentAnimation.ID, TNextAnimation.TOnly.WINDOW);
+                        int iBorderAnimation = Animations.SetNextBorderAnimation(CurrentAnimation.ID, TNextAnimation.TOnly.VERTICAL);
                         if (iBorderAnimation >= 0)
                         {
                             x = -(int)dPosX;
-                            SetNewAnimation(Animations.SetNextBorderAnimation(CurrentAnimation.ID, TNextAnimation.TOnly.VERTICAL));
+                            SetNewAnimation(iBorderAnimation);
                             bNewAnimation = true;
                         }
                     }
@@ -397,7 +397,7 @@ namespace DesktopPet
                             if (iBorderAnimation >= 0)
                             {
                                 x = -(int)dPosX + rct.Left;
-                                SetNewAnimation(Animations.SetNextBorderAnimation(CurrentAnimation.ID, TNextAnimation.TOnly.WINDOW));
+                                SetNewAnimation(iBorderAnimation);
                                 bNewAnimation = true;
                             }
                             else
@@ -415,11 +415,11 @@ namespace DesktopPet
                 {
                     if (dPosX + x + Width > Screen.PrimaryScreen.WorkingArea.Width)    // right screen border!
                     {
-                        int iBorderAnimation = Animations.SetNextBorderAnimation(CurrentAnimation.ID, TNextAnimation.TOnly.WINDOW);
+                        int iBorderAnimation = Animations.SetNextBorderAnimation(CurrentAnimation.ID, TNextAnimation.TOnly.VERTICAL);
                         if (iBorderAnimation >= 0)
                         {
                             x = Screen.PrimaryScreen.WorkingArea.Width - Width - (int)dPosX;
-                            SetNewAnimation(Animations.SetNextBorderAnimation(CurrentAnimation.ID, TNextAnimation.TOnly.VERTICAL));
+                            SetNewAnimation(iBorderAnimation);
                             bNewAnimation = true;
                         }
                     }
@@ -435,7 +435,7 @@ namespace DesktopPet
                             if (iBorderAnimation >= 0)
                             {
                                 x = rct.Right - Width - (int)dPosX;
-                                SetNewAnimation(Animations.SetNextBorderAnimation(CurrentAnimation.ID, TNextAnimation.TOnly.WINDOW));
+                                SetNewAnimation(iBorderAnimation);
                                 bNewAnimation = true;
                             }
                             else
