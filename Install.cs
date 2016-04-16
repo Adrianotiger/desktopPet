@@ -59,7 +59,7 @@ namespace DesktopPet
             startMenuPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.StartMenu), "Programs");
             autostartPath = Environment.GetFolderPath(Environment.SpecialFolder.Startup);
                 // Check updates only if the application is installed (so downloads from other page will not notify an update after download)
-            if(IsApplicationInstalled())
+            //if(IsApplicationInstalled())
                 CheckUpdates();
         }
 
@@ -428,7 +428,20 @@ IconIndex=0
             }
             if(versionApp != versionWeb)
             {
-                if(MessageBox.Show("A newer version was found on the web: " + versionWeb + ". \nDo you want install it now?", appName + " version: " + versionApp, MessageBoxButtons.YesNoCancel, MessageBoxIcon.Question) == DialogResult.Yes)
+                WebRequest requestChangelog = WebRequest.Create(webpage + "/version.php?changelog");
+
+                WebResponse responseChangelog = requestChangelog.GetResponse();
+                Stream dataChangelog = responseChangelog.GetResponseStream();
+                string changeLog = Application.ProductVersion;
+                using (StreamReader sr = new StreamReader(dataChangelog))
+                {
+                    changeLog = sr.ReadToEnd();
+                    changeLog = changeLog.Substring(changeLog.IndexOf("<ul>")+4);
+                    changeLog = changeLog.Substring(0, changeLog.IndexOf("</ul>"));
+                    changeLog = changeLog.Replace("<li>", " - ");
+                }
+
+                if (MessageBox.Show("A newer version was found on the web: " + versionWeb + "\n==========================\nCHANGELOG:\n" + changeLog  + "\n========================== \nDo you want install it now?", appName + " version: " + versionApp, MessageBoxButtons.YesNoCancel, MessageBoxIcon.Question) == DialogResult.Yes)
                 {
                     var webClient = new WebClient();
                     webClient.DownloadFileCompleted += WebClient_DownloadFileCompleted;
