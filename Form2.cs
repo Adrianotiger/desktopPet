@@ -115,24 +115,41 @@ namespace DesktopPet
             /// <summary>
             /// With this overridden function, it is possible to remove the application from the ALT-TAB list.
             /// This, because it is not nice to see 10 times the same sheep when you press ALT-TAB (with 10 sheeps walking on your screen).
+            /// If this form is a child, remove the possibility to interact with this form.
+            /// See: https://msdn.microsoft.com/en-us/library/windows/desktop/ff700543(v=vs.85).aspx
             /// </summary>
         protected override CreateParams CreateParams
         {
             get
             {
-                // Turn on WS_EX_TOOLWINDOW style bit
                 CreateParams cp = base.CreateParams;
-                cp.ExStyle |= 0x80;
+
+                cp.ExStyle |= 0x80; // WS_EX_TOOLWINDOW             <- remove from ALT-TAB list
+                cp.ExStyle |= 0x08; // WS_EX_TOPMOST                <- set on TopMost
+                cp.ExStyle |= 0x00080000; // WS_EX_LAYERED          <- increase paint performance
+
+                if (Name == "child")
+                {
+                    cp.ExStyle |= 0x08000000;   //WS_EX_NOACTIVATE  <- prevent focus when created
+                }
                 return cp;
             }
         }
 
             /// <summary>
-            /// Once the form was created, this is the next function to call.
-            /// It will set the size of the pet. Form will still be invisible because it has an opacity of 0.0.
+            /// With this overridden function, it is possible to prevent the form to get the focus once created.
             /// </summary>
-            /// <param name="w">Single frame width</param>
-            /// <param name="h">Single frame height</param>
+        protected override bool ShowWithoutActivation
+        {
+            get { return true; }
+        }
+
+        /// <summary>
+        /// Once the form was created, this is the next function to call.
+        /// It will set the size of the pet. Form will still be invisible because it has an opacity of 0.0.
+        /// </summary>
+        /// <param name="w">Single frame width</param>
+        /// <param name="h">Single frame height</param>
         public void Show(int w, int h)
         {
             Width = w;
@@ -354,7 +371,7 @@ namespace DesktopPet
             if (bDragging)
             {
                 dPosX = Left = Cursor.Position.X - Width / 2;
-                dPosY = Top = Cursor.Position.Y + 2;
+                dPosY = Top = Cursor.Position.Y - 2;
                 return;
             }
             
@@ -486,7 +503,7 @@ namespace DesktopPet
                 }
             }
 
-            if (iAnimationStep >= CurrentAnimation.Sequence.TotalSteps - 1) // animation over
+            if (iAnimationStep >= CurrentAnimation.Sequence.TotalSteps) // animation over
             {
                 int iNextAni = -1;
                 if(CurrentAnimation.Sequence.Action == "flip")
@@ -507,7 +524,7 @@ namespace DesktopPet
                 else
                 {
                         // If pet is outside the borders, spawn it again.
-                    if (Left <= -Width || Left >= Screen.PrimaryScreen.Bounds.Width)
+                    if (Left < -Width || Left > Screen.PrimaryScreen.Bounds.Width)
                         iNextAni = -1;
                     else
                         iNextAni = Animations.SetNextSequenceAnimation(CurrentAnimation.ID, dPosY + Height + y >= Screen.PrimaryScreen.WorkingArea.Height - 2 ? TNextAnimation.TOnly.TASKBAR : TNextAnimation.TOnly.NONE);
@@ -725,7 +742,7 @@ namespace DesktopPet
             /// <param name="e">Mouse event values.</param>
         private void pictureBox1_MouseDown(object sender, MouseEventArgs e)
         {
-            if (e.Button == MouseButtons.Left)
+            if (e.Button == MouseButtons.Left && Name != "child")
             {
                 hwndWindow = (IntPtr)0;             // Remove window handles
                 TopMost = false;
@@ -742,7 +759,7 @@ namespace DesktopPet
             /// <param name="e">Mouse event values.</param>
         private void pictureBox1_MouseUp(object sender, MouseEventArgs e)
         {
-            if (e.Button == MouseButtons.Left)
+            if (e.Button == MouseButtons.Left && Name != "child")
             {
                 SetNewAnimation(Animations.AnimationFall);
             }
@@ -788,8 +805,11 @@ namespace DesktopPet
             string[] files = (string[])e.Data.GetData(DataFormats.FileDrop);
             foreach (string file in files)
             {
-                Program.Mainthread.LoadNewXMLFromString(File.ReadAllText(file));
-                break;  // Currently only 1 file, in future maybe more animations at the same time
+                if (file.Contains(".xml"))
+                {
+                    Program.Mainthread.LoadNewXMLFromString(File.ReadAllText(file));
+                    break;  // Currently only 1 file, in future maybe more animations at the same time
+                }
             }
 
         }

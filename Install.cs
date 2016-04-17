@@ -59,7 +59,7 @@ namespace DesktopPet
             startMenuPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.StartMenu), "Programs");
             autostartPath = Environment.GetFolderPath(Environment.SpecialFolder.Startup);
                 // Check updates only if the application is installed (so downloads from other page will not notify an update after download)
-            //if(IsApplicationInstalled())
+            if(IsApplicationInstalled())
                 CheckUpdates();
         }
 

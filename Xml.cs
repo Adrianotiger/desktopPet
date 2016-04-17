@@ -274,7 +274,7 @@ namespace DesktopPet
             /// <summary>
             ///  Graphical offset, from the physical position calculated for the pet.
             /// </summary>
-        [XmlElement("offsetY")]
+        [XmlElement("offsety")]
         public int OffsetY;
             /// <summary>
             ///  Opacity from 0.0 (invisible) to 1.0 (opaque).
