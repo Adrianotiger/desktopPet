@@ -176,6 +176,7 @@
     </EmbeddedResource>
     <None Include="app.config" />
     <None Include="Docs\Documentation.chm" />
+    <None Include="Docs\Manual - online editor.docx" />
     <None Include="Properties\app.manifest" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
