@@ -397,7 +397,7 @@ namespace DesktopPet
                         int iBorderAnimation = Animations.SetNextBorderAnimation(CurrentAnimation.ID, TNextAnimation.TOnly.VERTICAL);
                         if (iBorderAnimation >= 0)
                         {
-                            x = -(int)dPosX;
+                            x = 0;
                             SetNewAnimation(iBorderAnimation);
                             bNewAnimation = true;
                         }
@@ -413,7 +413,7 @@ namespace DesktopPet
                             int iBorderAnimation = Animations.SetNextBorderAnimation(CurrentAnimation.ID, TNextAnimation.TOnly.WINDOW);
                             if (iBorderAnimation >= 0)
                             {
-                                x = -(int)dPosX + rct.Left;
+                                x = rct.Left;
                                 SetNewAnimation(iBorderAnimation);
                                 bNewAnimation = true;
                             }
@@ -435,7 +435,7 @@ namespace DesktopPet
                         int iBorderAnimation = Animations.SetNextBorderAnimation(CurrentAnimation.ID, TNextAnimation.TOnly.VERTICAL);
                         if (iBorderAnimation >= 0)
                         {
-                            x = Screen.PrimaryScreen.WorkingArea.Width - Width - (int)dPosX;
+                            x = Screen.PrimaryScreen.WorkingArea.Width - Width;
                             SetNewAnimation(iBorderAnimation);
                             bNewAnimation = true;
                         }
@@ -451,7 +451,7 @@ namespace DesktopPet
                             int iBorderAnimation = Animations.SetNextBorderAnimation(CurrentAnimation.ID, TNextAnimation.TOnly.WINDOW);
                             if (iBorderAnimation >= 0)
                             {
-                                x = rct.Right - Width - (int)dPosX;
+                                x = rct.Right - Width;
                                 SetNewAnimation(iBorderAnimation);
                                 bNewAnimation = true;
                             }

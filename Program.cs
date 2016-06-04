@@ -58,10 +58,17 @@ namespace DesktopPet
                 if (!mutex.WaitOne(TimeSpan.FromSeconds(1), false))
                 {
                     iMutexIndex = 1;
-                    if (!mutex2.WaitOne(TimeSpan.FromSeconds(1), false))
+                    try
                     {
-                        MessageBox.Show("Application is already running! Only 2 instances are allowed.", "Information", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                        return;
+                        if (!mutex2.WaitOne(TimeSpan.FromSeconds(1), false))
+                        {
+                            MessageBox.Show("Application is already running! Only 2 instances are allowed.", "Information", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                            return;
+                        }
+                    }
+                    catch(Exception)
+                    {
+
                     }
                 }
             }
@@ -71,6 +78,7 @@ namespace DesktopPet
                 return;
             }
             
+                // Check and parse the arguments
             string SearchStringLocalXml = "localxml=";
             string SearchStringWebXml = "webxml=";
             string SearchStringInstall = "install=";
