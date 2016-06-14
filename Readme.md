@@ -16,6 +16,12 @@ You can download a compiled Windows EXE from this page:
 <a href='http://esheep.petrucci.ch'>http://esheep.petrucci.ch</a>
 There is also a documentation for the entire code:
 <a href='https://github.com/Adrianotiger/desktopPet/tree/master/Docs'>API Docs</a>
+<h1>Credits</h1>
+This project used other Open Source projects:
+<ul>
+<li><a href='https://naudio.codeplex.com'>NAudio</a> to play sounds
+<li><a href='https://github.com/jamesqo/Stall'>Stall</a> to install the application and create an uninstaller 
+</ul>
 <h1>Want to create your own mate/pet?</h1>
 The easy and fast way is to use the online editor:
 <a href='http://esheep.petrucci.ch/?pagina=editor'>Online editor</a>.
