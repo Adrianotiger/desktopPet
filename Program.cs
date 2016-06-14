@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Reflection;
 using System.Threading;
 using System.Windows.Forms;
 
@@ -42,6 +43,11 @@ namespace DesktopPet
         /// </summary>
         public static string ArgumentInstall = "";
 
+        static Assembly CurrentDomain_AssemblyResolve(object sender, ResolveEventArgs args)
+        {
+            return EmbeddedAssembly.Get(args.Name);
+        }
+
         /// <summary>
         /// The main entry point for the application.
         /// </summary>
@@ -49,6 +55,11 @@ namespace DesktopPet
         static void Main(string[] args)
         {
             int iMutexIndex = 0;
+
+            string resource1 = "DesktopPet.dll.NAudio.dll";
+            EmbeddedAssembly.Load(resource1, "NAudio.dll");
+            
+            AppDomain.CurrentDomain.AssemblyResolve += new ResolveEventHandler(CurrentDomain_AssemblyResolve);
 
             Application.EnableVisualStyles();
             // if you like to wait a few seconds in case that the instance is just 

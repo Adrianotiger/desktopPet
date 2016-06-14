@@ -77,5 +77,37 @@ namespace DesktopPet
             _stringFlags.LineAlignment = StringAlignment.Center;
             g.DrawString(_tabPage.Text, _tabFont, _textBrush, tabControl1.GetTabRect(e.Index), _stringFlags);
         }
+
+        private void FormOptions_Load(object sender, EventArgs e)
+        {
+            checkBox1.Checked = (Properties.Settings.Default.Volume > 0.0);
+            trackBar1.Value = (int)(Properties.Settings.Default.Volume * 10);
+            trackBar1.Enabled = checkBox1.Checked;
+        }
+
+        private void checkBox1_CheckedChanged(object sender, EventArgs e)
+        {
+            trackBar1.Enabled = checkBox1.Checked;
+            if(!trackBar1.Enabled)
+            {
+                trackBar1.Value = 0;
+                trackBar1_Scroll(sender, e);
+            }
+        }
+
+        private void trackBar1_Scroll(object sender, EventArgs e)
+        {
+            Properties.Settings.Default.Volume = (float)(trackBar1.Value / 10.0);
+            if(Properties.Settings.Default.Volume < 0.1f)
+            {
+                trackBar1.Enabled = false;
+                checkBox1.Checked = false;
+            }
+        }
+
+        private void button2_Click(object sender, EventArgs e)
+        {
+            Properties.Settings.Default.Save();
+        }
     }
 }

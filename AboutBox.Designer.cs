@@ -52,6 +52,8 @@
             this.label_title = new System.Windows.Forms.Label();
             this.label_version = new System.Windows.Forms.Label();
             this.richTextBox1 = new System.Windows.Forms.RichTextBox();
+            this.label11 = new System.Windows.Forms.Label();
+            this.linkLabel3 = new System.Windows.Forms.LinkLabel();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.flowLayoutPanel1.SuspendLayout();
             this.tableLayoutPanel1.SuspendLayout();
@@ -61,7 +63,7 @@
             // 
             // button_ok
             // 
-            this.button_ok.Location = new System.Drawing.Point(80, 330);
+            this.button_ok.Location = new System.Drawing.Point(83, 437);
             this.button_ok.Name = "button_ok";
             this.button_ok.Size = new System.Drawing.Size(92, 27);
             this.button_ok.TabIndex = 0;
@@ -118,7 +120,7 @@
             // 
             this.label4.AutoSize = true;
             this.label4.Dock = System.Windows.Forms.DockStyle.Top;
-            this.label4.Location = new System.Drawing.Point(3, 25);
+            this.label4.Location = new System.Drawing.Point(3, 55);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(328, 13);
             this.label4.TabIndex = 5;
@@ -129,7 +131,7 @@
             // 
             this.linkLabel1.AutoSize = true;
             this.linkLabel1.Dock = System.Windows.Forms.DockStyle.Top;
-            this.linkLabel1.Location = new System.Drawing.Point(3, 40);
+            this.linkLabel1.Location = new System.Drawing.Point(3, 70);
             this.linkLabel1.Name = "linkLabel1";
             this.linkLabel1.Size = new System.Drawing.Size(328, 13);
             this.linkLabel1.TabIndex = 6;
@@ -140,7 +142,7 @@
             // 
             // button2
             // 
-            this.button2.Location = new System.Drawing.Point(191, 330);
+            this.button2.Location = new System.Drawing.Point(194, 437);
             this.button2.Name = "button2";
             this.button2.Size = new System.Drawing.Size(92, 27);
             this.button2.TabIndex = 7;
@@ -152,7 +154,7 @@
             // 
             this.label5.AutoSize = true;
             this.label5.Dock = System.Windows.Forms.DockStyle.Top;
-            this.label5.Location = new System.Drawing.Point(3, 55);
+            this.label5.Location = new System.Drawing.Point(3, 85);
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(328, 13);
             this.label5.TabIndex = 8;
@@ -163,7 +165,7 @@
             // 
             this.linkLabel2.AutoSize = true;
             this.linkLabel2.Dock = System.Windows.Forms.DockStyle.Top;
-            this.linkLabel2.Location = new System.Drawing.Point(3, 70);
+            this.linkLabel2.Location = new System.Drawing.Point(3, 98);
             this.linkLabel2.Name = "linkLabel2";
             this.linkLabel2.Size = new System.Drawing.Size(328, 13);
             this.linkLabel2.TabIndex = 9;
@@ -179,7 +181,7 @@
             this.flowLayoutPanel1.Controls.Add(this.tableLayoutPanel3);
             this.flowLayoutPanel1.Location = new System.Drawing.Point(12, 4);
             this.flowLayoutPanel1.Name = "flowLayoutPanel1";
-            this.flowLayoutPanel1.Size = new System.Drawing.Size(337, 320);
+            this.flowLayoutPanel1.Size = new System.Drawing.Size(337, 427);
             this.flowLayoutPanel1.TabIndex = 10;
             // 
             // tableLayoutPanel1
@@ -203,22 +205,26 @@
             this.tableLayoutPanel2.Anchor = System.Windows.Forms.AnchorStyles.Top;
             this.tableLayoutPanel2.ColumnCount = 1;
             this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tableLayoutPanel2.Controls.Add(this.label11, 0, 1);
+            this.tableLayoutPanel2.Controls.Add(this.linkLabel3, 0, 2);
             this.tableLayoutPanel2.Controls.Add(this.label3, 0, 0);
-            this.tableLayoutPanel2.Controls.Add(this.label4, 0, 1);
-            this.tableLayoutPanel2.Controls.Add(this.label6, 0, 5);
-            this.tableLayoutPanel2.Controls.Add(this.linkLabel1, 0, 2);
-            this.tableLayoutPanel2.Controls.Add(this.label5, 0, 3);
-            this.tableLayoutPanel2.Controls.Add(this.linkLabel2, 0, 4);
+            this.tableLayoutPanel2.Controls.Add(this.label4, 0, 3);
+            this.tableLayoutPanel2.Controls.Add(this.label6, 0, 7);
+            this.tableLayoutPanel2.Controls.Add(this.linkLabel1, 0, 4);
+            this.tableLayoutPanel2.Controls.Add(this.label5, 0, 5);
+            this.tableLayoutPanel2.Controls.Add(this.linkLabel2, 0, 6);
             this.tableLayoutPanel2.Location = new System.Drawing.Point(3, 66);
             this.tableLayoutPanel2.Name = "tableLayoutPanel2";
-            this.tableLayoutPanel2.RowCount = 6;
+            this.tableLayoutPanel2.RowCount = 8;
             this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 25F));
             this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 15F));
             this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 15F));
             this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 15F));
             this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 15F));
             this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle());
-            this.tableLayoutPanel2.Size = new System.Drawing.Size(334, 117);
+            this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
+            this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
+            this.tableLayoutPanel2.Size = new System.Drawing.Size(334, 180);
             this.tableLayoutPanel2.TabIndex = 6;
             // 
             // label6
@@ -226,7 +232,7 @@
             this.label6.AutoSize = true;
             this.label6.Dock = System.Windows.Forms.DockStyle.Bottom;
             this.label6.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label6.Location = new System.Drawing.Point(3, 100);
+            this.label6.Location = new System.Drawing.Point(3, 163);
             this.label6.Name = "label6";
             this.label6.Size = new System.Drawing.Size(328, 17);
             this.label6.TabIndex = 9;
@@ -247,21 +253,21 @@
             this.tableLayoutPanel3.Controls.Add(this.label_title, 1, 1);
             this.tableLayoutPanel3.Controls.Add(this.label_version, 1, 2);
             this.tableLayoutPanel3.Controls.Add(this.richTextBox1, 1, 3);
-            this.tableLayoutPanel3.Location = new System.Drawing.Point(3, 189);
+            this.tableLayoutPanel3.Location = new System.Drawing.Point(3, 252);
             this.tableLayoutPanel3.Name = "tableLayoutPanel3";
             this.tableLayoutPanel3.RowCount = 4;
             this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
             this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
             this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
             this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle());
-            this.tableLayoutPanel3.Size = new System.Drawing.Size(334, 131);
+            this.tableLayoutPanel3.Size = new System.Drawing.Size(334, 175);
             this.tableLayoutPanel3.TabIndex = 7;
             // 
             // label10
             // 
             this.label10.Anchor = System.Windows.Forms.AnchorStyles.Left;
             this.label10.AutoSize = true;
-            this.label10.Location = new System.Drawing.Point(3, 89);
+            this.label10.Location = new System.Drawing.Point(3, 111);
             this.label10.Name = "label10";
             this.label10.Size = new System.Drawing.Size(28, 13);
             this.label10.TabIndex = 13;
@@ -333,10 +339,33 @@
             this.richTextBox1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.richTextBox1.Location = new System.Drawing.Point(58, 63);
             this.richTextBox1.Name = "richTextBox1";
-            this.richTextBox1.Size = new System.Drawing.Size(273, 65);
+            this.richTextBox1.Size = new System.Drawing.Size(273, 109);
             this.richTextBox1.TabIndex = 17;
             this.richTextBox1.Text = "";
             this.richTextBox1.LinkClicked += new System.Windows.Forms.LinkClickedEventHandler(this.richTextBox1_LinkClicked);
+            // 
+            // label11
+            // 
+            this.label11.AutoSize = true;
+            this.label11.Dock = System.Windows.Forms.DockStyle.Top;
+            this.label11.Location = new System.Drawing.Point(3, 25);
+            this.label11.Name = "label11";
+            this.label11.Size = new System.Drawing.Size(328, 13);
+            this.label11.TabIndex = 10;
+            this.label11.Text = "Sounds played through NAudio (Open Source):";
+            this.label11.TextAlign = System.Drawing.ContentAlignment.TopCenter;
+            // 
+            // linkLabel3
+            // 
+            this.linkLabel3.AutoSize = true;
+            this.linkLabel3.Dock = System.Windows.Forms.DockStyle.Top;
+            this.linkLabel3.Location = new System.Drawing.Point(3, 40);
+            this.linkLabel3.Name = "linkLabel3";
+            this.linkLabel3.Size = new System.Drawing.Size(328, 13);
+            this.linkLabel3.TabIndex = 11;
+            this.linkLabel3.TabStop = true;
+            this.linkLabel3.Text = "https://naudio.codeplex.com/";
+            this.linkLabel3.TextAlign = System.Drawing.ContentAlignment.TopCenter;
             // 
             // AboutBox
             // 
@@ -344,7 +373,7 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.ButtonFace;
-            this.ClientSize = new System.Drawing.Size(361, 369);
+            this.ClientSize = new System.Drawing.Size(361, 476);
             this.Controls.Add(this.flowLayoutPanel1);
             this.Controls.Add(this.button2);
             this.Controls.Add(this.button_ok);
@@ -392,5 +421,7 @@
         private System.Windows.Forms.Label label_title;
         private System.Windows.Forms.Label label_version;
         private System.Windows.Forms.RichTextBox richTextBox1;
+        private System.Windows.Forms.Label label11;
+        private System.Windows.Forms.LinkLabel linkLabel3;
     }
 }

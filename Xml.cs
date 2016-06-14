@@ -7,6 +7,7 @@ using System.Drawing;
 using System.Xml.Schema;
 using System.Globalization;
 using System.Xml.Serialization;
+using System.ComponentModel;
 
 namespace DesktopPet
 {
@@ -42,6 +43,11 @@ namespace DesktopPet
             /// </summary>
         [XmlElement("childs")]
         public ChildsNode Childs;
+            /// <summary>
+            /// List of sounds. 
+            /// </summary>
+        [XmlElement("sounds")]
+        public SoundsNode Sounds;
     }
 
 
@@ -152,6 +158,18 @@ namespace DesktopPet
     }
 
         /// <summary>
+        ///  List of sounds.
+        /// </summary>
+    public class SoundsNode
+    {
+        /// <summary>
+        ///  List of sound nodes.
+        /// </summary>
+        [XmlElement("sound")]
+        public SoundNode[] Sound;
+    }
+
+        /// <summary>
         ///  Information about the spawn. Used to start the pet on the screen.
         /// </summary>
     public class SpawnNode
@@ -250,6 +268,33 @@ namespace DesktopPet
             /// </summary>
         [XmlElement("next")]
         public int Next;
+    }
+
+        /// <summary>
+        ///  To add sounds on some defined animations.
+        /// </summary>
+    public class SoundNode
+    {
+        /// <summary>
+        ///  Id of animation. Once that animation is executed, this sound is automatically played.
+        /// </summary>
+        [XmlAttribute("animationid")]
+        public int Id;
+        /// <summary>
+        ///  Probability (in %) that this sound will be played together with the animation.
+        /// </summary>
+        [XmlElement("probability")]
+        public int Probability;
+        /// <summary>
+        ///  How many times the sound should loop (default: 0). 1 means that the sound will play 2 times.
+        /// </summary>
+        [DefaultValue(0), XmlElement("loop")]
+        public int Loop;
+        /// <summary>
+        ///  Base64 string of the mp3 sound.
+        /// </summary>
+        [XmlElement("base64")]
+        public string Base64;
     }
 
         /// <summary>
@@ -667,34 +712,7 @@ namespace DesktopPet
                         );
                     }
                 }
-
-                /* OLD XML parsing:
                 
-                    foreach (XmlNode node3 in node2.SelectNodes(".//pet:next", xmlNS))
-                    {
-                        TNextAnimation.TOnly where = TNextAnimation.TOnly.NONE;
-                        if (node3.Attributes["only"] != null)
-                        {
-                            switch (node3.Attributes["only"].InnerText)
-                            {
-                                case "taskbar": where = TNextAnimation.TOnly.TASKBAR; break;
-                                case "window": where = TNextAnimation.TOnly.WINDOW; break;
-                                case "horizontal": where = TNextAnimation.TOnly.HORIZONTAL; break;
-                                case "horizontal+": where = TNextAnimation.TOnly.HORIZONTAL_; break;
-                                case "vertical": where = TNextAnimation.TOnly.VERTICAL; break;
-                            }
-                        }
-                        ani.Gravity = true;
-                        ani.EndGravity.Add(
-                            new TNextAnimation(
-                                int.Parse(node3.InnerText, CultureInfo.InvariantCulture),
-                                int.Parse(node3.Attributes["probability"].InnerText, CultureInfo.InvariantCulture),
-                                where
-                            )
-                        );
-                    }
-                    break;
-                    */
                 animations.SaveAnimation(ani, node.Id);
             }
 
@@ -728,6 +746,15 @@ namespace DesktopPet
                     aniChild.Next = node.Next;
 
                     animations.SaveChild(aniChild, node.Id);
+                }
+            }
+
+            // for each sound
+            if (AnimationXML.Sounds != null && AnimationXML.Sounds.Sound != null)
+            {
+                foreach (SoundNode node in AnimationXML.Sounds.Sound)
+                {
+                    animations.AddSound(node.Id, node.Probability, node.Loop, node.Base64);
                 }
             }
         }

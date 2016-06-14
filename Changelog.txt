@@ -1,6 +1,22 @@
 ﻿CHANGELOG
 ============================================================================================
 
+0.9.6.0
+ - Border collision will set the pet to the right position
+ - Ready to play sounds (NAudio was added to project)
+ - Option window was redesigned
+
+0.9.5.0 - Code
+ - It was possible to pick a child, this is not possible anymore
+ - A new animation will not unfocus the current window anymore
+ - The update notification will only be show if the application is installed
+ - Last frame of every animation was not played correctly
+ - Solved a bug with the XML OffsetY position
+
+0.9.4.0 - Code
+ - Solved a bug with the screen border detection
+ - Changes will be show if a new version is available
+
 0.9.3.0 - Code
  - XML Parsing checked if a number could be random to parse it every time. This was replaced with "Dynamic" because also imageX (parent X) has to be parsed each time.
  - Added Help form

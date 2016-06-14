@@ -750,6 +750,66 @@ namespace DesktopPet
                 bDragging = true;                   // Flag it as dragging pet
                 SetNewAnimation(Animations.AnimationDrag);  // Set the dragging animation (if present)
             }
+            else if(e.Button == MouseButtons.Right && StartUp.IsDebugActive())
+            {
+                ContextMenu cm = new ContextMenu();
+                cm.MenuItems.Add("ID." + CurrentAnimation.ID + " - " + CurrentAnimation.Name).Enabled = false;
+                cm.MenuItems.Add("-");
+                MenuItem menuNext = cm.MenuItems.Add("Next");
+                MenuItem menuBorder = cm.MenuItems.Add("Border");
+                MenuItem menuGravity = cm.MenuItems.Add("Gravity");
+                cm.MenuItems.Add("-");
+                MenuItem menuSpawn = cm.MenuItems.Add("Spawns");
+
+                List<TNextAnimation> list = Animations.GetNextAnimations(CurrentAnimation.ID, true, false, false);
+                foreach (TNextAnimation ani in list)
+                {
+                    MenuItem menu = menuNext.MenuItems.Add("ID." + ani.ID + " - " + Animations.SheepAnimations[ani.ID].Name + "\t (Prob: " + ani.Probability + ") only:" + ani.only.ToString());
+                    menu.Click += (ms, me) => { SetNewAnimation(ani.ID); };
+                }
+                if (list.Count == 0) menuNext.Enabled = false;
+
+                list = Animations.GetNextAnimations(CurrentAnimation.ID, false, true, false);
+                foreach (TNextAnimation ani in list)
+                {
+                    MenuItem menu = menuBorder.MenuItems.Add("ID." + ani.ID + " - " + Animations.SheepAnimations[ani.ID].Name + "\t (Prob: " + ani.Probability + ") only: " + ani.only.ToString());
+                    menu.Click += (ms, me) => { SetNewAnimation(ani.ID); };
+                }
+                if (list.Count == 0) menuBorder.Enabled = false;
+
+                list = Animations.GetNextAnimations(CurrentAnimation.ID, false, false, true);
+                foreach (TNextAnimation ani in list)
+                {
+                    MenuItem menu = menuGravity.MenuItems.Add("ID." + ani.ID + " - " + Animations.SheepAnimations[ani.ID].Name + "\t (Prob: " + ani.Probability + ") only:" + ani.only.ToString());
+                    menu.Click += (ms, me) =>{SetNewAnimation(ani.ID);};
+                }
+                if (list.Count == 0) menuGravity.Enabled = false;
+
+                List<TSpawn> listS = Animations.GetNextSpawns();
+                foreach (TSpawn spa in listS)
+                {
+                    MenuItem menu = menuSpawn.MenuItems.Add("ID." + spa.Next + " - " + Animations.SheepAnimations[spa.Next].Name + "\t (Prob: " + spa.Probability + ")");
+                    menu.Click += (ms, me) => 
+                    {
+                        Top = spa.Start.Y.GetValue();
+                        Left = spa.Start.X.GetValue();
+                        dPosX = Left;
+                        dPosY = Top;
+                        dOffsetY = 0.0;
+                        SetNewAnimation(spa.Next);
+                    };
+                }
+
+                timer1.Enabled = false;
+
+                cm.Collapse += (ms, me) =>
+                {
+                    timer1.Enabled = true;
+                };
+
+                pictureBox1.ContextMenu = cm;
+                pictureBox1.ContextMenu.Show(pictureBox1, new Point(0,this.Top > 500 ? 0 : this.Height));
+            }
         }
 
             /// <summary>

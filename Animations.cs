@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 
 namespace DesktopPet
@@ -307,10 +308,73 @@ namespace DesktopPet
     }
 
         /// <summary>
+        /// Sound structure. A sound that can be played together with the animation.
+        /// </summary>
+    public struct TSound
+    {
+            /// <summary>
+            /// ID of the animation that should create this child.
+            /// </summary>
+        public int AnimationID;
+            /// <summary>
+            /// Probability this sound will be played (in %).
+            /// </summary>
+        public int Probability;
+            /// <summary>
+            /// How many time the sound should be looped (1 = play 2 times).
+            /// </summary>
+        public int Loop;
+
+        private static int LoopCount;
+
+            /// <summary>
+            /// Wave sound.
+            /// </summary>
+        private NAudio.Wave.WaveOut Audio;
+        private NAudio.Wave.Mp3FileReader AudioReader;
+        public void Load(byte[] buff)
+        {
+            MemoryStream ms = new MemoryStream(buff);
+            AudioReader = new NAudio.Wave.Mp3FileReader(ms);
+            Audio = new NAudio.Wave.WaveOut();
+            Audio.Init(AudioReader);
+
+            Audio.PlaybackStopped += Audio_PlaybackStopped;
+        }
+
+        public void Play(int iLoop)
+        {
+            if (Properties.Settings.Default.Volume > 0.0)
+            {
+                if(Audio.Volume != Properties.Settings.Default.Volume)
+                {
+                    Audio.Volume = Properties.Settings.Default.Volume;
+                }
+                    // Set event handler only if looped
+                if (iLoop > 0)
+                {
+                    LoopCount = iLoop;
+                }
+                AudioReader.Seek(0, SeekOrigin.Begin);
+                Audio.Play();
+            }
+        }
+
+        private void Audio_PlaybackStopped(object sender, NAudio.Wave.StoppedEventArgs e)
+        {
+            if (e.Exception == null)
+            {
+                if (LoopCount-- > 0)
+                    Audio.Play();
+            }
+        }
+    }
+
+        /// <summary>
         /// Animations class. Contains all information about the animations of the pet.
         /// </summary>
     public class Animations
-    {
+    {   
             /// <summary>
             /// Each animation has a unique ID.
             /// </summary>
@@ -323,6 +387,10 @@ namespace DesktopPet
             /// Each Child has a unique animation ID.
             /// </summary>
         public Dictionary<int, TChild> SheepChild;
+            /// <summary>
+            /// Each Sound must have a unique animation ID.
+            /// </summary>
+        public Dictionary<int, TSound> SheepSound;
 
             /// <summary>
             /// Random used for the "random" key value in the xml.
@@ -360,6 +428,7 @@ namespace DesktopPet
             SheepAnimations = new Dictionary<int, TAnimation>(64);  // Reserve space for 64 animations, more are added automatically
             SheepSpawn = new Dictionary<int, TSpawn>(8);            // Reserve space for 8 spawns
             SheepChild = new Dictionary<int, TChild>(8);            // Reserve space for 8 child
+            SheepSound = new Dictionary<int, TSound>(8);            // Reserve space for 8 sounds
             rand = new Random();
             Xml = xml;
         }
@@ -445,11 +514,41 @@ namespace DesktopPet
             SheepChild[ID] = child;
         }
 
-            /// <summary>
-            /// Calling this method, the next Spawn is returned.
-            /// If more Spawns are defined, a random Spawn will be taken (based on the probability)
-            /// </summary>
-            /// <returns>Structure with the next Spawn values</returns>
+        /// <summary>
+        /// Add a sound to the sound dictionary. Sounds are defined in the XML.
+        /// </summary>
+        /// <param name="ID">Animation ID.</param>
+        /// <param name="Probability">Probability this sound will be played with the animation sequence.</param>
+        /// <param name="Loop">How many times the sound should be looped.</param>
+        /// <param name="Base64">Base 64 string with the encoded mp3 file.</param>
+        /// <returns></returns>
+        public void AddSound(int ID, int Probability, int Loop, string Base64)
+        {
+            StartUp.AddDebugInfo(StartUp.DEBUG_TYPE.info, "adding sound");
+
+            try
+            {
+                if (Base64.IndexOf(";base64,") > 0)
+                    Base64 = Base64.Substring(Base64.IndexOf(";base64,") + 8);
+
+                TSound sound = new TSound();
+                sound.Load(Convert.FromBase64String(Base64));
+                sound.AnimationID = ID;
+                sound.Probability = Probability;
+                sound.Loop = Loop;
+                SheepSound.Add(ID, sound);
+            }
+            catch(Exception ex)
+            {
+                StartUp.AddDebugInfo(StartUp.DEBUG_TYPE.error, "can't open sound:" + ex.Message);
+            }
+        }
+
+        /// <summary>
+        /// Calling this method, the next Spawn is returned.
+        /// If more Spawns are defined, a random Spawn will be taken (based on the probability)
+        /// </summary>
+        /// <returns>Structure with the next Spawn values</returns>
         public TSpawn GetRandomSpawn()
         {
             int percent = 0;
@@ -603,6 +702,13 @@ namespace DesktopPet
                 if (iDefaultID > 0)
                 {
                     UpdateAnimationValues(iDefaultID);
+                    if(SheepSound.ContainsKey(iDefaultID))
+                    {
+                        if (rand.Next(0, 100) < SheepSound[iDefaultID].Probability)
+                        {
+                            SheepSound[iDefaultID].Play(SheepSound[iDefaultID].Loop);
+                        }
+                    }
                 }
                 return iDefaultID;
             }
@@ -651,6 +757,31 @@ namespace DesktopPet
             }
 
             StartUp.AddDebugInfo(StartUp.DEBUG_TYPE.info, "new animation: " + ani.Name);
+        }
+
+        public List<TNextAnimation> GetNextAnimations(int CurrentID, bool Next, bool Border, bool Gravity)
+        {
+            List<TNextAnimation> list = new List<TNextAnimation>();
+
+            if (Next)
+                list.AddRange(SheepAnimations[CurrentID].EndAnimation);
+            if (Border)
+                list.AddRange(SheepAnimations[CurrentID].EndBorder);
+            if (Gravity)
+                list.AddRange(SheepAnimations[CurrentID].EndGravity);
+
+            return list;
+        }
+
+        public List<TSpawn> GetNextSpawns()
+        {
+            List<TSpawn> list = new List<TSpawn>();
+
+            for(int i = 0; i < SheepSpawn.Keys.Count; i++)
+            {
+                list.Add(SheepSpawn[SheepSpawn.Keys.ElementAt(i)]);
+            }
+            return list;
         }
     }
 }

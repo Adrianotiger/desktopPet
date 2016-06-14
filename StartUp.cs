@@ -337,8 +337,17 @@ namespace DesktopPet
         }
 
             /// <summary>
-            /// Calling this function, all sheeps will execute the same animation (if the sync-word is present in the XML).
+            /// If the application is started with the SHIFT key pressed, some extra features are activated.
             /// </summary>
+            /// <returns>true if the application is running with debug window.</returns>
+        public static bool IsDebugActive()
+        {
+            return (debug != null);
+        }
+
+        /// <summary>
+        /// Calling this function, all sheeps will execute the same animation (if the sync-word is present in the XML).
+        /// </summary>
         public void SyncSheeps()
         {
             AddDebugInfo(DEBUG_TYPE.info, "synchronize sheeps");
