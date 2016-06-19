@@ -499,7 +499,7 @@ namespace DesktopPet
             /// <returns></returns>
         public TChild AddChild(int ID)
         {
-            StartUp.AddDebugInfo(StartUp.DEBUG_TYPE.info, "adding child");
+            StartUp.AddDebugInfo(StartUp.DEBUG_TYPE.info, "adding child (ani." + ID.ToString() + ")");
             SheepChild.Add(ID, new TChild());
             return SheepChild[ID];
         }
@@ -524,7 +524,7 @@ namespace DesktopPet
         /// <returns></returns>
         public void AddSound(int ID, int Probability, int Loop, string Base64)
         {
-            StartUp.AddDebugInfo(StartUp.DEBUG_TYPE.info, "adding sound");
+            StartUp.AddDebugInfo(StartUp.DEBUG_TYPE.info, "adding sound (ani." + ID.ToString() + ")");
 
             try
             {
@@ -714,7 +714,7 @@ namespace DesktopPet
             }
             else
             {
-                StartUp.AddDebugInfo(StartUp.DEBUG_TYPE.error, "no next animation found");
+                StartUp.AddDebugInfo(StartUp.DEBUG_TYPE.warning, "no next animation found");
                 return -1;  // a new spawn is requested
             }
         }

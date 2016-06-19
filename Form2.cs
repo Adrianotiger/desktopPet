@@ -128,7 +128,7 @@ namespace DesktopPet
                 cp.ExStyle |= 0x08; // WS_EX_TOPMOST                <- set on TopMost
                 cp.ExStyle |= 0x00080000; // WS_EX_LAYERED          <- increase paint performance
 
-                if (Name == "child")
+                if (Name.IndexOf("child") == 0)
                 {
                     cp.ExStyle |= 0x08000000;   //WS_EX_NOACTIVATE  <- prevent focus when created
                 }
@@ -292,10 +292,9 @@ namespace DesktopPet
             }
             catch(Exception ex) // if form is closed timer could continue to tick (why?)
             {
-                //if(Name != "child")
                 if(MessageBox.Show("Fatal Error: " + ex.Message + "\n----------\nPress Cancel for more info", "App error", MessageBoxButtons.OKCancel, MessageBoxIcon.Error) == DialogResult.Cancel)
                 {
-                    String seqIndex = "";
+                    string seqIndex = "";
                     foreach (var item in CurrentAnimation.Sequence.Frames) seqIndex += item + ",";
 
                         MessageBox.Show(
@@ -326,7 +325,8 @@ namespace DesktopPet
                     // Check if animation ID has a child. If so, the child will be created.
                 if(Animations.HasAnimationChild(id))
                 {
-                    if (Name != "child")
+                        // child creating childs... Maximum 5 sub-childs can be created
+                    if (Name.IndexOf("child") < 0 || int.Parse(Name.Substring(5)) < 5)
                     {
                         TChild childInfo = Animations.GetAnimationChild(id);
                         Form2 child = new Form2(Animations, Xml, new Point(Left, Top), !bMoveLeft);
@@ -334,8 +334,15 @@ namespace DesktopPet
                         {
                             child.addImage(imageList1.Images[i]);
                         }
-                            // To detect if it is a child, the name of the form will be renamed.
-                        child.Name = "child";
+                        // To detect if it is a child, the name of the form will be renamed.
+                        if (Name.IndexOf("child") < 0) // first child
+                        {
+                            child.Name = "child1";
+                        }
+                        else if (Name.IndexOf("child") == 0) // second, fifth child
+                        {
+                            child.Name = "child" + (int.Parse(Name.Substring(5)) + 1).ToString();
+                        }
                         child.Show(Width, Height);
                         child.PlayChild(id);
                     }
@@ -549,7 +556,7 @@ namespace DesktopPet
                 else
                 {
                         // Child doesn't have a spawn, they will be closed once the animation is over.
-                    if(Name=="child")
+                    if(Name.IndexOf("child")==0)
                     {
                         StartUp.AddDebugInfo(StartUp.DEBUG_TYPE.info, "removing child");
                         Close();
@@ -742,7 +749,7 @@ namespace DesktopPet
             /// <param name="e">Mouse event values.</param>
         private void pictureBox1_MouseDown(object sender, MouseEventArgs e)
         {
-            if (e.Button == MouseButtons.Left && Name != "child")
+            if (e.Button == MouseButtons.Left && Name.IndexOf("child") < 0)
             {
                 hwndWindow = (IntPtr)0;             // Remove window handles
                 TopMost = false;
@@ -781,7 +788,7 @@ namespace DesktopPet
                 foreach (TNextAnimation ani in list)
                 {
                     MenuItem menu = menuGravity.MenuItems.Add("ID." + ani.ID + " - " + Animations.SheepAnimations[ani.ID].Name + "\t (Prob: " + ani.Probability + ") only:" + ani.only.ToString());
-                    menu.Click += (ms, me) =>{SetNewAnimation(ani.ID);};
+                    menu.Click += (ms, me) =>{ SetNewAnimation(ani.ID); };
                 }
                 if (list.Count == 0) menuGravity.Enabled = false;
 
@@ -804,6 +811,7 @@ namespace DesktopPet
 
                 cm.Collapse += (ms, me) =>
                 {
+                    timer1.Interval = 1;
                     timer1.Enabled = true;
                 };
 
@@ -819,7 +827,7 @@ namespace DesktopPet
             /// <param name="e">Mouse event values.</param>
         private void pictureBox1_MouseUp(object sender, MouseEventArgs e)
         {
-            if (e.Button == MouseButtons.Left && Name != "child")
+            if (e.Button == MouseButtons.Left && Name.IndexOf("child") < 0)
             {
                 SetNewAnimation(Animations.AnimationFall);
             }
