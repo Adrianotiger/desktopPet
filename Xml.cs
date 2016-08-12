@@ -805,7 +805,7 @@ namespace DesktopPet
             sText = sText.Replace("screenW", Screen.PrimaryScreen.Bounds.Width.ToString(CultureInfo.InvariantCulture));
             sText = sText.Replace("screenH", Screen.PrimaryScreen.Bounds.Height.ToString(CultureInfo.InvariantCulture));
             sText = sText.Replace("areaW", Screen.PrimaryScreen.WorkingArea.Width.ToString(CultureInfo.InvariantCulture));
-            sText = sText.Replace("areaH", Screen.PrimaryScreen.WorkingArea.Height.ToString(CultureInfo.InvariantCulture));
+            sText = sText.Replace("areaH", (Screen.PrimaryScreen.WorkingArea.Height + Screen.PrimaryScreen.WorkingArea.Y).ToString(CultureInfo.InvariantCulture));
             sText = sText.Replace("imageW", (FullImage.Width / AnimationXML.Image.TilesX).ToString(CultureInfo.InvariantCulture));
             sText = sText.Replace("imageH", (FullImage.Height / AnimationXML.Image.TilesY).ToString(CultureInfo.InvariantCulture));
             sText = sText.Replace("imageX", (parentX).ToString(CultureInfo.InvariantCulture));

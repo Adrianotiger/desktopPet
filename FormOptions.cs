@@ -80,9 +80,16 @@ namespace DesktopPet
 
         private void FormOptions_Load(object sender, EventArgs e)
         {
+                // Set up audio values
             checkBox1.Checked = (Properties.Settings.Default.Volume > 0.0);
             trackBar1.Value = (int)(Properties.Settings.Default.Volume * 10);
             trackBar1.Enabled = checkBox1.Checked;
+            label2.Text = Program.Mainthread.ErrorMessages.AudioErrorMessage;
+            if (label2.Text.Length > 1)
+            {
+                trackBar1.Enabled = false;
+                checkBox1.Enabled = false;
+            }
         }
 
         private void checkBox1_CheckedChanged(object sender, EventArgs e)

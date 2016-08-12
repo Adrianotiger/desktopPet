@@ -334,29 +334,47 @@ namespace DesktopPet
         private NAudio.Wave.Mp3FileReader AudioReader;
         public void Load(byte[] buff)
         {
-            MemoryStream ms = new MemoryStream(buff);
-            AudioReader = new NAudio.Wave.Mp3FileReader(ms);
-            Audio = new NAudio.Wave.WaveOut();
-            Audio.Init(AudioReader);
+            try
+            {
+                MemoryStream ms = new MemoryStream(buff);
+                AudioReader = new NAudio.Wave.Mp3FileReader(ms);
+                Audio = new NAudio.Wave.WaveOut();
+                Audio.Init(AudioReader);
 
-            Audio.PlaybackStopped += Audio_PlaybackStopped;
+                Audio.PlaybackStopped += Audio_PlaybackStopped;
+            }
+            catch(Exception e)
+            {
+                    // Failed to create a wave, reset volume
+                Properties.Settings.Default.Volume = 0;
+                Program.Mainthread.ErrorMessages.AudioErrorMessage = e.Message;
+            }
         }
 
         public void Play(int iLoop)
         {
             if (Properties.Settings.Default.Volume > 0.0)
             {
-                if(Audio.Volume != Properties.Settings.Default.Volume)
+                try
                 {
-                    Audio.Volume = Properties.Settings.Default.Volume;
-                }
+                    if (Audio.Volume != Properties.Settings.Default.Volume)
+                    {
+                        Audio.Volume = Properties.Settings.Default.Volume;
+                    }
                     // Set event handler only if looped
-                if (iLoop > 0)
-                {
-                    LoopCount = iLoop;
+                    if (iLoop > 0)
+                    {
+                        LoopCount = iLoop;
+                    }
+                    AudioReader.Seek(0, SeekOrigin.Begin);
+                    Audio.Play();
                 }
-                AudioReader.Seek(0, SeekOrigin.Begin);
-                Audio.Play();
+                catch(Exception e)
+                {
+                        // Failed to play a wave, reset volume
+                    Properties.Settings.Default.Volume = 0;
+                    Program.Mainthread.ErrorMessages.AudioErrorMessage = e.Message;
+                }
             }
         }
 

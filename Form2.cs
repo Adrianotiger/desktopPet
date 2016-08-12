@@ -475,9 +475,12 @@ namespace DesktopPet
             {
                 if (CurrentAnimation.EndBorder.Count > 0)
                 {
-                    if (dPosY + y > Screen.PrimaryScreen.WorkingArea.Height - Height) // border detected!
+                    int bottomY = Screen.PrimaryScreen.WorkingArea.Height + Screen.PrimaryScreen.WorkingArea.Y;
+
+                    if (dPosY + y > bottomY - Height) // border detected!
                     {
-                        y = Screen.PrimaryScreen.WorkingArea.Height - (int)(dPosY + Height - dOffsetY);
+                        y = bottomY - (int)(dPosY + Height);
+                        dOffsetY = 0;
                         SetNewAnimation(Animations.SetNextBorderAnimation(CurrentAnimation.ID, TNextAnimation.TOnly.TASKBAR));
                         bNewAnimation = true;
                     }
@@ -486,7 +489,8 @@ namespace DesktopPet
                         int iWindowTop = FallDetect((int)y);
                         if (iWindowTop > 0)
                         {
-                            y = iWindowTop - dPosY - Height + dOffsetY;
+                            y = iWindowTop - dPosY - Height;
+                            dOffsetY = 0;
                             SetNewAnimation(Animations.SetNextBorderAnimation(CurrentAnimation.ID, TNextAnimation.TOnly.WINDOW));
                             bNewAnimation = true;
                             if(CurrentAnimation.Start.Y.Value != 0)
@@ -501,7 +505,7 @@ namespace DesktopPet
             {
                 if (CurrentAnimation.EndBorder.Count > 0)
                 {
-                    if (dPosY < 0) // border detected!
+                    if (dPosY < Screen.PrimaryScreen.WorkingArea.Y) // border detected!
                     {
                         y = 0;
                         SetNewAnimation(Animations.SetNextBorderAnimation(CurrentAnimation.ID, TNextAnimation.TOnly.HORIZONTAL));
@@ -661,7 +665,7 @@ namespace DesktopPet
                         // If vertical position is in the falling range and pet is over window and window is at least 20 pixels under the screen border
                     if (dPosY + Height < rct.Top && dPosY + Height + y >= rct.Top &&
                         dPosX >= rct.Left - Width / 2 && dPosX + Width <= rct.Right + Width / 2 &&
-                        dPosY > 20)
+                        dPosY > 20 + Screen.PrimaryScreen.WorkingArea.Y)
                     {
                             // Pet need to walk over THIS window!
                         hwndWindow = window.Key;

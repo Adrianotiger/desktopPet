@@ -2,77 +2,88 @@
 using System.Drawing;
 using System.Threading;
 using System.Windows.Forms;
+using static DesktopPet.StartUp;
 
 namespace DesktopPet
 {
-        /// <summary>
-        /// StartUp class. This class will initialize the entire application and define some constants.
-        /// </summary>
+    /// <summary>
+    /// StartUp class. This class will initialize the entire application and define some constants.
+    /// </summary>
     public sealed class StartUp : IDisposable
     {
-            /// <summary>
-            /// Maximal sheeps (too much sheeps will cover too much the screen and would not be nice to see).
-            /// </summary>
+        /// <summary>
+        /// Maximal sheeps (too much sheeps will cover too much the screen and would not be nice to see).
+        /// </summary>
         public const int MAX_SHEEPS = 16;
 
-            /// <summary>
-            /// DEBUG TYPE. If you press "SHIFT" by starting the application, a debug Window will appear.
-            /// </summary>
+        /// <summary>
+        /// DEBUG TYPE. If you press "SHIFT" by starting the application, a debug Window will appear.
+        /// </summary>
         public enum DEBUG_TYPE
         {
-                /// <summary>
-                /// Only info, to show what is happening.
-                /// </summary>
-            info    = 1,
-                /// <summary>
-                /// Something important happened or something that was not expected.
-                /// </summary>
+            /// <summary>
+            /// Only info, to show what is happening.
+            /// </summary>
+            info = 1,
+            /// <summary>
+            /// Something important happened or something that was not expected.
+            /// </summary>
             warning = 2,
-                /// <summary>
-                /// An error is occurred. The application need to do something that was not expected.
-                /// </summary>
-            error   = 3,
+            /// <summary>
+            /// An error is occurred. The application need to do something that was not expected.
+            /// </summary>
+            error = 3,
         }
 
-            /// <summary>
-            /// A timer to allow some times to the sheeps to die, before the application will close definitively.
-            /// </summary>
+        /// <summary>
+        /// A timer to allow some times to the sheeps to die, before the application will close definitively.
+        /// </summary>
         static public System.Windows.Forms.Timer timer1 = new System.Windows.Forms.Timer();
 
-            /// <summary>
-            /// Each sheep is in a different form.
-            /// </summary>
+        /// <summary>
+        /// Each sheep is in a different form.
+        /// </summary>
         Form2[] sheeps = new Form2[MAX_SHEEPS];
 
-            /// <summary>
-            /// Debug window, used only if SHIFT was pressed by starting the application.
-            /// </summary>
+        /// <summary>
+        /// Debug window, used only if SHIFT was pressed by starting the application.
+        /// </summary>
         static FormDebug debug = null;
 
-            /// <summary>
-            /// Number of currently active sheeps.
-            /// </summary>
+        /// <summary>
+        /// Number of currently active sheeps.
+        /// </summary>
         int iSheeps = 0;
 
-            /// <summary>
-            /// The XML file where all animations are defined.
-            /// </summary>
+        /// <summary>
+        /// The XML file where all animations are defined.
+        /// </summary>
         Xml xml;
 
-            /// <summary>
-            /// Class of the animations. All animations are stored there.
-            /// </summary>
+        /// <summary>
+        /// Class of the animations. All animations are stored there.
+        /// </summary>
         Animations animations;
 
-            /// <summary>
-            /// Process Icon. The tray icon on the taskbar.
-            /// </summary>
+        /// <summary>
+        /// Process Icon. The tray icon on the taskbar.
+        /// </summary>
         ProcessIcon pi;
 
-            /// <summary>
-            /// Constructor. Called when application is started.
-            /// </summary>
-            /// <param name="processIcon">ProcessIcon class, to change icon when a new pet is selected.</param>
+        /// <summary>
+        /// Error message for exceptions. It is shown in the options if an error occours.
+        /// </summary>
+        public struct TError
+        {
+            public string AudioErrorMessage;
+        }
+
+        public TError ErrorMessages;
+        
+        /// <summary>
+        /// Constructor. Called when application is started.
+        /// </summary>
+        /// <param name="processIcon">ProcessIcon class, to change icon when a new pet is selected.</param>
         public StartUp(ProcessIcon processIcon)
         {
             pi = processIcon;
@@ -321,6 +332,11 @@ namespace DesktopPet
                 // start animation in 1 second.
             timer1.Tag = "A";
             timer1.Enabled = true;
+        }
+
+        public Animations GetAnimations()
+        {
+            return animations;
         }
 
             /// <summary>

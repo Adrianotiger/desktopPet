@@ -40,9 +40,10 @@
             this.tabPage3 = new System.Windows.Forms.TabPage();
             this.flowLayoutPanel1 = new System.Windows.Forms.FlowLayoutPanel();
             this.checkBox1 = new System.Windows.Forms.CheckBox();
-            this.tabPage4 = new System.Windows.Forms.TabPage();
             this.trackBar1 = new System.Windows.Forms.TrackBar();
             this.button2 = new System.Windows.Forms.Button();
+            this.tabPage4 = new System.Windows.Forms.TabPage();
+            this.label2 = new System.Windows.Forms.Label();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
             this.tabPage2.SuspendLayout();
@@ -178,6 +179,7 @@
             // 
             this.flowLayoutPanel1.Controls.Add(this.checkBox1);
             this.flowLayoutPanel1.Controls.Add(this.trackBar1);
+            this.flowLayoutPanel1.Controls.Add(this.label2);
             this.flowLayoutPanel1.Controls.Add(this.button2);
             this.flowLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.flowLayoutPanel1.FlowDirection = System.Windows.Forms.FlowDirection.TopDown;
@@ -198,15 +200,6 @@
             this.checkBox1.UseVisualStyleBackColor = true;
             this.checkBox1.CheckedChanged += new System.EventHandler(this.checkBox1_CheckedChanged);
             // 
-            // tabPage4
-            // 
-            this.tabPage4.Location = new System.Drawing.Point(124, 4);
-            this.tabPage4.Name = "tabPage4";
-            this.tabPage4.Size = new System.Drawing.Size(357, 333);
-            this.tabPage4.TabIndex = 3;
-            this.tabPage4.Text = "Application";
-            this.tabPage4.UseVisualStyleBackColor = true;
-            // 
             // trackBar1
             // 
             this.trackBar1.Enabled = false;
@@ -220,13 +213,31 @@
             // 
             // button2
             // 
-            this.button2.Location = new System.Drawing.Point(13, 87);
+            this.button2.Location = new System.Drawing.Point(13, 100);
             this.button2.Name = "button2";
             this.button2.Size = new System.Drawing.Size(142, 27);
             this.button2.TabIndex = 2;
             this.button2.Text = "💾  Save";
             this.button2.UseVisualStyleBackColor = true;
             this.button2.Click += new System.EventHandler(this.button2_Click);
+            // 
+            // tabPage4
+            // 
+            this.tabPage4.Location = new System.Drawing.Point(124, 4);
+            this.tabPage4.Name = "tabPage4";
+            this.tabPage4.Size = new System.Drawing.Size(357, 333);
+            this.tabPage4.TabIndex = 3;
+            this.tabPage4.Text = "Application";
+            this.tabPage4.UseVisualStyleBackColor = true;
+            // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
+            this.label2.Location = new System.Drawing.Point(13, 84);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(0, 13);
+            this.label2.TabIndex = 3;
             // 
             // FormOptions
             // 
@@ -272,5 +283,6 @@
         private System.Windows.Forms.TabPage tabPage4;
         private System.Windows.Forms.TrackBar trackBar1;
         private System.Windows.Forms.Button button2;
+        private System.Windows.Forms.Label label2;
     }
 }
