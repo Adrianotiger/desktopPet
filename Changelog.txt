@@ -1,6 +1,20 @@
 ﻿CHANGELOG
 ============================================================================================
 
+1.0.0.0
+  - check if a full screen window is open (will not show the sheep anymore)
+  - if you click on the tray icon, the sheep will set on top most again
+
+0.9.8.0
+ - If sound player fails, you can see the error in the option dialog
+ - Corrected the position of the pet, if your taskbar is not on the bottom
+ - Removed the async sound
+ - Please use the gSheep pet (under animation), it is a lot better than my sheep animation :P
+
+0.9.7.0
+ - Default animation had too much sounds, was annoying
+ - Pet child can create child and child can create a sub child now
+
 0.9.6.0
  - Border collision will set the pet to the right position
  - Ready to play sounds (NAudio was added to project)

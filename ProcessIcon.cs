@@ -69,7 +69,7 @@ namespace DesktopPet
             if (e.Button == MouseButtons.Left)
             {
                 // Start Windows Explorer.
-                //Process.Start("explorer", null);
+                Program.Mainthread.TopMostSheeps();
             }
         }
 

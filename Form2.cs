@@ -399,6 +399,7 @@ namespace DesktopPet
             {
                 if (hwndWindow == (IntPtr)0)
                 {
+                    CheckFullScreen();  // used to check if another window is in full screen
                     if (dPosX + x < 0)    // left screen border!
                     {
                         int iBorderAnimation = Animations.SetNextBorderAnimation(CurrentAnimation.ID, TNextAnimation.TOnly.VERTICAL);
@@ -437,6 +438,7 @@ namespace DesktopPet
             {
                 if (hwndWindow == (IntPtr)0)
                 {
+                    CheckFullScreen();  // used to check if another window is in full screen
                     if (dPosX + x + Width > Screen.PrimaryScreen.WorkingArea.Width)    // right screen border!
                     {
                         int iBorderAnimation = Animations.SetNextBorderAnimation(CurrentAnimation.ID, TNextAnimation.TOnly.VERTICAL);
@@ -629,6 +631,8 @@ namespace DesktopPet
             NativeMethods.TITLEBARINFO titleBarInfo = new NativeMethods.TITLEBARINFO();
             titleBarInfo.cbSize = Marshal.SizeOf(titleBarInfo);
 
+            CheckFullScreen();
+
                 // Enumerate all windows on the desktop.
             NativeMethods.EnumWindows(delegate (IntPtr hWnd, int lParam)
             {
@@ -640,12 +644,13 @@ namespace DesktopPet
                     StringBuilder sTitle = new StringBuilder(128);
                     NativeMethods.GetWindowText(hWnd, sTitle, 128);
 
-                        // Sheep windows doesn't have a title bar, but we want detect if another pet is present
+                    // Sheep windows doesn't have a title bar, but we want detect if another pet is present
                     if (sTitle.ToString() == "Sheep") { }
-                        // If there is no title bar, continue enumerating other windows
+                    // If there is no title bar, continue enumerating other windows
                     else if (!NativeMethods.GetTitleBarInfo(hWnd, ref titleBarInfo)) return true;
-                        // If title bar is not visible, continue enumerating other windows
-                    else if ((titleBarInfo.rgstate[0] & 0x00008000) > 0) return true;    // invisible
+                    // If title bar is not visible, continue enumerating other windows
+                    else if ((titleBarInfo.rgstate[0] & 0x00008000) > 0) // invisible
+                        return true;
                     
                         // If window has a title, add this window to list
                     if (sTitle.Length > 0)
@@ -685,6 +690,23 @@ namespace DesktopPet
                 }
             }
             return -1;      // no windows detected.
+        }
+
+        /// <summary>
+        /// Check if the window under the sheep is in full screen. If so, remove the top most.
+        /// </summary>
+        private void CheckFullScreen()
+        {
+            NativeMethods.RECT rct;
+            IntPtr hwnd2 = NativeMethods.GetWindow(Handle, 1);
+
+            if (NativeMethods.GetWindowRect(new HandleRef(this, hwnd2), out rct))
+            {
+                if (rct.Top == 0 && rct.Bottom == Screen.PrimaryScreen.Bounds.Height && rct.Right == Screen.PrimaryScreen.Bounds.Width)
+                {
+                    if (TopMost) TopMost = false;
+                }
+            }
         }
         
             /// <summary>

@@ -222,10 +222,24 @@ namespace DesktopPet
             }
         }
 
-            /// <summary>
-            /// Close a single sheep on the desktop.
-            /// </summary>
-            /// <param name="sheep">The sheep-form to close.</param>
+
+        /// <summary>
+        /// Bring every sheep to top most again
+        /// </summary>
+        public void TopMostSheeps()
+        {
+            AddDebugInfo(DEBUG_TYPE.info, "Top most all sheeps");
+
+            for (int i = 0; i < iSheeps; i++)
+            {
+                sheeps[i].TopMost = true;
+            }
+        }
+
+        /// <summary>
+        /// Close a single sheep on the desktop.
+        /// </summary>
+        /// <param name="sheep">The sheep-form to close.</param>
         public bool KillSheep(Form2 sheep)
         {
             bool bSheepRemoved = false;
