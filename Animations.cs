@@ -625,6 +625,13 @@ namespace DesktopPet
             /// <returns>Structure with all information about this animation.</returns>
         public TAnimation GetAnimation(int id)
         {
+            if (id >= SheepAnimations.Count)
+            {
+                TAnimation tempAnimation = new TAnimation("NULL", 0);
+                tempAnimation.Start.Interval.Value = 1000;
+                tempAnimation.End.Interval.Value = 1000;
+                return tempAnimation;
+            }
             return SheepAnimations[id];
         }
 

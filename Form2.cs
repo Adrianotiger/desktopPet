@@ -35,6 +35,10 @@ namespace DesktopPet
             /// </summary>
         IntPtr hwndWindow = (IntPtr)0;
             /// <summary>
+            /// Handle to the full screen window. If this value is 0, there is no full screen window.
+            /// </summary>
+        IntPtr hwndFullscreenWindow = (IntPtr)0;
+            /// <summary>
             /// If sheep is walking to left  (default).
             /// </summary>
             /// <remarks>
@@ -698,13 +702,27 @@ namespace DesktopPet
         private void CheckFullScreen()
         {
             NativeMethods.RECT rct;
-            IntPtr hwnd2 = NativeMethods.GetWindow(Handle, 1);
+            IntPtr hwnd2 = NativeMethods.GetForegroundWindow();
+            if (hwndFullscreenWindow == (IntPtr)0 && hwnd2 == Handle) return;
 
             if (NativeMethods.GetWindowRect(new HandleRef(this, hwnd2), out rct))
             {
-                if (rct.Top == 0 && rct.Bottom == Screen.PrimaryScreen.Bounds.Height && rct.Right == Screen.PrimaryScreen.Bounds.Width)
+                if (rct.Bottom - rct.Top >= Screen.PrimaryScreen.Bounds.Height && rct.Right - rct.Left >= Screen.PrimaryScreen.Bounds.Width) 
                 {
-                    if (TopMost) TopMost = false;
+                    if (TopMost)
+                    {
+                        hwndFullscreenWindow = hwnd2;
+                        TopMost = false;
+                        NativeMethods.SetForegroundWindow(hwnd2); // set the movie as foreground window and replace the sheep
+                    }
+                }
+                else
+                {
+                    if (!TopMost)
+                    {
+                        hwndFullscreenWindow = (IntPtr)0;
+                        TopMost = true;
+                    }
                 }
             }
         }
@@ -997,9 +1015,16 @@ namespace DesktopPet
         [DllImport("user32.dll")]
         internal static extern IntPtr GetWindow(IntPtr hWnd, int nCmdShow);
 
-            /// <summary>
-            /// Structure with the information about the title bar of the window.
-            /// </summary>
+        /// <summary>
+        /// Get the desktop window.
+        /// </summary>
+        /// <returns>Pointer to the first window.</returns>
+        [DllImport("user32.dll")]
+        internal static extern IntPtr GetForegroundWindow();
+
+        /// <summary>
+        /// Structure with the information about the title bar of the window.
+        /// </summary>
         [StructLayout(LayoutKind.Sequential)]
         internal struct TITLEBARINFO
         {

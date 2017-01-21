@@ -599,6 +599,11 @@ namespace DesktopPet
             /// <param name="animations">Animation class where the animations should be saved</param>
         public void loadAnimations(Animations animations)
         {
+            if(AnimationXML.Animations == null)
+            {
+                StartUp.AddDebugInfo(StartUp.DEBUG_TYPE.error, "No animations for this pet");
+                return;
+            }
                 // for each animation
             foreach (AnimationNode node in AnimationXML.Animations.Animation)
             {
