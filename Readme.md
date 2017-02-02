@@ -1,4 +1,4 @@
-﻿# Desktop Pet
+# Desktop Pet
 
 Can you remember eSheep, the lovely desktop sheep?
 <img src='Images/esheep.png' /><br />
@@ -14,8 +14,8 @@ In this way, this pet is able to walk, run, etc around your working screen area 
 <h1>Download</h1>
 You can download a compiled Windows EXE from this page:
 <a href='http://esheep.petrucci.ch'>http://esheep.petrucci.ch</a>
-There is also a documentation for the entire code:
-<a href='https://github.com/Adrianotiger/desktopPet/tree/master/Docs'>API Docs</a>
+There entire code documentation can be found online here:
+<a href='http://adrianotiger.github.io/desktopPet/'>http://adrianotiger.github.io/desktopPet/</a>
 <h1>Credits</h1>
 This project used other Open Source projects:
 <ul>
@@ -31,4 +31,4 @@ What you need are:
 <li>1 application icon (.ico file)
 <li>1 animation image: an image with transparency with all possible positions. (.png not too big... Something like 1000x500 px)
 </ul><br />
-For more info about editing the xml file and add your own pet, fallow the <a href='../../wiki/'>Wiki</a> page.<br />
+For more info about editing the xml file and add your own pet, fallow the <a href='../../wiki/'>Wiki</a> page.<br /> or download the manual to develop your pet online: <a href='https://github.com/Adrianotiger/desktopPet/raw/master/Manual/Manual%20-%20online%20editor.docx'>Manual-online editor.docx</a>
