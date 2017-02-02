@@ -678,12 +678,18 @@ namespace DesktopPet
                     {
                             // Pet need to walk over THIS window!
                         hwndWindow = window.Key;
-                            // If window is not covered by other windows, set this as current window for the pet.
-                        if (!CheckTopWindow(false))
+						StringBuilder sTitle = new StringBuilder(128);
+						NativeMethods.GetWindowText(hwndWindow, sTitle, 128);
+
+						// If window is not covered by other windows, set this as current window for the pet.
+						if (!CheckTopWindow(false))
                         {
-                            //NativeMethods.ShowWindow(window.Key, 0);      // hide window
-                            NativeMethods.ShowWindow(window.Key, 5);        // show window again
-                            NativeMethods.SetForegroundWindow(window.Key);  // set focus to window
+								// Only if the option is set (this is an invasive functionality)
+							if (Properties.Settings.Default.WinForeground)
+							{
+								NativeMethods.ShowWindow(window.Key, 5);        // show window again
+								NativeMethods.SetForegroundWindow(window.Key);  // set focus to window
+							}
                             return rct.Top;                                 // return the position for the pet
                         }
                         else
@@ -757,30 +763,38 @@ namespace DesktopPet
                 NativeMethods.TITLEBARINFO titleBarInfo = new NativeMethods.TITLEBARINFO();
                 titleBarInfo.cbSize = Marshal.SizeOf(titleBarInfo);
 
-                    // Get the handle to the next window (to user visual, in Z-order)
-                IntPtr hwnd2 = NativeMethods.GetWindow(hwndWindow, 3);
+                    // Get the handle to the first window (from user visual, in Z-order)
+                IntPtr hwnd2 = NativeMethods.GetWindow(hwndWindow, 0);
                     // Loop until there are windows over the current window (in Z-Order)
                 while (hwnd2 != (IntPtr)0)
                 {
-                    StringBuilder sTitle = new StringBuilder(128);
+						// All windows up to the current window was parsed, now window is overlapping the current window
+					if (hwnd2 == hwndWindow)
+					{
+						return false;
+					}
+
+					StringBuilder sTitle = new StringBuilder(128);
                     NativeMethods.GetWindowText(hwnd2, sTitle, 128);
 
                         // If window has a title bar
-                    if (NativeMethods.GetTitleBarInfo(hwnd2, ref titleBarInfo))
+                    if (sTitle.Length > 0 && NativeMethods.GetTitleBarInfo(hwnd2, ref titleBarInfo))
                     {
                             // If window has a title name and a valid size and is not fullscreen
-                        if (sTitle.Length > 0 && 
-                            NativeMethods.GetWindowRect(new HandleRef(this, hwnd2), out rct) && 
-                            (titleBarInfo.rcTitleBar.Bottom > 0 || sTitle.ToString() == "sheep"))
+                        if (NativeMethods.GetWindowRect(new HandleRef(this, hwnd2), out rct) && 
+                            (titleBarInfo.rcTitleBar.Bottom >= 0 || sTitle.ToString() == "sheep"))
                         {
                             if (rct.Top < rctO.Top && rct.Bottom > rctO.Top)
                             {
-                                if (rct.Left < dPosX && rct.Right > dPosX + 40 && iAnimationStep > 4) return true;
+								if (rct.Left < dPosX && rct.Right > dPosX + 40/* && iAnimationStep > 4*/)
+								{
+									return true;
+								}
                             }
                         }
                     }
                         // Get the handle to the next window (to user visual, in Z-order)
-                    hwnd2 = NativeMethods.GetWindow(hwnd2, 3);
+                    hwnd2 = NativeMethods.GetWindow(hwnd2, 2);
                 }
             }
             return false;
