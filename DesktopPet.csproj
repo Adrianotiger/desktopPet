@@ -180,8 +180,8 @@
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
     <None Include="app.config" />
-    <None Include="Docs__\Documentation.chm" />
-    <None Include="Docs__\Manual - online editor.docx" />
+    <None Include="docs\Documentation.chm" />
+    <None Include="docs\Manual - online editor.docx" />
     <None Include="packages.config" />
     <None Include="Properties\app.manifest" />
     <None Include="Properties\Settings.settings">
@@ -200,7 +200,7 @@
   <ItemGroup>
     <Content Include="Changelog.txt" />
     <EmbeddedResource Include="dll\NAudio.dll" />
-    <Content Include="Docs__\Help.html" />
+    <Content Include="docs\Help.html" />
     <Content Include="Images\exit.png" />
     <Content Include="Images\help.png" />
     <None Include="Images\install.png" />
