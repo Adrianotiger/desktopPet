@@ -70,5 +70,17 @@ namespace DesktopPet.Properties {
                 this["Volume"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool WinForeground {
+            get {
+                return ((bool)(this["WinForeground"]));
+            }
+            set {
+                this["WinForeground"] = value;
+            }
+        }
     }
 }
