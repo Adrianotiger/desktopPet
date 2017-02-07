@@ -8,6 +8,7 @@ using System.Xml.Schema;
 using System.Globalization;
 using System.Xml.Serialization;
 using System.ComponentModel;
+using System.Diagnostics;
 
 namespace DesktopPet
 {
@@ -620,21 +621,21 @@ namespace DesktopPet
                     case "sync": animations.AnimationSync = node.Id; break;
                 }
 
-                ani.Start.X = getXMLCompute(node.Start.X);
-                ani.Start.Y = getXMLCompute(node.Start.Y);
-                ani.Start.Interval = getXMLCompute(node.Start.Interval);
+                ani.Start.X = getXMLCompute(node.Start.X, "animation " + node.Id + ": node.start.X");
+                ani.Start.Y = getXMLCompute(node.Start.Y, "animation " + node.Id + ": node.start.Y");
+                ani.Start.Interval = getXMLCompute(node.Start.Interval, "animation " + node.Id + ": node.start.Interval");
                 ani.Start.OffsetY = node.Start.OffsetY;
                 ani.Start.Opacity = node.Start.Opacity;
 
-                ani.End.X = getXMLCompute(node.End.X);
-                ani.End.Y = getXMLCompute(node.End.Y);
-                ani.End.Interval = getXMLCompute(node.End.Interval);
+                ani.End.X = getXMLCompute(node.End.X, "animation " + node.Id + ": node.end.X");
+                ani.End.Y = getXMLCompute(node.End.Y, "animation " + node.Id + ": node.end.Y");
+                ani.End.Interval = getXMLCompute(node.End.Interval, "animation " + node.Id + ": node.end.Interval");
                 ani.End.OffsetY = node.End.OffsetY;
                 ani.End.Opacity = node.End.Opacity;
 
                 ani.Sequence.RepeatFrom = node.Sequence.RepeatFromFrame;
                 ani.Sequence.Action = node.Sequence.Action;
-                ani.Sequence.Repeat = getXMLCompute(node.Sequence.RepeatCount);
+                ani.Sequence.Repeat = getXMLCompute(node.Sequence.RepeatCount, "animation " + node.Id + ": node.sequence.Repeat");
                 foreach (int frameid in node.Sequence.Frame)
                 {
                     ani.Sequence.Frames.Add(frameid);
@@ -730,8 +731,8 @@ namespace DesktopPet
                         node.Id,
                         node.Probability);
 
-                    ani.Start.X = getXMLCompute(node.X);
-                    ani.Start.Y = getXMLCompute(node.Y);
+                    ani.Start.X = getXMLCompute(node.X, "spawn " + node.Id + ": node.X");
+                    ani.Start.Y = getXMLCompute(node.Y, "spawn " + node.Id + ": node.X");
                     ani.Next = node.Next.Value;
 
                     animations.SaveSpawn(ani, node.Id);
@@ -746,8 +747,8 @@ namespace DesktopPet
                     TChild aniChild = animations.AddChild(node.Id);
                     aniChild.AnimationID = node.Id;
 
-                    aniChild.Position.X = getXMLCompute(node.X);
-                    aniChild.Position.Y = getXMLCompute(node.Y);
+                    aniChild.Position.X = getXMLCompute(node.X, "child " + node.Id + ": node.X");
+                    aniChild.Position.Y = getXMLCompute(node.Y, "child " + node.Id + ": node.Y");
                     aniChild.Next = node.Next;
 
                     animations.SaveChild(aniChild, node.Id);
@@ -769,13 +770,13 @@ namespace DesktopPet
             /// </summary>
             /// <param name="text">XML text value.</param>
             /// <returns>A structure with the values.</returns>
-        public TValue getXMLCompute(string text)
+        public TValue getXMLCompute(string text, string debugInfo)
         {
             TValue v;
 
             v.Compute = text;
             v.IsDynamic = (v.Compute.IndexOf("random") >= 0 || v.Compute.IndexOf("randS") >= 0 || v.Compute.IndexOf("imageX") >= 0 || v.Compute.IndexOf("imageY") >= 0);
-            v.Value = parseValue(v.Compute);
+            v.Value = parseValue(v.Compute, debugInfo);
 
             return v;
         }
@@ -789,7 +790,7 @@ namespace DesktopPet
             /// </remarks> 
             /// <param name="sText">The text to parse and convert.</param>
             /// <returns>The integer value from the parsed text expression.</returns>
-        public int parseValue(string sText)
+        public int parseValue(string sText, string debugInfo)
         {
             int iRet = 0;
             DataTable dt = new DataTable();
@@ -826,8 +827,8 @@ namespace DesktopPet
             }
             else
             {
-                StartUp.AddDebugInfo(StartUp.DEBUG_TYPE.error, "Unable to parse integer: " + sText);
-            }
+				StartUp.AddDebugInfo(StartUp.DEBUG_TYPE.error, "Unable to parse integer: " + sText + " - " + debugInfo);
+			}
             
             return iRet;
         }

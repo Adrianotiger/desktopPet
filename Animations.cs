@@ -43,7 +43,7 @@ namespace DesktopPet
         {
             if (IsDynamic)
             {
-                return Animations.Xml.parseValue(Compute);
+                return Animations.Xml.parseValue(Compute, "Animations.GetValue()");
             }
             else
             {

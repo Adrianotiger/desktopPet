@@ -1,19 +1,28 @@
-﻿using System;
+﻿using DesktopPet.Tools;
+using System;
+using System.Diagnostics;
 using System.Drawing;
+using System.Runtime.InteropServices;
 using System.Windows.Forms;
 
 namespace DesktopPet
-{ 
-        /// <summary>
-        /// Debug form. If you start the application pressing the SHIFT-key a debug window will be started.<br />
-        /// With this window, you can see what is happening to your pet.
-        /// </summary>
-    public partial class FormDebug : Form
+{
+	/// <summary>
+	/// Debug form. If you start the application pressing the SHIFT-key a debug window will be started.<br />
+	/// With this window, you can see what is happening to your pet.
+	/// </summary>
+	public partial class FormDebug : Form
     {
-            /// <summary>
-            /// Constructor of this form.
-            /// </summary>
-        public FormDebug()
+		[DllImport("user32.dll")]
+		public static extern IntPtr FindWindowEx(IntPtr hwndParent, IntPtr hwndChildAfter, string lpszClass, string lpszWindow);
+
+		[DllImport("User32.dll")]
+		public static extern int SendMessage(IntPtr hWnd, int uMsg, int wParam, string lParam);
+
+		/// <summary>
+		/// Constructor of this form.
+		/// </summary>
+		public FormDebug()
         {
             InitializeComponent();
         }
@@ -44,5 +53,42 @@ namespace DesktopPet
             item.SubItems.Add(text);
             item.EnsureVisible();
         }
-    }
+		
+		private void convertoToDOTToolStripMenuItem_Click(object sender, EventArgs e)
+		{
+			ProcessStartInfo startInfo = new ProcessStartInfo("notepad");
+			startInfo.UseShellExecute = false;
+
+			Process notepad = Process.Start(startInfo);
+			notepad.WaitForInputIdle();
+
+			IntPtr child = FindWindowEx(notepad.MainWindowHandle, new IntPtr(0), null, null);
+			SendMessage(child, 0x000c, 0, XmlToDot.ProcessXml(Animations.Xml.AnimationXML));
+		}
+
+		private void openXMLToolStripMenuItem_Click(object sender, EventArgs e)
+		{
+			ProcessStartInfo startInfo = new ProcessStartInfo("notepad");
+			startInfo.UseShellExecute = false;
+
+			Process notepad = Process.Start(startInfo);
+			notepad.WaitForInputIdle();
+
+			IntPtr child = FindWindowEx(notepad.MainWindowHandle, new IntPtr(0), null, null);
+			SendMessage(child, 0x000c, 0, Animations.Xml.AnimationXMLString);
+		}
+
+		private void clearWindowToolStripMenuItem_Click(object sender, EventArgs e)
+		{
+			listView1.Items.Clear();
+		}
+
+		private void removeInfosToolStripMenuItem_Click(object sender, EventArgs e)
+		{
+			foreach(ListViewItem lv in listView1.Items)
+			{
+				if (lv.ForeColor == Color.White) listView1.Items.Remove(lv);
+			}
+		}
+	}
 }
