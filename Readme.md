@@ -22,6 +22,9 @@ This project used other Open Source projects:
 <li><a href='https://naudio.codeplex.com'>NAudio</a> to play sounds
 <li><a href='https://github.com/jamesqo/Stall'>Stall</a> to install the application and create an uninstaller 
 </ul>
+<h1>Thanks</h1>
+<a href='https://github.com/Grunwaldt'>Sergi</a> for the Tray Icon
+<a href='https://github.com/rluiten'>Robin</a> improving the code and implementing the <a href='https://github.com/Adrianotiger/desktopPet/issues/6'>Graphviz tool</a>
 <h1>Want to create your own mate/pet?</h1>
 The easy and fast way is to use the online editor:
 <a href='http://esheep.petrucci.ch/?pagina=editor'>Online editor</a>.
