@@ -71,13 +71,19 @@ namespace DesktopPet
         ProcessIcon pi;
 
         /// <summary>
-        /// Error message for exceptions. It is shown in the options if an error occours.
+        /// Error message for exceptions. It is shown in the options if an error occurs.
         /// </summary>
         public struct TError
         {
+                /// <summary>
+                /// The message to show in the option dialog.
+                /// </summary>
             public string AudioErrorMessage;
         }
 
+        /// <summary>
+        /// Error messages (used for debug), visible in the option dialog.
+        /// </summary>
         public TError ErrorMessages;
         
         /// <summary>
@@ -330,6 +336,10 @@ namespace DesktopPet
             timer1.Enabled = true;
         }
 
+            /// <summary>
+            /// Returns the Animation class.
+            /// </summary>
+            /// <returns>Member variable to access all animations of the current pet.</returns>
         public Animations GetAnimations()
         {
             return animations;

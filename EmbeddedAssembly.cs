@@ -8,12 +8,20 @@ using System.Text;
 
 namespace DesktopPet
 {
+        /// <summary>
+        /// This class gives some functionality if you want to embed some external DLLs. It is used to implement the NAudio.dll library.
+        /// </summary>
     public class EmbeddedAssembly
     {
         // Version 1.3
 
         static Dictionary<string, Assembly> dic = null;
 
+            /// <summary>
+            /// Load the embedded resources (NAudio.dll is embedded)
+            /// </summary>
+            /// <param name="embeddedResource">Resource name (internal name)</param>
+            /// <param name="fileName">Resource name (file name)</param>
         public static void Load(string embeddedResource, string fileName)
         {
             if (dic == null)
@@ -87,6 +95,11 @@ namespace DesktopPet
             dic.Add(asm.FullName, asm);
         }
 
+            /// <summary>
+            /// Get the embedded resource from this project.
+            /// </summary>
+            /// <param name="assemblyFullName">Name of the embedded resource</param>
+            /// <returns></returns>
         public static Assembly Get(string assemblyFullName)
         {
             if (dic == null || dic.Count == 0)
