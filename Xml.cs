@@ -9,6 +9,7 @@ using System.Globalization;
 using System.Xml.Serialization;
 using System.ComponentModel;
 using System.Diagnostics;
+using System.Collections.Generic;
 
 namespace DesktopPet
 {
@@ -401,17 +402,6 @@ namespace DesktopPet
     }
 
         /// <summary>
-        /// Sprite sheet (PNG with all possible positions).
-        /// </summary>
-    public struct Images
-    {
-            /// <summary>
-            /// Memory stream containing the PNG sprite sheet.
-            /// </summary>
-        public MemoryStream bitmapImages;
-    };
-
-        /// <summary>
         /// Xml class contains all functions to read the XML file and functions to parse it.
         /// </summary>
     public sealed class Xml : IDisposable
@@ -427,9 +417,20 @@ namespace DesktopPet
         public string AnimationXMLString;
 
             /// <summary>
-            /// Structure with the sprite sheet informations.
+            /// List of sprite images for animations.
             /// </summary>
-        public Images images;
+        public IList<Bitmap> sprites;
+
+            /// <summary>
+            /// Width of sprite in pixels.
+            /// </summary>
+        public int spriteWidth;
+
+            /// <summary>
+            /// Height of sprite in pixels.
+            /// </summary>
+        public int spriteHeight;
+
             /// <summary>
             /// A memory stream containing the animation icon. This is visible in the taskbar and tray icon.
             /// </summary>
@@ -448,10 +449,6 @@ namespace DesktopPet
             /// </summary>
         public bool parentFlipped;
             /// <summary>
-            /// The sprite sheet image, full image with all frames.
-            /// </summary>
-        private Bitmap FullImage;
-            /// <summary>
             /// Random spawn, this value changes each time the XML is reloaded. Used in the animation xml.
             /// </summary>
         int iRandomSpawn = 10;
@@ -461,7 +458,7 @@ namespace DesktopPet
             /// </summary>
         public Xml()
         {
-            images = new Images();
+            sprites = new List<Bitmap>();
 
             parentX = -1;                   // -1 means it is not a child.
             parentY = -1;
@@ -474,7 +471,12 @@ namespace DesktopPet
         public void Dispose()
         {
             bitmapIcon.Dispose();
-            FullImage.Dispose();
+
+            foreach (var sprite in sprites)
+            {
+                if (sprite != null) sprite.Dispose();
+            }
+            sprites.Clear();
         }
         
             /// <summary>
@@ -550,6 +552,8 @@ namespace DesktopPet
                 // Call the Deserialize method and cast to the object type.
                 AnimationXML = (RootNode)mySerializer.Deserialize(stream);
 
+                stream.Close();
+
                 Properties.Settings.Default.Images = AnimationXML.Image.Png;
                 Properties.Settings.Default.Icon = AnimationXML.Header.Icon;
             }
@@ -573,6 +577,11 @@ namespace DesktopPet
             }
             finally
             {
+                // if the images were loaded from external make some memory available.
+                // don't need it again as its in Properties.Settings.Default.Images
+                AnimationXML.Image.Png = string.Empty;
+                // don't need it again as its in Properties.Settings.Default.Icon
+                AnimationXML.Header.Icon = string.Empty; 
                 try
                 {
                     readImages();
@@ -636,10 +645,7 @@ namespace DesktopPet
                 ani.Sequence.RepeatFrom = node.Sequence.RepeatFromFrame;
                 ani.Sequence.Action = node.Sequence.Action;
                 ani.Sequence.Repeat = getXMLCompute(node.Sequence.RepeatCount, "animation " + node.Id + ": node.sequence.Repeat");
-                foreach (int frameid in node.Sequence.Frame)
-                {
-                    ani.Sequence.Frames.Add(frameid);
-                }
+                ani.Sequence.Frames.AddRange(node.Sequence.Frame);
                 if (ani.Sequence.RepeatFrom > 0)
                     ani.Sequence.TotalSteps = ani.Sequence.Frames.Count + (ani.Sequence.Frames.Count - ani.Sequence.RepeatFrom - 1) * ani.Sequence.Repeat.Value;
                 else
@@ -812,8 +818,8 @@ namespace DesktopPet
             sText = sText.Replace("screenH", Screen.PrimaryScreen.Bounds.Height.ToString(CultureInfo.InvariantCulture));
             sText = sText.Replace("areaW", Screen.PrimaryScreen.WorkingArea.Width.ToString(CultureInfo.InvariantCulture));
             sText = sText.Replace("areaH", (Screen.PrimaryScreen.WorkingArea.Height + Screen.PrimaryScreen.WorkingArea.Y).ToString(CultureInfo.InvariantCulture));
-            sText = sText.Replace("imageW", (FullImage.Width / AnimationXML.Image.TilesX).ToString(CultureInfo.InvariantCulture));
-            sText = sText.Replace("imageH", (FullImage.Height / AnimationXML.Image.TilesY).ToString(CultureInfo.InvariantCulture));
+            sText = sText.Replace("imageW", spriteWidth.ToString(CultureInfo.InvariantCulture));
+            sText = sText.Replace("imageH", spriteHeight.ToString(CultureInfo.InvariantCulture));
             sText = sText.Replace("imageX", (parentX).ToString(CultureInfo.InvariantCulture));
             sText = sText.Replace("imageY", (parentY).ToString(CultureInfo.InvariantCulture));
             sText = sText.Replace("random", rand.Next(0, 100).ToString(CultureInfo.InvariantCulture));
@@ -838,10 +844,14 @@ namespace DesktopPet
             /// </summary>
         private void readImages()
         {
+            MemoryStream imageStream = null;
+
             try
             {
                 if (Properties.Settings.Default.Images.Length < 2) throw new InvalidDataException();
-                images.bitmapImages = new MemoryStream(Convert.FromBase64String(Properties.Settings.Default.Images));
+                imageStream = new MemoryStream(Convert.FromBase64String(Properties.Settings.Default.Images));
+                // only decode once so dont need to keep the source string for image
+                Properties.Settings.Default.Images = string.Empty; 
                 StartUp.AddDebugInfo(StartUp.DEBUG_TYPE.info, "user images loaded");
             }
             catch (Exception)
@@ -863,7 +873,9 @@ namespace DesktopPet
                 }
                 try
                 {
-                    images.bitmapImages = new MemoryStream(Convert.FromBase64String(Properties.Settings.Default.Images));
+                    imageStream = new MemoryStream(Convert.FromBase64String(Properties.Settings.Default.Images));
+                    // only decode once so dont need to keep the source string for image
+                    Properties.Settings.Default.Images = string.Empty;
                 }
                 catch (Exception ex)
                 {
@@ -905,7 +917,40 @@ namespace DesktopPet
                 }
             }
 
-            FullImage = new Bitmap(images.bitmapImages);
+            var image = new Bitmap(imageStream);
+            // no longer need stream
+            imageStream.Close();
+            spriteWidth = image.Width / AnimationXML.Image.TilesX;
+            spriteHeight = image.Height / AnimationXML.Image.TilesY;
+            sprites = BuildSprites(image);
+            // have sprites no longer need source sheet
+            image.Dispose();
+        }
+
+        /// <summary>
+        /// Build sprites from animation image
+        /// </summary>
+        /// <param name="spriteSheet"></param>
+        /// <returns></returns>
+        private IList<Bitmap> BuildSprites(Bitmap spriteSheet)
+        {
+            var sprites = new List<Bitmap>();
+
+            for (var yOffset = 0; yOffset < spriteSheet.Height; yOffset += spriteHeight)
+            {
+                for (var xOffset = 0; xOffset < spriteSheet.Width; xOffset += spriteWidth)
+                {
+                    var bmpImage = new Bitmap(spriteWidth, spriteHeight, spriteSheet.PixelFormat);
+                    var destRectangle = new Rectangle(0, 0, spriteWidth, spriteHeight);
+                    using (var graphics = Graphics.FromImage(bmpImage))
+                    {
+                        var sourceRectangle = new Rectangle(xOffset, yOffset, spriteWidth, spriteHeight);
+                        graphics.DrawImage(spriteSheet, destRectangle, sourceRectangle, GraphicsUnit.Pixel);
+                    }
+                    sprites.Add(bmpImage);
+                }
+            }
+            return sprites;
         }
     }
 }
