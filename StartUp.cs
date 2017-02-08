@@ -148,34 +148,16 @@ namespace DesktopPet
         {
             if (iSheeps < MAX_SHEEPS)
             {
-                    // Get the image from XML file
-                    // An imageList will be filled with single images picked from sprite sheet.
-                    // Each image frame is stored and id begins from 0 (top left).
-                    // ToDo: maybe a better way would be store the imageList in this class and each form can access the
-                    //       images from this class. This will save some memory in the RAM.
-                Bitmap bmpOriginal = new Bitmap(xml.images.bitmapImages);
-                int iXSize = bmpOriginal.Width / xml.AnimationXML.Image.TilesX;
-                int iYSize = bmpOriginal.Height / xml.AnimationXML.Image.TilesY;
-                sheeps[iSheeps] = new Form2(animations, xml);
-                sheeps[iSheeps].Show(iXSize, iYSize);
-                
-                AddDebugInfo(DEBUG_TYPE.info, "new pet...");
-
-                for (int i = 0; i < xml.AnimationXML.Image.TilesX * xml.AnimationXML.Image.TilesY; i++)
+                var newSheep = new Form2(animations, xml);
+                foreach (var sprite in xml.sprites)
                 {
-                    Rectangle cropArea = new Rectangle(0 + iXSize * (i % xml.AnimationXML.Image.TilesX), 0 + iYSize * (i / xml.AnimationXML.Image.TilesX), iXSize, iYSize);
-                    Bitmap bmpImage = new Bitmap(iXSize, iYSize, bmpOriginal.PixelFormat);
-                    using (Graphics graphics = Graphics.FromImage(bmpImage))
-                    {
-                        Rectangle destRectangle = new Rectangle(0, 0, iXSize, iYSize);
-                        Rectangle sourceRectangle = new Rectangle(0 + iXSize * (i % xml.AnimationXML.Image.TilesX), 0 + iYSize * (i / xml.AnimationXML.Image.TilesX), iXSize, iYSize);
-                        graphics.DrawImage(bmpOriginal, destRectangle, sourceRectangle, GraphicsUnit.Pixel);
-                    }
-                    sheeps[iSheeps].addImage(bmpImage);
+                    newSheep.addImage(sprite);
                 }
-
-                AddDebugInfo(DEBUG_TYPE.info, (xml.AnimationXML.Image.TilesX * xml.AnimationXML.Image.TilesY).ToString() + " frames added");
-
+                sheeps[iSheeps] = newSheep;
+                sheeps[iSheeps].Show(xml.spriteWidth, xml.spriteHeight);
+                AddDebugInfo(DEBUG_TYPE.info, "new pet...");
+                AddDebugInfo(DEBUG_TYPE.info, xml.sprites.Count.ToString() + " frames added");
+                
                     // Start the animation of the pet
                 sheeps[iSheeps].Play(true);
                 iSheeps++;
