@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Windows.Forms;
 using System.Drawing;
+using System.Reflection;
 
 namespace DesktopPet
 {
@@ -44,9 +45,18 @@ namespace DesktopPet
             /// </summary>
         public void SetIcon(System.IO.MemoryStream icon, string petName, string aboutAuthor, string aboutTitle, string aboutVersion, string aboutInfo)
         {
-            ni.Icon = new Icon(icon, 32, 32);
-            ContextMenus.UpdateIcon(ni.Icon, petName, aboutAuthor, aboutTitle, aboutVersion, aboutInfo);
-            ni.Text = petName + " Desktop Pet";
+			try
+			{
+				ni.Icon = new Icon(icon, 32, 32);
+				ContextMenus.UpdateIcon(ni.Icon, petName, aboutAuthor, aboutTitle, aboutVersion, aboutInfo);
+				ni.Text = petName + " Desktop Pet";
+			}
+			catch(Exception)
+			{
+				StartUp.AddDebugInfo(StartUp.DEBUG_TYPE.error, "Animation ICON is invalid (icon converter is on the webpage)");
+				ni.Icon = new Icon(Icon.ExtractAssociatedIcon(Assembly.GetExecutingAssembly().Location), 32, 32);
+				ContextMenus.UpdateIcon(ni.Icon, petName, aboutAuthor, aboutTitle, aboutVersion, aboutInfo);
+			}
         }
 
             /// <summary>
