@@ -13,9 +13,25 @@ namespace DesktopPet
 	/// </summary>
 	public partial class FormDebug : Form
     {
+        /// <summary>
+        /// FindWindowEx is used to open another application
+        /// </summary>
+        /// <param name="hwndParent">hwnd of the parent (this application)</param>
+        /// <param name="hwndChildAfter">hwnd of the next application (0)</param>
+        /// <param name="lpszClass">null</param>
+        /// <param name="lpszWindow">null</param>
+        /// <returns>A pointer to the opened application</returns>
 		[DllImport("user32.dll")]
 		public static extern IntPtr FindWindowEx(IntPtr hwndParent, IntPtr hwndChildAfter, string lpszClass, string lpszWindow);
 
+        /// <summary>
+        /// Send a message to the opened application (<see cref="FindWindowEx(IntPtr, IntPtr, string, string)"/>
+        /// </summary>
+        /// <param name="hWnd">hWnd of the created application pointer.</param>
+        /// <param name="uMsg">Message type</param>
+        /// <param name="wParam">wParam is 0</param>
+        /// <param name="lParam">lParam is the text to show in the application</param>
+        /// <returns></returns>
 		[DllImport("User32.dll")]
 		public static extern int SendMessage(IntPtr hWnd, int uMsg, int wParam, string lParam);
 

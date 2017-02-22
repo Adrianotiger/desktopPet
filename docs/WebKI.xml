@@ -29,11 +29,15 @@
   <HelpKINode Title="addImage method" Url="html/0d44febc-be35-b70d-7abc-84e19dd848b9.htm" />
   <HelpKINode Title="AddNewSheep_Click method" Url="html/bdb1131e-44c8-23da-080a-4ea47f8bd10c.htm" />
   <HelpKINode Title="AddSheep method" Url="html/f61ac87f-4832-20e9-382e-ec514230260c.htm" />
+  <HelpKINode Title="AddSound method" Url="html/cbfe3303-e1fc-0e30-6d53-7eb125f4e742.htm" />
   <HelpKINode Title="AddSpawn method" Url="html/4b0eaccb-3573-fc9c-0769-a98dcdb3cbcb.htm" />
   <HelpKINode Title="Animation field" Url="html/3b366013-b1b4-0bc8-6a79-783ca9812579.htm" />
   <HelpKINode Title="AnimationDrag field" Url="html/abd4a0bf-9a93-0a07-8906-5777a10af8be.htm" />
   <HelpKINode Title="AnimationFall field" Url="html/e7219e88-ddf8-3e7b-dbcd-ecabf13d730f.htm" />
-  <HelpKINode Title="AnimationID field" Url="html/81a6a588-c344-950a-2b97-be5601ad4299.htm" />
+  <HelpKINode Title="AnimationID field">
+    <HelpKINode Title="TChild.AnimationID Field" Url="html/81a6a588-c344-950a-2b97-be5601ad4299.htm" />
+    <HelpKINode Title="TSound.AnimationID Field" Url="html/d2a54851-fbc0-46d4-a2e6-07edc7ef9d4e.htm" />
+  </HelpKINode>
   <HelpKINode Title="AnimationKill field" Url="html/fee17f3f-d425-b93a-4275-c3df2c66b907.htm" />
   <HelpKINode Title="AnimationNode class">
     <HelpKINode Title="AnimationNode Class" Url="html/3a9c4776-0425-893a-8f98-dc4353e06f27.htm" />
@@ -59,6 +63,7 @@
   <HelpKINode Title="Animations field" Url="html/75d86447-d553-8e41-cb77-76539f05b185.htm" />
   <HelpKINode Title="Animations.AddAnimation method" Url="html/49dab644-1ae6-9beb-db4d-97e76be9cb6a.htm" />
   <HelpKINode Title="Animations.AddChild method" Url="html/1af63f3d-81e5-ab6e-fbe4-c94493a4d6fa.htm" />
+  <HelpKINode Title="Animations.AddSound method" Url="html/cbfe3303-e1fc-0e30-6d53-7eb125f4e742.htm" />
   <HelpKINode Title="Animations.AddSpawn method" Url="html/4b0eaccb-3573-fc9c-0769-a98dcdb3cbcb.htm" />
   <HelpKINode Title="Animations.AnimationDrag field" Url="html/abd4a0bf-9a93-0a07-8906-5777a10af8be.htm" />
   <HelpKINode Title="Animations.AnimationFall field" Url="html/e7219e88-ddf8-3e7b-dbcd-ecabf13d730f.htm" />
@@ -67,6 +72,8 @@
   <HelpKINode Title="Animations.AnimationSync field" Url="html/339e2b6a-16de-32ec-81cc-71c3e22872c0.htm" />
   <HelpKINode Title="Animations.GetAnimation method" Url="html/8a1c8a6b-8624-3116-21b3-0e704f948295.htm" />
   <HelpKINode Title="Animations.GetAnimationChild method" Url="html/3079c903-fb67-28d8-c8b6-c6b9103e883f.htm" />
+  <HelpKINode Title="Animations.GetNextAnimations method" Url="html/31637900-7d75-9c83-733c-72e04f16bf57.htm" />
+  <HelpKINode Title="Animations.GetNextSpawns method" Url="html/eb547a1a-43fa-6096-8a11-bcb1157fd970.htm" />
   <HelpKINode Title="Animations.GetRandomSpawn method" Url="html/49d44060-2c88-71f7-6ab9-d91772c51929.htm" />
   <HelpKINode Title="Animations.HasAnimationChild method" Url="html/02a8dde2-f7ca-47c7-f617-3108f4708d31.htm" />
   <HelpKINode Title="Animations.SaveAnimation method" Url="html/ba674e84-d52b-10c7-75a9-0ea358b27a61.htm" />
@@ -78,6 +85,7 @@
   <HelpKINode Title="Animations.SetNextSequenceAnimation method" Url="html/0a7dc197-42b1-483a-7d91-75148f3e6b79.htm" />
   <HelpKINode Title="Animations.SheepAnimations field" Url="html/a128b98d-980b-23bc-f6c6-38b7c3982309.htm" />
   <HelpKINode Title="Animations.SheepChild field" Url="html/a42e2d0b-163a-74e6-7059-94cfe6589ea8.htm" />
+  <HelpKINode Title="Animations.SheepSound field" Url="html/7c90a050-8ce0-0010-b40d-ebf698a5a969.htm" />
   <HelpKINode Title="Animations.SheepSpawn field" Url="html/7bcd3f16-0baa-a05d-0fe5-891922b2d6ed.htm" />
   <HelpKINode Title="Animations.UpdateAnimationValues method" Url="html/e8610a31-8036-3344-31d1-36d3f5f6f931.htm" />
   <HelpKINode Title="Animations.Xml field" Url="html/c23c04ce-aa9d-a3e5-8721-931df03314e4.htm" />
@@ -96,14 +104,18 @@
   <HelpKINode Title="ArgumentInstall field" Url="html/88e07ef7-c45c-eafd-8666-bc689cebc995.htm" />
   <HelpKINode Title="ArgumentLocalXML field" Url="html/bc3bfb75-468c-89f0-977e-a81b8182247b.htm" />
   <HelpKINode Title="ArgumentWebXML field" Url="html/797607b0-60b7-bccd-c61a-249d643bb5b0.htm" />
+  <HelpKINode Title="AudioErrorMessage field" Url="html/2fc4c749-a630-fe69-14fe-83b9b014cbb2.htm" />
+  <HelpKINode Title="Audio_PlaybackStopped method" Url="html/00ab1bab-7cbb-7770-0f00-ac6696f5b7f5.htm" />
   <HelpKINode Title="Author field" Url="html/82624b12-cdf5-408a-3b12-6d14767b4083.htm" />
+  <HelpKINode Title="Base64 field" Url="html/1e64f7e1-01b2-b364-6d3c-f76f849ed1f1.htm" />
   <HelpKINode Title="bitmapIcon field" Url="html/9513d7b1-54fa-ce10-299f-7c77d22c65c2.htm" />
-  <HelpKINode Title="bitmapImages field" Url="html/693857e9-94d8-e88e-6c39-435cfb77e7e5.htm" />
+  <HelpKINode Title="Border enumeration member" Url="html/31fd1508-1364-5e3c-071a-02edc6022d89.htm" />
   <HelpKINode Title="Border field">
     <HelpKINode Title="AnimationNode.Border Field" Url="html/f24a7c01-db1a-5eb8-9d75-2fe551411b46.htm" />
     <HelpKINode Title="TAnimation.Border Field" Url="html/da876b88-da73-0d07-4e94-c88da9ab1bf0.htm" />
   </HelpKINode>
   <HelpKINode Title="Bottom field" Url="html/433644b4-b3be-ae1f-3e5c-d20de91adfa9.htm" />
+  <HelpKINode Title="BuildSprites method" Url="html/d125bea2-5cf0-425f-679e-87d13652cbb0.htm" />
   <HelpKINode Title="button1_Click method">
     <HelpKINode Title="FormOptions.button1_Click Method " Url="html/55390984-3701-dd46-ccbe-a5ec441ca052.htm" />
     <HelpKINode Title="Install.button1_Click Method " Url="html/7d925227-9527-6ec8-1402-1b7fec17df20.htm" />
@@ -116,9 +128,14 @@
   <HelpKINode Title="button_ok_Click method" Url="html/59db1534-0cb7-ea5f-fc1f-997f5c430248.htm" />
   <HelpKINode Title="CalculateTotalSteps method" Url="html/eae3eadf-4e75-09b9-1245-999d9fff248a.htm" />
   <HelpKINode Title="cbSize field" Url="html/d4792dc3-1620-8d83-e392-2388d3923b1f.htm" />
-  <HelpKINode Title="checkBox1_CheckedChanged method" Url="html/84d07dee-7286-c2f2-a5b4-17a9b6c06943.htm" />
+  <HelpKINode Title="checkBox1_CheckedChanged method">
+    <HelpKINode Title="FormOptions.checkBox1_CheckedChanged Method " Url="html/c596de05-d571-019b-b670-2f398e199de7.htm" />
+    <HelpKINode Title="Install.checkBox1_CheckedChanged Method " Url="html/84d07dee-7286-c2f2-a5b4-17a9b6c06943.htm" />
+  </HelpKINode>
   <HelpKINode Title="checkBox2_CheckedChanged method" Url="html/1f49dae5-1d12-00f9-1679-c25414aba8ee.htm" />
+  <HelpKINode Title="checkBox2_Click method" Url="html/2c8a03b9-7c2b-ead8-780d-e18f3c50ad93.htm" />
   <HelpKINode Title="checkBox3_CheckedChanged method" Url="html/2832239c-f3db-cf6a-d1d1-4def6202158f.htm" />
+  <HelpKINode Title="CheckFullScreen method" Url="html/9f14117a-bb91-650d-c291-db1cb1e7fdd6.htm" />
   <HelpKINode Title="CheckTopWindow method" Url="html/8e9ffbcd-1273-a7a3-37cd-a7c302c1e0bd.htm" />
   <HelpKINode Title="CheckUpdates method" Url="html/215df272-42d5-6c21-9034-5f0906f67fe5.htm" />
   <HelpKINode Title="Child field" Url="html/e01994c2-f0ba-fe50-89d0-7b93998240f4.htm" />
@@ -142,6 +159,7 @@
   </HelpKINode>
   <HelpKINode Title="ChildsNode.Child field" Url="html/e01994c2-f0ba-fe50-89d0-7b93998240f4.htm" />
   <HelpKINode Title="ChildsNode.ChildsNode constructor" Url="html/96094bb9-e361-8eb1-3558-7cf0fd5c8e23.htm" />
+  <HelpKINode Title="clearWindowToolStripMenuItem_Click method" Url="html/a741d23e-26ea-256f-ef1d-5f3b344d6cc3.htm" />
   <HelpKINode Title="Compute field" Url="html/f31d828f-63f0-bc3f-a92f-23f1a0550f21.htm" />
   <HelpKINode Title="ContextMenus class">
     <HelpKINode Title="ContextMenus Class" Url="html/65454dbc-d5e3-31bc-8cb5-c673ccb10448.htm" />
@@ -159,8 +177,11 @@
   <HelpKINode Title="ContextMenus.InstallApplication method" Url="html/bae58b5c-0b24-c8ad-8a37-c1367c76eb48.htm" />
   <HelpKINode Title="ContextMenus.Options_Click method" Url="html/68412bfb-9c19-b0f8-af52-53c060fdd8d2.htm" />
   <HelpKINode Title="ContextMenus.UpdateIcon method" Url="html/73bd99a3-b283-42aa-2f44-21851fa0912c.htm" />
+  <HelpKINode Title="convertoToDOTToolStripMenuItem_Click method" Url="html/f4ab40a5-e4d8-f879-1f52-f03e00db31ad.htm" />
+  <HelpKINode Title="convertProbabilityToGray method" Url="html/6ee8f9ea-758b-fab2-9f02-8d58e35003fc.htm" />
   <HelpKINode Title="Create method" Url="html/5eeda038-0b7c-43cc-d12f-f80f0a84233c.htm" />
   <HelpKINode Title="CreateParams property" Url="html/d49ef5ac-3dac-e376-fd3c-955afea35460.htm" />
+  <HelpKINode Title="CurrentDomain_AssemblyResolve method" Url="html/e3f4c8db-adcd-d987-47da-198d14f9273d.htm" />
   <HelpKINode Title="DesktopPet namespace" Url="html/3d2b9dd5-83b5-60a7-75d8-6fba306c0790.htm" />
   <HelpKINode Title="DesktopPet.AboutBox class" Url="html/786bf238-ca44-1c0e-1ec6-99222e14cd04.htm" />
   <HelpKINode Title="DesktopPet.AnimationNode class" Url="html/3a9c4776-0425-893a-8f98-dc4353e06f27.htm" />
@@ -169,6 +190,7 @@
   <HelpKINode Title="DesktopPet.ChildNode class" Url="html/5b5a587b-6b70-2fac-872c-e827421c61dc.htm" />
   <HelpKINode Title="DesktopPet.ChildsNode class" Url="html/c0cf4b65-415a-0641-5ca2-58c09e7a4437.htm" />
   <HelpKINode Title="DesktopPet.ContextMenus class" Url="html/65454dbc-d5e3-31bc-8cb5-c673ccb10448.htm" />
+  <HelpKINode Title="DesktopPet.EmbeddedAssembly class" Url="html/ca1a1ac3-e509-82d8-29f7-a1554bbbac2e.htm" />
   <HelpKINode Title="DesktopPet.Form2 class" Url="html/0bad8328-f321-e1d4-3c8a-400ed7a905a5.htm" />
   <HelpKINode Title="DesktopPet.FormDebug class" Url="html/4490981b-2eb2-1e88-4771-bf4edca5c150.htm" />
   <HelpKINode Title="DesktopPet.FormHelp class" Url="html/bb4b6c31-eb4c-dd9b-9d14-31d09a342d1c.htm" />
@@ -176,7 +198,6 @@
   <HelpKINode Title="DesktopPet.HeaderNode class" Url="html/c5b9f9b2-ff5d-39dc-f82d-9cd5347bea01.htm" />
   <HelpKINode Title="DesktopPet.HitNode class" Url="html/97d8b253-0f08-d9e6-1c3f-cf6b78ad280b.htm" />
   <HelpKINode Title="DesktopPet.ImageNode class" Url="html/e520b3f0-9506-b75d-7ac2-ba9603b2a734.htm" />
-  <HelpKINode Title="DesktopPet.Images structure" Url="html/0066ca58-7897-2561-d41a-8a027ab8f334.htm" />
   <HelpKINode Title="DesktopPet.Install class" Url="html/d26b28a4-4dde-1086-728c-4b3dcb989c46.htm" />
   <HelpKINode Title="DesktopPet.MovingNode class" Url="html/d9f759b2-c4c0-d99e-3a63-726fac5bec85.htm" />
   <HelpKINode Title="DesktopPet.NativeMethods class" Url="html/eba17485-b0da-42e2-93e2-b6e45ed4660d.htm" />
@@ -188,16 +209,23 @@
   <HelpKINode Title="DesktopPet.Program class" Url="html/b4752e6e-3a91-ceee-4301-74e7fa30b55b.htm" />
   <HelpKINode Title="DesktopPet.RootNode class" Url="html/78e669dd-01f7-2d72-ed9f-c0d0807dd6b0.htm" />
   <HelpKINode Title="DesktopPet.SequenceNode class" Url="html/65f5d521-8d24-52ad-20ab-36755ae9178d.htm" />
+  <HelpKINode Title="DesktopPet.SoundNode class" Url="html/357ec000-04f1-f094-771f-94f9dfafaad3.htm" />
+  <HelpKINode Title="DesktopPet.SoundsNode class" Url="html/f5b6a7a6-d265-fd61-377c-04303eab2aa4.htm" />
   <HelpKINode Title="DesktopPet.SpawnNode class" Url="html/3f195809-f1a4-80df-e471-f6f28fc347f4.htm" />
   <HelpKINode Title="DesktopPet.SpawnsNode class" Url="html/55e41f5d-b4a5-4d65-8b6a-39d324d5440d.htm" />
   <HelpKINode Title="DesktopPet.StartUp class" Url="html/ef42e860-c54d-63a2-17c5-653cdda8cd17.htm" />
   <HelpKINode Title="DesktopPet.StartUp.DEBUG_TYPE enumeration" Url="html/59803349-e92b-a856-022e-94c5a51833f7.htm" />
+  <HelpKINode Title="DesktopPet.StartUp.TError structure" Url="html/0fbdc478-1df2-c53d-5461-4609c0c3e43d.htm" />
   <HelpKINode Title="DesktopPet.TAnimation structure" Url="html/7852c405-e463-2257-c777-29fc7bb009b1.htm" />
   <HelpKINode Title="DesktopPet.TChild structure" Url="html/a6d7dc46-08e4-ede7-e4db-dd09e4003c4d.htm" />
   <HelpKINode Title="DesktopPet.TMovement structure" Url="html/46e1a396-6861-cc48-e610-a66b3fb3ecc0.htm" />
   <HelpKINode Title="DesktopPet.TNextAnimation structure" Url="html/19b0ec95-54da-1580-9e1e-71a9c36b6837.htm" />
   <HelpKINode Title="DesktopPet.TNextAnimation.TOnly enumeration" Url="html/85ed7fbb-6750-9a0d-822d-985b7308ff62.htm" />
+  <HelpKINode Title="DesktopPet.Tools namespace" Url="html/7a28bf20-9bd7-a466-334f-a39ee4ca5a48.htm" />
+  <HelpKINode Title="DesktopPet.Tools.XmlToDot class" Url="html/9f6ff04e-2353-1939-4401-f206f8cae236.htm" />
+  <HelpKINode Title="DesktopPet.Tools.XmlToDot.Next enumeration" Url="html/31fd1508-1364-5e3c-071a-02edc6022d89.htm" />
   <HelpKINode Title="DesktopPet.TSequence structure" Url="html/7af16c14-d9ba-c15f-ee31-7d6b3df3068b.htm" />
+  <HelpKINode Title="DesktopPet.TSound structure" Url="html/8a699023-f7ac-758a-ba42-b4c9040bcde9.htm" />
   <HelpKINode Title="DesktopPet.TSpawn structure" Url="html/f9b0121f-24ae-43e0-a030-58c986b67e13.htm" />
   <HelpKINode Title="DesktopPet.TValue structure" Url="html/a5fe2a4b-79fa-3521-ff81-c4a3bac24470.htm" />
   <HelpKINode Title="DesktopPet.Xml class" Url="html/ae774e47-c263-145b-2e7f-11dd15321e3c.htm" />
@@ -214,6 +242,19 @@
     <HelpKINode Title="StartUp.Dispose Method " Url="html/5f38bb8c-ec24-5b37-eb2f-2ed75d10ef45.htm" />
     <HelpKINode Title="Xml.Dispose Method " Url="html/ba8a2352-153f-ee5d-144b-8ad7af01cd28.htm" />
   </HelpKINode>
+  <HelpKINode Title="EmbeddedAssembly class">
+    <HelpKINode Title="EmbeddedAssembly Class" Url="html/ca1a1ac3-e509-82d8-29f7-a1554bbbac2e.htm" />
+    <HelpKINode Title="about EmbeddedAssembly class" Url="html/ca1a1ac3-e509-82d8-29f7-a1554bbbac2e.htm" />
+    <HelpKINode Title="constructor" Url="html/08682c10-4b4b-1b71-ecb7-6054a2d92dc7.htm" />
+    <HelpKINode Title="constructor" Url="html/c48fb700-2dd8-03d2-1d94-5b1278913c8e.htm" />
+    <HelpKINode Title="methods" Url="html/d5c0d12e-9b8c-c087-7790-bff36b0fd15d.htm" />
+  </HelpKINode>
+  <HelpKINode Title="EmbeddedAssembly.EmbeddedAssembly constructor">
+    <HelpKINode Title="EmbeddedAssembly Constructor " Url="html/08682c10-4b4b-1b71-ecb7-6054a2d92dc7.htm" />
+    <HelpKINode Title="EmbeddedAssembly Constructor " Url="html/c48fb700-2dd8-03d2-1d94-5b1278913c8e.htm" />
+  </HelpKINode>
+  <HelpKINode Title="EmbeddedAssembly.Get method" Url="html/9a18ff45-5287-f353-d285-408f959dd006.htm" />
+  <HelpKINode Title="EmbeddedAssembly.Load method" Url="html/dcecee7d-a154-73af-dbb9-462ea0383163.htm" />
   <HelpKINode Title="End field">
     <HelpKINode Title="AnimationNode.End Field" Url="html/4268d6b8-5b87-e3f4-58f3-8bfbaa3bc646.htm" />
     <HelpKINode Title="TAnimation.End Field" Url="html/2367c95c-ed85-3ac7-cb6e-8229f342034b.htm" />
@@ -223,9 +264,11 @@
   <HelpKINode Title="EndGravity field" Url="html/77989775-edf0-ccfb-d4a0-c8fb1e7dc4ff.htm" />
   <HelpKINode Title="EnumWindows method" Url="html/470f8a08-9951-4656-da0f-3df1afec0455.htm" />
   <HelpKINode Title="error enumeration member" Url="html/59803349-e92b-a856-022e-94c5a51833f7.htm" />
+  <HelpKINode Title="ErrorMessages field" Url="html/ab123aa2-6334-9223-feb2-63f1e23e22a5.htm" />
   <HelpKINode Title="Exit_Click method" Url="html/cb7959ca-dbd5-ef1e-d3ac-bd09c2469337.htm" />
   <HelpKINode Title="FallDetect method" Url="html/448d2ed3-2996-3566-76c5-ff4c1b80b150.htm" />
   <HelpKINode Title="FillData method" Url="html/b0911615-d948-d82c-6bfb-dd4c367d6397.htm" />
+  <HelpKINode Title="FindWindowEx method" Url="html/31545045-f35e-3f67-df9f-c489d9f28921.htm" />
   <HelpKINode Title="Form2 class">
     <HelpKINode Title="Form2 Class" Url="html/0bad8328-f321-e1d4-3c8a-400ed7a905a5.htm" />
     <HelpKINode Title="about Form2 class" Url="html/0bad8328-f321-e1d4-3c8a-400ed7a905a5.htm" />
@@ -234,6 +277,7 @@
     <HelpKINode Title="properties" Url="html/3d866b90-aedd-3133-300b-2beb45e0036b.htm" />
   </HelpKINode>
   <HelpKINode Title="Form2.addImage method" Url="html/0d44febc-be35-b70d-7abc-84e19dd848b9.htm" />
+  <HelpKINode Title="Form2.CheckFullScreen method" Url="html/9f14117a-bb91-650d-c291-db1cb1e7fdd6.htm" />
   <HelpKINode Title="Form2.CheckTopWindow method" Url="html/8e9ffbcd-1273-a7a3-37cd-a7c302c1e0bd.htm" />
   <HelpKINode Title="Form2.CreateParams property" Url="html/d49ef5ac-3dac-e376-fd3c-955afea35460.htm" />
   <HelpKINode Title="Form2.Dispose method" Url="html/40a61355-fdac-c7eb-9167-0b23b9166dfe.htm" />
@@ -252,6 +296,7 @@
   <HelpKINode Title="Form2.PlayChild method" Url="html/945a68b9-5c95-7980-d82c-90ff2aebffdc.htm" />
   <HelpKINode Title="Form2.SetNewAnimation method" Url="html/24cce894-853b-1087-df14-3f0b34de4b4c.htm" />
   <HelpKINode Title="Form2.Show method" Url="html/02c73167-4552-753c-6e43-8f52307746f5.htm" />
+  <HelpKINode Title="Form2.ShowWithoutActivation property" Url="html/d090ec31-c639-45f4-8498-0e93e52c5d7a.htm" />
   <HelpKINode Title="Form2.Sync method" Url="html/a6359f9a-fb33-9623-cc23-6459dfb74b5d.htm" />
   <HelpKINode Title="Form2.timer1_Tick method" Url="html/2930a45d-9ae9-2e14-30e3-94bb1f0f72df.htm" />
   <HelpKINode Title="Form2_DragDrop method" Url="html/844457ae-6b35-1d15-e010-e7676aecef5e.htm" />
@@ -264,9 +309,15 @@
     <HelpKINode Title="methods" Url="html/4fb99805-b138-ce8c-f759-f868b554904c.htm" />
   </HelpKINode>
   <HelpKINode Title="FormDebug.AddDebugInfo method" Url="html/e2b0d1cf-511a-3bc0-2484-530eaa267be5.htm" />
+  <HelpKINode Title="FormDebug.clearWindowToolStripMenuItem_Click method" Url="html/a741d23e-26ea-256f-ef1d-5f3b344d6cc3.htm" />
+  <HelpKINode Title="FormDebug.convertoToDOTToolStripMenuItem_Click method" Url="html/f4ab40a5-e4d8-f879-1f52-f03e00db31ad.htm" />
   <HelpKINode Title="FormDebug.Dispose method" Url="html/287cbe14-6c5f-eb1f-2608-0673a9f79a75.htm" />
+  <HelpKINode Title="FormDebug.FindWindowEx method" Url="html/31545045-f35e-3f67-df9f-c489d9f28921.htm" />
   <HelpKINode Title="FormDebug.FormDebug constructor" Url="html/7ed7ad96-983a-5b2f-ab5a-fd7e391dc966.htm" />
   <HelpKINode Title="FormDebug.InitializeComponent method" Url="html/6d581e74-e0e2-e6d6-cc8a-1b7fa5f4a5c9.htm" />
+  <HelpKINode Title="FormDebug.openXMLToolStripMenuItem_Click method" Url="html/3313a847-613c-d415-45e9-7e6bd6722f58.htm" />
+  <HelpKINode Title="FormDebug.removeInfosToolStripMenuItem_Click method" Url="html/1539a075-ce1a-a65f-8a3a-e668cc47cd41.htm" />
+  <HelpKINode Title="FormDebug.SendMessage method" Url="html/17eeb2b8-385d-7227-4f69-1dc166487515.htm" />
   <HelpKINode Title="FormHelp class">
     <HelpKINode Title="FormHelp Class" Url="html/bb4b6c31-eb4c-dd9b-9d14-31d09a342d1c.htm" />
     <HelpKINode Title="about FormHelp class" Url="html/bb4b6c31-eb4c-dd9b-9d14-31d09a342d1c.htm" />
@@ -283,21 +334,33 @@
     <HelpKINode Title="methods" Url="html/baea842c-fd4a-2871-30c6-697f425714cc.htm" />
   </HelpKINode>
   <HelpKINode Title="FormOptions.button1_Click method" Url="html/55390984-3701-dd46-ccbe-a5ec441ca052.htm" />
+  <HelpKINode Title="FormOptions.checkBox1_CheckedChanged method" Url="html/c596de05-d571-019b-b670-2f398e199de7.htm" />
+  <HelpKINode Title="FormOptions.checkBox2_Click method" Url="html/2c8a03b9-7c2b-ead8-780d-e18f3c50ad93.htm" />
   <HelpKINode Title="FormOptions.Dispose method" Url="html/b2d3bbb3-40f0-23df-10bc-b531fd944c05.htm" />
   <HelpKINode Title="FormOptions.FormOptions constructor" Url="html/2dcaa227-9e44-ca19-cec2-054becbfd3e0.htm" />
+  <HelpKINode Title="FormOptions.FormOptions_Load method" Url="html/794c1fc4-f36e-53b1-9cc5-f33238013aa6.htm" />
   <HelpKINode Title="FormOptions.InitializeComponent method" Url="html/c3839f51-3396-0baf-ebc7-6c7d948bf458.htm" />
+  <HelpKINode Title="FormOptions.tabControl1_DrawItem method" Url="html/395c183c-6160-d0ec-5072-ecd914e5a29f.htm" />
+  <HelpKINode Title="FormOptions.trackBar1_Scroll method" Url="html/e896cf8d-bc30-4955-8bac-b190f8c3ae7f.htm" />
   <HelpKINode Title="FormOptions.webBrowser1_DocumentCompleted method" Url="html/0d18754e-8685-7dd0-7e62-92eb0eb64fa6.htm" />
+  <HelpKINode Title="FormOptions_Load method" Url="html/794c1fc4-f36e-53b1-9cc5-f33238013aa6.htm" />
   <HelpKINode Title="Frame field" Url="html/9f3c58f2-0834-1410-ab06-f0eb3db96574.htm" />
   <HelpKINode Title="Frames field" Url="html/187ab672-d1d5-0649-d3e3-bf0e37fd6cf7.htm" />
+  <HelpKINode Title="Get method" Url="html/9a18ff45-5287-f353-d285-408f959dd006.htm" />
   <HelpKINode Title="GetAnimation method" Url="html/8a1c8a6b-8624-3116-21b3-0e704f948295.htm" />
   <HelpKINode Title="GetAnimationChild method" Url="html/3079c903-fb67-28d8-c8b6-c6b9103e883f.htm" />
+  <HelpKINode Title="GetAnimations method" Url="html/8e0fd55a-f0a7-c1c8-89fc-502570f2a268.htm" />
+  <HelpKINode Title="GetForegroundWindow method" Url="html/a34e67e9-9603-d7ec-7f80-459a39c8c8a7.htm" />
+  <HelpKINode Title="GetNextAnimations method" Url="html/31637900-7d75-9c83-733c-72e04f16bf57.htm" />
+  <HelpKINode Title="GetNextSpawns method" Url="html/eb547a1a-43fa-6096-8a11-bcb1157fd970.htm" />
   <HelpKINode Title="GetRandomSpawn method" Url="html/49d44060-2c88-71f7-6ab9-d91772c51929.htm" />
   <HelpKINode Title="GetTitleBarInfo method" Url="html/818847cd-8ee8-c3e7-ab37-9ebb12e0dd40.htm" />
   <HelpKINode Title="GetValue method" Url="html/a75a5d04-f963-1990-d26c-e69b5aa3a6ab.htm" />
   <HelpKINode Title="GetWindow method" Url="html/73777329-a4e9-7eaf-c82d-a534961d73ce.htm" />
   <HelpKINode Title="GetWindowRect method" Url="html/5c6c6d1c-dbb2-d836-47b4-c9e79c69208a.htm" />
   <HelpKINode Title="GetWindowText method" Url="html/2dc7a0c1-2db0-b4c9-4e7f-203e44d25e7d.htm" />
-  <HelpKINode Title="getXMLCompute method" Url="html/bcf20292-2d25-2200-fa93-5e595d19ca79.htm" />
+  <HelpKINode Title="getXMLCompute method" Url="html/cfdf05e7-0911-601f-05d9-ee6bd8fa5a50.htm" />
+  <HelpKINode Title="Gravity enumeration member" Url="html/31fd1508-1364-5e3c-071a-02edc6022d89.htm" />
   <HelpKINode Title="Gravity field">
     <HelpKINode Title="AnimationNode.Gravity Field" Url="html/16e72864-14b8-2c18-b9c8-a1c6cb6011e8.htm" />
     <HelpKINode Title="TAnimation.Gravity Field" Url="html/3a18bd07-837c-2fb9-0a3b-13c29f774ef7.htm" />
@@ -330,14 +393,15 @@
   <HelpKINode Title="HORIZONTAL enumeration member" Url="html/85ed7fbb-6750-9a0d-822d-985b7308ff62.htm" />
   <HelpKINode Title="HORIZONTAL_ enumeration member" Url="html/85ed7fbb-6750-9a0d-822d-985b7308ff62.htm" />
   <HelpKINode Title="Icon field" Url="html/49afd3f1-1703-9524-7b0f-6e93abb3ff29.htm" />
-  <HelpKINode Title="Id field">
-    <HelpKINode Title="AnimationNode.Id Field" Url="html/30aa2db2-d35d-4993-e11c-1f98fd6536ac.htm" />
-    <HelpKINode Title="ChildNode.Id Field" Url="html/858138c6-504d-2acf-c796-55973baedc5e.htm" />
-    <HelpKINode Title="SpawnNode.Id Field" Url="html/004b9ea5-7cd5-ec23-8f82-429590f2cc0b.htm" />
-  </HelpKINode>
   <HelpKINode Title="ID field">
     <HelpKINode Title="TAnimation.ID Field" Url="html/926f336b-188d-e2b0-ae03-e8b73de1f254.htm" />
     <HelpKINode Title="TNextAnimation.ID Field" Url="html/01dca401-53f7-dea0-88bc-d20d938d5cbf.htm" />
+  </HelpKINode>
+  <HelpKINode Title="Id field">
+    <HelpKINode Title="AnimationNode.Id Field" Url="html/30aa2db2-d35d-4993-e11c-1f98fd6536ac.htm" />
+    <HelpKINode Title="ChildNode.Id Field" Url="html/858138c6-504d-2acf-c796-55973baedc5e.htm" />
+    <HelpKINode Title="SoundNode.Id Field" Url="html/d1fa7452-0725-7709-8484-d90f46507812.htm" />
+    <HelpKINode Title="SpawnNode.Id Field" Url="html/004b9ea5-7cd5-ec23-8f82-429590f2cc0b.htm" />
   </HelpKINode>
   <HelpKINode Title="Image field" Url="html/a6b1b130-0e7b-c362-6ca9-fbcea15669f5.htm" />
   <HelpKINode Title="ImageNode class">
@@ -351,13 +415,6 @@
   <HelpKINode Title="ImageNode.TilesX field" Url="html/2048be62-b5fc-ee89-1b6b-d32c96585231.htm" />
   <HelpKINode Title="ImageNode.TilesY field" Url="html/652d5c8c-b008-7576-d0ce-3b448d22a620.htm" />
   <HelpKINode Title="ImageNode.Transparency field" Url="html/f8c1c76d-d238-e884-af87-a177b108258a.htm" />
-  <HelpKINode Title="images field" Url="html/f0cd1eb5-14ed-c737-09be-41e1db0a50ea.htm" />
-  <HelpKINode Title="Images structure">
-    <HelpKINode Title="Images Structure" Url="html/0066ca58-7897-2561-d41a-8a027ab8f334.htm" />
-    <HelpKINode Title="about Images structure" Url="html/0066ca58-7897-2561-d41a-8a027ab8f334.htm" />
-    <HelpKINode Title="fields" Url="html/6bf34793-4291-c35a-47df-268d7dfb8b59.htm" />
-  </HelpKINode>
-  <HelpKINode Title="Images.bitmapImages field" Url="html/693857e9-94d8-e88e-6c39-435cfb77e7e5.htm" />
   <HelpKINode Title="info enumeration member" Url="html/59803349-e92b-a856-022e-94c5a51833f7.htm" />
   <HelpKINode Title="Info field" Url="html/bec69736-853a-5eb2-0747-e0c34dd2faf5.htm" />
   <HelpKINode Title="InitializeComponent method">
@@ -401,6 +458,7 @@
     <HelpKINode Title="TMovement.Interval Field" Url="html/e4cfa72f-94ac-7dfb-dc52-9c0227a7ab66.htm" />
   </HelpKINode>
   <HelpKINode Title="IsApplicationInstalled method" Url="html/1db85b99-7430-2afe-95eb-d1d30f84e7c4.htm" />
+  <HelpKINode Title="IsDebugActive method" Url="html/3a4f00b8-f82a-39a7-d58a-f16b6dd15eea.htm" />
   <HelpKINode Title="IsDynamic field" Url="html/4680672a-2d8b-d44e-0f4b-05f208e94380.htm" />
   <HelpKINode Title="IsWindowVisible method" Url="html/497283b1-208d-3848-a5dd-f1195eb43af9.htm" />
   <HelpKINode Title="Kill method" Url="html/b7b49301-9cdb-1171-7fb9-384e309ef6e3.htm" />
@@ -409,8 +467,16 @@
   <HelpKINode Title="Left field" Url="html/5a680bbd-24fb-579e-1092-13ed22754821.htm" />
   <HelpKINode Title="linkLabel1_LinkClicked method" Url="html/5b0e77ee-e146-b2cb-55fd-5edd896ccc6d.htm" />
   <HelpKINode Title="linkLabel2_LinkClicked method" Url="html/1fb74d8f-0414-37e6-b12e-79e162af6e7c.htm" />
+  <HelpKINode Title="Load method">
+    <HelpKINode Title="EmbeddedAssembly.Load Method " Url="html/dcecee7d-a154-73af-dbb9-462ea0383163.htm" />
+    <HelpKINode Title="TSound.Load Method " Url="html/949639cc-a5c2-cc06-3c05-afa004aa02cd.htm" />
+  </HelpKINode>
   <HelpKINode Title="loadAnimations method" Url="html/d0b54331-3314-f6cb-42ac-c0bfb31787b0.htm" />
   <HelpKINode Title="LoadNewXMLFromString method" Url="html/643c75c2-d8c7-5bd4-fec8-c74c264cdb86.htm" />
+  <HelpKINode Title="Loop field">
+    <HelpKINode Title="SoundNode.Loop Field" Url="html/f3425755-cb85-47b4-69e3-af8f79210019.htm" />
+    <HelpKINode Title="TSound.Loop Field" Url="html/841c16c8-192c-6258-5518-212cd70cd2bf.htm" />
+  </HelpKINode>
   <HelpKINode Title="Main method" Url="html/8e877346-321a-9be8-a84a-c0d065fa30ff.htm" />
   <HelpKINode Title="Mainthread field" Url="html/362db0c7-755b-ed18-7124-116fadc253de.htm" />
   <HelpKINode Title="MAX_SHEEPS field" Url="html/0776b19c-643c-ee9a-8b42-f0df8bb8a958.htm" />
@@ -437,6 +503,7 @@
   </HelpKINode>
   <HelpKINode Title="NativeMethods.EnumWindows method" Url="html/470f8a08-9951-4656-da0f-3df1afec0455.htm" />
   <HelpKINode Title="NativeMethods.EnumWindowsProc delegate" Url="html/3ac68b81-6a3e-3db6-0816-cfa36267fa75.htm" />
+  <HelpKINode Title="NativeMethods.GetForegroundWindow method" Url="html/a34e67e9-9603-d7ec-7f80-459a39c8c8a7.htm" />
   <HelpKINode Title="NativeMethods.GetTitleBarInfo method" Url="html/818847cd-8ee8-c3e7-ab37-9ebb12e0dd40.htm" />
   <HelpKINode Title="NativeMethods.GetWindow method" Url="html/73777329-a4e9-7eaf-c82d-a534961d73ce.htm" />
   <HelpKINode Title="NativeMethods.GetWindowRect method" Url="html/5c6c6d1c-dbb2-d836-47b4-c9e79c69208a.htm" />
@@ -492,25 +559,32 @@
     <HelpKINode Title="TMovement.Opacity Field" Url="html/3cadce53-d7c3-5132-8941-cee2020641f6.htm" />
   </HelpKINode>
   <HelpKINode Title="OpenOptionDialog method" Url="html/7b8da36d-4950-dcf6-849d-d5e1817b0be9.htm" />
+  <HelpKINode Title="openXMLToolStripMenuItem_Click method" Url="html/3313a847-613c-d415-45e9-7e6bd6722f58.htm" />
   <HelpKINode Title="Options_Click method" Url="html/68412bfb-9c19-b0f8-af52-53c060fdd8d2.htm" />
   <HelpKINode Title="parentFlipped field" Url="html/68162b59-bf8e-6aeb-5dff-6914c55b091f.htm" />
   <HelpKINode Title="parentX field" Url="html/4f8f944b-5df1-19e2-0cb5-bf3346ddf646.htm" />
   <HelpKINode Title="parentY field" Url="html/47aabf6f-668d-8fdf-23b2-ca6a4106f2d4.htm" />
-  <HelpKINode Title="parseValue method" Url="html/33a7eed3-3771-b3f0-8b39-1b0056783ace.htm" />
+  <HelpKINode Title="parseValue method" Url="html/891ab788-178e-f372-c0b3-1f04efea5b9b.htm" />
   <HelpKINode Title="Petname field" Url="html/d767235c-d3c2-0516-cf19-e96ef279340a.htm" />
   <HelpKINode Title="pictureBox1_DoubleClick method" Url="html/68920af6-cc83-b8b9-0430-93032db02a28.htm" />
   <HelpKINode Title="pictureBox1_MouseDown method" Url="html/59d53e5c-456b-6aa4-304d-2c746795b9aa.htm" />
   <HelpKINode Title="pictureBox1_MouseUp method" Url="html/d1d19697-255b-fac2-0fe5-3d2250cee09a.htm" />
-  <HelpKINode Title="Play method" Url="html/29fcaa89-5fd3-8db3-e4fa-bc5fea734a48.htm" />
+  <HelpKINode Title="Play method">
+    <HelpKINode Title="Form2.Play Method " Url="html/29fcaa89-5fd3-8db3-e4fa-bc5fea734a48.htm" />
+    <HelpKINode Title="TSound.Play Method " Url="html/c510fabd-16c9-1d45-6768-e63a327b2a68.htm" />
+  </HelpKINode>
   <HelpKINode Title="PlayChild method" Url="html/945a68b9-5c95-7980-d82c-90ff2aebffdc.htm" />
   <HelpKINode Title="Png field" Url="html/f9ae49f0-3c43-f8c4-305b-8303258e5eb7.htm" />
   <HelpKINode Title="Position field" Url="html/1bf8f785-f1f0-3514-73a2-5cfda45921fa.htm" />
   <HelpKINode Title="Probability field">
     <HelpKINode Title="NextNode.Probability Field" Url="html/b328f8c8-8db1-b6c1-cd13-dcdeb95f6398.htm" />
+    <HelpKINode Title="SoundNode.Probability Field" Url="html/ccf82cf7-e859-98ed-ae26-24d8c6def1c9.htm" />
     <HelpKINode Title="SpawnNode.Probability Field" Url="html/ceed4a70-955c-29c7-57d1-00a250fb6bba.htm" />
     <HelpKINode Title="TNextAnimation.Probability Field" Url="html/0d80603c-03c4-4229-f4a1-b3cde01a9314.htm" />
+    <HelpKINode Title="TSound.Probability Field" Url="html/eec19660-3baa-1bb1-7447-b426bf40706d.htm" />
     <HelpKINode Title="TSpawn.Probability Field" Url="html/46f49e01-b0e5-cf35-3fe3-1ae3bc268c42.htm" />
   </HelpKINode>
+  <HelpKINode Title="ProcessAnimations method" Url="html/7347dad3-ac9b-cc6f-9f0b-ecaeae31e193.htm" />
   <HelpKINode Title="ProcessIcon class">
     <HelpKINode Title="ProcessIcon Class" Url="html/0fdf7666-9ac4-184e-b863-99e314f323b7.htm" />
     <HelpKINode Title="about ProcessIcon class" Url="html/0fdf7666-9ac4-184e-b863-99e314f323b7.htm" />
@@ -523,6 +597,8 @@
   <HelpKINode Title="ProcessIcon.ni_MouseDoubleClick method" Url="html/9a1ab42f-4667-ff3a-c3f9-44e963ef3127.htm" />
   <HelpKINode Title="ProcessIcon.ProcessIcon constructor" Url="html/582689ef-9bba-56da-a557-a988d52625bb.htm" />
   <HelpKINode Title="ProcessIcon.SetIcon method" Url="html/d95f1234-c79b-9440-4449-288f3a44ff9d.htm" />
+  <HelpKINode Title="ProcessNext method" Url="html/d4dae531-0d74-7a6e-fd61-e162ec09f99f.htm" />
+  <HelpKINode Title="ProcessXml method" Url="html/4360be8e-1eba-1dff-0e25-29008683a270.htm" />
   <HelpKINode Title="Program class">
     <HelpKINode Title="Program Class" Url="html/b4752e6e-3a91-ceee-4301-74e7fa30b55b.htm" />
     <HelpKINode Title="about Program class" Url="html/b4752e6e-3a91-ceee-4301-74e7fa30b55b.htm" />
@@ -533,6 +609,7 @@
   <HelpKINode Title="Program.ArgumentInstall field" Url="html/88e07ef7-c45c-eafd-8666-bc689cebc995.htm" />
   <HelpKINode Title="Program.ArgumentLocalXML field" Url="html/bc3bfb75-468c-89f0-977e-a81b8182247b.htm" />
   <HelpKINode Title="Program.ArgumentWebXML field" Url="html/797607b0-60b7-bccd-c61a-249d643bb5b0.htm" />
+  <HelpKINode Title="Program.CurrentDomain_AssemblyResolve method" Url="html/e3f4c8db-adcd-d987-47da-198d14f9273d.htm" />
   <HelpKINode Title="Program.Main method" Url="html/8e877346-321a-9be8-a84a-c0d065fa30ff.htm" />
   <HelpKINode Title="Program.Mainthread field" Url="html/362db0c7-755b-ed18-7124-116fadc253de.htm" />
   <HelpKINode Title="Program.Program constructor" Url="html/4ef606ee-1f27-c951-cb83-227cb0c5892e.htm" />
@@ -542,6 +619,7 @@
   <HelpKINode Title="RECT structure">
     <HelpKINode Title="fields" Url="html/7a64c234-2395-d3d6-8db0-2d403089d456.htm" />
   </HelpKINode>
+  <HelpKINode Title="removeInfosToolStripMenuItem_Click method" Url="html/1539a075-ce1a-a65f-8a3a-e668cc47cd41.htm" />
   <HelpKINode Title="Repeat field" Url="html/74c70348-cc41-645a-a46b-ae0546f3a87a.htm" />
   <HelpKINode Title="RepeatCount field" Url="html/0f75420a-0d8e-3eb6-d63e-0864c04f9617.htm" />
   <HelpKINode Title="RepeatFrom field" Url="html/a7b2db4b-4c2b-fc96-f69e-1e0d8420a31c.htm" />
@@ -560,10 +638,13 @@
   <HelpKINode Title="RootNode.Header field" Url="html/e0c7a54a-26b3-fc38-d9c9-116354805a6d.htm" />
   <HelpKINode Title="RootNode.Image field" Url="html/a6b1b130-0e7b-c362-6ca9-fbcea15669f5.htm" />
   <HelpKINode Title="RootNode.RootNode constructor" Url="html/2b6e22f5-0f81-2606-46ab-6c1fddbe0abc.htm" />
+  <HelpKINode Title="RootNode.Sounds field" Url="html/206753b5-5e52-4876-69c2-22b8e3a92827.htm" />
   <HelpKINode Title="RootNode.Spawns field" Url="html/f84e1072-18e3-c9f4-2e63-f170b2c92c09.htm" />
   <HelpKINode Title="SaveAnimation method" Url="html/ba674e84-d52b-10c7-75a9-0ea358b27a61.htm" />
   <HelpKINode Title="SaveChild method" Url="html/3e77c411-92e4-d335-6c22-f4b7e8cf6a5a.htm" />
   <HelpKINode Title="SaveSpawn method" Url="html/4e014f9a-132d-b9fa-5c4d-0f92f7c0b925.htm" />
+  <HelpKINode Title="SendMessage method" Url="html/17eeb2b8-385d-7227-4f69-1dc166487515.htm" />
+  <HelpKINode Title="Sequence enumeration member" Url="html/31fd1508-1364-5e3c-071a-02edc6022d89.htm" />
   <HelpKINode Title="Sequence field">
     <HelpKINode Title="AnimationNode.Sequence Field" Url="html/0563ac2f-9c04-a1f2-a89d-d88589562267.htm" />
     <HelpKINode Title="TAnimation.Sequence Field" Url="html/e4494d21-3a2b-ca48-1eb6-b7c29fa4a891.htm" />
@@ -589,10 +670,33 @@
   <HelpKINode Title="SetNextSequenceAnimation method" Url="html/0a7dc197-42b1-483a-7d91-75148f3e6b79.htm" />
   <HelpKINode Title="SheepAnimations field" Url="html/a128b98d-980b-23bc-f6c6-38b7c3982309.htm" />
   <HelpKINode Title="SheepChild field" Url="html/a42e2d0b-163a-74e6-7059-94cfe6589ea8.htm" />
+  <HelpKINode Title="SheepSound field" Url="html/7c90a050-8ce0-0010-b40d-ebf698a5a969.htm" />
   <HelpKINode Title="SheepSpawn field" Url="html/7bcd3f16-0baa-a05d-0fe5-891922b2d6ed.htm" />
   <HelpKINode Title="Show method" Url="html/02c73167-4552-753c-6e43-8f52307746f5.htm" />
   <HelpKINode Title="ShowInstallation method" Url="html/dc779df7-fe19-93e2-d31e-5474f00ae74d.htm" />
   <HelpKINode Title="ShowWindow method" Url="html/85506c39-c635-610e-7ad6-36c157648b50.htm" />
+  <HelpKINode Title="ShowWithoutActivation property" Url="html/d090ec31-c639-45f4-8498-0e93e52c5d7a.htm" />
+  <HelpKINode Title="Sound field" Url="html/08c0c682-3841-1040-1108-f68fb8070054.htm" />
+  <HelpKINode Title="SoundNode class">
+    <HelpKINode Title="SoundNode Class" Url="html/357ec000-04f1-f094-771f-94f9dfafaad3.htm" />
+    <HelpKINode Title="about SoundNode class" Url="html/357ec000-04f1-f094-771f-94f9dfafaad3.htm" />
+    <HelpKINode Title="constructor" Url="html/22d60640-0289-a20a-b0d5-79ac25582dbb.htm" />
+    <HelpKINode Title="fields" Url="html/ae8a8488-e577-50a8-c499-7530bc7b4d2d.htm" />
+  </HelpKINode>
+  <HelpKINode Title="SoundNode.Base64 field" Url="html/1e64f7e1-01b2-b364-6d3c-f76f849ed1f1.htm" />
+  <HelpKINode Title="SoundNode.Id field" Url="html/d1fa7452-0725-7709-8484-d90f46507812.htm" />
+  <HelpKINode Title="SoundNode.Loop field" Url="html/f3425755-cb85-47b4-69e3-af8f79210019.htm" />
+  <HelpKINode Title="SoundNode.Probability field" Url="html/ccf82cf7-e859-98ed-ae26-24d8c6def1c9.htm" />
+  <HelpKINode Title="SoundNode.SoundNode constructor" Url="html/22d60640-0289-a20a-b0d5-79ac25582dbb.htm" />
+  <HelpKINode Title="Sounds field" Url="html/206753b5-5e52-4876-69c2-22b8e3a92827.htm" />
+  <HelpKINode Title="SoundsNode class">
+    <HelpKINode Title="SoundsNode Class" Url="html/f5b6a7a6-d265-fd61-377c-04303eab2aa4.htm" />
+    <HelpKINode Title="about SoundsNode class" Url="html/f5b6a7a6-d265-fd61-377c-04303eab2aa4.htm" />
+    <HelpKINode Title="constructor" Url="html/709bc7b7-692c-f07f-2c00-e69c7a417a6c.htm" />
+    <HelpKINode Title="fields" Url="html/3eaece21-2e61-ba92-1087-a69cf2254e49.htm" />
+  </HelpKINode>
+  <HelpKINode Title="SoundsNode.Sound field" Url="html/08c0c682-3841-1040-1108-f68fb8070054.htm" />
+  <HelpKINode Title="SoundsNode.SoundsNode constructor" Url="html/709bc7b7-692c-f07f-2c00-e69c7a417a6c.htm" />
   <HelpKINode Title="Spawn field" Url="html/fff36d9b-9677-5b34-8b55-c59fd7893af5.htm" />
   <HelpKINode Title="SpawnNode class">
     <HelpKINode Title="SpawnNode Class" Url="html/3f195809-f1a4-80df-e471-f6f28fc347f4.htm" />
@@ -615,6 +719,9 @@
   </HelpKINode>
   <HelpKINode Title="SpawnsNode.Spawn field" Url="html/fff36d9b-9677-5b34-8b55-c59fd7893af5.htm" />
   <HelpKINode Title="SpawnsNode.SpawnsNode constructor" Url="html/528ce227-360e-16b7-0667-a7f5b5bfefed.htm" />
+  <HelpKINode Title="spriteHeight field" Url="html/f8f6cbad-c636-51e6-3dca-70d978ef772e.htm" />
+  <HelpKINode Title="sprites field" Url="html/b28ba437-7782-50fb-ec6f-ca37dd8f612b.htm" />
+  <HelpKINode Title="spriteWidth field" Url="html/25c095e5-a407-f2fd-0394-d55a56c06362.htm" />
   <HelpKINode Title="Start field">
     <HelpKINode Title="AnimationNode.Start Field" Url="html/df8c74e8-e9fa-c820-29b1-56bf8c595992.htm" />
     <HelpKINode Title="TAnimation.Start Field" Url="html/20303ac7-a4c9-d2ef-e282-ac2674ff0a27.htm" />
@@ -623,8 +730,8 @@
   <HelpKINode Title="StartUp class">
     <HelpKINode Title="StartUp Class" Url="html/ef42e860-c54d-63a2-17c5-653cdda8cd17.htm" />
     <HelpKINode Title="about StartUp class" Url="html/ef42e860-c54d-63a2-17c5-653cdda8cd17.htm" />
-    <HelpKINode Title="constructor" Url="html/3c743cf3-0d3a-3371-bcf9-c61893d668b4.htm" />
     <HelpKINode Title="constructor" Url="html/8b99e1f4-153a-dfb4-aa9d-cc8f1e74d9b7.htm" />
+    <HelpKINode Title="constructor" Url="html/3c743cf3-0d3a-3371-bcf9-c61893d668b4.htm" />
     <HelpKINode Title="fields" Url="html/13ca0723-5550-103b-1a20-d2fa9ee3e612.htm" />
     <HelpKINode Title="methods" Url="html/c7de4933-3a9b-8d26-7d2d-e5abc0d76d29.htm" />
   </HelpKINode>
@@ -632,20 +739,30 @@
   <HelpKINode Title="StartUp.AddSheep method" Url="html/f61ac87f-4832-20e9-382e-ec514230260c.htm" />
   <HelpKINode Title="StartUp.DEBUG_TYPE enumeration" Url="html/59803349-e92b-a856-022e-94c5a51833f7.htm" />
   <HelpKINode Title="StartUp.Dispose method" Url="html/5f38bb8c-ec24-5b37-eb2f-2ed75d10ef45.htm" />
+  <HelpKINode Title="StartUp.ErrorMessages field" Url="html/ab123aa2-6334-9223-feb2-63f1e23e22a5.htm" />
+  <HelpKINode Title="StartUp.GetAnimations method" Url="html/8e0fd55a-f0a7-c1c8-89fc-502570f2a268.htm" />
+  <HelpKINode Title="StartUp.IsDebugActive method" Url="html/3a4f00b8-f82a-39a7-d58a-f16b6dd15eea.htm" />
   <HelpKINode Title="StartUp.KillSheep method" Url="html/ab123212-6b4e-8d44-b740-6fe3c5545cc9.htm" />
   <HelpKINode Title="StartUp.KillSheeps method" Url="html/5df72fa4-8e89-92b8-fd3d-284c3eee8248.htm" />
   <HelpKINode Title="StartUp.LoadNewXMLFromString method" Url="html/643c75c2-d8c7-5bd4-fec8-c74c264cdb86.htm" />
   <HelpKINode Title="StartUp.MAX_SHEEPS field" Url="html/0776b19c-643c-ee9a-8b42-f0df8bb8a958.htm" />
   <HelpKINode Title="StartUp.OpenOptionDialog method" Url="html/7b8da36d-4950-dcf6-849d-d5e1817b0be9.htm" />
   <HelpKINode Title="StartUp.StartUp constructor">
-    <HelpKINode Title="StartUp Constructor " Url="html/3c743cf3-0d3a-3371-bcf9-c61893d668b4.htm" />
     <HelpKINode Title="StartUp Constructor " Url="html/8b99e1f4-153a-dfb4-aa9d-cc8f1e74d9b7.htm" />
+    <HelpKINode Title="StartUp Constructor " Url="html/3c743cf3-0d3a-3371-bcf9-c61893d668b4.htm" />
   </HelpKINode>
   <HelpKINode Title="StartUp.SyncSheeps method" Url="html/06dc95ad-3c95-40d6-a5b8-e810ce3ac023.htm" />
+  <HelpKINode Title="StartUp.TError structure">
+    <HelpKINode Title="StartUp.TError Structure" Url="html/0fbdc478-1df2-c53d-5461-4609c0c3e43d.htm" />
+    <HelpKINode Title="about StartUp.TError structure" Url="html/0fbdc478-1df2-c53d-5461-4609c0c3e43d.htm" />
+  </HelpKINode>
+  <HelpKINode Title="StartUp.TError.AudioErrorMessage field" Url="html/2fc4c749-a630-fe69-14fe-83b9b014cbb2.htm" />
   <HelpKINode Title="StartUp.timer1 field" Url="html/35640a34-61b7-9338-63c3-3c4f58cbe75b.htm" />
   <HelpKINode Title="StartUp.timer1_Tick method" Url="html/d0cf816d-10b6-01e7-3bd5-f594add3ddc5.htm" />
+  <HelpKINode Title="StartUp.TopMostSheeps method" Url="html/191d65ff-6f97-e750-3eee-7e07eed77877.htm" />
   <HelpKINode Title="Sync method" Url="html/a6359f9a-fb33-9623-cc23-6459dfb74b5d.htm" />
   <HelpKINode Title="SyncSheeps method" Url="html/06dc95ad-3c95-40d6-a5b8-e810ce3ac023.htm" />
+  <HelpKINode Title="tabControl1_DrawItem method" Url="html/395c183c-6160-d0ec-5072-ecd914e5a29f.htm" />
   <HelpKINode Title="TAnimation structure">
     <HelpKINode Title="TAnimation Structure" Url="html/7852c405-e463-2257-c777-29fc7bb009b1.htm" />
     <HelpKINode Title="about TAnimation structure" Url="html/7852c405-e463-2257-c777-29fc7bb009b1.htm" />
@@ -672,6 +789,9 @@
   <HelpKINode Title="TChild.AnimationID field" Url="html/81a6a588-c344-950a-2b97-be5601ad4299.htm" />
   <HelpKINode Title="TChild.Next field" Url="html/992d45c8-9368-437d-d994-31b0b801e71a.htm" />
   <HelpKINode Title="TChild.Position field" Url="html/1bf8f785-f1f0-3514-73a2-5cfda45921fa.htm" />
+  <HelpKINode Title="TError structure">
+    <HelpKINode Title="fields" Url="html/d0af60f9-342d-5951-7b81-208a8ed02433.htm" />
+  </HelpKINode>
   <HelpKINode Title="TilesX field" Url="html/2048be62-b5fc-ee89-1b6b-d32c96585231.htm" />
   <HelpKINode Title="TilesY field" Url="html/652d5c8c-b008-7576-d0ce-3b448d22a620.htm" />
   <HelpKINode Title="timer1 field" Url="html/35640a34-61b7-9338-63c3-3c4f58cbe75b.htm" />
@@ -705,7 +825,9 @@
   <HelpKINode Title="TNextAnimation.TNextAnimation constructor" Url="html/86e5738c-c6b3-e92c-474c-5ad9a5c3cc0b.htm" />
   <HelpKINode Title="TNextAnimation.TOnly enumeration" Url="html/85ed7fbb-6750-9a0d-822d-985b7308ff62.htm" />
   <HelpKINode Title="Top field" Url="html/13c70285-5d83-c455-4411-800ccc6c57ea.htm" />
+  <HelpKINode Title="TopMostSheeps method" Url="html/191d65ff-6f97-e750-3eee-7e07eed77877.htm" />
   <HelpKINode Title="TotalSteps property" Url="html/6bfb8202-7761-4608-8209-79851a7b50f3.htm" />
+  <HelpKINode Title="trackBar1_Scroll method" Url="html/e896cf8d-bc30-4955-8bac-b190f8c3ae7f.htm" />
   <HelpKINode Title="Transparency field" Url="html/f8c1c76d-d238-e884-af87-a177b108258a.htm" />
   <HelpKINode Title="TSequence structure">
     <HelpKINode Title="TSequence Structure" Url="html/7af16c14-d9ba-c15f-ee31-7d6b3df3068b.htm" />
@@ -720,6 +842,18 @@
   <HelpKINode Title="TSequence.Repeat field" Url="html/74c70348-cc41-645a-a46b-ae0546f3a87a.htm" />
   <HelpKINode Title="TSequence.RepeatFrom field" Url="html/a7b2db4b-4c2b-fc96-f69e-1e0d8420a31c.htm" />
   <HelpKINode Title="TSequence.TotalSteps property" Url="html/6bfb8202-7761-4608-8209-79851a7b50f3.htm" />
+  <HelpKINode Title="TSound structure">
+    <HelpKINode Title="TSound Structure" Url="html/8a699023-f7ac-758a-ba42-b4c9040bcde9.htm" />
+    <HelpKINode Title="about TSound structure" Url="html/8a699023-f7ac-758a-ba42-b4c9040bcde9.htm" />
+    <HelpKINode Title="fields" Url="html/e014906c-13f3-973a-bdd2-bf7a69434ac5.htm" />
+    <HelpKINode Title="methods" Url="html/2f03e116-c024-b3cc-0f7f-657344604e68.htm" />
+  </HelpKINode>
+  <HelpKINode Title="TSound.AnimationID field" Url="html/d2a54851-fbc0-46d4-a2e6-07edc7ef9d4e.htm" />
+  <HelpKINode Title="TSound.Audio_PlaybackStopped method" Url="html/00ab1bab-7cbb-7770-0f00-ac6696f5b7f5.htm" />
+  <HelpKINode Title="TSound.Load method" Url="html/949639cc-a5c2-cc06-3c05-afa004aa02cd.htm" />
+  <HelpKINode Title="TSound.Loop field" Url="html/841c16c8-192c-6258-5518-212cd70cd2bf.htm" />
+  <HelpKINode Title="TSound.Play method" Url="html/c510fabd-16c9-1d45-6768-e63a327b2a68.htm" />
+  <HelpKINode Title="TSound.Probability field" Url="html/eec19660-3baa-1bb1-7447-b426bf40706d.htm" />
   <HelpKINode Title="TSpawn structure">
     <HelpKINode Title="TSpawn Structure" Url="html/f9b0121f-24ae-43e0-a030-58c986b67e13.htm" />
     <HelpKINode Title="about TSpawn structure" Url="html/f9b0121f-24ae-43e0-a030-58c986b67e13.htm" />
@@ -770,18 +904,33 @@
   <HelpKINode Title="Xml.AnimationXML field" Url="html/3feba1a4-722b-c79a-a39c-b9713fc93657.htm" />
   <HelpKINode Title="Xml.AnimationXMLString field" Url="html/d6ef6e67-e98f-25c0-002a-ffedc7972f88.htm" />
   <HelpKINode Title="Xml.bitmapIcon field" Url="html/9513d7b1-54fa-ce10-299f-7c77d22c65c2.htm" />
+  <HelpKINode Title="Xml.BuildSprites method" Url="html/d125bea2-5cf0-425f-679e-87d13652cbb0.htm" />
   <HelpKINode Title="Xml.Dispose method" Url="html/ba8a2352-153f-ee5d-144b-8ad7af01cd28.htm" />
-  <HelpKINode Title="Xml.getXMLCompute method" Url="html/bcf20292-2d25-2200-fa93-5e595d19ca79.htm" />
-  <HelpKINode Title="Xml.images field" Url="html/f0cd1eb5-14ed-c737-09be-41e1db0a50ea.htm" />
+  <HelpKINode Title="Xml.getXMLCompute method" Url="html/cfdf05e7-0911-601f-05d9-ee6bd8fa5a50.htm" />
   <HelpKINode Title="Xml.loadAnimations method" Url="html/d0b54331-3314-f6cb-42ac-c0bfb31787b0.htm" />
   <HelpKINode Title="Xml.parentFlipped field" Url="html/68162b59-bf8e-6aeb-5dff-6914c55b091f.htm" />
   <HelpKINode Title="Xml.parentX field" Url="html/4f8f944b-5df1-19e2-0cb5-bf3346ddf646.htm" />
   <HelpKINode Title="Xml.parentY field" Url="html/47aabf6f-668d-8fdf-23b2-ca6a4106f2d4.htm" />
-  <HelpKINode Title="Xml.parseValue method" Url="html/33a7eed3-3771-b3f0-8b39-1b0056783ace.htm" />
+  <HelpKINode Title="Xml.parseValue method" Url="html/891ab788-178e-f372-c0b3-1f04efea5b9b.htm" />
   <HelpKINode Title="Xml.readImages method" Url="html/04055a16-0440-0945-3b02-c97dfa9a313a.htm" />
   <HelpKINode Title="Xml.readXML method" Url="html/a9db96ad-dba3-d447-b04f-235cb150a055.htm" />
+  <HelpKINode Title="Xml.spriteHeight field" Url="html/f8f6cbad-c636-51e6-3dca-70d978ef772e.htm" />
+  <HelpKINode Title="Xml.sprites field" Url="html/b28ba437-7782-50fb-ec6f-ca37dd8f612b.htm" />
+  <HelpKINode Title="Xml.spriteWidth field" Url="html/25c095e5-a407-f2fd-0394-d55a56c06362.htm" />
   <HelpKINode Title="Xml.ValidationEventHandler method" Url="html/ac61c0e7-405e-17fa-1efc-7c825cd51d06.htm" />
   <HelpKINode Title="Xml.Xml constructor" Url="html/137c7970-0637-740f-c6e9-af3ec58fdf3c.htm" />
+  <HelpKINode Title="XmlToDot class">
+    <HelpKINode Title="XmlToDot Class" Url="html/9f6ff04e-2353-1939-4401-f206f8cae236.htm" />
+    <HelpKINode Title="about XmlToDot class" Url="html/9f6ff04e-2353-1939-4401-f206f8cae236.htm" />
+    <HelpKINode Title="constructor" Url="html/fb761809-8bad-84a8-4773-340d1e2525fc.htm" />
+    <HelpKINode Title="methods" Url="html/0243bf12-94ee-25d8-7da0-551f6a47135f.htm" />
+  </HelpKINode>
+  <HelpKINode Title="XmlToDot.convertProbabilityToGray method" Url="html/6ee8f9ea-758b-fab2-9f02-8d58e35003fc.htm" />
+  <HelpKINode Title="XmlToDot.Next enumeration" Url="html/31fd1508-1364-5e3c-071a-02edc6022d89.htm" />
+  <HelpKINode Title="XmlToDot.ProcessAnimations method" Url="html/7347dad3-ac9b-cc6f-9f0b-ecaeae31e193.htm" />
+  <HelpKINode Title="XmlToDot.ProcessNext method" Url="html/d4dae531-0d74-7a6e-fd61-e162ec09f99f.htm" />
+  <HelpKINode Title="XmlToDot.ProcessXml method" Url="html/4360be8e-1eba-1dff-0e25-29008683a270.htm" />
+  <HelpKINode Title="XmlToDot.XmlToDot constructor" Url="html/fb761809-8bad-84a8-4773-340d1e2525fc.htm" />
   <HelpKINode Title="Y field">
     <HelpKINode Title="ChildNode.Y Field" Url="html/d10fbb90-ddea-b887-ed4c-4ffc90d8a41d.htm" />
     <HelpKINode Title="MovingNode.Y Field" Url="html/69214283-1e09-0b6d-0395-05e5974fc2a8.htm" />

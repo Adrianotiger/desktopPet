@@ -181,8 +181,9 @@
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
     <None Include="app.config" />
-    <None Include="docs\Documentation.chm" />
-    <None Include="docs\Manual - online editor.docx" />
+    <None Include="Manual\Documentation.chm" />
+    <None Include="Manual\Manual - online editor.docx" />
+    <None Include="Manual\readme.md" />
     <None Include="packages.config" />
     <None Include="Properties\app.manifest" />
     <None Include="Properties\Settings.settings">
@@ -200,8 +201,8 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Changelog.txt" />
+    <Content Include="Manual\DesktopPet.shfbproj" />
     <EmbeddedResource Include="dll\NAudio.dll" />
-    <Content Include="docs\Help.html" />
     <Content Include="Images\exit.png" />
     <Content Include="Images\help.png" />
     <None Include="Images\install.png" />
@@ -214,7 +215,9 @@
     </None>
     <Content Include="icon.ico" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="docs\" />
+  </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include=".NETFramework,Version=v4.0,Profile=Client">
       <Visible>False</Visible>

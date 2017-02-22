@@ -5,10 +5,21 @@ using System.Text;
 
 namespace DesktopPet.Tools
 {
+    /// <summary>
+    /// Convert the current animation XML to a DOT file.
+    /// </summary>
+    /// <remarks>
+    /// A DOT file can be opened with Graphviz (or http://www.webgraphviz.com/) to generate a graphically view of the XML.
+    /// </remarks>
 	class XmlToDot
 	{	
 		static private string animationTitle;
 
+        /// <summary>
+        /// Convert the Xml to a DOT and returns the result as string.
+        /// </summary>
+        /// <param name="model">The root node of xml file.</param>
+        /// <returns></returns>
 		static public string ProcessXml(RootNode model)
 		{
 			var animations = model.Animations;

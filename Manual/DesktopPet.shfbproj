@@ -14,13 +14,13 @@
     <Name>Documentation</Name>
     <!-- SHFB properties -->
     <FrameworkVersion>.NET Framework 4.0</FrameworkVersion>
-    <OutputPath>Help\</OutputPath>
+    <OutputPath>..\docs\</OutputPath>
     <HtmlHelpName>Documentation</HtmlHelpName>
     <Language>en-US</Language>
     <DocumentationSources>
       <DocumentationSource sourceFile="..\bin\Release\DesktopPet.exe" />
-      <DocumentationSource sourceFile="..\bin\Release\DesktopPet.xml" />
-    </DocumentationSources>
+<DocumentationSource sourceFile="..\bin\Release\DesktopPet.xml" />
+<DocumentationSource sourceFile="..\dll\NAudio.dll" /></DocumentationSources>
     <BuildAssemblerVerbosity>OnlyWarningsAndErrors</BuildAssemblerVerbosity>
     <HelpFileFormat>HtmlHelp1, Website</HelpFileFormat>
     <IndentHtml>True</IndentHtml>
@@ -30,9 +30,9 @@
     <HelpFileVersion>1.0.0.0</HelpFileVersion>
     <MaximumGroupParts>4</MaximumGroupParts>
     <NamespaceGrouping>True</NamespaceGrouping>
-    <SyntaxFilters>Standard</SyntaxFilters>
+    <SyntaxFilters>C#</SyntaxFilters>
     <SdkLinkTarget>Blank</SdkLinkTarget>
-    <RootNamespaceContainer>False</RootNamespaceContainer>
+    <RootNamespaceContainer>True</RootNamespaceContainer>
     <PresentationStyle>VS2013</PresentationStyle>
     <Preliminary>False</Preliminary>
     <NamingMethod>Guid</NamingMethod>
@@ -52,6 +52,24 @@ This project should be flexible and easy to understand. If you want create your 
     <ProjectSummary>
     </ProjectSummary>
     <MissingTags>Summary, Parameter, Returns, AutoDocumentCtors, Namespace, TypeParameter, AutoDocumentDispose</MissingTags>
+    <ApiFilter>
+      <Filter entryType="Namespace" fullName="" isExposed="False" xmlns="" />
+<Filter entryType="Namespace" fullName="NAudio" isExposed="False" xmlns="" />
+<Filter entryType="Namespace" fullName="NAudio.Codecs" isExposed="False" xmlns="" />
+<Filter entryType="Namespace" fullName="NAudio.CoreAudioApi" isExposed="False" xmlns="" />
+<Filter entryType="Namespace" fullName="NAudio.CoreAudioApi.Interfaces" isExposed="False" xmlns="" />
+<Filter entryType="Namespace" fullName="NAudio.Dmo" isExposed="False" xmlns="" />
+<Filter entryType="Namespace" fullName="NAudio.Dsp" isExposed="False" xmlns="" />
+<Filter entryType="Namespace" fullName="NAudio.FileFormats.Mp3" isExposed="False" xmlns="" />
+<Filter entryType="Namespace" fullName="NAudio.FileFormats.Wav" isExposed="False" xmlns="" />
+<Filter entryType="Namespace" fullName="NAudio.MediaFoundation" isExposed="False" xmlns="" />
+<Filter entryType="Namespace" fullName="NAudio.Utils" isExposed="False" xmlns="" />
+<Filter entryType="Namespace" fullName="NAudio.Wave" isExposed="False" xmlns="" />
+<Filter entryType="Namespace" fullName="NAudio.Wave.Compression" isExposed="False" xmlns="" />
+<Filter entryType="Namespace" fullName="NAudio.Wave.SampleProviders" isExposed="False" xmlns="" />
+<Filter entryType="Namespace" fullName="NAudio.Wave.WaveFormats" isExposed="False" xmlns="" /></ApiFilter>
+    <SaveComponentCacheCapacity>100</SaveComponentCacheCapacity>
+    <RootNamespaceTitle>eSheep, the desktop-walking sheep</RootNamespaceTitle>
   </PropertyGroup>
   <!-- There are no properties for these groups.  AnyCPU needs to appear in order for Visual Studio to perform
 			 the build.  The others are optional common platform types that may appear. -->

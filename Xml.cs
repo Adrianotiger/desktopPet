@@ -775,6 +775,7 @@ namespace DesktopPet
             /// Get the value from XML file. If special keys are used (like screenW) it will be converted.
             /// </summary>
             /// <param name="text">XML text value.</param>
+            /// <param name="debugInfo">Info text to show if this function fails.</param>
             /// <returns>A structure with the values.</returns>
         public TValue getXMLCompute(string text, string debugInfo)
         {
@@ -787,16 +788,17 @@ namespace DesktopPet
             return v;
         }
 
-            /// <summary>
-            /// Parse a value, converting keys like screenW, imageH, random,... to integers.
-            /// </summary>
-            /// <remarks>
-            /// See <a href="https://msdn.microsoft.com/en-us/library/9za5w1xw(v=vs.100).aspx">https://msdn.microsoft.com/en-us/library/9za5w1xw(v=vs.100).aspx</a>
-            /// for more information of what you can write as sText (expression to compute).
-            /// </remarks> 
-            /// <param name="sText">The text to parse and convert.</param>
-            /// <returns>The integer value from the parsed text expression.</returns>
-        public int parseValue(string sText, string debugInfo)
+        /// <summary>
+        /// Parse a value, converting keys like screenW, imageH, random,... to integers.
+        /// </summary>
+        /// <remarks>
+        /// See <a href="https://msdn.microsoft.com/en-us/library/9za5w1xw(v=vs.100).aspx">https://msdn.microsoft.com/en-us/library/9za5w1xw(v=vs.100).aspx</a>
+        /// for more information of what you can write as sText (expression to compute).
+        /// </remarks> 
+        /// <param name="parsingText">The text to parse and convert.</param>
+        /// <param name="debugInfo">Debug text to show if this function fails.</param>
+        /// <returns>The integer value from the parsed text expression.</returns>
+        public int parseValue(string parsingText, string debugInfo)
         {
             int iRet = 0;
             DataTable dt = new DataTable();
@@ -805,27 +807,27 @@ namespace DesktopPet
                 // When adding a child, it is important to place the child on the other side of the parent, if the parent is flipped.
             if(parentFlipped)
             {
-                if (sText.IndexOf("-imageW") >= 0)
+                if (parsingText.IndexOf("-imageW") >= 0)
                 {
-                    sText = sText.Replace("-imageW", "+imageW");
+                    parsingText = parsingText.Replace("-imageW", "+imageW");
                 }
                 else
                 {
-                    sText = sText.Replace("imageW", "(-imageW)");
+                    parsingText = parsingText.Replace("imageW", "(-imageW)");
                 }
             }
-            sText = sText.Replace("screenW", Screen.PrimaryScreen.Bounds.Width.ToString(CultureInfo.InvariantCulture));
-            sText = sText.Replace("screenH", Screen.PrimaryScreen.Bounds.Height.ToString(CultureInfo.InvariantCulture));
-            sText = sText.Replace("areaW", Screen.PrimaryScreen.WorkingArea.Width.ToString(CultureInfo.InvariantCulture));
-            sText = sText.Replace("areaH", (Screen.PrimaryScreen.WorkingArea.Height + Screen.PrimaryScreen.WorkingArea.Y).ToString(CultureInfo.InvariantCulture));
-            sText = sText.Replace("imageW", spriteWidth.ToString(CultureInfo.InvariantCulture));
-            sText = sText.Replace("imageH", spriteHeight.ToString(CultureInfo.InvariantCulture));
-            sText = sText.Replace("imageX", (parentX).ToString(CultureInfo.InvariantCulture));
-            sText = sText.Replace("imageY", (parentY).ToString(CultureInfo.InvariantCulture));
-            sText = sText.Replace("random", rand.Next(0, 100).ToString(CultureInfo.InvariantCulture));
-            sText = sText.Replace("randS", iRandomSpawn.ToString(CultureInfo.InvariantCulture));
+            parsingText = parsingText.Replace("screenW", Screen.PrimaryScreen.Bounds.Width.ToString(CultureInfo.InvariantCulture));
+            parsingText = parsingText.Replace("screenH", Screen.PrimaryScreen.Bounds.Height.ToString(CultureInfo.InvariantCulture));
+            parsingText = parsingText.Replace("areaW", Screen.PrimaryScreen.WorkingArea.Width.ToString(CultureInfo.InvariantCulture));
+            parsingText = parsingText.Replace("areaH", (Screen.PrimaryScreen.WorkingArea.Height + Screen.PrimaryScreen.WorkingArea.Y).ToString(CultureInfo.InvariantCulture));
+            parsingText = parsingText.Replace("imageW", spriteWidth.ToString(CultureInfo.InvariantCulture));
+            parsingText = parsingText.Replace("imageH", spriteHeight.ToString(CultureInfo.InvariantCulture));
+            parsingText = parsingText.Replace("imageX", (parentX).ToString(CultureInfo.InvariantCulture));
+            parsingText = parsingText.Replace("imageY", (parentY).ToString(CultureInfo.InvariantCulture));
+            parsingText = parsingText.Replace("random", rand.Next(0, 100).ToString(CultureInfo.InvariantCulture));
+            parsingText = parsingText.Replace("randS", iRandomSpawn.ToString(CultureInfo.InvariantCulture));
             
-            var v = dt.Compute(sText, "");
+            var v = dt.Compute(parsingText, "");
             double dv;
             if (double.TryParse(v.ToString(), out dv))
             {
@@ -833,7 +835,7 @@ namespace DesktopPet
             }
             else
             {
-				StartUp.AddDebugInfo(StartUp.DEBUG_TYPE.error, "Unable to parse integer: " + sText + " - " + debugInfo);
+				StartUp.AddDebugInfo(StartUp.DEBUG_TYPE.error, "Unable to parse integer: " + parsingText + " - " + debugInfo);
 			}
             
             return iRet;

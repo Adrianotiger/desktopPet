@@ -332,6 +332,11 @@ namespace DesktopPet
             /// </summary>
         private NAudio.Wave.WaveOut Audio;
         private NAudio.Wave.Mp3FileReader AudioReader;
+
+            /// <summary>
+            /// Load a sound for the animation from a byte array.
+            /// </summary>
+            /// <remarks>If this function fails, no sound will be played for this pet.</remarks>
         public void Load(byte[] buff)
         {
             try
@@ -351,7 +356,12 @@ namespace DesktopPet
             }
         }
 
-        public void Play(int iLoop)
+            /// <summary>
+            /// Try to play the sound in the current animation.
+            /// </summary>
+            /// <param name="loopCount">How many times the sound should repeat. </param>
+            /// <remarks>Sound is played only if the volume is greater than 0 and there are no sound problems.</remarks>
+        public void Play(int loopCount)
         {
             if (Properties.Settings.Default.Volume > 0.0)
             {
@@ -362,9 +372,9 @@ namespace DesktopPet
                         Audio.Volume = Properties.Settings.Default.Volume;
                     }
                     // Set event handler only if looped
-                    if (iLoop > 0)
+                    if (loopCount > 0)
                     {
-                        LoopCount = iLoop;
+                        LoopCount = loopCount;
                     }
                     AudioReader.Seek(0, SeekOrigin.Begin);
                     Audio.Play();
@@ -783,20 +793,33 @@ namespace DesktopPet
             StartUp.AddDebugInfo(StartUp.DEBUG_TYPE.info, "new animation: " + ani.Name);
         }
 
-        public List<TNextAnimation> GetNextAnimations(int CurrentID, bool Next, bool Border, bool Gravity)
+            /// <summary>
+            /// Get a list of animations, based on the flags forwarded by the parameters.
+            /// </summary>
+            /// <param name="currentID">The base animation to find the next animations.</param>
+            /// <param name="includeNext">Include all animations after the sequence is over.</param>
+            /// <param name="includeBorder">Include all animations if the pet detected a border.</param>
+            /// <param name="includeGravity">Include all animations if the pet detected a gravity.</param>
+            /// <returns></returns>
+        public List<TNextAnimation> GetNextAnimations(int currentID, bool includeNext, bool includeBorder, bool includeGravity)
         {
             List<TNextAnimation> list = new List<TNextAnimation>();
 
-            if (Next)
-                list.AddRange(SheepAnimations[CurrentID].EndAnimation);
-            if (Border)
-                list.AddRange(SheepAnimations[CurrentID].EndBorder);
-            if (Gravity)
-                list.AddRange(SheepAnimations[CurrentID].EndGravity);
+            if (includeNext)
+                list.AddRange(SheepAnimations[currentID].EndAnimation);
+            if (includeBorder)
+                list.AddRange(SheepAnimations[currentID].EndBorder);
+            if (includeGravity)
+                list.AddRange(SheepAnimations[currentID].EndGravity);
 
             return list;
         }
 
+            /// <summary>
+            /// Get a list of <see cref="TSpawn"/> structures. Defines the start position of the pet.
+            /// </summary>
+            /// <returns>List of TSpawn structures.</returns>
+            /// <remarks>Once the animation is over or at begins, one of the spawns will be used to place the pet.</remarks>
         public List<TSpawn> GetNextSpawns()
         {
             List<TSpawn> list = new List<TSpawn>();
