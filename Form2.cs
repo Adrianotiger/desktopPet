@@ -209,15 +209,14 @@ namespace DesktopPet
             timer1.Enabled = true;                      // Enable the timer (interval is well known now)
         }
 
-            /// <summary>
-            /// If this form is a child, this function is called instead of Play().
-            /// It will initialize all variables and start the first animation using CHILD, not SPAWN.
-            /// </summary>
-            /// <param name="aniID">Animation playing by the parent (child will synchronize to this animation).</param>
-        public void PlayChild(int aniID)
+			/// <summary>
+			/// If this form is a child, this function is called instead of Play().
+			/// It will initialize all variables and start the first animation using CHILD, not SPAWN.
+			/// </summary>
+			/// <param name="aniID">Animation playing by the parent (child will synchronize to this animation).</param>
+			/// <param name="child">The child to play (more than 1 childs can be played at the same time).</param>
+		public void PlayChild(int aniID, TChild child)
         {
-            TChild child = Animations.GetAnimationChild(aniID);
-
             timer1.Enabled = false;                     // Stop the timer
 
 			AnimationStep = 0;                         // First step
@@ -332,23 +331,25 @@ namespace DesktopPet
                         // child creating childs... Maximum 5 sub-childs can be created
                     if (Name.IndexOf("child") < 0 || int.Parse(Name.Substring(5)) < 5)
                     {
-                        TChild childInfo = Animations.GetAnimationChild(id);
-                        Form2 child = new Form2(Animations, Xml, new Point(Left, Top), !IsMovingLeft);
-                        for(int i=0;i<imageList1.Images.Count;i++)
-                        {
-                            child.addImage(imageList1.Images[i]);
-                        }
-                        // To detect if it is a child, the name of the form will be renamed.
-                        if (Name.IndexOf("child") < 0) // first child
-                        {
-                            child.Name = "child1";
-                        }
-                        else if (Name.IndexOf("child") == 0) // second, fifth child
-                        {
-                            child.Name = "child" + (int.Parse(Name.Substring(5)) + 1).ToString();
-                        }
-                        child.Show(Width, Height);
-                        child.PlayChild(id);
+						foreach (TChild childInfo in Animations.GetAnimationChild(id))
+						{
+							Form2 child = new Form2(Animations, Xml, new Point(Left, Top), !IsMovingLeft);
+							for (int i = 0; i < imageList1.Images.Count; i++)
+							{
+								child.addImage(imageList1.Images[i]);
+							}
+							// To detect if it is a child, the name of the form will be renamed.
+							if (Name.IndexOf("child") < 0) // first child
+							{
+								child.Name = "child1";
+							}
+							else if (Name.IndexOf("child") == 0) // second, fifth child
+							{
+								child.Name = "child" + (int.Parse(Name.Substring(5)) + 1).ToString();
+							}
+							child.Show(Width, Height);
+							child.PlayChild(id, childInfo);
+						}
                     }
                 }
                 timer1.Interval = CurrentAnimation.Start.Interval.GetValue();

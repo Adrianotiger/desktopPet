@@ -38,13 +38,15 @@
 			this.checkBox2 = new System.Windows.Forms.CheckBox();
 			this.checkBox3 = new System.Windows.Forms.CheckBox();
 			this.menuStrip1 = new System.Windows.Forms.MenuStrip();
+			this.viewToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+			this.clearWindowToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+			this.removeInfosToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.toolsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.convertXMLToDOTToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.openXMLToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.convertoToDOTToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-			this.viewToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-			this.clearWindowToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-			this.removeInfosToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+			this.checkBox4 = new System.Windows.Forms.CheckBox();
+			this.label1 = new System.Windows.Forms.Label();
 			((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
 			this.splitContainer1.Panel1.SuspendLayout();
 			this.splitContainer1.Panel2.SuspendLayout();
@@ -106,6 +108,8 @@
 			this.flowLayoutPanel1.Controls.Add(this.checkBox1);
 			this.flowLayoutPanel1.Controls.Add(this.checkBox2);
 			this.flowLayoutPanel1.Controls.Add(this.checkBox3);
+			this.flowLayoutPanel1.Controls.Add(this.label1);
+			this.flowLayoutPanel1.Controls.Add(this.checkBox4);
 			this.flowLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.flowLayoutPanel1.Location = new System.Drawing.Point(0, 0);
 			this.flowLayoutPanel1.Name = "flowLayoutPanel1";
@@ -162,6 +166,29 @@
 			this.menuStrip1.TabIndex = 2;
 			this.menuStrip1.Text = "menuStrip1";
 			// 
+			// viewToolStripMenuItem
+			// 
+			this.viewToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.clearWindowToolStripMenuItem,
+            this.removeInfosToolStripMenuItem});
+			this.viewToolStripMenuItem.Name = "viewToolStripMenuItem";
+			this.viewToolStripMenuItem.Size = new System.Drawing.Size(44, 20);
+			this.viewToolStripMenuItem.Text = "&View";
+			// 
+			// clearWindowToolStripMenuItem
+			// 
+			this.clearWindowToolStripMenuItem.Name = "clearWindowToolStripMenuItem";
+			this.clearWindowToolStripMenuItem.Size = new System.Drawing.Size(146, 22);
+			this.clearWindowToolStripMenuItem.Text = "&Clear window";
+			this.clearWindowToolStripMenuItem.Click += new System.EventHandler(this.clearWindowToolStripMenuItem_Click);
+			// 
+			// removeInfosToolStripMenuItem
+			// 
+			this.removeInfosToolStripMenuItem.Name = "removeInfosToolStripMenuItem";
+			this.removeInfosToolStripMenuItem.Size = new System.Drawing.Size(146, 22);
+			this.removeInfosToolStripMenuItem.Text = "&Remove infos";
+			this.removeInfosToolStripMenuItem.Click += new System.EventHandler(this.removeInfosToolStripMenuItem_Click);
+			// 
 			// toolsToolStripMenuItem
 			// 
 			this.toolsToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
@@ -193,28 +220,27 @@
 			this.convertoToDOTToolStripMenuItem.Text = "&Converto to DOT";
 			this.convertoToDOTToolStripMenuItem.Click += new System.EventHandler(this.convertoToDOTToolStripMenuItem_Click);
 			// 
-			// viewToolStripMenuItem
+			// checkBox4
 			// 
-			this.viewToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.clearWindowToolStripMenuItem,
-            this.removeInfosToolStripMenuItem});
-			this.viewToolStripMenuItem.Name = "viewToolStripMenuItem";
-			this.viewToolStripMenuItem.Size = new System.Drawing.Size(44, 20);
-			this.viewToolStripMenuItem.Text = "&View";
+			this.checkBox4.AutoSize = true;
+			this.checkBox4.Checked = true;
+			this.checkBox4.CheckState = System.Windows.Forms.CheckState.Checked;
+			this.checkBox4.ForeColor = System.Drawing.Color.White;
+			this.checkBox4.Location = new System.Drawing.Point(295, 3);
+			this.checkBox4.Name = "checkBox4";
+			this.checkBox4.Size = new System.Drawing.Size(72, 17);
+			this.checkBox4.TabIndex = 3;
+			this.checkBox4.Text = "Autoscroll";
+			this.checkBox4.UseVisualStyleBackColor = true;
 			// 
-			// clearWindowToolStripMenuItem
+			// label1
 			// 
-			this.clearWindowToolStripMenuItem.Name = "clearWindowToolStripMenuItem";
-			this.clearWindowToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
-			this.clearWindowToolStripMenuItem.Text = "&Clear window";
-			this.clearWindowToolStripMenuItem.Click += new System.EventHandler(this.clearWindowToolStripMenuItem_Click);
-			// 
-			// removeInfosToolStripMenuItem
-			// 
-			this.removeInfosToolStripMenuItem.Name = "removeInfosToolStripMenuItem";
-			this.removeInfosToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
-			this.removeInfosToolStripMenuItem.Text = "&Remove infos";
-			this.removeInfosToolStripMenuItem.Click += new System.EventHandler(this.removeInfosToolStripMenuItem_Click);
+			this.label1.Dock = System.Windows.Forms.DockStyle.Fill;
+			this.label1.Location = new System.Drawing.Point(189, 0);
+			this.label1.Name = "label1";
+			this.label1.Size = new System.Drawing.Size(100, 23);
+			this.label1.TabIndex = 4;
+			this.label1.Text = "label1";
 			// 
 			// FormDebug
 			// 
@@ -263,5 +289,7 @@
 		private System.Windows.Forms.ToolStripMenuItem viewToolStripMenuItem;
 		private System.Windows.Forms.ToolStripMenuItem clearWindowToolStripMenuItem;
 		private System.Windows.Forms.ToolStripMenuItem removeInfosToolStripMenuItem;
+		private System.Windows.Forms.Label label1;
+		private System.Windows.Forms.CheckBox checkBox4;
 	}
 }

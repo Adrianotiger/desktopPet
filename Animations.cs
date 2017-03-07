@@ -414,7 +414,7 @@ namespace DesktopPet
             /// <summary>
             /// Each Child has a unique animation ID.
             /// </summary>
-        public Dictionary<int, TChild> SheepChild;
+        public Dictionary<int, List<TChild>> SheepChild;
             /// <summary>
             /// Each Sound must have a unique animation ID.
             /// </summary>
@@ -455,7 +455,7 @@ namespace DesktopPet
         {
             SheepAnimations = new Dictionary<int, TAnimation>(64);  // Reserve space for 64 animations, more are added automatically
             SheepSpawn = new Dictionary<int, TSpawn>(8);            // Reserve space for 8 spawns
-            SheepChild = new Dictionary<int, TChild>(8);            // Reserve space for 8 child
+            SheepChild = new Dictionary<int, List<TChild>>(8);      // Reserve space for 8 child
             SheepSound = new Dictionary<int, TSound>(8);            // Reserve space for 8 sounds
             rand = new Random();
             Xml = xml;
@@ -527,19 +527,23 @@ namespace DesktopPet
             /// <returns></returns>
         public TChild AddChild(int ID)
         {
-            StartUp.AddDebugInfo(StartUp.DEBUG_TYPE.info, "adding child (ani." + ID.ToString() + ")");
-            SheepChild.Add(ID, new TChild());
-            return SheepChild[ID];
-        }
+            StartUp.AddDebugInfo(StartUp.DEBUG_TYPE.info, "adding child: ani." + ID.ToString());
+			if (!SheepChild.ContainsKey(ID))  // does not contains childs
+			{
+				SheepChild.Add(ID, new List<TChild>(1));	
+			}
+			SheepChild[ID].Add(new TChild());
+			return SheepChild[ID].Last();
+		}
 
             /// <summary>
-            /// After adding the Child and filling data, this function must be called to save values.
+            /// After adding the Child and filling data, this function must be called to save values of the last child.
             /// </summary>
             /// <param name="child">Filled structure.</param>
             /// <param name="ID">ID of the structure.</param>
         public void SaveChild(TChild child, int ID)
         {
-            SheepChild[ID] = child;
+            SheepChild[ID][SheepChild[ID].Count-1] = child;
         }
 
         /// <summary>
@@ -645,11 +649,11 @@ namespace DesktopPet
         }
 
             /// <summary>
-            /// Get the Child connected to the Animation ID.
+            /// Get the Childs connected to the Animation ID.
             /// </summary>
             /// <param name="id">ID of the Animation.</param>
-            /// <returns>Child structure of the current Animation.</returns>
-        public TChild GetAnimationChild(int id)
+            /// <returns>A list of childs structure of the current Animation.</returns>
+        public List<TChild> GetAnimationChild(int id)
         {
             return SheepChild[id];
         }
@@ -789,8 +793,8 @@ namespace DesktopPet
             {
                 SheepAnimations[id] = ani;
             }
-
-            StartUp.AddDebugInfo(StartUp.DEBUG_TYPE.info, "new animation: " + ani.Name);
+			
+            StartUp.AddDebugInfo(StartUp.DEBUG_TYPE.info, "new animation: " + ani.Name + " (" + ani.ID + ")");
         }
 
             /// <summary>

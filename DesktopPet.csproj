@@ -216,7 +216,7 @@
     <Content Include="icon.ico" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="docs\" />
+    <Folder Include="docs_old\" />
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include=".NETFramework,Version=v4.0,Profile=Client">

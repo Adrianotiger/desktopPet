@@ -35,6 +35,11 @@ namespace DesktopPet
 		[DllImport("User32.dll")]
 		public static extern int SendMessage(IntPtr hWnd, int uMsg, int wParam, string lParam);
 
+		private static bool addingAnimationsLog = false;
+		private static bool addingSpawnLog = false;
+		private static bool addingChildLog = false;
+		private static bool playingNewAnimation = false;
+
 		/// <summary>
 		/// Constructor of this form.
 		/// </summary>
@@ -50,24 +55,59 @@ namespace DesktopPet
             /// <param name="text">Text to display in the window.</param>
         public void AddDebugInfo(StartUp.DEBUG_TYPE type, string text)
         {
-            ListViewItem item = new ListViewItem(DateTime.Now.ToLongTimeString());
-            if(type == StartUp.DEBUG_TYPE.info)
-            {
-                item.ForeColor = Color.White;
-                if (checkBox1.Checked) listView1.Items.Add(item);
-            }
-            else if(type == StartUp.DEBUG_TYPE.warning)
-            {
-                item.ForeColor = Color.Yellow;
-                if (checkBox2.Checked) listView1.Items.Add(item);
-            }
-            else if(type == StartUp.DEBUG_TYPE.error)
-            {
-                item.ForeColor = Color.Salmon;
-                if (checkBox3.Checked) listView1.Items.Add(item);
-            }
-            item.SubItems.Add(text);
-            item.EnsureVisible();
+			if (addingAnimationsLog && text.StartsWith("adding animation") ||
+				addingSpawnLog && text.StartsWith("adding spawn") ||
+				addingChildLog && text.StartsWith("adding child"))
+			{
+				ListViewItem itemUpdate = listView1.Items[listView1.Items.Count-1];
+				if (itemUpdate.SubItems[1].Text.Length > 64)
+				{
+					ListViewItem item2 = new ListViewItem(DateTime.Now.ToLongTimeString());
+					item2.ForeColor = Color.White;
+					if (checkBox1.Checked) listView1.Items.Add(item2);
+					item2.SubItems.Add(text);
+				}
+				else
+				{
+					itemUpdate.SubItems[1].Text += "," + text.Substring(text.IndexOf(":") + 1);
+				}
+				return;
+			}
+			else
+			{
+				addingAnimationsLog = false;
+			}
+
+			if(playingNewAnimation)
+			{
+				playingNewAnimation = false;
+				ListViewItem itemUpdate = listView1.Items[listView1.Items.Count - 1];
+				itemUpdate.SubItems[1].Text += " - " + text;
+				return;
+			}
+
+			ListViewItem item = new ListViewItem(DateTime.Now.ToLongTimeString());
+			if (type == StartUp.DEBUG_TYPE.info)
+			{
+				item.ForeColor = Color.White;
+				if (checkBox1.Checked) listView1.Items.Add(item);
+			}
+			else if (type == StartUp.DEBUG_TYPE.warning)
+			{
+				item.ForeColor = Color.Yellow;
+				if (checkBox2.Checked) listView1.Items.Add(item);
+			}
+			else if (type == StartUp.DEBUG_TYPE.error)
+			{
+				item.ForeColor = Color.Salmon;
+				if (checkBox3.Checked) listView1.Items.Add(item);
+			}
+			if (text.StartsWith("adding animation")) addingAnimationsLog = true;
+			if (text.StartsWith("adding spawn")) addingSpawnLog = true;
+			if (text.StartsWith("adding child")) addingChildLog = true;
+			if (text.StartsWith("new animation")) playingNewAnimation = true;
+			item.SubItems.Add(text);
+			if(checkBox4.Checked)	item.EnsureVisible();
         }
 		
 		private void convertoToDOTToolStripMenuItem_Click(object sender, EventArgs e)
