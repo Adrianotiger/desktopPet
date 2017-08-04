@@ -273,14 +273,21 @@ namespace DesktopPet
                 // "A" when application starts. Add a sheep.
             if (timer1.Tag.ToString() == "A")
             {
-                timer1.Enabled = false;
-                timer1.Tag = "B";
+				if (iSheeps < Properties.Settings.Default.AutostartPets && iSheeps < MAX_SHEEPS)
+				{
+					if (iSheeps == 0)
+					{
+						AddDebugInfo(DEBUG_TYPE.info, "init application...");
+						xml.loadAnimations(animations);
+					}
 
-                AddDebugInfo(DEBUG_TYPE.info, "init application...");
-                
-                xml.loadAnimations(animations);
-
-                AddSheep();
+					AddSheep();
+				}
+				else
+				{
+					timer1.Enabled = false;
+					timer1.Tag = "B";
+				}
             }
                 // "0" when application should be stopped.
             else if (timer1.Tag.ToString() == "0")

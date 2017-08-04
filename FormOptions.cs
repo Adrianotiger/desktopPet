@@ -82,16 +82,17 @@ namespace DesktopPet
         {
                 // Set up audio values
             checkBox1.Checked = (Properties.Settings.Default.Volume > 0.0);
-			checkBox2.Checked = Properties.Settings.Default.WinForeground;
 			trackBar1.Value = (int)(Properties.Settings.Default.Volume * 10);
             trackBar1.Enabled = checkBox1.Checked;
-            label2.Text = Program.Mainthread.ErrorMessages.AudioErrorMessage;
+			label2.Text = Program.Mainthread.ErrorMessages.AudioErrorMessage;
             if (label2.Text.Length > 1)
             {
                 trackBar1.Enabled = false;
                 checkBox1.Enabled = false;
             }
-        }
+			checkBox2.Checked = Properties.Settings.Default.WinForeground;
+			trackBar2.Value = Properties.Settings.Default.AutostartPets;
+		}
 
         private void checkBox1_CheckedChanged(object sender, EventArgs e)
         {
@@ -121,6 +122,12 @@ namespace DesktopPet
 		private void checkBox2_Click(object sender, EventArgs e)
 		{
 			Properties.Settings.Default.WinForeground = checkBox2.Checked;
+			Properties.Settings.Default.Save();
+		}
+
+		private void trackBar2_Scroll(object sender, EventArgs e)
+		{
+			Properties.Settings.Default.AutostartPets = trackBar2.Value;
 			Properties.Settings.Default.Save();
 		}
 	}
