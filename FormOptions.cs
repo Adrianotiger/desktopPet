@@ -92,7 +92,9 @@ namespace DesktopPet
             }
 			checkBox2.Checked = Properties.Settings.Default.WinForeground;
 			trackBar2.Value = Properties.Settings.Default.AutostartPets;
-		}
+            label5.Text = trackBar2.Value.ToString();
+            label6.Text = trackBar1.Value.ToString();
+        }
 
         private void checkBox1_CheckedChanged(object sender, EventArgs e)
         {
@@ -117,7 +119,8 @@ namespace DesktopPet
                 checkBox1.Checked = false;
             }
 			Properties.Settings.Default.Save();
-		}
+            label6.Text = trackBar1.Value.ToString();
+        }
 
 		private void checkBox2_Click(object sender, EventArgs e)
 		{
@@ -129,6 +132,7 @@ namespace DesktopPet
 		{
 			Properties.Settings.Default.AutostartPets = trackBar2.Value;
 			Properties.Settings.Default.Save();
+            label5.Text = trackBar2.Value.ToString();
 		}
 	}
 }
