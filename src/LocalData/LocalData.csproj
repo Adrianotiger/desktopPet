@@ -2,6 +2,7 @@
 
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
+    <IntermediateOutputPath>..\..\build\LocalData\obj\</IntermediateOutputPath>
   </PropertyGroup>
 
   <ItemGroup>

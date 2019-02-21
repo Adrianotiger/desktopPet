@@ -231,12 +231,6 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="LocalData\LocalData\LocalData.csproj">
-      <Project>{e95d998f-df30-4c58-8fe7-ef10374d8ac5}</Project>
-      <Name>LocalData</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
     <BootstrapperPackage Include=".NETFramework,Version=v4.0,Profile=Client">
       <Visible>False</Visible>
       <ProductName>Microsoft .NET Framework 4 Client Profile %28x86 and x64%29</ProductName>
@@ -263,6 +257,12 @@
       <Isolated>False</Isolated>
       <EmbedInteropTypes>True</EmbedInteropTypes>
     </COMReference>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="LocalData\LocalData.csproj">
+      <Project>{e95d998f-df30-4c58-8fe7-ef10374d8ac5}</Project>
+      <Name>LocalData</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
