@@ -1,6 +1,26 @@
 ﻿CHANGELOG
 ============================================================================================
 
+1.0.6.0
+  - Start up to 16 pets when application starts
+
+1.0.5.0
+  - generate an graphic of the animation XML
+  - improved memory usage
+  - offset was not set correctly
+  - icon bug (application crashed) solved
+  - multiple childs can be added for each animation
+  - many new animations are available now
+
+1.0.2.0
+  - Solved a bug with the last animation of the XML (application crashed)
+  - Window will not be set on foreground anymore, if the sheep falls on it - you can set this option back in your settings if you want it.
+
+1.0.1.0
+  - Solved a bug with the Fullscreen window (sheep was put always in the back even if there was no Fullscreen window).
+  - Increased stability with wrong formatted animations.
+  - new certificate from Certum (the last one expired)
+
 1.0.0.0
   - check if a full screen window is open (will not show the sheep anymore)
   - if you click on the tray icon, the sheep will set on top most again
