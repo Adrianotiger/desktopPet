@@ -14,6 +14,7 @@
             <NavigationView.MenuItems>
                 <NavigationViewItem Content="Pet selection" x:Name="MenuPetSelection" Icon="Add" />
                 <NavigationViewItem Content="Pet options" x:Name="MenuPetOptions" Icon="Emoji" />
+                <NavigationViewItem Content="Pet info" x:Name="MenuPetInfo" Icon="Important" />
                 <NavigationViewItem Content="Application settings" x:Name="MenuApplicationSettings" Icon="Edit" />
                 <NavigationViewItemSeparator />
                 <NavigationViewItem Content="About" x:Name="MenuAbout" Icon="Important" />

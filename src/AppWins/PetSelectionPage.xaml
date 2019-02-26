@@ -8,10 +8,95 @@
     mc:Ignorable="d"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
+    <Page.Resources>
+        <Style TargetType="TextBlock">
+            <Setter Property="FontSize" Value="18" />
+            <Setter Property="FontWeight" Value="Medium" />
+            <Setter Property="Padding" Value="2" />
+        </Style>
+    </Page.Resources>
+    
     <Grid>
-        <TextBlock x:Name="testLetter" HorizontalAlignment="Center" FontSize="100" Text="Z">
-        </TextBlock>
-        <TextBlock x:Name="testLetter2" VerticalAlignment="Bottom" HorizontalAlignment="Center" FontSize="100" Text="X">
-        </TextBlock>
+        <StackPanel Height="50" Margin="20" x:Name="loadingPanel" VerticalAlignment="Bottom">
+            <ProgressBar x:Name="loadingBar" Height="10" Minimum="0" Maximum="100" Value="0" />
+            <TextBlock x:Name="loadingText" Text="Loading XML..." TextAlignment="Center" Padding="5" />
+        </StackPanel>
+
+        <ListView x:Name="PetsBox" HorizontalAlignment="Stretch" VerticalAlignment="Top" IsItemClickEnabled="True" ItemClick="PetsBox_ItemClick">
+            <ListView.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <ItemsStackPanel Orientation="Horizontal"/>
+                </ItemsPanelTemplate>
+            </ListView.ItemsPanel>
+            
+            <ListView.ItemTemplate>
+                <DataTemplate>
+                    <Grid Width="80" Height="110" CornerRadius="2" >
+                        <ProgressRing Width="80" Height="80" IsActive="{Binding IsLoading}" VerticalAlignment="Top"></ProgressRing>
+                        <Image Source="{Binding Image}" Stretch="None" Width="80" Height="80" VerticalAlignment="Top" />
+                        <Viewbox StretchDirection="DownOnly" Stretch="Uniform" VerticalAlignment="Bottom" Width="80" Height="50" >
+                            <StackPanel VerticalAlignment="Top">
+                                <TextBlock Text="{Binding Title}" FontSize="16" HorizontalAlignment="Center"/>
+                                <TextBlock Text="By" FontSize="10" HorizontalAlignment="Center"/>
+                                <TextBlock Text="{Binding Author}" FontSize="10" HorizontalAlignment="Center"/>
+                            </StackPanel>
+                        </Viewbox>
+                    </Grid>
+                </DataTemplate>
+            </ListView.ItemTemplate>
+        </ListView>
+
+        <ScrollViewer x:Name="petDescription">
+            <Grid>
+                <StackPanel Margin="50" BorderThickness="2" BorderBrush="Black">
+                    <StackPanel.Background>
+                        <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                            <GradientStop Color="LightBlue" Offset="0"/>
+                            <GradientStop Color="AliceBlue" Offset="1"/>
+                        </LinearGradientBrush>
+                    </StackPanel.Background>
+                    <Image x:Name="petImage" Width="72" Height="72" />
+                    <Grid HorizontalAlignment="Center">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="*" />
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="*" />
+                            <RowDefinition Height="*" />
+                            <RowDefinition Height="*" />
+                            <RowDefinition Height="*" />
+                            <RowDefinition Height="*" />
+                            <RowDefinition Height="*" />
+                            <RowDefinition Height="*" />
+                        </Grid.RowDefinitions>
+                        <TextBlock Grid.Column="0" Grid.Row="0">Author</TextBlock>
+                        <TextBlock Grid.Column="1" Grid.Row="0" x:Name="petAuthor">[AUTHOR]</TextBlock>
+                        <TextBlock Grid.Column="0" Grid.Row="1">Project name</TextBlock>
+                        <TextBlock Grid.Column="1" Grid.Row="1" x:Name="petTitle">[PET TITLE]</TextBlock>
+                        <TextBlock Grid.Column="0" Grid.Row="2">Pet name</TextBlock>
+                        <TextBlock Grid.Column="1" Grid.Row="2" x:Name="petName">[PET NAME]</TextBlock>
+                        <TextBlock Grid.Column="0" Grid.Row="3">Version</TextBlock>
+                        <TextBlock Grid.Column="1" Grid.Row="3" x:Name="petVersion">[VERSION]</TextBlock>
+                        <TextBlock Grid.Column="0" Grid.Row="4">Last update</TextBlock>
+                        <TextBlock Grid.Column="1" Grid.Row="4" x:Name="petUpdate">[UPDATED]</TextBlock>
+                        <TextBlock Grid.Column="0" Grid.Row="5">Size</TextBlock>
+                        <TextBlock Grid.Column="1" Grid.Row="5" x:Name="petSize">[SIZE]</TextBlock>
+                        <TextBlock Grid.Column="0" Grid.Row="6">Rating</TextBlock>
+                        <TextBlock Grid.Column="1" Grid.Row="6" x:Name="petRating">[RATING]</TextBlock>
+                    </Grid>
+                    <TextBlock x:Name="petInfo" TextWrapping="Wrap" Text="[INFO]" TextAlignment="Center" Margin="0,20,0,20"  />
+                    <Button HorizontalAlignment="Center" Click="Button_Click" Tag="-" x:Name="petInstall">
+                        <StackPanel Orientation="Horizontal">
+                            <Image Source="Images/install.png" Width="72" Height="72" />
+                            <TextBlock Text="Install this pet" VerticalAlignment="Center" Padding="20" />
+                        </StackPanel>
+                    </Button>
+                </StackPanel>
+                <Button HorizontalAlignment="Right" VerticalAlignment="Top" Width="100" Height="50" Margin="50" Click="Button_Click_1">
+                    <TextBlock>[ X ]</TextBlock>
+                </Button>
+            </Grid>
+        </ScrollViewer>
     </Grid>
 </Page>

@@ -1,0 +1,38 @@
+﻿<Page
+    x:Class="AppWins.AboutPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:AppWins"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+
+    <Grid>
+        <StackPanel HorizontalAlignment="Center">
+            <TextBlock Style="{StaticResource TitleTextBlockStyle}" TextAlignment="Center">About</TextBlock>
+            <TextBlock Style="{StaticResource BaseTextBlockStyle}" TextAlignment="Center" x:Name="appVersion">Application Version:</TextBlock>
+            <Image Source="Images/esheep.png" Width="48" Height="48" />
+            <TextBlock Style="{StaticResource BaseTextBlockStyle}" TextAlignment="Center" FontWeight="Bold">
+                Original concept and artwork by Tatsutoshi Nomura
+            </TextBlock>
+            <TextBlock Style="{StaticResource BaseTextBlockStyle}" TextAlignment="Center">
+                C# Application code by Adriano Petrucci
+            </TextBlock>
+            <Line Height="20">
+                
+            </Line>
+            <TextBlock TextAlignment="Center">Original Webpage for this project:</TextBlock>
+            <HyperlinkButton HorizontalAlignment="Center">http://esheep.petrucci.ch</HyperlinkButton>
+
+            <TextBlock TextAlignment="Center">GitHub Project (UWP and Web):</TextBlock>
+            <HyperlinkButton HorizontalAlignment="Center">https://github.com/Adrianotiger/desktopPet/</HyperlinkButton>
+
+            <TextBlock Style="{StaticResource BaseTextBlockStyle}" TextAlignment="Center" Padding="0,20,0,0">Thanks to:</TextBlock>
+            <TextBlock TextAlignment="Center">Sergi Fumanya Grunwaldt for the System Tray implementation</TextBlock>
+            <TextBlock TextAlignment="Center">NAudio to play audio inside this application</TextBlock>
+            <HyperlinkButton HorizontalAlignment="Center">https://naudio.codeplex.com/</HyperlinkButton>
+
+        </StackPanel>
+    </Grid>
+</Page>

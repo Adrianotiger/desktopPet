@@ -10,13 +10,17 @@
 
     <Grid>
         <StackPanel>
-            <TextBlock Style="{StaticResource TitleTextBlockStyle}" Padding="20,20,0,0">Volume</TextBlock>
-            <Slider Margin="10" Minimum="0" Maximum="1" StepFrequency="0.05" TickPlacement="Outside" TickFrequency="0.1" x:Name="volumeSlider"></Slider>
-            <TextBlock FontWeight="Bold" HorizontalAlignment="Center" x:Name="volumeInfo1" Visibility="Collapsed"> >> This Pet doesn't have any sounds &lt;&lt; </TextBlock>
-            <TextBlock>Pet can play some sounds at random time. Select the volume of the played sounds.</TextBlock>
-            <TextBlock Style="{StaticResource TitleTextBlockStyle}" Padding="20,20,0,0">Window Foreground</TextBlock>
-            <ToggleSwitch Margin="10" OnContent="Foreground enabled" OffContent="Foreground disabled" x:Name="foregroundWindowToggle"></ToggleSwitch>
-            <TextBlock>The original eSheep was able to bring to front the touched window. If you activate this option, your productivity will decrease ;)</TextBlock>
+            <TextBlock Style="{StaticResource TitleTextBlockStyle}" Padding="0,20,0,0">Volume</TextBlock>
+            <StackPanel Margin="30,0,0,0">
+                <Slider Margin="10" Minimum="0" Maximum="1" StepFrequency="0.05" TickPlacement="Outside" TickFrequency="0.1" x:Name="volumeSlider"></Slider>
+                <TextBlock FontWeight="Bold" HorizontalAlignment="Center" x:Name="volumeInfo1" Visibility="Collapsed"> >> This Pet doesn't have any sounds &lt;&lt; </TextBlock>
+                <TextBlock>Pet can play some sounds at random time. Select the volume of the played sounds.</TextBlock>
+            </StackPanel>
+            <TextBlock Style="{StaticResource TitleTextBlockStyle}" Padding="0,20,0,0">Window Foreground</TextBlock>
+            <StackPanel Margin="30,0,0,0">
+                <ToggleSwitch Margin="10" OnContent="Foreground enabled" OffContent="Foreground disabled" x:Name="foregroundWindowToggle"></ToggleSwitch>
+                <TextBlock>The original eSheep was able to bring to front the touched window. If you activate this option, your productivity will decrease ;)</TextBlock>
+            </StackPanel>
         </StackPanel>
     </Grid>
 </Page>

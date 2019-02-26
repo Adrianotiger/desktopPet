@@ -73,6 +73,7 @@ namespace DesktopPet
         double PositionY = 0.0;
 
         private LocalData.LocalData myData = new LocalData.LocalData();
+        private List<FormPet> childs = new List<FormPet>(4);
 
         /// <summary>
         /// Form constructor. This is never called. <br />
@@ -254,10 +255,23 @@ namespace DesktopPet
             /// </remarks>
         public void Kill()
         {
+            foreach(var c in childs)
+            {
+                if(c != null && !c.IsDisposed)
+                {
+                    c.Close();
+                    c.Dispose();
+                }
+            }
             if (Animations.AnimationKill > 1)
+            {
                 SetNewAnimation(Animations.AnimationKill);
+            }
             else
+            {
                 Close();
+                Dispose();
+            }
         }
 
             /// <summary>
@@ -351,7 +365,10 @@ namespace DesktopPet
 							}
 							child.Show(Width, Height);
 							child.PlayChild(id, childInfo);
-						}
+
+                            childs.Add(child);
+
+                        }
                     }
                 }
                 timer1.Interval = CurrentAnimation.Start.Interval.GetValue();
@@ -688,7 +705,7 @@ namespace DesktopPet
 						if (!CheckTopWindow(false))
                         {
 								// Only if the option is set (this is an invasive functionality)
-							if (myData.GetWindowForeground())
+							if (Program.MyData.GetWindowForeground())
 							{
 								NativeMethods.ShowWindow(window.Key, 5);        // show window again
 								NativeMethods.SetForegroundWindow(window.Key);  // set focus to window
@@ -936,7 +953,7 @@ namespace DesktopPet
             {
                 if (file.Contains(".xml"))
                 {
-                    Program.Mainthread.LoadNewXMLFromString(File.ReadAllText(file));
+                    Program.MyData.SetXml(File.ReadAllText(file), "..");
                     break;  // Currently only 1 file, in future maybe more animations at the same time
                 }
             }

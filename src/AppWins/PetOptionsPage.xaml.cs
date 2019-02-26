@@ -22,14 +22,25 @@ namespace AppWins
     /// </summary>
     public sealed partial class PetOptionsPage : Page
     {
-        private LocalData.LocalData localData;
-
         public PetOptionsPage()
         {
             this.InitializeComponent();
 
-            volumeSlider.Value = localData.GetVolume();
-            foregroundWindowToggle.IsOn = localData.GetWindowForeground();
+            this.Loaded += PetOptionsPage_Loaded;
+        }
+
+        private void PetOptionsPage_Loaded(object sender, RoutedEventArgs e)
+        {
+            var xmlNode = LocalData.AnimationXML.ParseXML(App.MyData.GetXml());
+
+            if (xmlNode.Sounds == null || xmlNode.Sounds.Sound == null || xmlNode.Sounds.Sound.Length == 0)
+            {
+                volumeInfo1.Visibility = Visibility.Visible;
+                volumeSlider.IsEnabled = false;
+            }
+
+            volumeSlider.Value = App.MyData.GetVolume();
+            foregroundWindowToggle.IsOn = App.MyData.GetWindowForeground();
 
             volumeSlider.ValueChanged += VolumeSlider_ValueChanged;
             foregroundWindowToggle.Toggled += ForegroundWindowToggle_Toggled;
@@ -37,12 +48,12 @@ namespace AppWins
 
         private void ForegroundWindowToggle_Toggled(object sender, RoutedEventArgs e)
         {
-            localData.SetWindowForeground(foregroundWindowToggle.IsOn);
+            App.MyData.SetWindowForeground(foregroundWindowToggle.IsOn);
         }
 
         private void VolumeSlider_ValueChanged(object sender, RangeBaseValueChangedEventArgs e)
         {
-            localData.SetVolume(volumeSlider.Value);
+            App.MyData.SetVolume(volumeSlider.Value);
         }
     }
 }

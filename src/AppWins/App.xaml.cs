@@ -32,6 +32,8 @@ namespace AppWins
             this.Suspending += OnSuspending;
         }
 
+        public static LocalData.LocalData MyData = new LocalData.LocalData();
+
         protected override void OnActivated(Windows.ApplicationModel.Activation.IActivatedEventArgs e)
         {
             if (e.Kind == ActivationKind.Protocol)
@@ -42,7 +44,7 @@ namespace AppWins
                 {
                     Frame rootFrame = new Frame();
                     Window.Current.Content = rootFrame;
-                    rootFrame.Navigate(typeof(MainPage), uri.Query);
+                    rootFrame.Navigate(typeof(MainPage), uri.Host);
                     Window.Current.Activate();
                 }
             }

@@ -3,6 +3,12 @@ using System.Windows.Forms;
 using DesktopPet.Properties;
 using System.Drawing;
 using System.IO;
+using Windows.System;
+using Windows.Foundation.Collections;
+using Windows.ApplicationModel.AppService;
+using Windows.ApplicationModel.Background;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace DesktopPet
 {
@@ -12,10 +18,10 @@ namespace DesktopPet
         /// </summary>
     class ContextMenus : IDisposable
     {
-            /// <summary>
-            /// If the about dialog is visible.
-            /// </summary>
-            /// <remarks>If about or options is pressed a dialog is opened (asynchrony). So no other dialog can be opened from this class!</remarks>
+        /// <summary>
+        /// If the about dialog is visible.
+        /// </summary>
+        /// <remarks>If about or options is pressed a dialog is opened (asynchrony). So no other dialog can be opened from this class!</remarks>
         bool isAboutLoaded = false;
             /// <summary>
             /// If the option dialog is visible.
@@ -49,10 +55,12 @@ namespace DesktopPet
             /// </summary>
         static string info;
 
-            /// <summary>
-            /// Creates this instance for the tray icon.
-            /// </summary>
-            /// <returns>ContextMenuStrip to add in the tray icon.</returns>
+        LocalData.LocalData MyData = new LocalData.LocalData();
+
+        /// <summary>
+        /// Creates this instance for the tray icon.
+        /// </summary>
+        /// <returns>ContextMenuStrip to add in the tray icon.</returns>
         public ContextMenuStrip Create()
         {
                 // Add the default menu options.
@@ -103,7 +111,7 @@ namespace DesktopPet
             closeSheepMenuItem.Click += new EventHandler(Exit_Click);
             closeSheepMenuItem.Image = Resources.exit;
             menu.Items.Add(closeSheepMenuItem);
-
+            
             return menu;
         }
 
@@ -191,12 +199,11 @@ namespace DesktopPet
 
                 isOptionLoaded = true;
 
-                var success = Windows.System.Launcher.LaunchUriAsync(uri);
-                
-                Program.Mainthread.OpenOptionDialog();
+                var launchOptions = Windows.System.Launcher.LaunchUriAsync(uri);
+
+                //Program.Mainthread.OpenOptionDialog();
 
                 isOptionLoaded = false;
-                
             }
         }
 

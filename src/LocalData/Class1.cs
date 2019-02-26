@@ -12,7 +12,7 @@ namespace LocalData
     {
         static Windows.Storage.ApplicationDataContainer LocalSettings = null;
         static Windows.Storage.StorageFolder LocalFolder = null;
-        //static bool ValuesUpdated = false;
+        static bool ValuesUpdated = false;
 
         private static string Images = "";
         private static string Icon = "";
@@ -21,16 +21,20 @@ namespace LocalData
         private static bool WinForeGround = false;
         private static int AutostartPets = 1;
 
+        public static readonly String GITHUB_FOLDER = "https://raw.githubusercontent.com/Adrianotiger/desktopPet/uwp";
+        public static readonly String GITHUB_PETDOCS = "https://github.com/Adrianotiger/desktopPet/tree/uwp/Pets/";
+        public static readonly String GITHUB_PETLIST = GITHUB_FOLDER + "/Pets/pets.json";
+        public static readonly String GITHUB_APITREE = "https://api.github.com/repos/Adrianotiger/desktopPet/git/trees/9769cf227eaf8322c028d2be2a9671d692b9f293";
+
         public LocalData()
         {
-            if(LocalSettings == null)
+            if (LocalSettings == null)
             {
                 LocalSettings = Windows.Storage.ApplicationData.Current.LocalSettings;
                 LocalFolder = Windows.Storage.ApplicationData.Current.LocalFolder;
-
-                LocalSettings.Values["Volume"] = 0.3;
-                LocalSettings.Values["WinForeGround"] = false;
-                LocalSettings.Values["AutostartPets"] = 1;
+                
+                if (!LocalSettings.Values.ContainsKey("CurrentPet"))
+                    LocalSettings.Values["CurrentPet"] = "esheep64";
 
                 if (LocalSettings.Values.ContainsKey("Volume"))
                     Volume = (double)LocalSettings.Values["Volume"];
@@ -50,12 +54,14 @@ namespace LocalData
                 LoadXML();
                 LoadImages();
                 LoadIcon();
+
+                ValuesUpdated = false;
             }
         }
 
         public void SetVolume(double volume)
         {
-            if (volume != Volume)
+            if (volume != Volume && Math.Abs(volume - Volume) > 0.04)
             {
                 Volume = volume;
                 LocalSettings.Values["Volume"] = volume;
@@ -95,14 +101,28 @@ namespace LocalData
             return AutostartPets;
         }
 
-        public void SetXml(string newXml)
+        public void SetXml(string newXml, string folder)
         {
-            Xml = newXml;
+            if (Xml != newXml)
+            {
+                Xml = newXml;
 
-            var buffer = Encoding.UTF8.GetBytes(newXml);
-            var f = File.OpenWrite(LocalFolder.Path + "\\animation.xml");
-            f.Write(buffer, 0, buffer.Length);
-            f.Close();
+                var buffer = Encoding.UTF8.GetBytes(newXml);
+                File.Delete(LocalFolder.Path + "\\animation.xml");
+
+                var f = File.Create(LocalFolder.Path + "\\animation.xml");
+                f.Write(buffer, 0, buffer.Length);
+                f.Close();
+
+                LocalSettings.Values["CurrentPet"] = folder;
+
+                ValuesUpdated = true;
+            }
+        }
+
+        public string GetCurrentPet()
+        {
+            return LocalSettings.Values["CurrentPet"].ToString();
         }
 
         public string GetXml()
@@ -110,7 +130,7 @@ namespace LocalData
             return Xml;
         }
 
-        private void LoadXML()
+        public void LoadXML()
         {
             var buffer = new Byte[1024 * 64];
             if (!File.Exists(LocalFolder.Path + "\\animation.xml"))
@@ -126,7 +146,6 @@ namespace LocalData
                 bytesRead = f.Read(buffer, 0, 1024 * 64);
                 Xml += Encoding.UTF8.GetString(buffer, 0, bytesRead);
             } while (bytesRead > 0);
-            f.Read(buffer, 0, buffer.Length);
             f.Close();
         }
 
@@ -135,7 +154,8 @@ namespace LocalData
             Icon = newIcon;
 
             var buffer = Encoding.UTF8.GetBytes(newIcon);
-            var f = File.OpenWrite(LocalFolder.Path + "\\icon.xml");
+            File.Delete(LocalFolder.Path + "\\icon.xml");
+            var f = File.Create(LocalFolder.Path + "\\icon.xml");
             f.Write(buffer, 0, buffer.Length);
             f.Close();
         }
@@ -161,7 +181,6 @@ namespace LocalData
                 bytesRead = f.Read(buffer, 0, 1024 * 64);
                 Icon += Encoding.UTF8.GetString(buffer, 0, bytesRead);
             } while (bytesRead > 0);
-            f.Read(buffer, 0, buffer.Length);
             f.Close();
         }
 
@@ -170,7 +189,8 @@ namespace LocalData
             Images = newImages;
 
             var buffer = Encoding.UTF8.GetBytes(newImages);
-            var f = File.OpenWrite(LocalFolder.Path + "\\images.xml");
+            File.Delete(LocalFolder.Path + "\\images.xml");
+            var f = File.Create(LocalFolder.Path + "\\images.xml");
             f.Write(buffer, 0, buffer.Length);
             f.Close();
         }
@@ -196,8 +216,64 @@ namespace LocalData
                 bytesRead = f.Read(buffer, 0, 1024 * 64);
                 Images += Encoding.UTF8.GetString(buffer, 0, bytesRead);
             } while (bytesRead > 0);
-            f.Read(buffer, 0, buffer.Length);
             f.Close();
+        }
+
+        public bool NeedToLoadNew(string petFolder, DateTimeOffset lastUpdate)
+        {
+            if(LocalSettings.Values.ContainsKey("pet_" + petFolder))
+            {
+                return ((DateTimeOffset)LocalSettings.Values["pet_" + petFolder] < lastUpdate);
+            }
+            else
+            {
+                return true;
+            }
+        }
+
+        public void SavePetXML(string xml, string petName, DateTime lastUpdate)
+        {
+            var buffer = Encoding.UTF8.GetBytes(xml);
+            var f = File.OpenWrite(LocalFolder.Path + "\\pet_" + petName + ".xml");
+            f.Write(buffer, 0, buffer.Length);
+            f.Close();
+            DateTimeOffset dto = lastUpdate;
+            LocalSettings.Values["pet_" + petName] = dto;
+        }
+
+        public string GetPetXML(string petName)
+        {
+            string retXML = "";
+            var buffer = new Byte[1024 * 64];
+            var f = File.OpenRead(LocalFolder.Path + "\\pet_" + petName + ".xml");
+            var bytesRead = 0;
+            do
+            {
+                bytesRead = f.Read(buffer, 0, 1024 * 64);
+                retXML += Encoding.UTF8.GetString(buffer, 0, bytesRead);
+            } while (bytesRead > 0);
+            f.Close();
+            return retXML;
+        }
+
+        public delegate void MyFunction(object source, FileSystemEventArgs e);
+
+        public void ListenOnXMLChanged(MyFunction f)
+        {
+            FileSystemWatcher watcher = new FileSystemWatcher();
+            watcher.Path = LocalFolder.Path;
+            /* Watch for changes in LastAccess and LastWrite times, and 
+               the renaming of files or directories. */
+            watcher.NotifyFilter = NotifyFilters.LastAccess | NotifyFilters.LastWrite
+               | NotifyFilters.FileName | NotifyFilters.DirectoryName;
+            // Only watch text files.
+            watcher.Filter = "animation.xml";
+
+            // Add event handlers.
+            watcher.Changed += new FileSystemEventHandler(f);
+
+            // Begin watching.
+            watcher.EnableRaisingEvents = true;
         }
 
     }

@@ -37,7 +37,7 @@
     <ProjectGuid>99bc8ccc-5964-4ac0-98cd-5c2b8bfd2d80</ProjectGuid>
     <TargetPlatformVersion>10.0.17134.0</TargetPlatformVersion>
     <TargetPlatformMinVersion>10.0.17134.0</TargetPlatformMinVersion>
-    <DefaultLanguage>de-DE</DefaultLanguage>
+    <DefaultLanguage>en-GB</DefaultLanguage>
     <PackageCertificateKeyFile>UWPSheep_TemporaryKey.pfx</PackageCertificateKeyFile>
     <EntryPointProjectUniqueName>..\DesktopPet.csproj</EntryPointProjectUniqueName>
   </PropertyGroup>
@@ -46,7 +46,7 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
     <DefaultLanguage>en-GB</DefaultLanguage>
-    <OutputPath>..\build\UWPSheep\bin\AnyCPU\Debug\</OutputPath>
+    <OutputPath>..\..\build\UWPSheep\bin\AnyCPU\Debug\</OutputPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <DefaultLanguage>en-GB</DefaultLanguage>
@@ -60,7 +60,7 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
     <DefaultLanguage>en-GB</DefaultLanguage>
-    <OutputPath>..\build\bin\UWPSheep\AnyCPU\Release\</OutputPath>
+    <OutputPath>..\..\build\bin\UWPSheep\AnyCPU\Release\</OutputPath>
   </PropertyGroup>
   <ItemGroup>
     <AppxManifest Include="Package.appxmanifest">
@@ -80,7 +80,7 @@
     <Folder Include="UWPSheep\" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\AppWins\AppWins\AppWins.csproj" />
+    <ProjectReference Include="..\AppWins\AppWins.csproj" />
     <ProjectReference Include="..\DesktopPet.csproj" />
   </ItemGroup>
   <Import Project="$(WapProjPath)\Microsoft.DesktopBridge.targets" />

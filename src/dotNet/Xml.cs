@@ -516,37 +516,9 @@ namespace DesktopPet
             // Try to load local XML
             try
             {
-                if(File.Exists(Application.StartupPath + "\\installpet.xml"))
-                {
-                    string sXML = System.Text.Encoding.Default.GetString(File.ReadAllBytes(Application.StartupPath + "\\installpet.xml"));
-                    File.Delete(Application.StartupPath + "\\installpet.xml");
-                    writer.Write(sXML);
-                    AnimationXMLString = sXML;
-                    myData.SetXml(sXML);
-                }
-                else if (Program.ArgumentLocalXML != "")
-                {
-                    string sXML = System.Text.Encoding.Default.GetString(File.ReadAllBytes(Program.ArgumentLocalXML));
-                    writer.Write(sXML);
-                    AnimationXMLString = sXML;
-                }
-                else if (Program.ArgumentWebXML != "")
-                {
-                    System.Net.WebClient client = new System.Net.WebClient();
-                    string sXML = client.DownloadString(Program.ArgumentWebXML);
-                    writer.Write(sXML);
-                    AnimationXMLString = sXML;
-                }
-                else
-                {
-                    writer.Write(myData.GetXml());
-                    AnimationXMLString = myData.GetXml();
-                }
-
-                    // Don't load personal pets anymore
-                Program.ArgumentLocalXML = "";  
-                Program.ArgumentWebXML = "";
-
+                writer.Write(Program.MyData.GetXml());
+                AnimationXMLString = Program.MyData.GetXml();
+             
                 //writer.Write(Properties.Resources.animations);
                 writer.Flush();
                 stream.Position = 0;
@@ -555,17 +527,18 @@ namespace DesktopPet
 
                 stream.Close();
 
-                myData.SetImages(AnimationXML.Image.Png);
-                myData.SetIcon(AnimationXML.Header.Icon);
+                Program.MyData.SetImages(AnimationXML.Image.Png);
+                Program.MyData.SetIcon(AnimationXML.Header.Icon);
             }
             catch(Exception ex)
             {
                 StartUp.AddDebugInfo(StartUp.DEBUG_TYPE.warning, "User XML error: " + ex.ToString());
-                if (myData.GetXml().Length > 100)
+                if (Program.MyData.GetXml().Length > 100)
                 {
                     MessageBox.Show("Error parsing animation XML:" + ex.ToString(), "XML error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
-                
+                stream.Flush();
+                stream.Position = 0;
                 writer.Write(Properties.Resources.animations);
                 writer.Flush();
                 AnimationXMLString = Properties.Resources.animations;
@@ -573,8 +546,8 @@ namespace DesktopPet
                 // Call the Deserialize method and cast to the object type.
                 AnimationXML = (RootNode)mySerializer.Deserialize(stream);
 
-                myData.SetImages(AnimationXML.Image.Png);
-                myData.SetIcon(AnimationXML.Header.Icon);
+                Program.MyData.SetImages(AnimationXML.Image.Png);
+                Program.MyData.SetIcon(AnimationXML.Header.Icon);
             }
             finally
             {
@@ -854,7 +827,7 @@ namespace DesktopPet
                 if (myData.GetImages().Length < 2) throw new InvalidDataException();
                 imageStream = new MemoryStream(Convert.FromBase64String(myData.GetImages()));
                 // only decode once so dont need to keep the source string for image
-                myData.SetImages(string.Empty); 
+                Program.MyData.SetImages(string.Empty); 
                 StartUp.AddDebugInfo(StartUp.DEBUG_TYPE.info, "user images loaded");
             }
             catch (Exception)
@@ -868,7 +841,7 @@ namespace DesktopPet
                     {
                         pngStr += new string('=', 4 - mod4);
                     }
-                    myData.SetImages(pngStr);
+                    Program.MyData.SetImages(pngStr);
                 }
                 catch (Exception ex)
                 {
@@ -878,7 +851,7 @@ namespace DesktopPet
                 {
                     imageStream = new MemoryStream(Convert.FromBase64String(myData.GetImages()));
                     // only decode once so dont need to keep the source string for image
-                    myData.SetImages(string.Empty);
+                    Program.MyData.SetImages(string.Empty);
                 }
                 catch (Exception ex)
                 {
@@ -904,7 +877,7 @@ namespace DesktopPet
                     {
                         strIco += new string('=', 4 - mod4);
                     }
-                    myData.SetIcon(strIco);
+                    Program.MyData.SetIcon(strIco);
                 }
                 catch (Exception ex)
                 {

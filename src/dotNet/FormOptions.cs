@@ -83,8 +83,8 @@ namespace DesktopPet
         private void FormOptions_Load(object sender, EventArgs e)
         {
                 // Set up audio values
-            checkBox1.Checked = (myData.GetVolume() > 0.0);
-			trackBar1.Value = (int)(myData.GetVolume() * 10);
+            checkBox1.Checked = (Program.MyData.GetVolume() > 0.0);
+			trackBar1.Value = (int)(Program.MyData.GetVolume() * 10);
             trackBar1.Enabled = checkBox1.Checked;
 			label2.Text = Program.Mainthread.ErrorMessages.AudioErrorMessage;
             if (label2.Text.Length > 1)
@@ -92,8 +92,8 @@ namespace DesktopPet
                 trackBar1.Enabled = false;
                 checkBox1.Enabled = false;
             }
-			checkBox2.Checked = myData.GetWindowForeground();
-            trackBar2.Value = myData.GetAutoStartPets();
+			checkBox2.Checked = Program.MyData.GetWindowForeground();
+            trackBar2.Value = Program.MyData.GetAutoStartPets();
 		}
 
         private void checkBox1_CheckedChanged(object sender, EventArgs e)
@@ -108,8 +108,8 @@ namespace DesktopPet
 
         private void trackBar1_Scroll(object sender, EventArgs e)
         {
-            myData.SetVolume((trackBar1.Value / 10.0));
-            if(myData.GetVolume() < 0.1f)
+            Program.MyData.SetVolume((trackBar1.Value / 10.0));
+            if(Program.MyData.GetVolume() < 0.1f)
             {
                 trackBar1.Enabled = false;
                 checkBox1.Checked = false;
@@ -118,12 +118,12 @@ namespace DesktopPet
 
 		private void checkBox2_Click(object sender, EventArgs e)
 		{
-            myData.SetWindowForeground(checkBox2.Checked);
+            Program.MyData.SetWindowForeground(checkBox2.Checked);
 		}
 
 		private void trackBar2_Scroll(object sender, EventArgs e)
 		{
-            myData.SetAutoStartPets(trackBar2.Value);
+            Program.MyData.SetAutoStartPets(trackBar2.Value);
 		}
 	}
 }

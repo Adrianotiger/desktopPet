@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Package xmlns="http://schemas.microsoft.com/appx/manifest/foundation/windows10" xmlns:mp="http://schemas.microsoft.com/appx/2014/phone/manifest" xmlns:uap="http://schemas.microsoft.com/appx/manifest/uap/windows10" xmlns:uap5="http://schemas.microsoft.com/appx/manifest/uap/windows10/5" xmlns:rescap="http://schemas.microsoft.com/appx/manifest/foundation/windows10/restrictedcapabilities" IgnorableNamespaces="uap mp rescap">
+<Package xmlns="http://schemas.microsoft.com/appx/manifest/foundation/windows10" xmlns:mp="http://schemas.microsoft.com/appx/2014/phone/manifest" xmlns:desktop="http://schemas.microsoft.com/appx/manifest/desktop/windows10" xmlns:uap="http://schemas.microsoft.com/appx/manifest/uap/windows10" xmlns:uap5="http://schemas.microsoft.com/appx/manifest/uap/windows10/5" xmlns:rescap="http://schemas.microsoft.com/appx/manifest/foundation/windows10/restrictedcapabilities" IgnorableNamespaces="uap mp rescap">
   <Identity Name="3b1e2c78-a5af-4487-b3b6-93d1ce701f22" Publisher="CN=apetrucci" Version="1.0.0.0" />
   <Properties>
     <DisplayName>UWPSheep</DisplayName>
@@ -20,6 +20,10 @@
         </uap:DefaultTile>
       </uap:VisualElements>
       <Extensions>
+        <desktop:Extension Category="windows.fullTrustProcess" Executable="DesktopPet.exe" EntryPoint="Windows.FullTrustApplication" />
+        <desktop:Extension Category="windows.startupTask" Executable="DesktopPet.exe" EntryPoint="Windows.FullTrustApplication">
+          <desktop:StartupTask TaskId="eSheepId" Enabled="false" DisplayName="eSheep 64bit" />
+        </desktop:Extension>
         <uap5:Extension Category="windows.startupTask" Executable="DesktopPet.exe" EntryPoint="DesktopPet.App">
           <uap5:StartupTask TaskId="eSheepId" Enabled="true" DisplayName="eSheep" />
         </uap5:Extension>

@@ -332,9 +332,7 @@ namespace DesktopPet
             /// </summary>
         private NAudio.Wave.WaveOut Audio;
         private NAudio.Wave.Mp3FileReader AudioReader;
-
-        private LocalData.LocalData myData;
-
+        
         /// <summary>
         /// Load a sound for the animation from a byte array.
         /// </summary>
@@ -353,7 +351,7 @@ namespace DesktopPet
             catch(Exception e)
             {
                 // Failed to create a wave, reset volume
-                myData.SetVolume(0.0);
+                Program.MyData.SetVolume(0.0);
                 Program.Mainthread.ErrorMessages.AudioErrorMessage = e.Message;
             }
         }
@@ -365,14 +363,13 @@ namespace DesktopPet
             /// <remarks>Sound is played only if the volume is greater than 0 and there are no sound problems.</remarks>
         public void Play(int loopCount)
         {
-            if (myData == null) myData = new LocalData.LocalData();
-            if (myData.GetVolume() > 0.0)
+            if (Program.MyData.GetVolume() > 0.0)
             {
                 try
                 {
-                    if (Audio.Volume != myData.GetVolume())
+                    if (Audio.Volume != Program.MyData.GetVolume())
                     {
-                        Audio.Volume = (float)myData.GetVolume();
+                        Audio.Volume = (float)Program.MyData.GetVolume();
                     }
                     // Set event handler only if looped
                     if (loopCount > 0)
@@ -385,7 +382,7 @@ namespace DesktopPet
                 catch(Exception e)
                 {
                     // Failed to play a wave, reset volume
-                    myData.SetVolume(0.0);
+                    Program.MyData.SetVolume(0.0);
                     Program.Mainthread.ErrorMessages.AudioErrorMessage = e.Message;
                 }
             }

@@ -1,7 +1,10 @@
 ﻿using System;
 using System.Drawing;
+using System.IO;
 using System.Threading;
 using System.Windows.Forms;
+using Windows.ApplicationModel.AppService;
+using Windows.ApplicationModel.Background;
 using static DesktopPet.StartUp;
 
 namespace DesktopPet
@@ -69,9 +72,7 @@ namespace DesktopPet
         /// Process Icon. The tray icon on the taskbar.
         /// </summary>
         ProcessIcon pi;
-
-        private LocalData.LocalData myData = new LocalData.LocalData();
-
+        
         /// <summary>
         /// Error message for exceptions. It is shown in the options if an error occurs.
         /// </summary>
@@ -95,8 +96,8 @@ namespace DesktopPet
         public StartUp(ProcessIcon processIcon)
         {
             pi = processIcon;
-            
-            // Init XML class
+                        
+                // Init XML class
             xml = new Xml();
                 // Init Animations class
             animations = new Animations(xml);
@@ -113,7 +114,7 @@ namespace DesktopPet
                 // Read XML file and start new sheep in 1 second
             if(!xml.readXML())
             {
-                myData.SetXml(Properties.Resources.animations);
+                Program.MyData.SetXml(Properties.Resources.animations, "esheep64");
                 xml.readXML();
             }
 
@@ -131,11 +132,21 @@ namespace DesktopPet
             timer1.Tick += new EventHandler(timer1_Tick);
             timer1.Interval = 1000;
             timer1.Enabled = true;
+
+            Program.MyData.ListenOnXMLChanged(XmlFileChanged);
         }
 
-            /// <summary>
-            /// Dispose class -> used to dispose xml class
-            /// </summary>
+
+        private void XmlFileChanged(object source, FileSystemEventArgs e)
+        {
+            Thread.Sleep(200);
+            Program.MyData.LoadXML();
+            Program.Mainthread.LoadNewXMLFromString(Program.MyData.GetXml());
+        }
+
+        /// <summary>
+        /// Dispose class -> used to dispose xml class
+        /// </summary>
         public void Dispose()
         {
             xml.Dispose();
@@ -268,7 +279,7 @@ namespace DesktopPet
                 // "A" when application starts. Add a sheep.
             if (timer1.Tag.ToString() == "A")
             {
-				if (iSheeps < myData.GetAutoStartPets() && iSheeps < MAX_SHEEPS)
+				if (iSheeps < Program.MyData.GetAutoStartPets() && iSheeps < MAX_SHEEPS)
 				{
 					if (iSheeps == 0)
 					{
@@ -303,23 +314,32 @@ namespace DesktopPet
         {
             AddDebugInfo(DEBUG_TYPE.info, "load new XML string");
 
-                // Close all sheeps
+            if (sheeps[0].InvokeRequired)
+            {
+                sheeps[0].BeginInvoke(new MethodInvoker(delegate{
+                    LoadNewXMLFromString(strXml);
+                }));
+                return;
+            }
+
+            // Close all sheeps
             for (int i = 0; i < iSheeps; i++)
             {
+                sheeps[i].Kill();
+                /*
                 sheeps[i].Close();
                 sheeps[i].Dispose();
+                */
             }
             iSheeps = 0;
 
                 // reload XML and Animations
             xml = new Xml();
             animations = new Animations(xml);
-
-            myData.SetXml(strXml);
-            
+                        
             if (!xml.readXML())
             {
-                myData.SetXml(Properties.Resources.animations);
+                Program.MyData.SetXml(Properties.Resources.animations, "esheep64");
                 xml.readXML();
             }
 
@@ -354,7 +374,16 @@ namespace DesktopPet
         {
             if(debug != null)
             {
-                debug.AddDebugInfo(type, text);
+                if (debug.InvokeRequired)
+                {
+                    debug.BeginInvoke(new MethodInvoker(delegate {
+                        debug.AddDebugInfo(type, text);
+                    }));
+                }
+                else
+                {
+                    debug.AddDebugInfo(type, text);
+                }
             }
         }
 
@@ -390,10 +419,10 @@ namespace DesktopPet
                 case DialogResult.Retry:
                     AddDebugInfo(DEBUG_TYPE.warning, "restoring default XML");
 
-                    myData.SetIcon("");
-                    myData.SetImages("");
+                    Program.MyData.SetIcon("");
+                    Program.MyData.SetImages("");
 
-                    LoadNewXMLFromString("");
+                    Program.MyData.SetXml("", "esheep64");
                     break;
             }
         }
