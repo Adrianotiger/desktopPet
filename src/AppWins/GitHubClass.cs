@@ -11,7 +11,7 @@ using System.Xml.Serialization;
 using Windows.Storage.Streams;
 using Windows.UI.Xaml.Media.Imaging;
 
-namespace AppWins
+namespace OptionsWindow
 {
     [DataContract]
     internal class GitHubPet

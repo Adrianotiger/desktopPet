@@ -6,7 +6,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DesktopPet", "DesktopPet.cs
 EndProject
 Project("{C7167F0D-BC9F-4E6E-AFE1-012C56B48DB5}") = "UWPSheep", "UWPSheep\UWPSheep.wapproj", "{99BC8CCC-5964-4AC0-98CD-5C2B8BFD2D80}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AppWins", "AppWins\AppWins.csproj", "{1F2CE52E-2521-4181-8939-0E8CE00222E6}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OptionsWindow", "AppWins\OptionsWindow.csproj", "{1F2CE52E-2521-4181-8939-0E8CE00222E6}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LocalData", "LocalData\LocalData.csproj", "{E95D998F-DF30-4C58-8FE7-EF10374D8AC5}"
 EndProject

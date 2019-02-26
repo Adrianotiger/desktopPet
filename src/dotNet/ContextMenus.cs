@@ -18,17 +18,6 @@ namespace DesktopPet
         /// </summary>
     class ContextMenus : IDisposable
     {
-        /// <summary>
-        /// If the about dialog is visible.
-        /// </summary>
-        /// <remarks>If about or options is pressed a dialog is opened (asynchrony). So no other dialog can be opened from this class!</remarks>
-        bool isAboutLoaded = false;
-            /// <summary>
-            /// If the option dialog is visible.
-            /// </summary>
-            /// /// <remarks>If about or options is pressed a dialog is opened (asynchrony). So no other dialog can be opened from this class!</remarks>
-        bool isOptionLoaded = false;
-
             /// <summary>
             /// Sheep Menu Item: if another pet was downloaded, the icon and text of this item will change.
             /// </summary>
@@ -155,18 +144,9 @@ namespace DesktopPet
         /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
         void About_Click(object sender, EventArgs e)
         {
-            if(isOptionLoaded)
-            {
-
-            }
-            else if (!isAboutLoaded)
-            {
-                isAboutLoaded = true;
-                AboutBox box = new AboutBox();
-                box.FillData(author, title, version, info);
-                box.ShowDialog();
-                isAboutLoaded = false;
-            }
+            string str = "xamlesheep://";
+            Uri uri = new Uri(str + "about");
+            var launchOptions = Launcher.LaunchUriAsync(uri);
         }
 
         /// <summary>
@@ -176,8 +156,11 @@ namespace DesktopPet
         /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
         void Help_Click(object sender, EventArgs e)
         {
-            FormHelp help = new FormHelp();
-            help.Show();
+            //FormHelp help = new FormHelp();
+            //help.Show();
+            string str = "xamlesheep://";
+            Uri uri = new Uri(str + "help");
+            var launchOptions = Launcher.LaunchUriAsync(uri);
         }
 
         /// <summary>
@@ -187,24 +170,9 @@ namespace DesktopPet
         /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
         void Options_Click(object sender, EventArgs e)
         {
-            if(isAboutLoaded)
-            {
-
-            }
-            else if (!isOptionLoaded)
-            {
-                string str = "xamlesheep://";
-
-                Uri uri = new Uri(str + "options");
-
-                isOptionLoaded = true;
-
-                var launchOptions = Windows.System.Launcher.LaunchUriAsync(uri);
-
-                //Program.Mainthread.OpenOptionDialog();
-
-                isOptionLoaded = false;
-            }
+            string str = "xamlesheep://";
+            Uri uri = new Uri(str + "options");
+            var launchOptions = Launcher.LaunchUriAsync(uri);
         }
 
             /// <summary>

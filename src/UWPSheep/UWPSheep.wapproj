@@ -80,7 +80,7 @@
     <Folder Include="UWPSheep\" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\AppWins\AppWins.csproj" />
+    <ProjectReference Include="..\AppWins\OptionsWindow.csproj" />
     <ProjectReference Include="..\DesktopPet.csproj" />
   </ItemGroup>
   <Import Project="$(WapProjPath)\Microsoft.DesktopBridge.targets" />

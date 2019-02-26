@@ -7,7 +7,7 @@
     <ProjectGuid>{1F2CE52E-2521-4181-8939-0E8CE00222E6}</ProjectGuid>
     <OutputType>AppContainerExe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>AppWins</RootNamespace>
+    <RootNamespace>OptionsWindow</RootNamespace>
     <AssemblyName>Options</AssemblyName>
     <DefaultLanguage>en-GB</DefaultLanguage>
     <TargetPlatformIdentifier>UAP</TargetPlatformIdentifier>

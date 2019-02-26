@@ -3,7 +3,7 @@
   <Identity Name="7a9c413f-bef0-497d-bfb5-186cb337fc52" Publisher="CN=apetrucci" Version="1.0.0.0" />
   <mp:PhoneIdentity PhoneProductId="7a9c413f-bef0-497d-bfb5-186cb337fc52" PhonePublisherId="00000000-0000-0000-0000-000000000000" />
   <Properties>
-    <DisplayName>AppWins</DisplayName>
+    <DisplayName>OptionsWindow</DisplayName>
     <PublisherDisplayName>apetrucci</PublisherDisplayName>
     <Logo>Assets\StoreLogo.png</Logo>
   </Properties>
@@ -14,7 +14,7 @@
     <Resource Language="x-generate" />
   </Resources>
   <Applications>
-    <Application Id="App" Executable="$targetnametoken$.exe" EntryPoint="AppWins.App">
+    <Application Id="App" Executable="$targetnametoken$.exe" EntryPoint="OptionsWindow.App">
       <uap:VisualElements DisplayName="Options" Square150x150Logo="Assets\Square150x150Logo.png" Square44x44Logo="Assets\Square44x44Logo.png" Description="Option dialog for the eSheep" BackgroundColor="transparent">
         <uap:DefaultTile Wide310x150Logo="Assets\Wide310x150Logo.png">
         </uap:DefaultTile>
