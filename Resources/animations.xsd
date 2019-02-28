@@ -1,0 +1,247 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xsd:schema
+    elementFormDefault="qualified"
+    attributeFormDefault="unqualified"
+    targetNamespace="https://esheep.petrucci.ch/"
+    xmlns="https://esheep.petrucci.ch/"
+    xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+
+  <xsd:element name='animations'>
+    <xsd:complexType>
+      <xsd:sequence>
+        <xsd:element name='header' minOccurs='1' maxOccurs='1'>
+          <xsd:annotation>
+            <xsd:documentation>Main informations about this Pet.</xsd:documentation>
+          </xsd:annotation>
+          <xsd:complexType>
+            <xsd:all>
+              <xsd:element name='author' type='xsd:string' minOccurs='1' maxOccurs='1'>
+                <xsd:annotation>
+                  <xsd:documentation>Author of the animation, insert your name or full name.</xsd:documentation>
+                </xsd:annotation>
+              </xsd:element>
+              <xsd:element name='title' type='xsd:string' minOccurs='1' maxOccurs='1'>
+                <xsd:annotation>
+                  <xsd:documentation>Title of the animation, used on the webpage.</xsd:documentation>
+                </xsd:annotation>
+              </xsd:element>
+              <xsd:element name='petname' type='xsd:string' minOccurs='1' maxOccurs='1'>
+                <xsd:annotation>
+                  <xsd:documentation>Name of your pet. Displayed on the contextmenu.</xsd:documentation>
+                </xsd:annotation>
+              </xsd:element>
+              <xsd:element name='version' type='xsd:string' minOccurs='1' maxOccurs='1'>
+                <xsd:annotation>
+                  <xsd:documentation>Insert the application version, 0.1 for a beta. Once it is published you can't change it anymore.</xsd:documentation>
+                </xsd:annotation>
+              </xsd:element>
+              <xsd:element name='info' type='xsd:string' minOccurs='1' maxOccurs='1'>
+                <xsd:annotation>
+                  <xsd:documentation>Info about the animation, write some sentences, credits and your email if you want.</xsd:documentation>
+                </xsd:annotation>
+              </xsd:element>
+              <xsd:element name='application' type='xsd:integer' minOccurs='1' maxOccurs='1'>
+                <xsd:annotation>
+                  <xsd:documentation>Application version, this must be set to 1, because this is the current and only version.</xsd:documentation>
+                </xsd:annotation>
+              </xsd:element>
+              <xsd:element name='icon' type='xsd:string' minOccurs='1' maxOccurs='1'>
+                <xsd:annotation>
+                  <xsd:documentation>Icon as CDATA base64 encoded, see https://esheep.petrucci.ch/?p=tools&amp;s=icon to convert a PNG to ICO and https://esheep.petrucci.ch/?p=tools&amp;s=base64 to convert it to a base64 string.</xsd:documentation>
+                </xsd:annotation>
+              </xsd:element>
+            </xsd:all>
+          </xsd:complexType>
+        </xsd:element>
+        <xsd:element name='image'>
+          <xsd:annotation>
+            <xsd:documentation>All informations about the sprite image sheet.</xsd:documentation>
+          </xsd:annotation>
+          <xsd:complexType>
+            <xsd:all>
+              <xsd:element name='tilesx' type='xsd:integer' minOccurs='1' maxOccurs='1'>
+                <xsd:annotation>
+                  <xsd:documentation>How much images are on the x axis (tiles) of the sprite sheet.</xsd:documentation>
+                </xsd:annotation>
+              </xsd:element>
+              <xsd:element name='tilesy' type='xsd:integer' minOccurs='1' maxOccurs='1'>
+                <xsd:annotation>
+                  <xsd:documentation>How much images are on the y axis (tiles) of the sprite sheet.</xsd:documentation>
+                </xsd:annotation>
+              </xsd:element>
+              <xsd:element name='png' type='xsd:string' minOccurs='1' maxOccurs='1'>
+                <xsd:annotation>
+                  <xsd:documentation>Sprite sheet as CDATA base64 encoded, see https://esheep.petrucci.ch/?p=tools&amp;s=base64 to convert it to a base64 string.</xsd:documentation>
+                </xsd:annotation>
+              </xsd:element>
+              <xsd:element name='transparency' type='xsd:string' minOccurs='1' maxOccurs='1'>
+                <xsd:annotation>
+                  <xsd:documentation>Transparency: color key used to show transparency. Default: Magenta</xsd:documentation>
+                </xsd:annotation>
+              </xsd:element>
+            </xsd:all>
+          </xsd:complexType>
+        </xsd:element>
+
+        <xsd:element name='spawns'>
+          <xsd:complexType>
+            <xsd:sequence>
+              <xsd:element name='spawn' maxOccurs='unbounded'>
+                <xsd:complexType>
+                  <xsd:all>
+                    <xsd:element name='x' type='xsd:string' minOccurs='1' maxOccurs='1' />
+                    <xsd:element name='y' type='xsd:string' minOccurs='1' maxOccurs='1' />
+                    <xsd:element name='next' maxOccurs='1'>
+                      <xsd:complexType>
+                        <xsd:simpleContent>
+                          <xsd:extension base='xsd:integer'>
+                            <xsd:attribute name="probability" type="xsd:integer" />
+                          </xsd:extension>
+                        </xsd:simpleContent>
+                      </xsd:complexType>
+                    </xsd:element>
+                  </xsd:all>
+                  <xsd:attribute name="probability" type="xsd:integer"/>
+                  <xsd:attribute name="id" type="xsd:int"/>
+                </xsd:complexType>
+              </xsd:element>
+            </xsd:sequence>
+          </xsd:complexType>
+        </xsd:element>
+
+        <xsd:element name='animations'>
+          <xsd:complexType>
+            <xsd:sequence>
+              <xsd:element name='animation' minOccurs='1' maxOccurs='unbounded'>
+                <xsd:complexType>
+                  <xsd:all>
+                    <xsd:element name='name' type='xsd:string' minOccurs='1' maxOccurs='1' />
+                    <xsd:element name='start' minOccurs='1' maxOccurs='1'>
+                      <xsd:complexType>
+                        <xsd:group ref="step"/>
+                      </xsd:complexType>
+                    </xsd:element>
+                    <xsd:element name='end' minOccurs='0' maxOccurs='1'>
+                      <xsd:complexType>
+                        <xsd:group ref="step"/>
+                      </xsd:complexType>
+                    </xsd:element>
+                    <xsd:element name='sequence' minOccurs='1' maxOccurs='1'>
+                      <xsd:complexType>
+                        <xsd:choice maxOccurs="unbounded">
+                          <xsd:element name='frame' type='xsd:integer' minOccurs='1' maxOccurs='unbounded' />
+                          <xsd:element name='action' type='xsd:string' minOccurs='0' />
+                          <xsd:element ref='next' />
+                        </xsd:choice>
+                        <xsd:attribute name="repeat" type="xsd:string"/>
+                        <xsd:attribute name="repeatfrom" type="xsd:integer"/>
+                      </xsd:complexType>
+                    </xsd:element>
+                    <xsd:element name='border' minOccurs='0' maxOccurs='1'>
+                      <xsd:complexType>
+                        <xsd:choice maxOccurs="10">
+                          <xsd:element ref='next' />
+                        </xsd:choice>
+                      </xsd:complexType>
+                    </xsd:element>
+                    <xsd:element name='gravity' minOccurs='0' maxOccurs='1'>
+                      <xsd:complexType>
+                        <xsd:choice maxOccurs="10">
+                          <xsd:element ref='next' />
+                        </xsd:choice>
+                      </xsd:complexType>
+                    </xsd:element>
+                  </xsd:all>
+                  <xsd:attribute name="id" type="xsd:integer"/>
+                </xsd:complexType>
+              </xsd:element>
+            </xsd:sequence>
+          </xsd:complexType>
+        </xsd:element>
+
+        <xsd:element name='childs'>
+          <xsd:complexType>
+            <xsd:sequence>
+              <xsd:element name='child' minOccurs='0' maxOccurs='unbounded'>
+                <xsd:complexType>
+                  <xsd:all>
+                    <xsd:element name='x' type='xsd:string' minOccurs='1' maxOccurs='1' />
+                    <xsd:element name='y' type='xsd:string' minOccurs='1' maxOccurs='1' />
+                    <xsd:element name='next' maxOccurs='1'>
+                      <xsd:complexType>
+                        <xsd:simpleContent>
+                          <xsd:extension base='xsd:integer'>
+                            <xsd:attribute name="probability" type="xsd:integer" />
+                          </xsd:extension>
+                        </xsd:simpleContent>
+                      </xsd:complexType>
+                    </xsd:element>
+                  </xsd:all>
+                  <xsd:attribute name="animationid" type="xsd:int"/>
+                </xsd:complexType>
+              </xsd:element>
+            </xsd:sequence>
+          </xsd:complexType>
+        </xsd:element>
+
+        <xsd:element name='sounds' minOccurs='0' maxOccurs='1'>
+          <xsd:complexType>
+            <xsd:sequence>
+              <xsd:element name='sound' minOccurs='0' maxOccurs='unbounded'>
+                <xsd:complexType>
+                  <xsd:all>
+                    <xsd:element name='probability' type='xsd:integer' minOccurs='1' maxOccurs='1' />
+                    <xsd:element name='loop' type='xsd:integer' minOccurs='0' maxOccurs='1' />
+                    <xsd:element name='base64' type='xsd:string' minOccurs='1' maxOccurs='1' />
+                  </xsd:all>
+                  <xsd:attribute name="animationid" type="xsd:int"/>
+                </xsd:complexType>
+              </xsd:element>
+            </xsd:sequence>
+          </xsd:complexType>
+        </xsd:element>
+        
+      </xsd:sequence>
+    </xsd:complexType>
+  </xsd:element>
+  
+  <xsd:simpleType name="borderType">
+    <xsd:restriction base="xsd:string">
+      <xsd:enumeration value="none" />
+      <xsd:enumeration value="taskbar" />
+      <xsd:enumeration value="window" />
+      <xsd:enumeration value="horizontal" />
+      <xsd:enumeration value="horizontal+" />
+      <xsd:enumeration value="vertical" />
+    </xsd:restriction>
+  </xsd:simpleType>
+
+  <xsd:group name="step">
+    <xsd:all>
+      <xsd:element name='x' type='xsd:string' minOccurs='1' maxOccurs='1' />
+      <xsd:element name='y' type='xsd:string' minOccurs='1' maxOccurs='1' />
+      <xsd:element name='offsety' type='xsd:integer' minOccurs='0' maxOccurs='1' default='0' />
+      <xsd:element name='opacity' type='xsd:double' minOccurs='0' maxOccurs='1' default='1.0' />
+      <xsd:element name='interval' type='xsd:string' minOccurs='1' maxOccurs='1' />
+    </xsd:all>
+  </xsd:group>
+  
+  <xsd:element name="next">
+    <xsd:complexType>
+      <xsd:simpleContent>
+        <xsd:extension base='xsd:integer'>
+          <xsd:attribute name="probability" type="xsd:integer" />
+          <xsd:attribute name="only" type="borderType" />
+        </xsd:extension>
+      </xsd:simpleContent>
+    </xsd:complexType>
+  </xsd:element>
+  
+  <xsd:element name="only">
+    <xsd:complexType>
+      <xsd:choice minOccurs="0" maxOccurs="unbounded">
+        <xsd:element ref="next" />
+      </xsd:choice>
+    </xsd:complexType>
+  </xsd:element>
+</xsd:schema>
