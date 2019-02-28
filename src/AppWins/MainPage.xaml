@@ -1,0 +1,36 @@
+﻿<Page
+    x:Class="OptionsWindow.MainPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:OptionsWindow"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+
+    <Grid>
+        <NavigationView x:Name="NavigationViewControl" IsSettingsVisible="False" IsBackButtonVisible="Collapsed" PaneTitle="eSheep" ItemInvoked="NavigationViewControl_ItemInvoked">
+            
+            <NavigationView.MenuItems>
+                <NavigationViewItem Content="Pet selection" x:Name="MenuPetSelection" Icon="Add" />
+                <NavigationViewItem Content="Pet options" x:Name="MenuPetOptions" Icon="Emoji" />
+                <NavigationViewItem Content="Pet info" x:Name="MenuPetInfo" Icon="Important" />
+                <NavigationViewItem Content="Application settings" x:Name="MenuApplicationSettings" Icon="Edit" />
+                <NavigationViewItemSeparator />
+                <NavigationViewItem Content="About" x:Name="MenuAbout" Icon="Important" />
+                <NavigationViewItem Content="Help" x:Name="MenuHelp" Icon="Help" />
+                
+            </NavigationView.MenuItems>
+
+            <ScrollViewer>
+                <Frame x:Name="ContentFrame" Padding="24,0,12,24" IsTabStop="True">
+                    <Grid x:Name="myContent">
+                        <!--<local:PetSelectionPage x:Name="petSelection" />-->
+                        <!--<local:PetOptionsPage x:Name="petOptions" />-->
+                    </Grid>
+                </Frame>
+            </ScrollViewer>
+
+        </NavigationView>
+    </Grid>
+</Page>

@@ -1,0 +1,37 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Package xmlns="http://schemas.microsoft.com/appx/manifest/foundation/windows10" xmlns:mp="http://schemas.microsoft.com/appx/2014/phone/manifest" xmlns:desktop="http://schemas.microsoft.com/appx/manifest/desktop/windows10" xmlns:uap="http://schemas.microsoft.com/appx/manifest/uap/windows10" xmlns:uap5="http://schemas.microsoft.com/appx/manifest/uap/windows10/5" xmlns:rescap="http://schemas.microsoft.com/appx/manifest/foundation/windows10/restrictedcapabilities" IgnorableNamespaces="uap mp rescap">
+  <Identity Name="6469Adriano.esheep" Publisher="CN=39092E3A-7130-410B-B315-09A9DDDBDEA9" Version="1.9.29.0" />
+  <Properties>
+    <DisplayName>esheep</DisplayName>
+    <PublisherDisplayName>Adriano</PublisherDisplayName>
+    <Logo>Images\StoreLogo.png</Logo>
+  </Properties>
+  <Dependencies>
+    <TargetDeviceFamily Name="Windows.Universal" MinVersion="10.0.17134.0" MaxVersionTested="10.0.17134.0" />
+    <TargetDeviceFamily Name="Windows.Desktop" MinVersion="10.0.14393.0" MaxVersionTested="10.0.14393.0" />
+  </Dependencies>
+  <Resources>
+    <Resource Language="x-generate" />
+  </Resources>
+  <Applications>
+    <Application Id="App" Executable="Win32\eSheep.exe" EntryPoint="Windows.FullTrustApplication">
+      <uap:VisualElements DisplayName="eSheep" Description="eSheep 64bit UWP" BackgroundColor="transparent" Square150x150Logo="Images\Square150x150Logo.png" Square44x44Logo="Images\Square44x44Logo.png">
+        <uap:DefaultTile Wide310x150Logo="Images\Wide310x150Logo.png">
+        </uap:DefaultTile>
+      </uap:VisualElements>
+      <Extensions>
+        <desktop:Extension Category="windows.fullTrustProcess" Executable="Win32\eSheep.exe" EntryPoint="Windows.FullTrustApplication" />
+        <desktop:Extension Category="windows.startupTask" Executable="Win32\eSheep.exe" EntryPoint="Windows.FullTrustApplication">
+          <desktop:StartupTask TaskId="eSheepId" Enabled="false" DisplayName="eSheep 64bit" />
+        </desktop:Extension>
+        <uap:Extension Category="windows.protocol" Executable="Options.exe" EntryPoint="OptionsWindow.App">
+          <uap:Protocol Name="xamlesheep" DesiredView="default" />
+        </uap:Extension>
+      </Extensions>
+    </Application>
+  </Applications>
+  <Capabilities>
+    <Capability Name="internetClient" />
+    <rescap:Capability Name="runFullTrust" />
+  </Capabilities>
+</Package>

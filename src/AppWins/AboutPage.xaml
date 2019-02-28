@@ -1,0 +1,48 @@
+﻿<Page
+    x:Class="OptionsWindow.AboutPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:OptionsWindow"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+
+    <Grid>
+        <ScrollViewer>
+            <StackPanel HorizontalAlignment="Center">
+                <TextBlock Style="{StaticResource TitleTextBlockStyle}" TextAlignment="Center">About</TextBlock>
+                <TextBlock Style="{StaticResource BaseTextBlockStyle}" TextAlignment="Center" x:Name="appVersion">Application Version:</TextBlock>
+                <Image Source="Images/esheep.png" Width="48" Height="48" />
+                <TextBlock Style="{StaticResource BaseTextBlockStyle}" TextAlignment="Center" FontWeight="Bold">
+                    Original concept and artwork by Tatsutoshi Nomura
+                </TextBlock>
+                <TextBlock Style="{StaticResource BaseTextBlockStyle}" TextAlignment="Center">
+                    C# Application code by Adriano Petrucci
+                </TextBlock>
+                <Line Height="20">
+                
+                </Line>
+                <TextBlock TextAlignment="Center" Padding="0,10,0,0">Original stray sheep (Fuji TV):</TextBlock>
+                <HyperlinkButton HorizontalAlignment="Center" Padding="0">https://www.fujitv.co.jp/straysheep/index2.html</HyperlinkButton>
+
+                <TextBlock TextAlignment="Center" Padding="0,10,0,0">Original Webpage for this C# project:</TextBlock>
+                <HyperlinkButton HorizontalAlignment="Center" Padding="0">http://esheep.petrucci.ch</HyperlinkButton>
+
+                <TextBlock TextAlignment="Center" Padding="0,10,0,0">GitHub Project (UWP and Web):</TextBlock>
+                <HyperlinkButton HorizontalAlignment="Center" Padding="0">https://github.com/Adrianotiger/desktopPet/</HyperlinkButton>
+
+                <TextBlock Style="{StaticResource BaseTextBlockStyle}" TextAlignment="Center" Padding="0,20,0,0">Credits:</TextBlock>
+                <TextBlock TextAlignment="Center" Padding="0,10,0,0">NAudio to play audio inside this application</TextBlock>
+                <HyperlinkButton HorizontalAlignment="Center" Padding="0">https://naudio.codeplex.com/</HyperlinkButton>
+                
+
+                <TextBlock Style="{StaticResource BaseTextBlockStyle}" TextAlignment="Center" Padding="0,20,0,0">Thanks to:</TextBlock>
+                <TextBlock TextAlignment="Center"><Hyperlink NavigateUri="https://github.com/Grunwaldt">Sergi</Hyperlink> for the System Tray implementation</TextBlock>
+                <TextBlock TextAlignment="Center"><Hyperlink NavigateUri="https://github.com/rluiten">Robin</Hyperlink> improving the code and implementing the Graphviz tool</TextBlock>
+                
+
+            </StackPanel>
+        </ScrollViewer>
+    </Grid>
+</Page>
