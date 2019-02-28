@@ -9,7 +9,11 @@ The sheep and all animations are described in a simple XML file! So everyone can
 - A sprite sheet: a grid (every cell need to have the same size) with all possible images
 
 ### How to create the animations
-If you want, you can download the original XML and modify it. But you can also use the online free editor on https://esheep.petrucci.ch
+If you want, you can download the original XML and modify it. 
+The entire documentation about the schema is documented here: https://github.com/Adrianotiger/desktopPet/wiki/XML%5CIntroduction
+
+But you can also use the online free editor on https://esheep.petrucci.ch
+
 
 ### How to test the animation
 Once you created your animations.xml, you can drag it over your sheep. The pet will automatically use the new XML if it can be loaded successfully.
