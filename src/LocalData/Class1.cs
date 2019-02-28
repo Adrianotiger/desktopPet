@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
+using Windows.ApplicationModel;
 
 namespace LocalData
 {
@@ -12,7 +13,6 @@ namespace LocalData
     {
         static Windows.Storage.ApplicationDataContainer LocalSettings = null;
         static Windows.Storage.StorageFolder LocalFolder = null;
-        static bool ValuesUpdated = false;
 
         private static string Images = "";
         private static string Icon = "";
@@ -20,6 +20,7 @@ namespace LocalData
         private static double Volume = 0.3;
         private static bool WinForeGround = false;
         private static int AutostartPets = 1;
+        private static bool MultiScreenEnabled = true;
 
         public static readonly String GITHUB_FOLDER = "https://raw.githubusercontent.com/Adrianotiger/desktopPet/uwp";
         public static readonly String GITHUB_PETDOCS = "https://github.com/Adrianotiger/desktopPet/tree/uwp/Pets/";
@@ -51,11 +52,14 @@ namespace LocalData
                 else
                     LocalSettings.Values["AutostartPets"] = AutostartPets;
 
+                if (LocalSettings.Values.ContainsKey("MultiScreen"))
+                    MultiScreenEnabled = (bool)LocalSettings.Values["MultiScreen"];
+                else
+                    LocalSettings.Values["MultiScreen"] = MultiScreenEnabled;
+
                 LoadXML();
                 LoadImages();
                 LoadIcon();
-
-                ValuesUpdated = false;
             }
         }
 
@@ -71,6 +75,20 @@ namespace LocalData
         public double GetVolume()
         {
             return Volume;
+        }
+
+        public void SetMultiscreen(bool enable)
+        {
+            if (enable != MultiScreenEnabled)
+            {
+                MultiScreenEnabled = enable;
+                LocalSettings.Values["MultiScreen"] = enable;
+            }
+        }
+
+        public bool GetMultiscreen()
+        {
+            return MultiScreenEnabled;
         }
 
         public void SetWindowForeground(bool setOnCollision)
@@ -115,8 +133,6 @@ namespace LocalData
                 f.Close();
 
                 LocalSettings.Values["CurrentPet"] = folder;
-
-                ValuesUpdated = true;
             }
         }
 

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Net;
@@ -64,7 +65,7 @@ namespace OptionsWindow
             }
             catch (Exception ex)
             {
-                int k = 0;
+                Debug.WriteLine("Error loading Pet List from GitHub: " + ex.Message);
             }
         }
 
@@ -101,7 +102,7 @@ namespace OptionsWindow
             }
             catch (Exception ex)
             {
-                int k = 0;
+                Debug.WriteLine("Error downloading Pet from GitHub: " + ex.Message);
             }
         }
 
@@ -134,7 +135,7 @@ namespace OptionsWindow
 
             var xml = MyData.GetPetXML(folder);
 
-            var xmlNode = LocalData.AnimationXML.ParseXML(xml);
+            var xmlNode = XmlData.AnimationXML.ParseXML(xml);
 
             p.Animations = xmlNode.Animations.Animation.Length;
             p.Author = xmlNode.Header.Author;

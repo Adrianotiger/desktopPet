@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
+using Windows.ApplicationModel;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
 using Windows.UI.Xaml;
@@ -25,6 +26,13 @@ namespace OptionsWindow
         public AboutPage()
         {
             this.InitializeComponent();
+
+            Package package = Package.Current;
+            PackageId packageId = package.Id;
+            PackageVersion version = packageId.Version;
+
+
+            appVersion.Text += version.Major + "." + version.Minor + " build " + version.Build + " (rev." + version.Revision + ")";
         }
     }
 }

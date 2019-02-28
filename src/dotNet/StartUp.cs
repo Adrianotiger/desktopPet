@@ -284,7 +284,7 @@ namespace DesktopPet
 					if (iSheeps == 0)
 					{
 						AddDebugInfo(DEBUG_TYPE.info, "init application...");
-						xml.loadAnimations(animations);
+						xml.LoadAnimations(animations);
 					}
 
 					AddSheep();

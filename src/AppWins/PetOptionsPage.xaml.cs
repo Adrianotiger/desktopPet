@@ -31,7 +31,7 @@ namespace OptionsWindow
 
         private void PetOptionsPage_Loaded(object sender, RoutedEventArgs e)
         {
-            var xmlNode = LocalData.AnimationXML.ParseXML(App.MyData.GetXml());
+            var xmlNode = XmlData.AnimationXML.ParseXML(App.MyData.GetXml());
 
             if (xmlNode.Sounds == null || xmlNode.Sounds.Sound == null || xmlNode.Sounds.Sound.Length == 0)
             {
@@ -41,9 +41,16 @@ namespace OptionsWindow
 
             volumeSlider.Value = App.MyData.GetVolume();
             foregroundWindowToggle.IsOn = App.MyData.GetWindowForeground();
+            multiScreenToggle.IsOn = App.MyData.GetMultiscreen();
 
             volumeSlider.ValueChanged += VolumeSlider_ValueChanged;
             foregroundWindowToggle.Toggled += ForegroundWindowToggle_Toggled;
+            multiScreenToggle.Toggled += MultiScreenToggle_Toggled;
+        }
+
+        private void MultiScreenToggle_Toggled(object sender, RoutedEventArgs e)
+        {
+            App.MyData.SetMultiscreen(multiScreenToggle.IsOn);
         }
 
         private void ForegroundWindowToggle_Toggled(object sender, RoutedEventArgs e)

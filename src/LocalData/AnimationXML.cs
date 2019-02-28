@@ -1,11 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.IO;
 using System.Text;
 using System.Xml.Serialization;
 
-namespace LocalData
+namespace XmlData
 {
     /// <summary>
     /// This Node class is used to store the XML data using the serialize function.
@@ -400,11 +401,12 @@ namespace LocalData
         public static RootNode ParseXML(string xml)
         {
             var aniXML = new RootNode();
-
-            XmlSerializer mySerializer = new XmlSerializer(typeof(RootNode));
+            
             // Try to load local XML
             try
             {
+                XmlSerializer mySerializer = new XmlSerializer(typeof(RootNode));
+
                 using (MemoryStream stream = new MemoryStream())
                 {
                     using (StreamWriter writer = new StreamWriter(stream))
@@ -420,7 +422,7 @@ namespace LocalData
             }
             catch (Exception ex)
             {
-                int k = 0;
+                Debug.WriteLine("Error parsing XML: " + ex.Message);
             }
 
             return aniXML;

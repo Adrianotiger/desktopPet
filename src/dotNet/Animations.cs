@@ -26,6 +26,10 @@ namespace DesktopPet
             /// </summary>
         public bool IsDynamic;
             /// <summary>
+            /// If the parsed value contains a screen number (multiscreen have different sizes)
+            /// </summary>
+        public bool IsScreen;
+            /// <summary>
             /// String with the expression to compute
             /// </summary>
         public string Compute;
@@ -39,11 +43,15 @@ namespace DesktopPet
             /// the returned value changes each time.
             /// </summary>
             /// <returns>The value parsed from xml file</returns>
-        public int GetValue()
+        public int GetValue(int screenIndex = -1)
         {
             if (IsDynamic)
             {
-                return Animations.Xml.parseValue(Compute, "Animations.GetValue()");
+                return Animations.Xml.ParseValue(Compute, "Animations.GetValue()");
+            }
+            else if(IsScreen && screenIndex >= 0)
+            {
+                return Animations.Xml.ParseValue(Compute, "Animations.GetValue()", screenIndex);
             }
             else
             {
@@ -619,13 +627,16 @@ namespace DesktopPet
                 retSpawn.Probability = 100;
                 retSpawn.Start.X.Compute = "0";
                 retSpawn.Start.X.IsDynamic = false;
+                retSpawn.Start.X.IsScreen = false;
                 retSpawn.Start.X.Value = 0;
                 retSpawn.Start.Y.Compute = "0";
                 retSpawn.Start.Y.IsDynamic = false;
+                retSpawn.Start.Y.IsScreen = false;
                 retSpawn.Start.Y.Value = 0;
                 retSpawn.Start.Opacity = 1.0;
                 retSpawn.Start.Interval.Compute = "1000";
                 retSpawn.Start.Interval.IsDynamic = false;
+                retSpawn.Start.Interval.IsScreen = false;
                 retSpawn.Start.Interval.Value = 1000;
                 retSpawn.Start.OffsetY = 0;
                 return retSpawn;

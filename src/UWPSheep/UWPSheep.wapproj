@@ -20,15 +20,11 @@
       <Configuration>Release</Configuration>
       <Platform>x64</Platform>
     </ProjectConfiguration>
-    <ProjectConfiguration Include="Debug|AnyCPU">
-      <Configuration>Debug</Configuration>
-      <Platform>AnyCPU</Platform>
-    </ProjectConfiguration>
-    <ProjectConfiguration Include="Release|AnyCPU">
-      <Configuration>Release</Configuration>
-      <Platform>AnyCPU</Platform>
-    </ProjectConfiguration>
   </ItemGroup>
+  <PropertyGroup Label="Configuration">
+    <PostBuildEvent>
+    </PostBuildEvent>
+  </PropertyGroup>
   <PropertyGroup>
     <WapProjPath Condition="'$(WapProjPath)'==''">$(MSBuildExtensionsPath)\Microsoft\DesktopBridge\</WapProjPath>
   </PropertyGroup>
@@ -38,29 +34,39 @@
     <TargetPlatformVersion>10.0.17134.0</TargetPlatformVersion>
     <TargetPlatformMinVersion>10.0.17134.0</TargetPlatformMinVersion>
     <DefaultLanguage>en-GB</DefaultLanguage>
-    <PackageCertificateKeyFile>UWPSheep_TemporaryKey.pfx</PackageCertificateKeyFile>
+    <PackageCertificateKeyFile>UWPSheep_StoreKey.pfx</PackageCertificateKeyFile>
     <EntryPointProjectUniqueName>..\DesktopPet.csproj</EntryPointProjectUniqueName>
+    <PackageCertificateThumbprint>5F42B0C0AA58D9BF5C19EF0C2C270BE782F2AD18</PackageCertificateThumbprint>
+    <GenerateAppInstallerFile>False</GenerateAppInstallerFile>
+    <AppxAutoIncrementPackageRevision>True</AppxAutoIncrementPackageRevision>
+    <AppxBundlePlatforms>x86</AppxBundlePlatforms>
+    <AppInstallerUpdateFrequency>1</AppInstallerUpdateFrequency>
+    <AppInstallerCheckForUpdateFrequency>OnApplicationRun</AppInstallerCheckForUpdateFrequency>
+    <AppxPackageDir>..\..\build\UWPSheep\AppPackages\</AppxPackageDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <DefaultLanguage>en-GB</DefaultLanguage>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
-    <DefaultLanguage>en-GB</DefaultLanguage>
-    <OutputPath>..\..\build\UWPSheep\bin\AnyCPU\Debug\</OutputPath>
+    <AppxBundle>Always</AppxBundle>
+    <OutputPath>..\..\build\UWPSheep\bin\Debug\</OutputPath>
+    <IntermediateOutputPath>..\..\build\UWPSheep\obj\</IntermediateOutputPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <DefaultLanguage>en-GB</DefaultLanguage>
+    <AppxBundle>Always</AppxBundle>
+    <OutputPath>..\..\build\UWPSheep\bin\Release\x64\</OutputPath>
+    <IntermediateOutputPath>..\..\build\UWPSheep\obj\</IntermediateOutputPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x86'">
     <DefaultLanguage>en-GB</DefaultLanguage>
     <OutputPath>..\..\build\UWPSheep\bin\x86\Debug\</OutputPath>
+    <IntermediateOutputPath>..\..\build\UWPSheep\obj\</IntermediateOutputPath>
+    <AppxBundle>Always</AppxBundle>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x86'">
+    <OutputPath>..\..\build\UWPSheep\bin\Release\x86\</OutputPath>
+    <IntermediateOutputPath>..\..\build\UWPSheep\obj\</IntermediateOutputPath>
     <DefaultLanguage>en-GB</DefaultLanguage>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
-    <DefaultLanguage>en-GB</DefaultLanguage>
-    <OutputPath>..\..\build\bin\UWPSheep\AnyCPU\Release\</OutputPath>
+    <AppxBundle>Always</AppxBundle>
   </PropertyGroup>
   <ItemGroup>
     <AppxManifest Include="Package.appxmanifest">
@@ -75,6 +81,9 @@
     <Content Include="Images\Square44x44Logo.targetsize-24_altform-unplated.png" />
     <Content Include="Images\StoreLogo.png" />
     <Content Include="Images\Wide310x150Logo.scale-200.png" />
+    <Content Include="Win32\eSheep.exe" />
+    <None Include="UWPSheep_StoreKey.pfx" />
+    <None Include="Package.StoreAssociation.xml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="UWPSheep\" />

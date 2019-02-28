@@ -20,7 +20,7 @@ namespace DesktopPet.Tools
         /// </summary>
         /// <param name="model">The root node of xml file.</param>
         /// <returns></returns>
-		static public string ProcessXml(RootNode model)
+		static public string ProcessXml(XmlData.RootNode model)
 		{
 			var animations = model.Animations;
 			if (model.Animations == null)
@@ -32,7 +32,7 @@ namespace DesktopPet.Tools
 			return ProcessAnimations(model.Animations.Animation);
 		}
 
-		static private string ProcessAnimations(AnimationNode[] animations)
+		static private string ProcessAnimations(XmlData.AnimationNode[] animations)
 		{
 			Console.WriteLine($"# Processing {animations.Length} animations.");
 
@@ -78,7 +78,7 @@ namespace DesktopPet.Tools
 		private const string borderColor = "#5555DDFF";
 		private const string gravityColor = "#55DD55FF";
 
-		static private string ProcessNext(Next type, int totalProbability, AnimationNode anim, NextNode[] nexts)
+		static private string ProcessNext(Next type, int totalProbability, XmlData.AnimationNode anim, XmlData.NextNode[] nexts)
 		{
 			string returnString = "";
 			var edgeColor = sequenceColor;

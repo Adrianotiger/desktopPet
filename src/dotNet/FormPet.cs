@@ -5,6 +5,7 @@ using System.Windows.Forms;
 using System.Runtime.InteropServices;
 using System.Collections.Generic;
 using System.IO;
+using System.Diagnostics;
 
 namespace DesktopPet
 {
@@ -72,7 +73,11 @@ namespace DesktopPet
             /// </summary>
         double PositionY = 0.0;
 
-        private LocalData.LocalData myData = new LocalData.LocalData();
+            /// <summary>
+            /// If multi screens are available, the pet can be set on a defined screen
+            /// </summary>
+        int DisplayIndex = 0;
+
         private List<FormPet> childs = new List<FormPet>(4);
 
         /// <summary>
@@ -187,11 +192,14 @@ namespace DesktopPet
             imageList1.Images.Add(im);
         }
 
-            /// <summary>
-            /// Once the form was created, resized and all images was set, this is the next function to call.<br />
-            /// It will initialize all variables and start the first animation (SPAWN).
-            /// </summary>
-            /// <param name="first">If it is playing a spawn for the first time. Does not have any functionality for the moment.</param>
+        private Rectangle ScreenBounds { get { return Screen.AllScreens[DisplayIndex].Bounds; } }
+        private Rectangle ScreenArea { get { return Screen.AllScreens[DisplayIndex].WorkingArea; } }
+
+        /// <summary>
+        /// Once the form was created, resized and all images was set, this is the next function to call.<br />
+        /// It will initialize all variables and start the first animation (SPAWN).
+        /// </summary>
+        /// <param name="first">If it is playing a spawn for the first time. Does not have any functionality for the moment.</param>
         public void Play(bool first)
         {
             timer1.Enabled = false;                     // Stop the timer
@@ -199,9 +207,27 @@ namespace DesktopPet
 			AnimationStep = 0;                         // First step
             hwndWindow = (IntPtr)0;                     // It is not over a window
 
+            // Multiscreen
+            if(Program.MyData.GetMultiscreen())
+            {
+                Random rand = new Random();
+                DisplayIndex = rand.Next(0, Screen.AllScreens.Length);
+            }
+            else
+            {
+                for(var s = 0; s < Screen.AllScreens.Length; s++)
+                {
+                    if(Screen.AllScreens[s].Primary)
+                    {
+                        DisplayIndex = s;
+                        break;
+                    }
+                }
+            }
+
             TSpawn spawn = Animations.GetRandomSpawn(); // Get a random SPAWN, to setting the form properties
-            Top = spawn.Start.Y.GetValue();
-            Left = spawn.Start.X.GetValue();
+            Top = ScreenBounds.Y + spawn.Start.Y.GetValue(DisplayIndex);
+            Left = ScreenBounds.X + spawn.Start.X.GetValue(DisplayIndex);
 			PositionX = Left;
 			PositionY = Top;
 			OffsetY = 0.0;
@@ -222,7 +248,7 @@ namespace DesktopPet
         {
             timer1.Enabled = false;                     // Stop the timer
 
-			AnimationStep = 0;                         // First step
+			AnimationStep = 0;                          // First step
             hwndWindow = (IntPtr)0;                     // It is not over a window
             
             Top = child.Position.Y.GetValue();          // Set position. If parent is flipped, mirror the position
@@ -363,6 +389,8 @@ namespace DesktopPet
 							{
 								child.Name = "child" + (int.Parse(Name.Substring(5)) + 1).ToString();
 							}
+                            child.DisplayIndex = DisplayIndex; // play on same display index
+
 							child.Show(Width, Height);
 							child.PlayChild(id, childInfo);
 
@@ -424,12 +452,12 @@ namespace DesktopPet
                 if (hwndWindow == (IntPtr)0)
                 {
                     CheckFullScreen();  // used to check if another window is in full screen
-                    if (PositionX + x < 0)    // left screen border!
+                    if (PositionX + x < ScreenArea.X)    // left screen border!
                     {
                         int iBorderAnimation = Animations.SetNextBorderAnimation(CurrentAnimation.ID, TNextAnimation.TOnly.VERTICAL);
                         if (iBorderAnimation >= 0)
                         {
-                            x = 0;
+                            x = ScreenArea.X;
                             SetNewAnimation(iBorderAnimation);
                             bNewAnimation = true;
                         }
@@ -463,12 +491,13 @@ namespace DesktopPet
                 if (hwndWindow == (IntPtr)0)
                 {
                     CheckFullScreen();  // used to check if another window is in full screen
-                    if (PositionX + x + Width > Screen.PrimaryScreen.WorkingArea.Width)    // right screen border!
+                    if (PositionX + x + Width > ScreenArea.X + ScreenArea.Width)    // right screen border!
                     {
+                        
                         int iBorderAnimation = Animations.SetNextBorderAnimation(CurrentAnimation.ID, TNextAnimation.TOnly.VERTICAL);
                         if (iBorderAnimation >= 0)
                         {
-                            x = Screen.PrimaryScreen.WorkingArea.Width - Width;
+                            x = ScreenArea.X + ScreenArea.Width - Width;
                             SetNewAnimation(iBorderAnimation);
                             bNewAnimation = true;
                         }
@@ -501,7 +530,7 @@ namespace DesktopPet
             {
                 if (CurrentAnimation.EndBorder.Count > 0)
                 {
-                    int bottomY = Screen.PrimaryScreen.WorkingArea.Height + Screen.PrimaryScreen.WorkingArea.Y;
+                    int bottomY = ScreenArea.Y + ScreenArea.Height;
 
                     if (PositionY + y > bottomY - Height) // border detected!
                     {
@@ -531,9 +560,9 @@ namespace DesktopPet
             {
                 if (CurrentAnimation.EndBorder.Count > 0)
                 {
-                    if (PositionY < Screen.PrimaryScreen.WorkingArea.Y) // border detected!
+                    if (PositionY < ScreenArea.Y) // border detected!
                     {
-                        y = 0;
+                        y = ScreenArea.Y;
                         SetNewAnimation(Animations.SetNextBorderAnimation(CurrentAnimation.ID, TNextAnimation.TOnly.HORIZONTAL));
                         bNewAnimation = true;
                     }
@@ -561,10 +590,17 @@ namespace DesktopPet
                 else
                 {
                         // If pet is outside the borders, spawn it again.
-                    if (Left < -Width || Left > Screen.PrimaryScreen.Bounds.Width)
+                    if (Left < ScreenBounds.X - Width || Left > ScreenBounds.X + ScreenBounds.Width)
+                    {
                         iNextAni = -1;
+                    }
                     else
-                        iNextAni = Animations.SetNextSequenceAnimation(CurrentAnimation.ID, PositionY + Height + y >= Screen.PrimaryScreen.WorkingArea.Height - 2 ? TNextAnimation.TOnly.TASKBAR : TNextAnimation.TOnly.NONE);
+                    {
+                        iNextAni = Animations.SetNextSequenceAnimation(
+                            CurrentAnimation.ID, 
+                            PositionY + Height + y >= ScreenArea.Y + ScreenArea.Height - 2 ? TNextAnimation.TOnly.TASKBAR : TNextAnimation.TOnly.NONE
+                        );
+                    }
                 }
                 if(CurrentAnimation.ID == Animations.AnimationKill)
                 {
@@ -602,11 +638,11 @@ namespace DesktopPet
             {
                 if(hwndWindow == (IntPtr)0)
                 {
-                    if(PositionY + y < Screen.PrimaryScreen.WorkingArea.Height - Height)
+                    if(PositionY + y < ScreenArea.Y + ScreenArea.Height - Height)
                     {
-                        if(PositionY + y + 3 >= Screen.PrimaryScreen.WorkingArea.Height - Height) // allow 3 pixels to move without fall
+                        if(PositionY + y + 3 >= ScreenArea.Y + ScreenArea.Height - Height) // allow 3 pixels to move without fall
                         {
-                            y = Screen.PrimaryScreen.WorkingArea.Height - (int)PositionY - Height;
+                            y = ScreenArea.Y + ScreenArea.Height - (int)PositionY - Height;
                         }
                         else
                         {
@@ -694,7 +730,7 @@ namespace DesktopPet
                         // If vertical position is in the falling range and pet is over window and window is at least 20 pixels under the screen border
                     if (PositionY + Height < rct.Top && PositionY + Height + y >= rct.Top &&
 						PositionX >= rct.Left - Width / 2 && PositionX + Width <= rct.Right + Width / 2 &&
-						PositionY > 20 + Screen.PrimaryScreen.WorkingArea.Y)
+						PositionY > 20 + ScreenArea.Y)
                     {
                             // Pet need to walk over THIS window!
                         hwndWindow = window.Key;
@@ -733,7 +769,12 @@ namespace DesktopPet
 
             if (NativeMethods.GetWindowRect(new HandleRef(this, hwnd2), out rct))
             {
-                if (rct.Bottom - rct.Top >= Screen.PrimaryScreen.Bounds.Height && rct.Right - rct.Left >= Screen.PrimaryScreen.Bounds.Width) 
+                Point pWindowCenter = new Point(rct.Top + (rct.Bottom - rct.Top) / 2, rct.Left + (rct.Right - rct.Left) / 2);
+
+                if (pWindowCenter.X > ScreenBounds.Left && pWindowCenter.X < ScreenBounds.Right &&
+                    pWindowCenter.Y > ScreenBounds.Top && pWindowCenter.Y < ScreenBounds.Bottom &&
+                    rct.Bottom - rct.Top >= ScreenBounds.Height && 
+                    rct.Right - rct.Left >= ScreenBounds.Width) 
                 {
                     if (TopMost)
                     {
@@ -783,33 +824,43 @@ namespace DesktopPet
                 NativeMethods.TITLEBARINFO titleBarInfo = new NativeMethods.TITLEBARINFO();
                 titleBarInfo.cbSize = Marshal.SizeOf(titleBarInfo);
 
-                    // Get the handle to the first window (from user visual, in Z-order)
-                IntPtr hwnd2 = NativeMethods.GetWindow(hwndWindow, 0);
+                //Debug.WriteLine("Window TREE");
+                
+                // Get the handle to the first window (from user visual, in Z-order)
+                IntPtr hwnd2 = NativeMethods.GetTopWindow((IntPtr)0);
                     // Loop until there are windows over the current window (in Z-Order)
                 while (hwnd2 != (IntPtr)0)
                 {
 						// All windows up to the current window was parsed, now window is overlapping the current window
 					if (hwnd2 == hwndWindow)
 					{
+                        //Debug.WriteLine("--XX Parsed all windows");
 						return false;
 					}
 
-					StringBuilder sTitle = new StringBuilder(128);
-                    NativeMethods.GetWindowText(hwnd2, sTitle, 128);
+                    if (NativeMethods.IsWindowVisible(hwnd2))
+                    {
+                        StringBuilder sTitle = new StringBuilder(128);
+                        NativeMethods.GetWindowText(hwnd2, sTitle, 128);
+
+                        //Debug.WriteLine("--> " + sTitle);
 
                         // If window has a title bar
-                    if (sTitle.Length > 0 && NativeMethods.GetTitleBarInfo(hwnd2, ref titleBarInfo))
-                    {
-                            // If window has a title name and a valid size and is not fullscreen
-                        if (NativeMethods.GetWindowRect(new HandleRef(this, hwnd2), out rct) && 
-                            (titleBarInfo.rcTitleBar.Bottom >= 0 || sTitle.ToString() == "sheep"))
+                        if (sTitle.Length > 0 && NativeMethods.GetTitleBarInfo(hwnd2, ref titleBarInfo))
                         {
-                            if (rct.Top < rctO.Top && rct.Bottom > rctO.Top)
+                            // If window has a title name and a valid size and is not fullscreen
+                            if (NativeMethods.GetWindowRect(new HandleRef(this, hwnd2), out rct) &&
+                                (titleBarInfo.rcTitleBar.Bottom >= 0 || sTitle.ToString() == "sheep"))
                             {
-								if (rct.Left < PositionX && rct.Right > PositionX + 40/* && iAnimationStep > 4*/)
-								{
-									return true;
-								}
+                                //Debug.WriteLine("   -->  Pos:" + rct.Top + "," + rct.Left + " - Size:" + (rct.Right - rct.Left).ToString() + "," + (rct.Bottom - rct.Top).ToString());
+                                if (rct.Top < rctO.Top && rct.Bottom > rctO.Top)
+                                {
+                                    if (rct.Left < PositionX && rct.Right > PositionX + 40/* && iAnimationStep > 4*/)
+                                    {
+                                        //Debug.WriteLine("   --> Window found!");
+                                        return true;
+                                    }
+                                }
                             }
                         }
                     }
@@ -908,6 +959,28 @@ namespace DesktopPet
             if (e.Button == MouseButtons.Left && Name.IndexOf("child") < 0)
             {
                 SetNewAnimation(Animations.AnimationFall);
+            }
+            if(IsDragging)
+            {
+                // if it was dragged, check if the screen is different
+                if(Program.MyData.GetMultiscreen())
+                {
+                    for(var k=0;k<Screen.AllScreens.Length;k++)
+                    {
+                        Rectangle bounds = Screen.AllScreens[k].Bounds;
+
+                        if (Left + Width / 2 >= bounds.X && 
+                            Left + Width / 2 <= bounds.X + bounds.Width)
+                        {
+                            if (Top + Height / 2 >= bounds.Y && 
+                                Top + Height <= bounds.Y + bounds.Height)
+                            {
+                                DisplayIndex = k;
+                                break;
+                            }
+                        }
+                    }
+                }
             }
 			IsDragging = false;
         }
@@ -1048,6 +1121,14 @@ namespace DesktopPet
             /// <returns>Pointer to the next window.</returns>
         [DllImport("user32.dll")]
         internal static extern IntPtr GetWindow(IntPtr hWnd, int nCmdShow);
+
+        /// <summary>
+        /// Get the window on the top, if hWnd is NULL, the top in Z-order will be returned
+        /// </summary>
+        /// <param name="hWnd">Handle to the current window.</param>
+        /// <returns>Pointer to the next window.</returns>
+        [DllImport("user32.dll")]
+        internal static extern IntPtr GetTopWindow(IntPtr hWnd);
 
         /// <summary>
         /// Get the desktop window.

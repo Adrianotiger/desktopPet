@@ -1,10 +1,10 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Package xmlns="http://schemas.microsoft.com/appx/manifest/foundation/windows10" xmlns:mp="http://schemas.microsoft.com/appx/2014/phone/manifest" xmlns:uap="http://schemas.microsoft.com/appx/manifest/uap/windows10" IgnorableNamespaces="uap mp">
-  <Identity Name="7a9c413f-bef0-497d-bfb5-186cb337fc52" Publisher="CN=apetrucci" Version="1.0.0.0" />
-  <mp:PhoneIdentity PhoneProductId="7a9c413f-bef0-497d-bfb5-186cb337fc52" PhonePublisherId="00000000-0000-0000-0000-000000000000" />
+  <Identity Name="6469Adriano.esheep" Publisher="CN=39092E3A-7130-410B-B315-09A9DDDBDEA9" Version="1.9.1.0" />
+  <mp:PhoneIdentity PhoneProductId="a8540e33-f09e-4718-8ee6-2721cc32685b" PhonePublisherId="00000000-0000-0000-0000-000000000000" />
   <Properties>
-    <DisplayName>OptionsWindow</DisplayName>
-    <PublisherDisplayName>apetrucci</PublisherDisplayName>
+    <DisplayName>esheep</DisplayName>
+    <PublisherDisplayName>Adriano</PublisherDisplayName>
     <Logo>Assets\StoreLogo.png</Logo>
   </Properties>
   <Dependencies>
