@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Net;
@@ -10,6 +11,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Serialization;
 using Windows.Storage.Streams;
+using Windows.UI.Popups;
 using Windows.UI.Xaml.Media.Imaging;
 
 namespace OptionsWindow
@@ -40,17 +42,26 @@ namespace OptionsWindow
     {
         GitHubPets AllPets = new GitHubPets();
         List<string> PetsToLoad = new List<string>();
-
-        LocalData.LocalData MyData;
-
+        
         public GitHubClass()
         {
-            MyData = new LocalData.LocalData();
+        }
+
+        public async void ShowDebugError(string message)
+        {
+            if (App.MyData.IsDeveloper())
+            {
+                MessageDialog dialog = new MessageDialog(message)
+                {
+                    Title = "Developer Debug Window"
+                };
+                await dialog.ShowAsync();
+            }
         }
 
         public async Task LoadPetList()
         {
-            var urlPets = LocalData.LocalData.GITHUB_PETLIST;
+            var urlPets = App.MyData.GetGitHubPetListFile();
             WebClient client = new WebClient();
             try
             {
@@ -65,15 +76,17 @@ namespace OptionsWindow
             }
             catch (Exception ex)
             {
-                Debug.WriteLine("Error loading Pet List from GitHub: " + ex.Message);
+                ShowDebugError("Error loading Pet List from GitHub: " + ex.Message);
             }
         }
 
         public List<string> VerifyPets()
         {
+            if (AllPets == null) return new List<string>();
+
             for(var k=0;k< AllPets.pets.Count();k++)
             {
-                if(MyData.NeedToLoadNew(AllPets.pets[k].folder, AllPets.pets[k].updatedate))
+                if(App.MyData.IsDeveloper() || App.MyData.NeedToLoadNew(AllPets.pets[k].folder, AllPets.pets[k].updatedate))
                 {
                     PetsToLoad.Add(AllPets.pets[k].folder);
                 }
@@ -83,7 +96,7 @@ namespace OptionsWindow
 
         public async Task DownloadPet(string folder)
         {
-            var urlPet = LocalData.LocalData.GITHUB_FOLDER + "/Pets/" + folder + "/animations.xml";
+            var urlPet = App.MyData.GetGitHubPetFile(folder);
 
             WebClient client = new WebClient();
             try
@@ -98,11 +111,11 @@ namespace OptionsWindow
                         break;
                     }
                 }
-                MyData.SavePetXML(xmlPet, folder, dt);
+                App.MyData.SavePetXML(xmlPet, folder, dt);
             }
             catch (Exception ex)
             {
-                Debug.WriteLine("Error downloading Pet from GitHub: " + ex.Message);
+                ShowDebugError("Error downloading Pet from GitHub: " + ex.Message);
             }
         }
 
@@ -114,7 +127,8 @@ namespace OptionsWindow
                     Author = p.author,
                     Folder = p.folder,
                     LastUpdate = p.updatedate,
-                    IsLoading = true
+                    IsLoading = true,
+                    ItemColor = App.MyData.IsDeveloper() ? Color.Aquamarine.Name : Color.Transparent.Name
                 } );
             }
         }
@@ -133,9 +147,11 @@ namespace OptionsWindow
                 }
             }
 
-            var xml = MyData.GetPetXML(folder);
+            var xml = App.MyData.GetPetXML(folder);
 
             var xmlNode = XmlData.AnimationXML.ParseXML(xml);
+
+            if (xmlNode == null) return null;
 
             p.Animations = xmlNode.Animations.Animation.Length;
             p.Author = xmlNode.Header.Author;
@@ -157,6 +173,7 @@ namespace OptionsWindow
             p.Spawns = xmlNode.Spawns.Spawn != null ? xmlNode.Spawns.Spawn.Length : 0;
             p.Title = xmlNode.Header.Title;
             p.Version = xmlNode.Header.Version;
+            p.ItemColor = App.MyData.IsDeveloper() ? Color.Aquamarine.Name : Color.Transparent.Name;
             p.IsLoading = false;
 
             return p;

@@ -39,6 +39,7 @@ namespace OptionsWindow
         public int Childs { get; set; }
         public bool IsLoading { get; set; }
         public int Sizekb { get; set; }
+        public string ItemColor { get; set; }
 
         public BitmapImage Image { get; set; }
     }
@@ -77,22 +78,37 @@ namespace OptionsWindow
             var toLoad = GitHub.VerifyPets();
             loadingBar.Value = 20;
 
-            for(var k=0;k<toLoad.Count;k++)
+            for (var retry = 0; retry < 3; retry++)
             {
-                loadingText.Text = "Downloading " + (k+1).ToString() + " from " + toLoad.Count.ToString();
-                loadingBar.Value = 20 + (k / toLoad.Count) * 40;
-                await GitHub.DownloadPet(toLoad[k]);
-            }
+                for (var k = 0; k < toLoad.Count; k++)
+                {
+                    loadingText.Text = "Downloading " + (k + 1).ToString() + " from " + toLoad.Count.ToString();
+                    loadingBar.Value = 20 + (k / toLoad.Count) * 40;
+                    await GitHub.DownloadPet(toLoad[k]);
+                }
 
-            GitHub.FillSource(ref Pets);
+                toLoad.Clear();
 
-            PetsBox.ItemsSource = Pets;
+                GitHub.FillSource(ref Pets);
 
-            for(var k=0;k<Pets.Count;k++)
-            {
-                loadingText.Text = "Loading " + (k + 1).ToString() + " from " + Pets.Count.ToString();
-                loadingBar.Value = 60 + (k / Pets.Count) * 40;
-                Pets[k] = await GitHub.FillData(Pets[k].Folder);
+                PetsBox.ItemsSource = Pets;
+
+                for (var k = 0; k < Pets.Count; k++)
+                {
+                    loadingText.Text = "Loading " + (k + 1).ToString() + " from " + Pets.Count.ToString();
+                    loadingBar.Value = 60 + (k / Pets.Count) * 40;
+                    var petId = Pets[k].Folder;
+                    Pets[k] = await GitHub.FillData(petId);
+                    if(Pets[k] == null)
+                    {
+                        toLoad.Add(petId);
+                    }
+                }
+
+                if (toLoad.Count == 0)
+                    break;
+                else
+                    Pets.Clear();
             }
 
             PetsBox.ItemsSource = null;

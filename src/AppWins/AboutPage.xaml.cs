@@ -32,7 +32,7 @@ namespace OptionsWindow
             PackageVersion version = packageId.Version;
 
 
-            appVersion.Text += version.Major + "." + version.Minor + " build " + version.Build + " (rev." + version.Revision + ")";
+            appVersion.Text += version.Major + "." + version.Minor + " (build " + version.Build + ")";
         }
     }
 }

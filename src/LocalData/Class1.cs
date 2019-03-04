@@ -21,19 +21,27 @@ namespace LocalData
         private static bool WinForeGround = false;
         private static int AutostartPets = 1;
         private static bool MultiScreenEnabled = true;
+        private static bool FirstBoot = false;
+        private static bool Developer = false;
+        private static string DeveloperPets = "";
 
-        public static readonly String GITHUB_FOLDER = "https://raw.githubusercontent.com/Adrianotiger/desktopPet/uwp";
-        public static readonly String GITHUB_PETDOCS = "https://github.com/Adrianotiger/desktopPet/tree/uwp/Pets/";
-        public static readonly String GITHUB_PETLIST = GITHUB_FOLDER + "/Pets/pets.json";
-        public static readonly String GITHUB_APITREE = "https://api.github.com/repos/Adrianotiger/desktopPet/git/trees/9769cf227eaf8322c028d2be2a9671d692b9f293";
+        private static readonly String GITHUB_FOLDER = "https://raw.githubusercontent.com/Adrianotiger/desktopPet/master";
+        public static readonly String GITHUB_PETDOCS = "https://github.com/Adrianotiger/desktopPet/tree/master/Pets/";
+        private static readonly String GITHUB_PETFOLDER = "/Pets/";
+        //public static readonly String GITHUB_APITREE = "https://api.github.com/repos/Adrianotiger/desktopPet/git/trees/9769cf227eaf8322c028d2be2a9671d692b9f293"; <<- can't be used without token/login
 
         public LocalData()
         {
+            DeveloperPets = GITHUB_FOLDER + GITHUB_PETFOLDER + "pets.json";
+
             if (LocalSettings == null)
             {
                 LocalSettings = Windows.Storage.ApplicationData.Current.LocalSettings;
                 LocalFolder = Windows.Storage.ApplicationData.Current.LocalFolder;
-                
+
+                if (!LocalSettings.Values.ContainsKey("MultiScreen"))
+                    FirstBoot = true;
+
                 if (!LocalSettings.Values.ContainsKey("CurrentPet"))
                     LocalSettings.Values["CurrentPet"] = "esheep64";
 
@@ -61,6 +69,11 @@ namespace LocalData
                 LoadImages();
                 LoadIcon();
             }
+        }
+
+        public bool IsFirstBoot()
+        {
+            return FirstBoot;
         }
 
         public void SetVolume(double volume)
@@ -292,6 +305,49 @@ namespace LocalData
             watcher.EnableRaisingEvents = true;
         }
 
+        public void SetDeveloper(bool isDev)
+        {
+            Developer = isDev;
+        }
+
+        public bool IsDeveloper()
+        {
+            return Developer;
+        }
+
+        public void SetDeveloperGithubPets(string url)
+        {
+            DeveloperPets = url;
+        }
+
+        public string GetDeveloperGitHubPets()
+        {
+            return DeveloperPets;
+        }
+
+        public string GetGitHubPetListFile()
+        {
+            if(Developer)
+            {
+                return DeveloperPets;
+            }
+            else
+            {
+                return GITHUB_FOLDER + "/Pets/pets.json";
+            }
+        }
+
+        public string GetGitHubPetFile(string petId)
+        {
+            if (Developer)
+            {
+                return DeveloperPets.Remove(DeveloperPets.LastIndexOf("/") + 1) + petId + "/animations.xml";
+            }
+            else
+            {
+                return GITHUB_FOLDER + "/Pets/" + petId + "/animations.xml";
+            }
+        }
     }
 
 }

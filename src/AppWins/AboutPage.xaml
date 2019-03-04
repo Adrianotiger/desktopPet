@@ -27,7 +27,7 @@
                 <HyperlinkButton HorizontalAlignment="Center" Padding="0">https://www.fujitv.co.jp/straysheep/index2.html</HyperlinkButton>
 
                 <TextBlock TextAlignment="Center" Padding="0,10,0,0">Original Webpage for this C# project:</TextBlock>
-                <HyperlinkButton HorizontalAlignment="Center" Padding="0">http://esheep.petrucci.ch</HyperlinkButton>
+                <HyperlinkButton HorizontalAlignment="Center" Padding="0">https://esheep.petrucci.ch</HyperlinkButton>
 
                 <TextBlock TextAlignment="Center" Padding="0,10,0,0">GitHub Project (UWP and Web):</TextBlock>
                 <HyperlinkButton HorizontalAlignment="Center" Padding="0">https://github.com/Adrianotiger/desktopPet/</HyperlinkButton>

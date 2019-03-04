@@ -102,6 +102,14 @@ namespace DesktopPet
             InitializeComponent();
             Visible = false;            // Is invisible at beginning (we don't know where this sprite should be positioned)
             Opacity = 0.0;
+            for (var s = 0; s < Screen.AllScreens.Length; s++)
+            {
+                if (Screen.AllScreens[s].Primary)
+                {
+                    DisplayIndex = s;
+                    break;
+                }
+            }
         }
 
             /// <summary>
@@ -111,13 +119,15 @@ namespace DesktopPet
             /// <param name="xml">Xml class, with xml functions</param>
             /// <param name="parentPos">Position of the parent - used to detect where the child should be positioned</param>
             /// <param name="parentFlipped">If parent is flipped. If true, the child image will also be flipped</param>
-        public FormPet(Animations animations, Xml xml, Point parentPos, bool parentFlipped)
+            /// <param name="parentDisplay">Display Index of the parent. Put the child on same screen</param>
+        public FormPet(Animations animations, Xml xml, Point parentPos, bool parentFlipped, int parentDisplay)
         {
             Animations = animations;
             Xml = xml;
             Xml.parentX = parentPos.X;
             Xml.parentY = parentPos.Y;
             Xml.parentFlipped = parentFlipped;
+            DisplayIndex = parentDisplay;
 			IsMovingLeft = !parentFlipped;
             InitializeComponent();
             Visible = false;            // Is invisible at beginning (we don't know where this sprite should be positioned)
@@ -212,17 +222,6 @@ namespace DesktopPet
             {
                 Random rand = new Random();
                 DisplayIndex = rand.Next(0, Screen.AllScreens.Length);
-            }
-            else
-            {
-                for(var s = 0; s < Screen.AllScreens.Length; s++)
-                {
-                    if(Screen.AllScreens[s].Primary)
-                    {
-                        DisplayIndex = s;
-                        break;
-                    }
-                }
             }
 
             TSpawn spawn = Animations.GetRandomSpawn(); // Get a random SPAWN, to setting the form properties
@@ -375,7 +374,7 @@ namespace DesktopPet
                     {
 						foreach (TChild childInfo in Animations.GetAnimationChild(id))
 						{
-							FormPet child = new FormPet(Animations, Xml, new Point(Left, Top), !IsMovingLeft);
+							FormPet child = new FormPet(Animations, Xml, new Point(Left, Top), !IsMovingLeft, DisplayIndex);
 							for (int i = 0; i < imageList1.Images.Count; i++)
 							{
 								child.addImage(imageList1.Images[i]);
@@ -389,13 +388,11 @@ namespace DesktopPet
 							{
 								child.Name = "child" + (int.Parse(Name.Substring(5)) + 1).ToString();
 							}
-                            child.DisplayIndex = DisplayIndex; // play on same display index
 
 							child.Show(Width, Height);
 							child.PlayChild(id, childInfo);
 
                             childs.Add(child);
-
                         }
                     }
                 }
@@ -963,7 +960,7 @@ namespace DesktopPet
             if(IsDragging)
             {
                 // if it was dragged, check if the screen is different
-                if(Program.MyData.GetMultiscreen())
+                // if(Program.MyData.GetMultiscreen()) <-- If manually moved to another screen, set the new screen as default screen.
                 {
                     for(var k=0;k<Screen.AllScreens.Length;k++)
                     {

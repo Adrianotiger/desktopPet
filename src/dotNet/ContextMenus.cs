@@ -100,8 +100,19 @@ namespace DesktopPet
             closeSheepMenuItem.Click += new EventHandler(Exit_Click);
             closeSheepMenuItem.Image = Resources.exit;
             menu.Items.Add(closeSheepMenuItem);
+
+            if(Program.MyData.IsFirstBoot())
+            {
+                OpenOptionWindow("xamlesheep://options");
+            }
             
             return menu;
+        }
+
+        private async void OpenOptionWindow(string url)
+        {
+            Uri uri = new Uri(url);
+            await Launcher.LaunchUriAsync(uri);
         }
 
             /// <summary>
@@ -144,9 +155,7 @@ namespace DesktopPet
         /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
         void About_Click(object sender, EventArgs e)
         {
-            string str = "xamlesheep://";
-            Uri uri = new Uri(str + "about");
-            var launchOptions = Launcher.LaunchUriAsync(uri);
+            OpenOptionWindow("xamlesheep://about");
         }
 
         /// <summary>
@@ -158,9 +167,7 @@ namespace DesktopPet
         {
             //FormHelp help = new FormHelp();
             //help.Show();
-            string str = "xamlesheep://";
-            Uri uri = new Uri(str + "help");
-            var launchOptions = Launcher.LaunchUriAsync(uri);
+            OpenOptionWindow("xamlesheep://help");
         }
 
         /// <summary>
@@ -170,9 +177,7 @@ namespace DesktopPet
         /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
         void Options_Click(object sender, EventArgs e)
         {
-            string str = "xamlesheep://";
-            Uri uri = new Uri(str + "options");
-            var launchOptions = Launcher.LaunchUriAsync(uri);
+            OpenOptionWindow("xamlesheep://options");
         }
 
             /// <summary>

@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
@@ -8,10 +8,12 @@
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
     <OutputPath>..\..\build\LocalData\bin\Release\</OutputPath>
+    <IntermediateOutputPath>..\..\build\LocalData\obj\</IntermediateOutputPath>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
     <OutputPath>..\..\build\LocalData\bin\Debug\</OutputPath>
+    <IntermediateOutputPath>..\..\build\LocalData\obj\</IntermediateOutputPath>
   </PropertyGroup>
 
   <ItemGroup>

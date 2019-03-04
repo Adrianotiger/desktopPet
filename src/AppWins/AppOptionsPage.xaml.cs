@@ -30,6 +30,8 @@ namespace OptionsWindow
         {
             this.InitializeComponent();
 
+            developerPanel.Visibility = Visibility.Collapsed;
+
             this.Loaded += AppOptionsPage_Loaded;
         }
 
@@ -61,7 +63,18 @@ namespace OptionsWindow
                     break;
             }
 
+            petsQuantitySlider.Value = App.MyData.GetAutoStartPets();
+
+            petsQuantitySlider.Header = petsQuantitySlider.Value;
+
             autostartToggle.Toggled += AutostartToggle_Toggled;
+            petsQuantitySlider.ValueChanged += PetsQuantitySlider_ValueChanged;
+        }
+
+        private void PetsQuantitySlider_ValueChanged(object sender, RangeBaseValueChangedEventArgs e)
+        {
+            App.MyData.SetAutoStartPets((int)petsQuantitySlider.Value);
+            petsQuantitySlider.Header = ((int)petsQuantitySlider.Value).ToString();
         }
 
         private async void AutostartToggle_Toggled(object sender, RoutedEventArgs e)
@@ -98,6 +111,17 @@ namespace OptionsWindow
                         break;
                 }
             }
+        }
+
+        private void ToggleSwitch_Toggled(object sender, RoutedEventArgs e)
+        {
+            developerPanel.Visibility = (sender as ToggleSwitch).IsOn ? Visibility.Visible : Visibility.Collapsed;
+            App.MyData.SetDeveloper((sender as ToggleSwitch).IsOn);
+        }
+
+        private void TextBox_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            App.MyData.SetDeveloperGithubPets((sender as TextBox).Text);
         }
     }
 }

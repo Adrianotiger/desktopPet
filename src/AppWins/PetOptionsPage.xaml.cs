@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
@@ -31,10 +32,19 @@ namespace OptionsWindow
 
         private void PetOptionsPage_Loaded(object sender, RoutedEventArgs e)
         {
-            var xmlNode = XmlData.AnimationXML.ParseXML(App.MyData.GetXml());
-
-            if (xmlNode.Sounds == null || xmlNode.Sounds.Sound == null || xmlNode.Sounds.Sound.Length == 0)
+            try
             {
+                var xmlNode = XmlData.AnimationXML.ParseXML(App.MyData.GetXml());
+
+                if (xmlNode ==null || xmlNode.Sounds == null || xmlNode.Sounds.Sound == null || xmlNode.Sounds.Sound.Length == 0)
+                {
+                    volumeInfo1.Visibility = Visibility.Visible;
+                    volumeSlider.IsEnabled = false;
+                }
+            }
+            catch(Exception ex)
+            {
+                Debug.WriteLine("Error reading XML file: " + ex.Message);
                 volumeInfo1.Visibility = Visibility.Visible;
                 volumeSlider.IsEnabled = false;
             }
@@ -42,6 +52,8 @@ namespace OptionsWindow
             volumeSlider.Value = App.MyData.GetVolume();
             foregroundWindowToggle.IsOn = App.MyData.GetWindowForeground();
             multiScreenToggle.IsOn = App.MyData.GetMultiscreen();
+
+            volumeSlider.Header = (volumeSlider.Value * 100).ToString() + " %";
 
             volumeSlider.ValueChanged += VolumeSlider_ValueChanged;
             foregroundWindowToggle.Toggled += ForegroundWindowToggle_Toggled;
@@ -61,6 +73,7 @@ namespace OptionsWindow
         private void VolumeSlider_ValueChanged(object sender, RangeBaseValueChangedEventArgs e)
         {
             App.MyData.SetVolume(volumeSlider.Value);
+            volumeSlider.Header = (volumeSlider.Value * 100).ToString() + " %";
         }
     }
 }

@@ -72,13 +72,13 @@ namespace DesktopPet.Properties {
         
         /// <summary>
         ///   Sucht eine lokalisierte Zeichenfolge, die &lt;?xml version=&quot;1.0&quot;?&gt;
-        ///&lt;animations xmlns=&quot;http://esheep.petrucci.ch/&quot; xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot; xsi:schemaLocation=&quot;http://esheep.petrucci.ch/ https://raw.githubusercontent.com/Adrianotiger/desktopPet/master/Resources/animations.xsd&quot;&gt;
+        ///&lt;animations xmlns=&quot;https://esheep.petrucci.ch/&quot; xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot; xsi:schemaLocation=&quot;https://esheep.petrucci.ch/ https://raw.githubusercontent.com/Adrianotiger/desktopPet/master/Resources/animations.xsd&quot;&gt;
         ///&lt;header&gt;
         ///&lt;author&gt;Adriano&lt;/author&gt;
         ///&lt;title&gt;eSheep 64bit&lt;/title&gt;
         ///&lt;petname&gt;eSheep&lt;/petname&gt;
         ///&lt;version&gt;1.8&lt;/version&gt;
-        ///&lt;info&gt;Open source project for the lovely eSheep.[br] For more info, visit my webpage [link:http://esheep.petrucci.ch] [br]Image rip  [Rest der Zeichenfolge wurde abgeschnitten]&quot;; ähnelt.
+        ///&lt;info&gt;Open source project for the lovely eSheep.[br] For more info, visit my webpage [link:https://esheep.petrucci.ch] [br]Image rip  [Rest der Zeichenfolge wurde abgeschnitten]&quot;; ähnelt.
         /// </summary>
         internal static string animations {
             get {
@@ -91,8 +91,8 @@ namespace DesktopPet.Properties {
         ///&lt;xsd:schema
         ///    elementFormDefault=&quot;qualified&quot;
         ///    attributeFormDefault=&quot;unqualified&quot;
-        ///    targetNamespace=&quot;http://esheep.petrucci.ch/&quot;
-        ///    xmlns=&quot;http://esheep.petrucci.ch/&quot;
+        ///    targetNamespace=&quot;https://esheep.petrucci.ch/&quot;
+        ///    xmlns=&quot;https://esheep.petrucci.ch/&quot;
         ///    xmlns:xsd=&quot;http://www.w3.org/2001/XMLSchema&quot;&gt;
         ///
         ///  &lt;xsd:element name=&apos;animations&apos;&gt;
