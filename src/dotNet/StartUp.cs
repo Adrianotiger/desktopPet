@@ -407,24 +407,5 @@ namespace DesktopPet
                 sheeps[i].Sync();
             }
         }
-
-            /// <summary>
-            /// Open the option dialog, to show some options like reset XML animation or load animation from the webpage.
-            /// </summary>
-        public void OpenOptionDialog()
-        {
-            FormOptions formoptions = new FormOptions();
-            switch (formoptions.ShowDialog())
-            {
-                case DialogResult.Retry:
-                    AddDebugInfo(DEBUG_TYPE.warning, "restoring default XML");
-
-                    Program.MyData.SetIcon("");
-                    Program.MyData.SetImages("");
-
-                    Program.MyData.SetXml("", "esheep64");
-                    break;
-            }
-        }
     }
 }

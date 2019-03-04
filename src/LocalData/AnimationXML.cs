@@ -12,7 +12,7 @@ namespace XmlData
     /// This Node class is used to store the XML data using the serialize function.
     /// </summary>
     /// <remarks>Once the XML was loaded, it is possible to see the header info in the about box.</remarks>
-    [XmlRoot("animations", Namespace = "http://esheep.petrucci.ch/", IsNullable = false)]
+    [XmlRoot("animations", Namespace = "https://esheep.petrucci.ch/", IsNullable = false)]
     public class RootNode
     {
         /// <summary>
@@ -423,6 +423,7 @@ namespace XmlData
             catch (Exception ex)
             {
                 Debug.WriteLine("Error parsing XML: " + ex.Message);
+                aniXML = null;
             }
 
             return aniXML;

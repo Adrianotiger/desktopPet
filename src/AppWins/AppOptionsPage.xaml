@@ -9,13 +9,29 @@
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
     <Grid>
-        <StackPanel>
-            <TextBlock Style="{StaticResource TitleTextBlockStyle}" Padding="0,20,0,0">Autostart</TextBlock>
-            <StackPanel Margin="30,0,0,0">
-                <ToggleSwitch Margin="10" OnContent="Auto-Start eSheep" OffContent="Start eSheep manually" x:Name="autostartToggle"></ToggleSwitch>
-                <TextBlock FontStyle="Italic" x:Name="taskText">The only way to enable and disable this feature is over the Task-Manager.</TextBlock>
-                <TextBlock>If activated, the Application will start when Windows starts.</TextBlock>
+        <ScrollViewer>
+            <StackPanel>
+                <TextBlock Style="{StaticResource TitleTextBlockStyle}" Padding="0,20,0,0">Autostart</TextBlock>
+                <StackPanel Margin="30,0,0,0">
+                    <ToggleSwitch Margin="10" OnContent="Auto-Start eSheep" OffContent="Start eSheep manually" x:Name="autostartToggle"></ToggleSwitch>
+                    <TextBlock FontStyle="Italic" x:Name="taskText">The only way to enable and disable this feature is over the Task-Manager.</TextBlock>
+                    <TextBlock>If activated, the Application will start when Windows starts.</TextBlock>
+                </StackPanel>
+                <TextBlock Style="{StaticResource TitleTextBlockStyle}" Padding="0,20,0,0">Pets to launch</TextBlock>
+                <StackPanel Margin="30,0,0,0">
+                    <Slider Margin="10" Header="?" Minimum="1" Maximum="16" StepFrequency="1" TickPlacement="Outside" TickFrequency="1" x:Name="petsQuantitySlider"></Slider>
+                    <TextBlock>How many pets to start together when the app is launched.</TextBlock>
+                </StackPanel>
+                <TextBlock Style="{StaticResource TitleTextBlockStyle}" Padding="0,20,0,0">Developer Area</TextBlock>
+                <StackPanel Margin="30,0,0,0">
+                    <ToggleSwitch OffContent="Hide developer options" OnContent="Show developer options" Toggled="ToggleSwitch_Toggled" />
+                    <TextBlock>Advanced settings for developers (if you want create your own pet). Developer settings are not saved when you close the app.</TextBlock>
+                    <StackPanel x:Name="developerPanel" Background="Aquamarine">
+                        <TextBlock Style="{StaticResource SubtitleTextBlockStyle}" Padding="0,20,0,0">Link to your pets.json on GitHub</TextBlock>
+                        <TextBox InputScope="Url" Text="https://raw.githubusercontent.com/Adrianotiger/desktopPet/master/Pets/pets.json" TextChanged="TextBox_TextChanged" />
+                    </StackPanel>
+                </StackPanel>
             </StackPanel>
-        </StackPanel>
+        </ScrollViewer>
     </Grid>
 </Page>

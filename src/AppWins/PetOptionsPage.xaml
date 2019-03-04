@@ -12,7 +12,7 @@
         <StackPanel>
             <TextBlock Style="{StaticResource TitleTextBlockStyle}" Padding="0,20,0,0">Volume</TextBlock>
             <StackPanel Margin="30,0,0,0">
-                <Slider Margin="10" Minimum="0" Maximum="1" StepFrequency="0.05" TickPlacement="Outside" TickFrequency="0.1" x:Name="volumeSlider"></Slider>
+                <Slider Margin="10" Header="?" Minimum="0" Maximum="1" StepFrequency="0.05" TickPlacement="Outside" TickFrequency="0.1" x:Name="volumeSlider"></Slider>
                 <TextBlock FontWeight="Bold" HorizontalAlignment="Center" x:Name="volumeInfo1" Visibility="Collapsed"> >> This Pet doesn't have any sounds &lt;&lt; </TextBlock>
                 <TextBlock>Pet can play some sounds at random time. Select the volume of the played sounds.</TextBlock>
             </StackPanel>

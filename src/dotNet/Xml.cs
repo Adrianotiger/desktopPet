@@ -66,8 +66,6 @@ namespace DesktopPet
             /// </summary>
         int iRandomSpawn = 10;
 
-        private LocalData.LocalData myData = new LocalData.LocalData();
-
             /// <summary>
             /// Constructor. Initialize member variables.
             /// </summary>
@@ -443,8 +441,8 @@ namespace DesktopPet
 
             try
             {
-                if (myData.GetImages().Length < 2) throw new InvalidDataException();
-                imageStream = new MemoryStream(Convert.FromBase64String(myData.GetImages()));
+                if (Program.MyData.GetImages().Length < 2) throw new InvalidDataException();
+                imageStream = new MemoryStream(Convert.FromBase64String(Program.MyData.GetImages()));
                 // only decode once so dont need to keep the source string for image
                 Program.MyData.SetImages(string.Empty); 
                 StartUp.AddDebugInfo(StartUp.DEBUG_TYPE.info, "user images loaded");
@@ -468,7 +466,7 @@ namespace DesktopPet
                 }
                 try
                 {
-                    imageStream = new MemoryStream(Convert.FromBase64String(myData.GetImages()));
+                    imageStream = new MemoryStream(Convert.FromBase64String(Program.MyData.GetImages()));
                     // only decode once so dont need to keep the source string for image
                     Program.MyData.SetImages(string.Empty);
                 }
@@ -481,8 +479,8 @@ namespace DesktopPet
             
             try
             {
-                if (myData.GetIcon().Length < 100) throw new InvalidDataException();
-                bitmapIcon = new MemoryStream(Convert.FromBase64String(myData.GetIcon()));
+                if (Program.MyData.GetIcon().Length < 100) throw new InvalidDataException();
+                bitmapIcon = new MemoryStream(Convert.FromBase64String(Program.MyData.GetIcon()));
                 StartUp.AddDebugInfo(StartUp.DEBUG_TYPE.info, "user icon loaded");
             }
             catch (Exception)
@@ -504,7 +502,7 @@ namespace DesktopPet
                 }
                 try
                 {
-                    bitmapIcon = new MemoryStream(Convert.FromBase64String(myData.GetIcon()));
+                    bitmapIcon = new MemoryStream(Convert.FromBase64String(Program.MyData.GetIcon()));
                 }
                 catch (Exception ex)
                 {

@@ -31,7 +31,7 @@
             
             <ListView.ItemTemplate>
                 <DataTemplate>
-                    <Grid Width="80" Height="110" CornerRadius="2" >
+                    <Grid Width="80" Height="110" CornerRadius="2" Background="{Binding ItemColor}">
                         <ProgressRing Width="80" Height="80" IsActive="{Binding IsLoading}" VerticalAlignment="Top"></ProgressRing>
                         <Image Source="{Binding Image}" Stretch="None" Width="80" Height="80" VerticalAlignment="Top" />
                         <Viewbox StretchDirection="DownOnly" Stretch="Uniform" VerticalAlignment="Bottom" Width="80" Height="50" >

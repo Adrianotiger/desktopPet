@@ -71,8 +71,7 @@ namespace OptionsWindow
                 contentPages.Remove("Pet info");
             }
         }
-
-
+        
         private void NavigationViewControl_ItemInvoked(NavigationView sender, NavigationViewItemInvokedEventArgs args)
         {
             if (args.IsSettingsInvoked == true)

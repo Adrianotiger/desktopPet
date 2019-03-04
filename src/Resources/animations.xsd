@@ -2,8 +2,8 @@
 <xsd:schema
     elementFormDefault="qualified"
     attributeFormDefault="unqualified"
-    targetNamespace="http://esheep.petrucci.ch/"
-    xmlns="http://esheep.petrucci.ch/"
+    targetNamespace="https://esheep.petrucci.ch/"
+    xmlns="https://esheep.petrucci.ch/"
     xmlns:xsd="http://www.w3.org/2001/XMLSchema">
 
   <xsd:element name='animations'>
@@ -47,7 +47,7 @@
               </xsd:element>
               <xsd:element name='icon' type='xsd:string' minOccurs='1' maxOccurs='1'>
                 <xsd:annotation>
-                  <xsd:documentation>Icon as CDATA base64 encoded, see http://esheep.petrucci.ch/?p=tools&amp;s=icon to convert a PNG to ICO and http://esheep.petrucci.ch/?p=tools&amp;s=base64 to convert it to a base64 string.</xsd:documentation>
+                  <xsd:documentation>Icon as CDATA base64 encoded, see https://esheep.petrucci.ch/?p=tools&amp;s=icon to convert a PNG to ICO and https://esheep.petrucci.ch/?p=tools&amp;s=base64 to convert it to a base64 string.</xsd:documentation>
                 </xsd:annotation>
               </xsd:element>
             </xsd:all>
@@ -71,7 +71,7 @@
               </xsd:element>
               <xsd:element name='png' type='xsd:string' minOccurs='1' maxOccurs='1'>
                 <xsd:annotation>
-                  <xsd:documentation>Sprite sheet as CDATA base64 encoded, see http://esheep.petrucci.ch/?p=tools&amp;s=base64 to convert it to a base64 string.</xsd:documentation>
+                  <xsd:documentation>Sprite sheet as CDATA base64 encoded, see https://esheep.petrucci.ch/?p=tools&amp;s=base64 to convert it to a base64 string.</xsd:documentation>
                 </xsd:annotation>
               </xsd:element>
               <xsd:element name='transparency' type='xsd:string' minOccurs='1' maxOccurs='1'>
