@@ -53,7 +53,7 @@ namespace OptionsWindow
             foregroundWindowToggle.IsOn = App.MyData.GetWindowForeground();
             multiScreenToggle.IsOn = App.MyData.GetMultiscreen();
 
-            volumeSlider.Header = (volumeSlider.Value * 100).ToString() + " %";
+            volumeSlider.Header = ((int)(volumeSlider.Value * 100)).ToString() + " %";
 
             volumeSlider.ValueChanged += VolumeSlider_ValueChanged;
             foregroundWindowToggle.Toggled += ForegroundWindowToggle_Toggled;

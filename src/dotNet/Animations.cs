@@ -451,7 +451,6 @@ namespace DesktopPet
         public int AnimationKill = -1;
             /// <summary>
             /// Animation ID once the cancel button on the about box was pressed (default: 1)
-            /// <see cref="AboutBox.button2"/>
             /// </summary>
         public int AnimationSync = 1;
 
