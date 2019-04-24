@@ -20,9 +20,9 @@
     <PackageCertificateKeyFile>OptionsWindow_StoreKey.pfx</PackageCertificateKeyFile>
     <PackageCertificateThumbprint>8296B6F6972E7F1F64AF8CF4E5B49D418CADDC3E</PackageCertificateThumbprint>
     <GenerateAppInstallerFile>False</GenerateAppInstallerFile>
-    <AppxAutoIncrementPackageRevision>True</AppxAutoIncrementPackageRevision>
+    <AppxAutoIncrementPackageRevision>False</AppxAutoIncrementPackageRevision>
     <AppxBundle>Always</AppxBundle>
-    <AppxBundlePlatforms>x64</AppxBundlePlatforms>
+    <AppxBundlePlatforms>x86</AppxBundlePlatforms>
     <AppInstallerUpdateFrequency>1</AppInstallerUpdateFrequency>
     <AppInstallerCheckForUpdateFrequency>OnApplicationRun</AppInstallerCheckForUpdateFrequency>
     <AppxPackageDir>D:\GitHub\desktopPet\build\AppPackages\</AppxPackageDir>
