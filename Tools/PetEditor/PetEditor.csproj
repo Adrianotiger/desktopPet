@@ -1,0 +1,161 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{5E5C4612-39A2-487F-B9D0-4C079CC0DCCD}</ProjectGuid>
+    <OutputType>WinExe</OutputType>
+    <RootNamespace>PetEditor</RootNamespace>
+    <AssemblyName>Pet Editor</AssemblyName>
+    <TargetFrameworkVersion>v4.7</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
+    <Deterministic>true</Deterministic>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup>
+    <StartupObject>PetEditor.Program</StartupObject>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Microsoft.Toolkit.Forms.UI.Controls.WebView, Version=5.1.0.0, Culture=neutral, PublicKeyToken=4aff67a105548ee2, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Toolkit.Forms.UI.Controls.WebView.5.1.1\lib\net462\Microsoft.Toolkit.Forms.UI.Controls.WebView.dll</HintPath>
+    </Reference>
+    <Reference Include="NAudio, Version=1.9.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\NAudio.1.9.0\lib\net35\NAudio.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Design" />
+    <Reference Include="System.Xaml" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Deployment" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml" />
+    <Reference Include="WindowsBase" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="..\..\src\LocalData\AnimationXML.cs">
+      <Link>DesktopPet\AnimationXML.cs</Link>
+    </Compile>
+    <Compile Include="EditWindows.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="EditWindows.Designer.cs">
+      <DependentUpon>EditWindows.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Log.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Log.Designer.cs">
+      <DependentUpon>Log.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ProjectStructure.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ProjectStructure.Designer.cs">
+      <DependentUpon>ProjectStructure.cs</DependentUpon>
+    </Compile>
+    <Compile Include="MainWindow.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="MainWindow.Designer.cs">
+      <DependentUpon>MainWindow.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Program.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SelectFrameDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="SelectFrameDialog.Designer.cs">
+      <DependentUpon>SelectFrameDialog.cs</DependentUpon>
+    </Compile>
+    <Compile Include="WebForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="WebForm.Designer.cs">
+      <DependentUpon>WebForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="XmlTools.cs" />
+    <Compile Include="Tools.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Tools.Designer.cs">
+      <DependentUpon>Tools.cs</DependentUpon>
+    </Compile>
+    <EmbeddedResource Include="EditWindows.resx">
+      <DependentUpon>EditWindows.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Log.resx">
+      <DependentUpon>Log.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ProjectStructure.resx">
+      <DependentUpon>ProjectStructure.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MainWindow.resx">
+      <DependentUpon>MainWindow.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Resources.resx</DependentUpon>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <EmbeddedResource Include="SelectFrameDialog.resx">
+      <DependentUpon>SelectFrameDialog.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Tools.resx">
+      <DependentUpon>Tools.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="WebForm.resx">
+      <DependentUpon>WebForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <None Include="packages.config" />
+    <None Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
+    <Compile Include="Properties\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Settings.settings</DependentUpon>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config" />
+  </ItemGroup>
+  <ItemGroup />
+  <ItemGroup>
+    <Content Include="Icons\pet_32.png" />
+    <Content Include="Images\monitor.jpg" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>
