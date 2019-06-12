@@ -139,9 +139,9 @@ namespace LocalData
                 Xml = newXml;
 
                 var buffer = Encoding.UTF8.GetBytes(newXml);
-                File.Delete(LocalFolder.Path + "\\animation.xml");
+                File.Delete(LocalFolder.Path + "\\animations.xml");
 
-                var f = File.Create(LocalFolder.Path + "\\animation.xml");
+                var f = File.Create(LocalFolder.Path + "\\animations.xml");
                 f.Write(buffer, 0, buffer.Length);
                 f.Close();
 
@@ -162,13 +162,13 @@ namespace LocalData
         public void LoadXML()
         {
             var buffer = new Byte[1024 * 64];
-            if (!File.Exists(LocalFolder.Path + "\\animation.xml"))
+            if (!File.Exists(LocalFolder.Path + "\\animations.xml"))
             {
-                var fs = File.Create(LocalFolder.Path + "\\animation.xml");
+                var fs = File.Create(LocalFolder.Path + "\\animations.xml");
                 fs.Close();
             }
             Xml = "";
-            var f = File.OpenRead(LocalFolder.Path + "\\animation.xml");
+            var f = File.OpenRead(LocalFolder.Path + "\\animations.xml");
             var bytesRead = 0;
             do
             {
@@ -296,7 +296,7 @@ namespace LocalData
             watcher.NotifyFilter = NotifyFilters.LastAccess | NotifyFilters.LastWrite
                | NotifyFilters.FileName | NotifyFilters.DirectoryName;
             // Only watch text files.
-            watcher.Filter = "animation.xml";
+            watcher.Filter = "animations.xml";
 
             // Add event handlers.
             watcher.Changed += new FileSystemEventHandler(f);

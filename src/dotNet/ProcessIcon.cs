@@ -65,7 +65,17 @@ namespace DesktopPet
         public void Dispose()
         {
             // When the application closes, this will remove the icon from the system tray immediately.
-            ni.Dispose();
+            if (ni != null)
+            {
+                if (ni.Icon != null)
+                {
+                    ni.Icon.Dispose();
+                    ni.Icon = null;
+                }
+                ni.Visible = false;
+                ni.Dispose();
+                ni = null;
+            }
         }
 
             /// <summary>

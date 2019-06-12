@@ -78,7 +78,7 @@ namespace DesktopPet.Properties {
         ///&lt;title&gt;eSheep 64bit&lt;/title&gt;
         ///&lt;petname&gt;eSheep&lt;/petname&gt;
         ///&lt;version&gt;1.8&lt;/version&gt;
-        ///&lt;info&gt;Open source project for the lovely eSheep.[br] For more info, visit my webpage [link:https://esheep.petrucci.ch] [br]Image rip  [Rest der Zeichenfolge wurde abgeschnitten]&quot;; ähnelt.
+        ///&lt;info&gt;Open source project for the lovely eSheep.[br] For more info, visit my webpage [link:https://esheep.petrucci.ch] [br]Image r [Rest der Zeichenfolge wurde abgeschnitten]&quot;; ähnelt.
         /// </summary>
         internal static string animations {
             get {
@@ -100,7 +100,7 @@ namespace DesktopPet.Properties {
         ///      &lt;xsd:sequence&gt;
         ///        &lt;xsd:element name=&apos;header&apos; minOccurs=&apos;1&apos; maxOccurs=&apos;1&apos;&gt;
         ///          &lt;xsd:annotation&gt;
-        ///            &lt;xsd:documentation&gt;Main informations about this Pet.&lt;/x [Rest der Zeichenfolge wurde abgeschnitten]&quot;; ähnelt.
+        ///            &lt;xsd:documentation&gt;Main informations about this Pet.&lt; [Rest der Zeichenfolge wurde abgeschnitten]&quot;; ähnelt.
         /// </summary>
         internal static string animations1 {
             get {

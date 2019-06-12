@@ -26,7 +26,14 @@ namespace DesktopPet
             /// Close Menu Item: if another pet was downloaded, the text of this item will change.
             /// </summary>
         static ToolStripMenuItem closeSheepMenuItem;
-        
+
+#if PORTABLE
+        /// <summary>
+        /// Install functions and form.
+        /// </summary>
+        Install installForm;
+#endif
+
         /// <summary>
         /// A value to set in the About dialog: author.
         /// </summary>
@@ -44,7 +51,13 @@ namespace DesktopPet
             /// </summary>
         static string info;
 
+#if PORTABLE
+        LocalData MyData = new LocalData();
+        bool isAboutLoaded = false;
+        bool isOptionLoaded = false;
+#else
         LocalData.LocalData MyData = new LocalData.LocalData();
+#endif
 
         /// <summary>
         /// Creates this instance for the tray icon.
@@ -75,7 +88,22 @@ namespace DesktopPet
                 // Item: Separator.
             sep = new ToolStripSeparator();
             menu.Items.Add(sep);
-                        
+
+#if PORTABLE
+            // Create install class
+            installForm = new Install();
+
+            // Item: Install.
+            item = new ToolStripMenuItem();
+            if (!Program.IsApplicationInstalled())
+                item.Text = "&Install application...";
+            else
+                item.Text = "Repair/&Uninstall...";
+            item.Click += new EventHandler(InstallApplication);
+            item.Image = installForm.Icon.ToBitmap();
+            menu.Items.Add(item);
+#endif
+
             // Item: About.
             item = new ToolStripMenuItem();
             item.Text = "A&bout";
@@ -147,7 +175,20 @@ namespace DesktopPet
             //Process.Start("explorer", null);
             Program.Mainthread.AddSheep();
         }
-        
+
+
+#if PORTABLE
+        /// <summary>
+        /// Open the window form to install this application on the computer.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
+        void InstallApplication(object sender, EventArgs e)
+        {
+            installForm.ShowInstallation();
+        }
+#endif
+
         /// <summary>
         /// Handles the Click event of the About control. Open a dialog if no other dialog is still opened.
         /// </summary>
@@ -155,7 +196,22 @@ namespace DesktopPet
         /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
         void About_Click(object sender, EventArgs e)
         {
+#if PORTABLE
+            if (isOptionLoaded)
+            {
+
+            }
+            else if (!isAboutLoaded)
+            {
+                isAboutLoaded = true;
+                AboutBox box = new AboutBox();
+                box.FillData(author, title, version, info);
+                box.ShowDialog();
+                isAboutLoaded = false;
+            }
+#else
             OpenOptionWindow("xamlesheep://about");
+#endif
         }
 
         /// <summary>
@@ -165,9 +221,12 @@ namespace DesktopPet
         /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
         void Help_Click(object sender, EventArgs e)
         {
-            //FormHelp help = new FormHelp();
-            //help.Show();
+#if PORTABLE
+            FormHelp help = new FormHelp();
+            help.Show();
+#else
             OpenOptionWindow("xamlesheep://help");
+#endif
         }
 
         /// <summary>
@@ -177,7 +236,20 @@ namespace DesktopPet
         /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
         void Options_Click(object sender, EventArgs e)
         {
+#if PORTABLE
+            if (isAboutLoaded)
+            {
+
+            }
+            else if (!isOptionLoaded)
+            {
+                isOptionLoaded = true;
+                Program.OpenOptionDialog();
+                isOptionLoaded = false;
+            }
+#else
             OpenOptionWindow("xamlesheep://options");
+#endif
         }
 
             /// <summary>
@@ -198,7 +270,12 @@ namespace DesktopPet
         /// </summary>
         public void Dispose()
         {
-            
+#if PORTABLE
+            if (installForm != null)
+            {
+                installForm.Dispose();
+            }
+#endif
         }
     }
 }
