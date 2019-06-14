@@ -1,38 +1,35 @@
-# Desktop Pet (now as UWP)
+# Desktop Pet (eSheep)
 
 Can you remember eSheep, the lovely desktop sheep?
 <img src='src/Images/esheep.png' /><br />
 If you had a lot of them on the desktop... welcome to this page!<br />
 This project gives you the possibility to add a pet to your desktop.<br />[![eSheep for 64bit systems](https://img.youtube.com/vi/xN90p16tKGE/0.jpg)](https://www.youtube.com/watch?v=xN90p16tKGE) 
-# ! NEW !
-Now as UWP App, download it directly from the Microsoft Store:
 
-[![https://www.microsoft.com/store/apps/9MX2V0TQT6RM](src/Images/microsoftstore.png)](https://www.microsoft.com/store/apps/9MX2V0TQT6RM) 
----
-
-With a XML file (animations.xml) it is possible to change pet and animations.<br />
+With a simple XML file (animations.xml) it is possible to change pet and animations.<br />
 # Application
 This application is not a game, not an utility and not useful :P it simply shows you
 a pet on the screen. This pet can fall down up to the taskbar and is able to detect 
 windows on your desktop.<br />
 In this way, this pet is able to walk, run, etc around your working screen area (on primary screen).
-# Download
-You can download a compiled Windows EXE from this page:
-<a href='http://esheep.petrucci.ch'>http://esheep.petrucci.ch</a>
-There entire code documentation can be found online here:
-<a href='http://adrianotiger.github.io/desktopPet/'>http://adrianotiger.github.io/desktopPet/</a>
+# Downloads
+|        | Windows 7/8/10 | Windows 10 | Webpage | Tools |
+|--------|--------|--------|--------|--------|--------|
+| Type |  Portable exe | Store app | Javascript | Desktop applications |
+| Description | Download rar, extract exe file and execute it. There is no installation. | Download it directly from the Microsoft store | Javascript file to implement it on your webpage | Some tools to edit and create your own pet.
+| Link | <a href='https://github.com/Adrianotiger/desktopPet/releases/tag/Portable'>Open page</a> to download or <a href='https://github.com/Adrianotiger/desktopPet/releases/download/Portable/eSheep_1.2.0.rar'>download zip</a> | <a href='https://www.microsoft.com/store/apps/9MX2V0TQT6RM'>Windows store</a> | <a href='https://github.com/Adrianotiger/web-esheep'>Open GitHub</a> project | -<a href='https://github.com/Adrianotiger/desktopPet/releases/tag/editor0.2'>Download Pet Editor</a> |
+
 # Credits
 This project used other Open Source projects:
 <ul>
-<li><a href='https://naudio.codeplex.com'>NAudio</a> to play sounds
+<li><a href='https://github.com/naudio/NAudio'>NAudio</a> to play sounds
 </ul>
 # Thanks
 <a href='https://github.com/Grunwaldt'>Sergi</a> for the Tray Icon<br>
 <a href='https://github.com/rluiten'>Robin</a> improving the code and implementing the <a href='https://github.com/Adrianotiger/desktopPet/issues/6'>Graphviz tool</a>
 
 # Want to create your own mate/pet?
-The easy and fast way is to use the online editor:
-<a href='http://esheep.petrucci.ch/?pagina=editor'>Online editor</a>.<br>
+The easy and fast way is to use the online editor: <a href='http://esheep.petrucci.ch/?pagina=editor'>Open online editor webpage</a>.<br>
+I am working on an offline editor, it will give a lot of tools and is faster than the online editor: <a href='https://github.com/Adrianotiger/desktopPet/releases/tag/editor0.2'>Download offline editor from GitHub</a>.<br>
 But you can also download the original <a href='Resources/animations.xml'>animations.xml</a> and create your own desktop mate/pet.<br />
 What you need are:
 <ul>

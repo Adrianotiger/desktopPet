@@ -110,9 +110,12 @@ namespace PetEditor
                 {
                     listView1.Invoke(new MethodInvoker(() =>
                     {
-                        richTextBox1.Text = xmlString;
+                        Regex rx = new Regex(@"\[CDATA\[([A-Za-z0-9\/+=]*)\]\]", RegexOptions.Multiline);
+                        Regex rx2 = new Regex(@"\<base64\>([A-Za-z0-9\/+=]*)\</base64\>", RegexOptions.Multiline);
+                        xmlString = rx.Replace(xmlString, "[CDATA[... base64 image ...]]");
+                        richTextBox1.Text = rx2.Replace(xmlString, "<base64>... base64 mp3 ... </base64>");
 
-                        lineIndexes = Regex.Matches(richTextBox1.Text, "\n").Cast<Match>().Select(m => m.Index);
+                        lineIndexes = Regex.Matches(xmlString, "\n").Cast<Match>().Select(m => m.Index);
 
                         listView1.Items.Clear();
                     }));
