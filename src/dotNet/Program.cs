@@ -165,7 +165,7 @@ namespace DesktopPet
 
 #else
 
-        public static LocalData.LocalData MyData;
+        public static LocalData.LocalData MyData = null;
 
         /// <summary>
         /// The main entry point for the application.

@@ -222,20 +222,21 @@
             this.removeNodeToolStripMenuItem,
             this.insertNodeToolStripMenuItem});
             this.contextMenuStrip1.Name = "contextMenuStrip1";
-            this.contextMenuStrip1.Size = new System.Drawing.Size(150, 48);
+            this.contextMenuStrip1.Size = new System.Drawing.Size(181, 70);
             // 
             // removeNodeToolStripMenuItem
             // 
             this.removeNodeToolStripMenuItem.Image = ((System.Drawing.Image)(resources.GetObject("removeNodeToolStripMenuItem.Image")));
             this.removeNodeToolStripMenuItem.Name = "removeNodeToolStripMenuItem";
-            this.removeNodeToolStripMenuItem.Size = new System.Drawing.Size(149, 22);
+            this.removeNodeToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.removeNodeToolStripMenuItem.Text = "Remove Node";
+            this.removeNodeToolStripMenuItem.Click += new System.EventHandler(this.removeNodeToolStripMenuItem_Click);
             // 
             // insertNodeToolStripMenuItem
             // 
             this.insertNodeToolStripMenuItem.Image = ((System.Drawing.Image)(resources.GetObject("insertNodeToolStripMenuItem.Image")));
             this.insertNodeToolStripMenuItem.Name = "insertNodeToolStripMenuItem";
-            this.insertNodeToolStripMenuItem.Size = new System.Drawing.Size(149, 22);
+            this.insertNodeToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.insertNodeToolStripMenuItem.Text = "Insert Node";
             this.insertNodeToolStripMenuItem.Click += new System.EventHandler(this.insertNodeToolStripMenuItem_Click);
             // 

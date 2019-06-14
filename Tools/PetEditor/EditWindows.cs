@@ -340,25 +340,24 @@ namespace PetEditor
                 }
                 catch(Exception ex)
                 {
-                    Program.AddLog("Unable to get frame image - " + ex.Message, "SPAWN animation", false, true);
+                    Program.AddLog("Unable to get frame image - " + ex.Message, "SPAWN animation", Program.LOG_TYPE.WARNING, tabPage2);
                 }
-
+                XmlTools.StatisticsDataInput vals = new XmlTools.StatisticsDataInput
+                {
+                    Area = new Point(Screen.PrimaryScreen.WorkingArea.Width, Screen.PrimaryScreen.WorkingArea.Height),
+                    Screen = new Point(Screen.PrimaryScreen.Bounds.Width, Screen.PrimaryScreen.Bounds.Height),
+                    Image = new Rectangle(0, 0, image.Width * imageZoom, image.Height * imageZoom)
+                };
                 try
                 {
-                    pictureBox4.Left += (int)(XmlTools.EvalValue(node.X, image.Width * imageZoom, image.Height * imageZoom, 0, 0, 50) / screenScaleX / scaleX);
+                    pictureBox4.Left += (int)(XmlTools.EvalValue(node.X, vals, richTextBox1) / screenScaleX / scaleX);
                 }
-                catch (Exception ex)
-                {
-                    Program.AddLog("Unable to parse " + node.X + " - " + ex.Message, "SPAWN-Position X", false, true);
-                }
+                catch (Exception){}
                 try
                 {
-                    pictureBox4.Top += (int)(XmlTools.EvalValue(node.Y, image.Width * imageZoom, image.Height * imageZoom, 0, 0, 50) * 0.97 / screenScaleY / scaleY) - (int)(imgH / 5);
+                    pictureBox4.Top += (int)(XmlTools.EvalValue(node.Y, vals, richTextBox2) * 0.97 / screenScaleY / scaleY) - (int)(imgH / 5);
                 }
-                catch (Exception ex)
-                {
-                    Program.AddLog("Unable to parse " + node.Y + " - " + ex.Message, "SPAWN-Position Y", false, true);
-                }
+                catch (Exception){}
             }
         }
 
@@ -559,7 +558,11 @@ namespace PetEditor
                         lvi.ImageIndex = n2.Sequence.Frame[0];
                         lvi.SubItems.Add(n2.Name);
                     }
-                    catch (Exception) { Program.AddLog("Animation " + n.Value + " does not have frame Index", "Open Node " + n.Value, true); }
+                    catch (Exception)
+                    {
+                        Program.AddLog("Animation " + n.Value + " does not have frame Index", "Open Node " + n.Value, Program.LOG_TYPE.ERROR, tabPage4);
+                        lvi.SubItems.Add("--");
+                    }
                     lvi.SubItems.Add(n.Probability.ToString());
                     lvi.SubItems.Add(n.OnlyFlag);
                 }
@@ -576,9 +579,13 @@ namespace PetEditor
                     try
                     {
                         lvi.ImageIndex = n2.Sequence.Frame[0];
+                        lvi.SubItems.Add(n2.Name);
                     }
-                    catch (Exception) { Program.AddLog("Animation " + n2.Id + " does not have frame Index", "Open Node " + n2.Id, true); }
-                    lvi.SubItems.Add(n2.Name);
+                    catch (Exception)
+                    {
+                        Program.AddLog("Animation " + n.Value + " does not have frame Index", "Open Node " + n.Value, Program.LOG_TYPE.ERROR, tabPage4);
+                        lvi.SubItems.Add("--");
+                    }
                     lvi.SubItems.Add(n.Probability.ToString());
                     lvi.SubItems.Add(n.OnlyFlag);
                 }
@@ -595,9 +602,13 @@ namespace PetEditor
                     try
                     {
                         lvi.ImageIndex = n2.Sequence.Frame[0];
+                        lvi.SubItems.Add(n2.Name);
                     }
-                    catch (Exception) { Program.AddLog("Animation " + n2.Id + " does not have frame Index", "Open Node " + n2.Id, true); }
-                    lvi.SubItems.Add(n2.Name);
+                    catch (Exception)
+                    {
+                        Program.AddLog("Animation " + n.Value + " does not have frame Index", "Open Node " + n.Value, Program.LOG_TYPE.ERROR, tabPage4);
+                        lvi.SubItems.Add("--");
+                    }
                     lvi.SubItems.Add(n.Probability.ToString());
                     lvi.SubItems.Add(n.OnlyFlag);
                 }
@@ -613,7 +624,14 @@ namespace PetEditor
 
         private void UpdateAnimationStatistics(XmlData.AnimationNode node)
         {
-            stats = XmlTools.GetAnimationStatistics(node, image.Width, image.Height);
+            XmlTools.StatisticsDataInput vals = new XmlTools.StatisticsDataInput
+            {
+                Area = new Point(Screen.PrimaryScreen.WorkingArea.Width, Screen.PrimaryScreen.WorkingArea.Height),
+                Screen = new Point(Screen.PrimaryScreen.Bounds.Width, Screen.PrimaryScreen.Bounds.Height),
+                Image = new Rectangle(0, 0, image.Width, image.Height)
+            };
+
+            stats = XmlTools.GetAnimationStatistics(node, vals, tabPage4);
             label28.Text = stats.TotalX.ToString();
             label29.Text = stats.TotalY.ToString();
             label30.Text = stats.TotalFrames.ToString();
@@ -647,23 +665,37 @@ namespace PetEditor
                 node.Sequence.Next[k].Probability = int.Parse(listView2.Items[k].SubItems[2].Text);
                 node.Sequence.Next[k].OnlyFlag = listView2.Items[k].SubItems[3].Text;
             }
-            node.Border = new XmlData.HitNode();
-            node.Border.Next = new XmlData.NextNode[listView3.Items.Count];
-            for (var k = 0; k < listView3.Items.Count; k++)
+            if (listView3.Items.Count > 0)
             {
-                node.Border.Next[k] = new XmlData.NextNode();
-                node.Border.Next[k].Value = int.Parse(listView3.Items[k].SubItems[0].Text);
-                node.Border.Next[k].Probability = int.Parse(listView3.Items[k].SubItems[2].Text);
-                node.Border.Next[k].OnlyFlag = listView3.Items[k].SubItems[3].Text;
+                node.Border = new XmlData.HitNode();
+                node.Border.Next = new XmlData.NextNode[listView3.Items.Count];
+                for (var k = 0; k < listView3.Items.Count; k++)
+                {
+                    node.Border.Next[k] = new XmlData.NextNode();
+                    node.Border.Next[k].Value = int.Parse(listView3.Items[k].SubItems[0].Text);
+                    node.Border.Next[k].Probability = int.Parse(listView3.Items[k].SubItems[2].Text);
+                    node.Border.Next[k].OnlyFlag = listView3.Items[k].SubItems[3].Text;
+                }
             }
-            node.Gravity = new XmlData.HitNode();
-            node.Gravity.Next = new XmlData.NextNode[listView4.Items.Count];
-            for (var k = 0; k < listView4.Items.Count; k++)
+            else
             {
-                node.Gravity.Next[k] = new XmlData.NextNode();
-                node.Gravity.Next[k].Value = int.Parse(listView4.Items[k].SubItems[0].Text);
-                node.Gravity.Next[k].Probability = int.Parse(listView4.Items[k].SubItems[2].Text);
-                node.Gravity.Next[k].OnlyFlag = listView4.Items[k].SubItems[3].Text;
+                node.Border = null;
+            }
+            if (listView4.Items.Count > 0)
+            {
+                node.Gravity = new XmlData.HitNode();
+                node.Gravity.Next = new XmlData.NextNode[listView4.Items.Count];
+                for (var k = 0; k < listView4.Items.Count; k++)
+                {
+                    node.Gravity.Next[k] = new XmlData.NextNode();
+                    node.Gravity.Next[k].Value = int.Parse(listView4.Items[k].SubItems[0].Text);
+                    node.Gravity.Next[k].Probability = int.Parse(listView4.Items[k].SubItems[2].Text);
+                    node.Gravity.Next[k].OnlyFlag = listView4.Items[k].SubItems[3].Text;
+                }
+            }
+            else
+            {
+                node.Gravity = null;
             }
             node.Start = new XmlData.MovingNode();
             node.Start.Interval = richTextBox6.Text;
@@ -696,6 +728,8 @@ namespace PetEditor
             EditAnimationNodeIndex = EditAnimationNode.Count - 1;
             EditAnimation(false, true, false);
             tabControl1.TabPages["tabPage4"].Text = "Animations*";
+
+            XmlTools.ProofAnimation(EditAnimationNode[0], node);
 
             UpdateAnimationStatistics(node);
         }
@@ -925,7 +959,7 @@ namespace PetEditor
             catch(Exception ex)
             {
                 groupBox15.Enabled = false;
-                Program.AddLog(ex.Message, "Sound Preview", false, true);
+                Program.AddLog(ex.Message, "Sound Preview", Program.LOG_TYPE.WARNING, tabPage5);
             }
         }
 
@@ -1033,11 +1067,11 @@ namespace PetEditor
             Bitmap bmp = new Bitmap(original);
             if(bmp.PhysicalDimension.Width % tilesX != 0)
             {
-                Program.AddLog("Picture width (" + bmp.PhysicalDimension.Width + ") is not divisible for " + tilesX, "Tiles", false, true);
+                Program.AddLog("Picture width (" + bmp.PhysicalDimension.Width + ") is not divisible for " + tilesX, "Tiles", Program.LOG_TYPE.WARNING, pictureBox1);
             }
             if (bmp.PhysicalDimension.Height % tilesY != 0)
             {
-                Program.AddLog("Picture height (" + bmp.PhysicalDimension.Height + ") is not divisible for " + tilesY, "Tiles", false, true);
+                Program.AddLog("Picture height (" + bmp.PhysicalDimension.Height + ") is not divisible for " + tilesY, "Tiles", Program.LOG_TYPE.WARNING, pictureBox1);
             }
             for (var y = 0; y < bmp.PhysicalDimension.Height; y += 3)
             {
@@ -1143,8 +1177,18 @@ namespace PetEditor
         {
             if (pictureBox2.Tag == null) pictureBox2.Tag = -1;
             int val = int.Parse(pictureBox2.Tag.ToString()) + 1;
+            if(listView1.Items.Count == 0)
+            {
+                timer1.Enabled = false;
+                return;
+            }
             if (val >= listView1.Items.Count) val = 0;
             var imageIndex = listView1.Items[val].ImageIndex;
+            if (imageIndex < 0)
+            {
+                timer1.Enabled = false;
+                return;
+            }
             pictureBox2.Image = listView1.LargeImageList.Images[imageIndex];
             pictureBox2.Tag = val;
             int nextIndex = (int.Parse(timer1.Tag.ToString()) + 1) % stats.SubSteps.Count;
@@ -1189,6 +1233,7 @@ namespace PetEditor
             var lv = cms.SourceControl as ListView;
             if(lv.SelectedIndices.Count == 0)
             {
+                toolStripMenuItem7.Enabled = false;
                 toolStripMenuItem6.Text = "ADD NEW";
                 toolStripTextBox1.Text = "10";
                 toolStripComboBox1.SelectedIndex = 0;
@@ -1196,6 +1241,7 @@ namespace PetEditor
             }
             else
             {
+                toolStripMenuItem7.Enabled = true;
                 toolStripMenuItem6.Text = "SAVE";
                 toolStripTextBox1.Text = lv.SelectedItems[0].SubItems[2].Text;
                 toolStripComboBox1.SelectedIndex = -1;
@@ -1619,6 +1665,17 @@ namespace PetEditor
         private void button4_Click(object sender, EventArgs e)
         {
             timer2.Enabled = false;
+        }
+
+        private void toolStripMenuItem7_Click(object sender, EventArgs e)
+        {
+            var cms = contextMenuStrip2;
+            var lv = cms.SourceControl as ListView;
+            if (lv.SelectedIndices.Count > 0)
+            {
+                lv.Items.Remove(lv.SelectedItems[0]);
+                animation_Edited(sender, e);
+            }
         }
     }
 }

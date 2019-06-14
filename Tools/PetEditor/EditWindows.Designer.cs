@@ -29,8 +29,8 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.Windows.Forms.ListViewItem listViewItem1 = new System.Windows.Forms.ListViewItem("");
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(EditWindows));
+            System.Windows.Forms.ListViewItem listViewItem2 = new System.Windows.Forms.ListViewItem("");
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabPage1 = new System.Windows.Forms.TabPage();
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
@@ -161,35 +161,37 @@
             this.comboBox4 = new System.Windows.Forms.ComboBox();
             this.label34 = new System.Windows.Forms.Label();
             this.tabPage6 = new System.Windows.Forms.TabPage();
-            this.timer1 = new System.Windows.Forms.Timer(this.components);
-            this.toolStrip1 = new System.Windows.Forms.ToolStrip();
-            this.toolStripButtonSave = new System.Windows.Forms.ToolStripButton();
-            this.toolStripButtonUndo = new System.Windows.Forms.ToolStripButton();
-            this.toolStripButtonRedo = new System.Windows.Forms.ToolStripButton();
+            this.groupBox15 = new System.Windows.Forms.GroupBox();
+            this.label45 = new System.Windows.Forms.Label();
+            this.label44 = new System.Windows.Forms.Label();
+            this.label43 = new System.Windows.Forms.Label();
+            this.progressBar1 = new System.Windows.Forms.ProgressBar();
+            this.button4 = new System.Windows.Forms.Button();
+            this.imageList1 = new System.Windows.Forms.ImageList(this.components);
+            this.button3 = new System.Windows.Forms.Button();
+            this.button2 = new System.Windows.Forms.Button();
+            this.label42 = new System.Windows.Forms.Label();
+            this.label41 = new System.Windows.Forms.Label();
+            this.groupBox14 = new System.Windows.Forms.GroupBox();
+            this.textBox1 = new System.Windows.Forms.TextBox();
+            this.button1 = new System.Windows.Forms.Button();
             this.groupBox12 = new System.Windows.Forms.GroupBox();
+            this.numericUpDown8 = new System.Windows.Forms.NumericUpDown();
+            this.numericUpDown7 = new System.Windows.Forms.NumericUpDown();
             this.label38 = new System.Windows.Forms.Label();
             this.label39 = new System.Windows.Forms.Label();
             this.groupBox13 = new System.Windows.Forms.GroupBox();
             this.comboBox6 = new System.Windows.Forms.ComboBox();
             this.label40 = new System.Windows.Forms.Label();
-            this.numericUpDown7 = new System.Windows.Forms.NumericUpDown();
-            this.numericUpDown8 = new System.Windows.Forms.NumericUpDown();
-            this.groupBox14 = new System.Windows.Forms.GroupBox();
-            this.button1 = new System.Windows.Forms.Button();
-            this.groupBox15 = new System.Windows.Forms.GroupBox();
-            this.label41 = new System.Windows.Forms.Label();
-            this.label42 = new System.Windows.Forms.Label();
-            this.textBox1 = new System.Windows.Forms.TextBox();
+            this.timer1 = new System.Windows.Forms.Timer(this.components);
+            this.toolStrip1 = new System.Windows.Forms.ToolStrip();
+            this.toolStripButtonSave = new System.Windows.Forms.ToolStripButton();
+            this.toolStripButtonUndo = new System.Windows.Forms.ToolStripButton();
+            this.toolStripButtonRedo = new System.Windows.Forms.ToolStripButton();
             this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
-            this.button2 = new System.Windows.Forms.Button();
-            this.imageList1 = new System.Windows.Forms.ImageList(this.components);
-            this.button3 = new System.Windows.Forms.Button();
-            this.button4 = new System.Windows.Forms.Button();
-            this.progressBar1 = new System.Windows.Forms.ProgressBar();
             this.timer2 = new System.Windows.Forms.Timer(this.components);
-            this.label43 = new System.Windows.Forms.Label();
-            this.label44 = new System.Windows.Forms.Label();
-            this.label45 = new System.Windows.Forms.Label();
+            this.toolStripSeparator3 = new System.Windows.Forms.ToolStripSeparator();
+            this.toolStripMenuItem7 = new System.Windows.Forms.ToolStripMenuItem();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
             this.tabPage2.SuspendLayout();
@@ -236,13 +238,13 @@
             this.groupBox10.SuspendLayout();
             this.groupBox4.SuspendLayout();
             this.tabPage6.SuspendLayout();
-            this.toolStrip1.SuspendLayout();
-            this.groupBox12.SuspendLayout();
-            this.groupBox13.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown7)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown8)).BeginInit();
-            this.groupBox14.SuspendLayout();
             this.groupBox15.SuspendLayout();
+            this.groupBox14.SuspendLayout();
+            this.groupBox12.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown8)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown7)).BeginInit();
+            this.groupBox13.SuspendLayout();
+            this.toolStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
             // tabControl1
@@ -745,7 +747,7 @@
             this.listView1.ContextMenuStrip = this.contextMenuStrip3;
             this.listView1.HeaderStyle = System.Windows.Forms.ColumnHeaderStyle.None;
             this.listView1.Items.AddRange(new System.Windows.Forms.ListViewItem[] {
-            listViewItem1});
+            listViewItem2});
             this.listView1.Location = new System.Drawing.Point(15, 68);
             this.listView1.Name = "listView1";
             this.listView1.Size = new System.Drawing.Size(570, 142);
@@ -899,9 +901,11 @@
             this.toolStripSeparator2,
             this.toolStripMenuItem4,
             this.toolStripComboBox2,
-            this.toolStripMenuItem6});
+            this.toolStripMenuItem6,
+            this.toolStripSeparator3,
+            this.toolStripMenuItem7});
             this.contextMenuStrip2.Name = "contextMenuStrip1";
-            this.contextMenuStrip2.Size = new System.Drawing.Size(182, 183);
+            this.contextMenuStrip2.Size = new System.Drawing.Size(182, 211);
             this.contextMenuStrip2.Text = "Next Animation";
             this.contextMenuStrip2.Opening += new System.ComponentModel.CancelEventHandler(this.contextMenuStrip2_Opening);
             // 
@@ -1670,56 +1674,157 @@
             this.tabPage6.TabIndex = 5;
             this.tabPage6.Text = "Sounds";
             // 
-            // timer1
+            // groupBox15
             // 
-            this.timer1.Interval = 200;
-            this.timer1.Tick += new System.EventHandler(this.timer1_Tick);
+            this.groupBox15.Controls.Add(this.label45);
+            this.groupBox15.Controls.Add(this.label44);
+            this.groupBox15.Controls.Add(this.label43);
+            this.groupBox15.Controls.Add(this.progressBar1);
+            this.groupBox15.Controls.Add(this.button4);
+            this.groupBox15.Controls.Add(this.button3);
+            this.groupBox15.Controls.Add(this.button2);
+            this.groupBox15.Controls.Add(this.label42);
+            this.groupBox15.Controls.Add(this.label41);
+            this.groupBox15.Enabled = false;
+            this.groupBox15.Location = new System.Drawing.Point(631, 3);
+            this.groupBox15.Name = "groupBox15";
+            this.groupBox15.Size = new System.Drawing.Size(231, 368);
+            this.groupBox15.TabIndex = 8;
+            this.groupBox15.TabStop = false;
+            this.groupBox15.Text = "Sound info:";
             // 
-            // toolStrip1
+            // label45
             // 
-            this.toolStrip1.ImageScalingSize = new System.Drawing.Size(32, 32);
-            this.toolStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.toolStripButtonSave,
-            this.toolStripButtonUndo,
-            this.toolStripButtonRedo});
-            this.toolStrip1.Location = new System.Drawing.Point(0, 0);
-            this.toolStrip1.Name = "toolStrip1";
-            this.toolStrip1.Size = new System.Drawing.Size(878, 39);
-            this.toolStrip1.TabIndex = 3;
-            this.toolStrip1.Text = "toolStrip1";
+            this.label45.AutoSize = true;
+            this.label45.Location = new System.Drawing.Point(21, 82);
+            this.label45.Name = "label45";
+            this.label45.Size = new System.Drawing.Size(28, 13);
+            this.label45.TabIndex = 8;
+            this.label45.Text = "size:";
             // 
-            // toolStripButtonSave
+            // label44
             // 
-            this.toolStripButtonSave.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.toolStripButtonSave.Enabled = false;
-            this.toolStripButtonSave.Image = ((System.Drawing.Image)(resources.GetObject("toolStripButtonSave.Image")));
-            this.toolStripButtonSave.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.toolStripButtonSave.Name = "toolStripButtonSave";
-            this.toolStripButtonSave.Size = new System.Drawing.Size(36, 36);
-            this.toolStripButtonSave.Text = "Save Node";
-            this.toolStripButtonSave.Click += new System.EventHandler(this.toolStripButton1_Click);
+            this.label44.AutoSize = true;
+            this.label44.Location = new System.Drawing.Point(21, 65);
+            this.label44.Name = "label44";
+            this.label44.Size = new System.Drawing.Size(28, 13);
+            this.label44.TabIndex = 7;
+            this.label44.Text = "size:";
             // 
-            // toolStripButtonUndo
+            // label43
             // 
-            this.toolStripButtonUndo.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.toolStripButtonUndo.Enabled = false;
-            this.toolStripButtonUndo.Image = ((System.Drawing.Image)(resources.GetObject("toolStripButtonUndo.Image")));
-            this.toolStripButtonUndo.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.toolStripButtonUndo.Name = "toolStripButtonUndo";
-            this.toolStripButtonUndo.Size = new System.Drawing.Size(36, 36);
-            this.toolStripButtonUndo.Text = "Undo";
-            this.toolStripButtonUndo.Click += new System.EventHandler(this.toolStripButton2_Click);
+            this.label43.AutoSize = true;
+            this.label43.Location = new System.Drawing.Point(21, 48);
+            this.label43.Name = "label43";
+            this.label43.Size = new System.Drawing.Size(28, 13);
+            this.label43.TabIndex = 6;
+            this.label43.Text = "size:";
             // 
-            // toolStripButtonRedo
+            // progressBar1
             // 
-            this.toolStripButtonRedo.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.toolStripButtonRedo.Enabled = false;
-            this.toolStripButtonRedo.Image = ((System.Drawing.Image)(resources.GetObject("toolStripButtonRedo.Image")));
-            this.toolStripButtonRedo.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.toolStripButtonRedo.Name = "toolStripButtonRedo";
-            this.toolStripButtonRedo.Size = new System.Drawing.Size(36, 36);
-            this.toolStripButtonRedo.Text = "Redo";
-            this.toolStripButtonRedo.Click += new System.EventHandler(this.toolStripButton3_Click);
+            this.progressBar1.Location = new System.Drawing.Point(6, 179);
+            this.progressBar1.MarqueeAnimationSpeed = 5;
+            this.progressBar1.Name = "progressBar1";
+            this.progressBar1.Size = new System.Drawing.Size(201, 10);
+            this.progressBar1.Step = 1;
+            this.progressBar1.TabIndex = 5;
+            // 
+            // button4
+            // 
+            this.button4.AutoSize = true;
+            this.button4.ImageIndex = 2;
+            this.button4.ImageList = this.imageList1;
+            this.button4.Location = new System.Drawing.Point(153, 115);
+            this.button4.Name = "button4";
+            this.button4.Size = new System.Drawing.Size(54, 48);
+            this.button4.TabIndex = 4;
+            this.button4.UseVisualStyleBackColor = true;
+            this.button4.Click += new System.EventHandler(this.button4_Click);
+            // 
+            // imageList1
+            // 
+            this.imageList1.ImageStream = ((System.Windows.Forms.ImageListStreamer)(resources.GetObject("imageList1.ImageStream")));
+            this.imageList1.TransparentColor = System.Drawing.Color.Transparent;
+            this.imageList1.Images.SetKeyName(0, "ico_pause.png");
+            this.imageList1.Images.SetKeyName(1, "ico_play.png");
+            this.imageList1.Images.SetKeyName(2, "ico_stop.png");
+            this.imageList1.Images.SetKeyName(3, "ico_play2.png");
+            // 
+            // button3
+            // 
+            this.button3.AutoSize = true;
+            this.button3.ImageIndex = 3;
+            this.button3.ImageList = this.imageList1;
+            this.button3.Location = new System.Drawing.Point(80, 115);
+            this.button3.Name = "button3";
+            this.button3.Size = new System.Drawing.Size(54, 48);
+            this.button3.TabIndex = 3;
+            this.button3.UseVisualStyleBackColor = true;
+            this.button3.Click += new System.EventHandler(this.button3_Click);
+            // 
+            // button2
+            // 
+            this.button2.AutoSize = true;
+            this.button2.ImageIndex = 1;
+            this.button2.ImageList = this.imageList1;
+            this.button2.Location = new System.Drawing.Point(6, 115);
+            this.button2.Name = "button2";
+            this.button2.Size = new System.Drawing.Size(54, 48);
+            this.button2.TabIndex = 2;
+            this.button2.UseVisualStyleBackColor = true;
+            this.button2.Click += new System.EventHandler(this.button2_Click);
+            // 
+            // label42
+            // 
+            this.label42.AutoSize = true;
+            this.label42.Location = new System.Drawing.Point(86, 193);
+            this.label42.Name = "label42";
+            this.label42.Size = new System.Drawing.Size(39, 13);
+            this.label42.TabIndex = 1;
+            this.label42.Text = "length:";
+            // 
+            // label41
+            // 
+            this.label41.AutoSize = true;
+            this.label41.Location = new System.Drawing.Point(21, 31);
+            this.label41.Name = "label41";
+            this.label41.Size = new System.Drawing.Size(28, 13);
+            this.label41.TabIndex = 0;
+            this.label41.Text = "size:";
+            // 
+            // groupBox14
+            // 
+            this.groupBox14.Controls.Add(this.textBox1);
+            this.groupBox14.Controls.Add(this.button1);
+            this.groupBox14.Enabled = false;
+            this.groupBox14.Location = new System.Drawing.Point(8, 254);
+            this.groupBox14.Name = "groupBox14";
+            this.groupBox14.Size = new System.Drawing.Size(608, 117);
+            this.groupBox14.TabIndex = 7;
+            this.groupBox14.TabStop = false;
+            this.groupBox14.Text = "Sound file:";
+            // 
+            // textBox1
+            // 
+            this.textBox1.Location = new System.Drawing.Point(20, 48);
+            this.textBox1.Multiline = true;
+            this.textBox1.Name = "textBox1";
+            this.textBox1.ReadOnly = true;
+            this.textBox1.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
+            this.textBox1.Size = new System.Drawing.Size(582, 63);
+            this.textBox1.TabIndex = 1;
+            this.textBox1.WordWrap = false;
+            this.textBox1.TextChanged += new System.EventHandler(this.sound_Edited);
+            // 
+            // button1
+            // 
+            this.button1.Location = new System.Drawing.Point(215, 19);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(191, 23);
+            this.button1.TabIndex = 0;
+            this.button1.Text = "Import...";
+            this.button1.UseVisualStyleBackColor = true;
+            this.button1.Click += new System.EventHandler(this.button1_Click);
             // 
             // groupBox12
             // 
@@ -1734,6 +1839,29 @@
             this.groupBox12.TabIndex = 6;
             this.groupBox12.TabStop = false;
             this.groupBox12.Text = "Sound options";
+            // 
+            // numericUpDown8
+            // 
+            this.numericUpDown8.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.numericUpDown8.Location = new System.Drawing.Point(40, 101);
+            this.numericUpDown8.Maximum = new decimal(new int[] {
+            20,
+            0,
+            0,
+            0});
+            this.numericUpDown8.Name = "numericUpDown8";
+            this.numericUpDown8.Size = new System.Drawing.Size(84, 23);
+            this.numericUpDown8.TabIndex = 6;
+            this.numericUpDown8.ValueChanged += new System.EventHandler(this.sound_Edited);
+            // 
+            // numericUpDown7
+            // 
+            this.numericUpDown7.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.numericUpDown7.Location = new System.Drawing.Point(40, 47);
+            this.numericUpDown7.Name = "numericUpDown7";
+            this.numericUpDown7.Size = new System.Drawing.Size(84, 23);
+            this.numericUpDown7.TabIndex = 5;
+            this.numericUpDown7.ValueChanged += new System.EventHandler(this.sound_Edited);
             // 
             // label38
             // 
@@ -1785,99 +1913,56 @@
             this.label40.TabIndex = 1;
             this.label40.Text = "Start on animation:";
             // 
-            // numericUpDown7
+            // timer1
             // 
-            this.numericUpDown7.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.numericUpDown7.Location = new System.Drawing.Point(40, 47);
-            this.numericUpDown7.Name = "numericUpDown7";
-            this.numericUpDown7.Size = new System.Drawing.Size(84, 23);
-            this.numericUpDown7.TabIndex = 5;
-            this.numericUpDown7.ValueChanged += new System.EventHandler(this.sound_Edited);
+            this.timer1.Interval = 200;
+            this.timer1.Tick += new System.EventHandler(this.timer1_Tick);
             // 
-            // numericUpDown8
+            // toolStrip1
             // 
-            this.numericUpDown8.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.numericUpDown8.Location = new System.Drawing.Point(40, 101);
-            this.numericUpDown8.Maximum = new decimal(new int[] {
-            20,
-            0,
-            0,
-            0});
-            this.numericUpDown8.Name = "numericUpDown8";
-            this.numericUpDown8.Size = new System.Drawing.Size(84, 23);
-            this.numericUpDown8.TabIndex = 6;
-            this.numericUpDown8.ValueChanged += new System.EventHandler(this.sound_Edited);
+            this.toolStrip1.ImageScalingSize = new System.Drawing.Size(32, 32);
+            this.toolStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.toolStripButtonSave,
+            this.toolStripButtonUndo,
+            this.toolStripButtonRedo});
+            this.toolStrip1.Location = new System.Drawing.Point(0, 0);
+            this.toolStrip1.Name = "toolStrip1";
+            this.toolStrip1.Size = new System.Drawing.Size(878, 39);
+            this.toolStrip1.TabIndex = 3;
+            this.toolStrip1.Text = "toolStrip1";
             // 
-            // groupBox14
+            // toolStripButtonSave
             // 
-            this.groupBox14.Controls.Add(this.textBox1);
-            this.groupBox14.Controls.Add(this.button1);
-            this.groupBox14.Enabled = false;
-            this.groupBox14.Location = new System.Drawing.Point(8, 254);
-            this.groupBox14.Name = "groupBox14";
-            this.groupBox14.Size = new System.Drawing.Size(608, 117);
-            this.groupBox14.TabIndex = 7;
-            this.groupBox14.TabStop = false;
-            this.groupBox14.Text = "Sound file:";
+            this.toolStripButtonSave.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.toolStripButtonSave.Enabled = false;
+            this.toolStripButtonSave.Image = ((System.Drawing.Image)(resources.GetObject("toolStripButtonSave.Image")));
+            this.toolStripButtonSave.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.toolStripButtonSave.Name = "toolStripButtonSave";
+            this.toolStripButtonSave.Size = new System.Drawing.Size(36, 36);
+            this.toolStripButtonSave.Text = "Save Node";
+            this.toolStripButtonSave.Click += new System.EventHandler(this.toolStripButton1_Click);
             // 
-            // button1
+            // toolStripButtonUndo
             // 
-            this.button1.Location = new System.Drawing.Point(215, 19);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(191, 23);
-            this.button1.TabIndex = 0;
-            this.button1.Text = "Import...";
-            this.button1.UseVisualStyleBackColor = true;
-            this.button1.Click += new System.EventHandler(this.button1_Click);
+            this.toolStripButtonUndo.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.toolStripButtonUndo.Enabled = false;
+            this.toolStripButtonUndo.Image = ((System.Drawing.Image)(resources.GetObject("toolStripButtonUndo.Image")));
+            this.toolStripButtonUndo.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.toolStripButtonUndo.Name = "toolStripButtonUndo";
+            this.toolStripButtonUndo.Size = new System.Drawing.Size(36, 36);
+            this.toolStripButtonUndo.Text = "Undo";
+            this.toolStripButtonUndo.Click += new System.EventHandler(this.toolStripButton2_Click);
             // 
-            // groupBox15
+            // toolStripButtonRedo
             // 
-            this.groupBox15.Controls.Add(this.label45);
-            this.groupBox15.Controls.Add(this.label44);
-            this.groupBox15.Controls.Add(this.label43);
-            this.groupBox15.Controls.Add(this.progressBar1);
-            this.groupBox15.Controls.Add(this.button4);
-            this.groupBox15.Controls.Add(this.button3);
-            this.groupBox15.Controls.Add(this.button2);
-            this.groupBox15.Controls.Add(this.label42);
-            this.groupBox15.Controls.Add(this.label41);
-            this.groupBox15.Enabled = false;
-            this.groupBox15.Location = new System.Drawing.Point(631, 3);
-            this.groupBox15.Name = "groupBox15";
-            this.groupBox15.Size = new System.Drawing.Size(231, 368);
-            this.groupBox15.TabIndex = 8;
-            this.groupBox15.TabStop = false;
-            this.groupBox15.Text = "Sound info:";
-            // 
-            // label41
-            // 
-            this.label41.AutoSize = true;
-            this.label41.Location = new System.Drawing.Point(21, 31);
-            this.label41.Name = "label41";
-            this.label41.Size = new System.Drawing.Size(28, 13);
-            this.label41.TabIndex = 0;
-            this.label41.Text = "size:";
-            // 
-            // label42
-            // 
-            this.label42.AutoSize = true;
-            this.label42.Location = new System.Drawing.Point(86, 193);
-            this.label42.Name = "label42";
-            this.label42.Size = new System.Drawing.Size(39, 13);
-            this.label42.TabIndex = 1;
-            this.label42.Text = "length:";
-            // 
-            // textBox1
-            // 
-            this.textBox1.Location = new System.Drawing.Point(20, 48);
-            this.textBox1.Multiline = true;
-            this.textBox1.Name = "textBox1";
-            this.textBox1.ReadOnly = true;
-            this.textBox1.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-            this.textBox1.Size = new System.Drawing.Size(582, 63);
-            this.textBox1.TabIndex = 1;
-            this.textBox1.WordWrap = false;
-            this.textBox1.TextChanged += new System.EventHandler(this.sound_Edited);
+            this.toolStripButtonRedo.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.toolStripButtonRedo.Enabled = false;
+            this.toolStripButtonRedo.Image = ((System.Drawing.Image)(resources.GetObject("toolStripButtonRedo.Image")));
+            this.toolStripButtonRedo.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.toolStripButtonRedo.Name = "toolStripButtonRedo";
+            this.toolStripButtonRedo.Size = new System.Drawing.Size(36, 36);
+            this.toolStripButtonRedo.Text = "Redo";
+            this.toolStripButtonRedo.Click += new System.EventHandler(this.toolStripButton3_Click);
             // 
             // openFileDialog1
             // 
@@ -1885,90 +1970,22 @@
             this.openFileDialog1.Filter = "MP3 files|*.mp3";
             this.openFileDialog1.Title = "Import mp3";
             // 
-            // button2
-            // 
-            this.button2.AutoSize = true;
-            this.button2.ImageIndex = 1;
-            this.button2.ImageList = this.imageList1;
-            this.button2.Location = new System.Drawing.Point(6, 115);
-            this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(54, 48);
-            this.button2.TabIndex = 2;
-            this.button2.UseVisualStyleBackColor = true;
-            this.button2.Click += new System.EventHandler(this.button2_Click);
-            // 
-            // imageList1
-            // 
-            this.imageList1.ImageStream = ((System.Windows.Forms.ImageListStreamer)(resources.GetObject("imageList1.ImageStream")));
-            this.imageList1.TransparentColor = System.Drawing.Color.Transparent;
-            this.imageList1.Images.SetKeyName(0, "ico_pause.png");
-            this.imageList1.Images.SetKeyName(1, "ico_play.png");
-            this.imageList1.Images.SetKeyName(2, "ico_stop.png");
-            this.imageList1.Images.SetKeyName(3, "ico_play2.png");
-            // 
-            // button3
-            // 
-            this.button3.AutoSize = true;
-            this.button3.ImageIndex = 3;
-            this.button3.ImageList = this.imageList1;
-            this.button3.Location = new System.Drawing.Point(80, 115);
-            this.button3.Name = "button3";
-            this.button3.Size = new System.Drawing.Size(54, 48);
-            this.button3.TabIndex = 3;
-            this.button3.UseVisualStyleBackColor = true;
-            this.button3.Click += new System.EventHandler(this.button3_Click);
-            // 
-            // button4
-            // 
-            this.button4.AutoSize = true;
-            this.button4.ImageIndex = 2;
-            this.button4.ImageList = this.imageList1;
-            this.button4.Location = new System.Drawing.Point(153, 115);
-            this.button4.Name = "button4";
-            this.button4.Size = new System.Drawing.Size(54, 48);
-            this.button4.TabIndex = 4;
-            this.button4.UseVisualStyleBackColor = true;
-            this.button4.Click += new System.EventHandler(this.button4_Click);
-            // 
-            // progressBar1
-            // 
-            this.progressBar1.Location = new System.Drawing.Point(6, 179);
-            this.progressBar1.MarqueeAnimationSpeed = 5;
-            this.progressBar1.Name = "progressBar1";
-            this.progressBar1.Size = new System.Drawing.Size(201, 10);
-            this.progressBar1.Step = 1;
-            this.progressBar1.TabIndex = 5;
-            // 
             // timer2
             // 
             this.timer2.Tick += new System.EventHandler(this.timer2_Tick);
             // 
-            // label43
+            // toolStripSeparator3
             // 
-            this.label43.AutoSize = true;
-            this.label43.Location = new System.Drawing.Point(21, 48);
-            this.label43.Name = "label43";
-            this.label43.Size = new System.Drawing.Size(28, 13);
-            this.label43.TabIndex = 6;
-            this.label43.Text = "size:";
+            this.toolStripSeparator3.Name = "toolStripSeparator3";
+            this.toolStripSeparator3.Size = new System.Drawing.Size(178, 6);
             // 
-            // label44
+            // toolStripMenuItem7
             // 
-            this.label44.AutoSize = true;
-            this.label44.Location = new System.Drawing.Point(21, 65);
-            this.label44.Name = "label44";
-            this.label44.Size = new System.Drawing.Size(28, 13);
-            this.label44.TabIndex = 7;
-            this.label44.Text = "size:";
-            // 
-            // label45
-            // 
-            this.label45.AutoSize = true;
-            this.label45.Location = new System.Drawing.Point(21, 82);
-            this.label45.Name = "label45";
-            this.label45.Size = new System.Drawing.Size(28, 13);
-            this.label45.TabIndex = 8;
-            this.label45.Text = "size:";
+            this.toolStripMenuItem7.Image = ((System.Drawing.Image)(resources.GetObject("toolStripMenuItem7.Image")));
+            this.toolStripMenuItem7.Name = "toolStripMenuItem7";
+            this.toolStripMenuItem7.Size = new System.Drawing.Size(181, 22);
+            this.toolStripMenuItem7.Text = "REMOVE";
+            this.toolStripMenuItem7.Click += new System.EventHandler(this.toolStripMenuItem7_Click);
             // 
             // EditWindows
             // 
@@ -2049,18 +2066,18 @@
             this.groupBox4.ResumeLayout(false);
             this.groupBox4.PerformLayout();
             this.tabPage6.ResumeLayout(false);
-            this.toolStrip1.ResumeLayout(false);
-            this.toolStrip1.PerformLayout();
-            this.groupBox12.ResumeLayout(false);
-            this.groupBox12.PerformLayout();
-            this.groupBox13.ResumeLayout(false);
-            this.groupBox13.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown7)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown8)).EndInit();
-            this.groupBox14.ResumeLayout(false);
-            this.groupBox14.PerformLayout();
             this.groupBox15.ResumeLayout(false);
             this.groupBox15.PerformLayout();
+            this.groupBox14.ResumeLayout(false);
+            this.groupBox14.PerformLayout();
+            this.groupBox12.ResumeLayout(false);
+            this.groupBox12.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown8)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown7)).EndInit();
+            this.groupBox13.ResumeLayout(false);
+            this.groupBox13.PerformLayout();
+            this.toolStrip1.ResumeLayout(false);
+            this.toolStrip1.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -2227,5 +2244,7 @@
         private System.Windows.Forms.Label label43;
         private System.Windows.Forms.Label label44;
         private System.Windows.Forms.Label label45;
+        private System.Windows.Forms.ToolStripSeparator toolStripSeparator3;
+        private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem7;
     }
 }

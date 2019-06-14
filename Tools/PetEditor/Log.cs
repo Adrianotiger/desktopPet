@@ -28,22 +28,24 @@ namespace PetEditor
 
         }
 
-        public void AddErrorLog(string text, string action)
+        public void AddErrorLog(string text, string action, Control emitter)
         {
             var li = listView1.Items.Add(DateTime.Now.ToLongTimeString());
             li.BackColor = Color.LightPink;
             li.SubItems.Add(action);
             li.SubItems.Add(text);
             li.EnsureVisible();
+            li.Tag = emitter;
         }
 
-        public void AddWarningLog(string text, string action)
+        public void AddWarningLog(string text, string action, Control emitter)
         {
             var li = listView1.Items.Add(DateTime.Now.ToLongTimeString());
             li.BackColor = Color.Orange;
             li.SubItems.Add(action);
             li.SubItems.Add(text);
             li.EnsureVisible();
+            li.Tag = emitter;
         }
 
         public void AddLog(string text, string action)
@@ -52,6 +54,31 @@ namespace PetEditor
             li.SubItems.Add(action);
             li.SubItems.Add(text);
             li.EnsureVisible();
+        }
+
+        private void listView1_DoubleClick(object sender, EventArgs e)
+        {
+            if (listView1.SelectedItems.Count > 0)
+            {
+                if (listView1.SelectedItems[0].Tag != null)
+                {
+                    if(listView1.SelectedItems[0].Tag is Control)
+                    {
+                        SetVisible((listView1.SelectedItems[0].Tag as Control));
+                        (listView1.SelectedItems[0].Tag as Control).Focus();
+                        (listView1.SelectedItems[0].Tag as Control).Select();
+                    }
+                }
+            }
+        }
+
+        private void SetVisible(Control c)
+        {
+            if(c.Visible == false)
+            {
+                if (c.Parent != null) SetVisible(c.Parent);
+                c.Visible = true;
+            }
         }
     }
 }

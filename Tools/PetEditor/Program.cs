@@ -12,6 +12,12 @@ namespace PetEditor
     {
         public static XmlData.RootNode AnimationXML { get; set; }
         public static Log LogForm { get; set; }
+        public enum LOG_TYPE
+        {
+            MESSAGE = 1,
+            WARNING = 2,
+            ERROR = 3
+        };
 
         /// <summary>
         /// Der Haupteinstiegspunkt für die Anwendung.
@@ -27,12 +33,12 @@ namespace PetEditor
             Application.Run(new MainWindow());
         }
 
-        public static void AddLog(string text, string action, bool isError = false, bool isWarning = false)
+        public static void AddLog(string text, string action, LOG_TYPE type = LOG_TYPE.MESSAGE, Control emitter = null)
         {
             if(LogForm != null)
             {
-                if (isError) LogForm.AddErrorLog(text, action);
-                else if (isWarning) LogForm.AddWarningLog(text, action);
+                if (type == LOG_TYPE.ERROR) LogForm.AddErrorLog(text, action, emitter);
+                else if (type == LOG_TYPE.WARNING) LogForm.AddWarningLog(text, action, emitter);
                 else LogForm.AddLog(text, action);
             }
         }

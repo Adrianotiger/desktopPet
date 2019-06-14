@@ -227,11 +227,11 @@ namespace PetEditor
 
         private void insertNodeToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            treeView1.SelectedNode = treeView1.Nodes[1].Nodes[0];
             var cms = contextMenuStrip1;
             var lv = cms.SourceControl as ListView;
             if(lv == listView1) // spawn
             {
+                treeView1.SelectedNode = treeView1.Nodes[0].Nodes[2];
                 var node = new XmlData.SpawnNode();
                 for(var j=1;j<=listView1.Items.Count+2;j++)
                 {
@@ -250,6 +250,7 @@ namespace PetEditor
             }
             else if(lv == listView2) // animations
             {
+                treeView1.SelectedNode = treeView1.Nodes[0].Nodes[3];
                 var node = new XmlData.AnimationNode();
                 for (var j = 1; j <= listView2.Items.Count + 2; j++)
                 {
@@ -265,6 +266,7 @@ namespace PetEditor
             }
             else if (lv == listView3) // childs
             {
+                treeView1.SelectedNode = treeView1.Nodes[0].Nodes[4];
                 var node = new XmlData.ChildNode();
                 for (var j = 1; j <= listView3.Items.Count + 2; j++)
                 {
@@ -280,6 +282,7 @@ namespace PetEditor
             }
             else if (lv == listView4) // sounds
             {
+                treeView1.SelectedNode = treeView1.Nodes[0].Nodes[5];
                 var node = new XmlData.SoundNode();
                 for (var j = 1; j <= listView4.Items.Count + 2; j++)
                 {
@@ -294,6 +297,43 @@ namespace PetEditor
             }
         }
 
-        
+        private void removeNodeToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            var cms = contextMenuStrip1;
+            var lv = cms.SourceControl as ListView;
+            if (lv.SelectedIndices.Count == 0) return;
+            if (lv == listView1) // spawn
+            {
+                if (lv.Items.Count <= 1)
+                {
+                    Program.AddLog("You need at least 1 spawn for your animation!", "Remove Spawn", Program.LOG_TYPE.ERROR, lv);
+                }
+                else
+                {
+                    treeView1.SelectedNode = treeView1.Nodes[0].Nodes[2];
+                    var node = XmlTools.GetXmlSpawnNode(spawnsList[lv.SelectedIndices[0]]);
+                    XmlTools.UpdateXmlSpawnNode(node, null);
+                }
+            }
+            else if (lv == listView2) // animations
+            {
+                treeView1.SelectedNode = treeView1.Nodes[0].Nodes[3];
+                var node = XmlTools.GetXmlAnimationNode(animationsList[lv.SelectedIndices[0]]);
+                XmlTools.UpdateXmlAnimationNode(node, null);
+            }
+            else if (lv == listView3) // childs
+            {
+                treeView1.SelectedNode = treeView1.Nodes[0].Nodes[4];
+                var node = XmlTools.GetXmlChildNode(childsList[lv.SelectedIndices[0]]);
+                XmlTools.UpdateXmlChildNode(node, null);
+            }
+            else if (lv == listView4) // sounds
+            {
+                treeView1.SelectedNode = treeView1.Nodes[0].Nodes[5];
+                var node = XmlTools.GetXmlSoundNode(soundsList[lv.SelectedIndices[0]]);
+                XmlTools.UpdateXmlSoundNode(node, null);
+            }
+            UpdateData();
+        }
     }
 }

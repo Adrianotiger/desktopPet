@@ -18,12 +18,31 @@ namespace PetEditor
         public static ImageList AnimationImages = new ImageList();
         public static ImageList AnimationIcons = new ImageList();
 
+        public class StatisticsDataInput
+        {
+            public Point Screen { get; set; }
+            public Point Area { get; set; }
+            public Rectangle Image { get; set; }
+            public int Random { get; set; } = -1;
+            public int SRandom { get; set; } = -1;
+
+        };
+
         public static bool LoadXML(string fileName)
         {
+            var AnimationXMLString = "";
             if (fileName == "")
             {
-                Program.AnimationXML = new XmlData.RootNode();
-                return true;
+                AnimationXMLString = Properties.Resources.animations;
+            }
+            else
+            {
+                AnimationXMLString = File.ReadAllText(fileName);
+                if (AnimationXMLString.IndexOf("http://esheep.petrucci.ch") > 0)
+                {
+                    Program.AddLog("Old format (http) found as namespace, replacing it with https.", "LOAD FILE", Program.LOG_TYPE.WARNING, null);
+                    AnimationXMLString = AnimationXMLString.Replace("http://esheep.petrucci.ch", "https://esheep.petrucci.ch");
+                }
             }
             bool bError = false;
             // Construct an instance of the XmlSerializer with the type
@@ -35,12 +54,7 @@ namespace PetEditor
             // Try to load local XML
             try
             {
-                var AnimationXMLString = File.ReadAllText(fileName);
-                if (AnimationXMLString.IndexOf("http://esheep.petrucci.ch") > 0)
-                {
-                    Program.AddLog("Old format (http) found as namespace, replacing it with https.", "LOAD FILE", false, true);
-                    AnimationXMLString = AnimationXMLString.Replace("http://esheep.petrucci.ch", "https://esheep.petrucci.ch");
-                }
+                
                 writer.Write(AnimationXMLString);
                 writer.Flush();
                 stream.Position = 0;
@@ -52,7 +66,7 @@ namespace PetEditor
             }
             catch (Exception ex)
             {
-                Program.AddLog("Unable to load XML file " + fileName, "LOAD FILE", true);
+                Program.AddLog("Unable to load XML file " + fileName, "LOAD FILE", Program.LOG_TYPE.ERROR, null);
                 MessageBox.Show("User XML error: " + ex.ToString(), "XML Animation error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
             finally
@@ -181,11 +195,20 @@ namespace PetEditor
                 {
                     if (n.Id == oldNode.Id)
                     {
-                        n.Id = newNode.Id;
-                        n.Next = newNode.Next;
-                        n.Probability = newNode.Probability;
-                        n.X = newNode.X;
-                        n.Y = newNode.Y;
+                        if (newNode == null)
+                        {
+                            var newSpawns = new List<XmlData.SpawnNode>(Program.AnimationXML.Spawns.Spawn);
+                            newSpawns.Remove(n);
+                            Program.AnimationXML.Spawns.Spawn = newSpawns.ToArray();
+                        }
+                        else
+                        {
+                            n.Id = newNode.Id;
+                            n.Next = newNode.Next;
+                            n.Probability = newNode.Probability;
+                            n.X = newNode.X;
+                            n.Y = newNode.Y;
+                        }
                         break;
                     }
                 }
@@ -293,7 +316,16 @@ namespace PetEditor
                 {
                     if (Program.AnimationXML.Animations.Animation[k].Id == oldNode.Id)
                     {
-                        Program.AnimationXML.Animations.Animation[k] = newNode;
+                        if (newNode == null)
+                        {
+                            var newAnis = new List<XmlData.AnimationNode>(Program.AnimationXML.Animations.Animation);
+                            newAnis.RemoveAt(k);
+                            Program.AnimationXML.Animations.Animation = newAnis.ToArray();
+                        }
+                        else
+                        {
+                            Program.AnimationXML.Animations.Animation[k] = newNode;
+                        }
                         break;
                     }
                 }
@@ -328,7 +360,72 @@ namespace PetEditor
             return ret;
         }
 
-        static public AnimationStatistics GetAnimationStatistics(XmlData.AnimationNode node, int spriteWidth, int spriteHeight, int forceRandomTo = -1)
+        static public bool ProofAnimation(XmlData.AnimationNode original, XmlData.AnimationNode current)
+        {
+            if (original.Id != current.Id) // proof if nothing is linking to the original Id
+            {
+                foreach (var s in Program.AnimationXML.Spawns.Spawn)
+                {
+                    if (s.Next.Value == original.Id)
+                    {
+                        Program.AddLog("Spawn " + s.Id + " is using this ID", "Change Animation ID", Program.LOG_TYPE.WARNING, null);
+                    }
+                }
+                foreach (var a in Program.AnimationXML.Animations.Animation)
+                {
+                    foreach (var a2 in a.Sequence.Next)
+                    {
+                        if (a2.Value == original.Id)
+                        {
+                            Program.AddLog("Animation " + a.Id + " is using this ID as next", "Change Animation ID", Program.LOG_TYPE.WARNING, null);
+                        }
+                    }
+                    if (a.Gravity != null)
+                    {
+                        foreach (var a2 in a.Gravity.Next)
+                        {
+                            if (a2.Value == original.Id)
+                            {
+                                Program.AddLog("Animation " + a.Id + " is using this ID as gravity", "Change Animation ID", Program.LOG_TYPE.WARNING, null);
+                            }
+                        }
+                    }
+                    if (a.Border != null)
+                    {
+                        foreach (var a2 in a.Border.Next)
+                        {
+                            if (a2.Value == original.Id)
+                            {
+                                Program.AddLog("Animation " + a.Id + " is using this ID as border", "Change Animation ID", Program.LOG_TYPE.WARNING, null);
+                            }
+                        }
+                    }
+                }
+                if (Program.AnimationXML.Childs != null)
+                {
+                    foreach (var c in Program.AnimationXML.Childs.Child)
+                    {
+                        if (c.Next == original.Id)
+                        {
+                            Program.AddLog("Child " + c.Id + " is using this ID", "Change Animation ID", Program.LOG_TYPE.WARNING, null);
+                        }
+                    }
+                }
+                if (Program.AnimationXML.Sounds != null)
+                {
+                    foreach (var s in Program.AnimationXML.Sounds.Sound)
+                    {
+                        if (s.Id == original.Id)
+                        {
+                            Program.AddLog("Sound " + s.Id + " is using this ID", "Change Animation ID", Program.LOG_TYPE.WARNING, null);
+                        }
+                    }
+                }
+            }
+            return true;
+        }
+
+        static public AnimationStatistics GetAnimationStatistics(XmlData.AnimationNode node, StatisticsDataInput dimensions, Control c)
         {
             var stat = new AnimationStatistics();
             bool variableRand = false;
@@ -337,33 +434,33 @@ namespace PetEditor
             stat.Frames = node.Sequence.Frame.Length;
             if (node.Sequence.RepeatCount.IndexOf("screen") >= 0 || node.Sequence.RepeatCount.IndexOf("area") >= 0) variableScreen = true;
             if (node.Sequence.RepeatCount.IndexOf("random") >= 0) variableRand = true;
-            stat.Repeats = EvalValue(node.Sequence.RepeatCount, spriteWidth, spriteHeight, 0, 0, 50);
+            stat.Repeats = EvalValue(node.Sequence.RepeatCount, dimensions, c);
             stat.RepeatFrom = node.Sequence.RepeatFromFrame;
             stat.TotalFrames = stat.Frames + (stat.Frames - stat.RepeatFrom) * stat.Repeats;
 
             stat.Start = new AnimationStatistics.StepValues();
             if (node.Start.X.IndexOf("screen") >= 0 || node.Start.X.IndexOf("area") >= 0) variableScreen = true;
             if (node.Start.X.IndexOf("random") >= 0) variableRand = true;
-            stat.Start.X = EvalValue(node.Start.X, spriteWidth, spriteHeight, 0, 0, 50);
+            stat.Start.X = EvalValue(node.Start.X, dimensions, c);
             if (node.Start.Y.IndexOf("screen") >= 0 || node.Start.Y.IndexOf("area") >= 0) variableScreen = true;
             if (node.Start.Y.IndexOf("random") >= 0) variableRand = true;
-            stat.Start.Y = EvalValue(node.Start.Y, spriteWidth, spriteHeight, 0, 0, 50);
+            stat.Start.Y = EvalValue(node.Start.Y, dimensions, c);
             if (node.Start.Interval.IndexOf("screen") >= 0 || node.Start.Interval.IndexOf("area") >= 0) variableScreen = true;
             if (node.Start.Interval.IndexOf("random") >= 0) variableRand = true;
-            stat.Start.Interval = EvalValue(node.Start.Interval, spriteWidth, spriteHeight, 0, 0, 50);
+            stat.Start.Interval = EvalValue(node.Start.Interval, dimensions, c);
             stat.Start.Offset = node.Start.OffsetY;
             stat.Start.Opacity = node.Start.Opacity;
 
             stat.End = new AnimationStatistics.StepValues();
             if (node.End.X.IndexOf("screen") >= 0 || node.End.X.IndexOf("area") >= 0) variableScreen = true;
             if (node.End.X.IndexOf("random") >= 0) variableRand = true;
-            stat.End.X = EvalValue(node.End.X, spriteWidth, spriteHeight, 0, 0, 50);
+            stat.End.X = EvalValue(node.End.X, dimensions, c);
             if (node.End.Y.IndexOf("screen") >= 0 || node.End.Y.IndexOf("area") >= 0) variableScreen = true;
             if (node.End.Y.IndexOf("random") >= 0) variableRand = true;
-            stat.End.Y = EvalValue(node.End.Y, spriteWidth, spriteHeight, 0, 0, 50);
+            stat.End.Y = EvalValue(node.End.Y, dimensions, c);
             if (node.End.Interval.IndexOf("screen") >= 0 || node.End.Interval.IndexOf("area") >= 0) variableScreen = true;
             if (node.End.Interval.IndexOf("random") >= 0) variableRand = true;
-            stat.End.Interval = EvalValue(node.End.Interval, spriteWidth, spriteHeight, 0, 0, 50);
+            stat.End.Interval = EvalValue(node.End.Interval, dimensions, c);
             stat.End.Offset = node.End.OffsetY;
             stat.End.Opacity = node.End.Opacity;
 
@@ -424,10 +521,19 @@ namespace PetEditor
                 {
                     if (n.Id == oldNode.Id)
                     {
-                        n.Next = newNode.Next;
-                        n.Id = newNode.Id;
-                        n.X = newNode.X;
-                        n.Y = newNode.Y;
+                        if (newNode == null)
+                        {
+                            var newChild = new List<XmlData.ChildNode>(Program.AnimationXML.Childs.Child);
+                            newChild.Remove(n);
+                            Program.AnimationXML.Childs.Child = newChild.ToArray();
+                        }
+                        else
+                        {
+                            n.Next = newNode.Next;
+                            n.Id = newNode.Id;
+                            n.X = newNode.X;
+                            n.Y = newNode.Y;
+                        }
                         break;
                     }
                 }
@@ -464,17 +570,26 @@ namespace PetEditor
                 {
                     if (n.Id == oldNode.Id)
                     {
-                        n.Id = newNode.Id;
-                        n.Base64 = newNode.Base64;
-                        n.Loop = newNode.Loop;
-                        n.Probability = newNode.Probability;
+                        if (newNode == null)
+                        {
+                            var newSound = new List<XmlData.SoundNode>(Program.AnimationXML.Sounds.Sound);
+                            newSound.Remove(n);
+                            Program.AnimationXML.Sounds.Sound = newSound.ToArray();
+                        }
+                        else
+                        {
+                            n.Id = newNode.Id;
+                            n.Base64 = newNode.Base64;
+                            n.Loop = newNode.Loop;
+                            n.Probability = newNode.Probability;
+                        }
                         break;
                     }
                 }
             }
         }
 
-        static public int EvalValue(String parsingText, int spriteWidth, int spriteHeight, int parentX, int parentY, int iRandomSpawn)
+        static public int EvalValue(String parsingText, StatisticsDataInput dimensions, Control control)
         {
             int iRet = 0;
             Random rand = new Random();
@@ -483,16 +598,22 @@ namespace PetEditor
             var dt = new DataTable();
             var screen = Screen.PrimaryScreen;
 
-            parsingText = parsingText.Replace("screenW", screen.Bounds.Width.ToString(CultureInfo.InvariantCulture));
-            parsingText = parsingText.Replace("screenH", screen.Bounds.Height.ToString(CultureInfo.InvariantCulture));
-            parsingText = parsingText.Replace("areaW", screen.WorkingArea.Width.ToString(CultureInfo.InvariantCulture));
-            parsingText = parsingText.Replace("areaH", (screen.WorkingArea.Height + screen.WorkingArea.Y).ToString(CultureInfo.InvariantCulture));
-            parsingText = parsingText.Replace("imageW", spriteWidth.ToString(CultureInfo.InvariantCulture));
-            parsingText = parsingText.Replace("imageH", spriteHeight.ToString(CultureInfo.InvariantCulture));
-            parsingText = parsingText.Replace("imageX", (parentX).ToString(CultureInfo.InvariantCulture));
-            parsingText = parsingText.Replace("imageY", (parentY).ToString(CultureInfo.InvariantCulture));
-            parsingText = parsingText.Replace("random", rand.Next(0, 100).ToString(CultureInfo.InvariantCulture));
-            parsingText = parsingText.Replace("randS", iRandomSpawn.ToString(CultureInfo.InvariantCulture));
+            parsingText = parsingText.Replace("screenW", dimensions.Screen.X.ToString(CultureInfo.InvariantCulture));
+            parsingText = parsingText.Replace("screenH", dimensions.Screen.Y.ToString(CultureInfo.InvariantCulture));
+            parsingText = parsingText.Replace("areaW", dimensions.Area.X.ToString(CultureInfo.InvariantCulture));
+            parsingText = parsingText.Replace("areaH", dimensions.Screen.Y.ToString(CultureInfo.InvariantCulture));
+            parsingText = parsingText.Replace("imageW", dimensions.Image.Width.ToString(CultureInfo.InvariantCulture));
+            parsingText = parsingText.Replace("imageH", dimensions.Image.Height.ToString(CultureInfo.InvariantCulture));
+            parsingText = parsingText.Replace("imageX", dimensions.Image.X.ToString(CultureInfo.InvariantCulture));
+            parsingText = parsingText.Replace("imageY", dimensions.Image.Y.ToString(CultureInfo.InvariantCulture));
+            if(dimensions.Random >= 0)
+                parsingText = parsingText.Replace("random", dimensions.Random.ToString(CultureInfo.InvariantCulture));
+            else
+                parsingText = parsingText.Replace("random", rand.Next(0, 100).ToString(CultureInfo.InvariantCulture));
+            if (dimensions.SRandom >= 0)
+                parsingText = parsingText.Replace("randS", dimensions.SRandom.ToString(CultureInfo.InvariantCulture));
+            else
+                parsingText = parsingText.Replace("randS", 50.ToString());
 
             try
             {
@@ -505,7 +626,8 @@ namespace PetEditor
             }
             catch(Exception ex)
             {
-                Program.AddLog("Unable to parse string " + parsingText + " - " + ex.Message, "Parse value", true);
+                Program.AddLog("Unable to parse string " + parsingText + " - " + ex.Message, "Parse value", Program.LOG_TYPE.ERROR, control);
+                return int.MinValue;
             }
 
             return iRet;

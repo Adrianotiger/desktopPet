@@ -83,8 +83,6 @@ namespace PetEditor
                 log.Close();
             }
 
-            XmlTools.LoadXML("");
-
             richTextBox1.Hide();
             formChat.Hide();
 
@@ -113,11 +111,16 @@ namespace PetEditor
 
             Program.LogForm = log;
 
+            XmlTools.LoadXML("");
+
             XmlTools.FillMissingDataOnXML();
 
-            editWindows.UpdateData();
-            formProject.UpdateData();
+            UpdateData();
 
+            if(e != null)
+            {
+                UpdateData();
+            }
         }
 
         private void OpenFile(object sender, EventArgs e)
@@ -236,10 +239,10 @@ namespace PetEditor
 
         public void SelectSection(string section)
         {
-            editWindows.SelectSection(section);
             List<string> editWins = new List<string> { "header", "image", "spawns", "animations", "childs", "sounds" };
             if (editWins.Contains(section))
             {
+                editWindows.SelectSection(section);
                 if (!editWindows.Visible)
                 {
                     xmlViewer.Hide();
@@ -248,6 +251,7 @@ namespace PetEditor
             }
             else
             {
+                xmlViewer.SelectSection(section);
                 if (editWindows.Visible)
                 {
                     xmlViewer.Show();
