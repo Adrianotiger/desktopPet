@@ -1,4 +1,5 @@
-﻿using NAudio.Wave;
+﻿using Microsoft.Win32;
+using NAudio.Wave;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -15,6 +16,7 @@ using System.Windows.Forms;
 using System.Xml;
 using System.Xml.Schema;
 using System.Xml.Serialization;
+
 
 namespace PetEditor
 {
@@ -56,7 +58,17 @@ namespace PetEditor
                 case "view xml": tabControl1.SelectedIndex = 0; break;
                 case "compile":  tabControl1.SelectedIndex = 1; break;
                 case "test/run": tabControl1.SelectedIndex = 2; break;
+                case "graphviz":
+                    {
+                        tabControl1.SelectedIndex = 3;
+                        webViewCompatible1.NavigateToString("<h2>LOADING...</h2>");
+                        webViewCompatible1.Update();
+                        Update();
+                        GenerateViz(0.5, false);
+                    }
+                    break;
             }
+
         }
 
         public void LoadXML()
@@ -1171,5 +1183,23 @@ namespace PetEditor
                 PetValues.IsDragging = false;
             }
         }
+
+        private void GenerateViz(double zoom, bool save)
+        {
+            var stringHTML = XmlToDot.ProcessXml(Program.AnimationXML);
+            var mainstring = "<html><body style='zoom:" + (zoom*100) + "%;'>SCRIPT ERROR: maybe your browser is not able to render this viz.</body>";
+            mainstring += "<script>var zoom=20;function zoomOut(){zoom*=2;document.body.style.zoom=zoom+'%';} function zoomIn(){zoom/=2;document.body.style.zoom=zoom+'%';}</script>";
+            mainstring += "<script>" + Properties.Resources.viz + "</script>";
+            mainstring += "<script>" + Properties.Resources.lite_render + "</script>";
+            mainstring += "<script>document.body.innerHTML = 'Loading...';var viz = new Viz();";
+            mainstring += "document.body.innerHTML = '';";
+            mainstring += "</script>";
+            mainstring += "<div style='display:block;position:fixed;right:0px;top:0px;width:200px;height:100px;'><span onClick='zoom*=2;document.body.style.zoom=zoom + \"%\";'>+</span><span onClick='zoom*=0.5;document.body.style.zoom=zoom + \"%\";'>-</span><span onClick='window.print();'>SAVE</span></div>";
+            mainstring += "<script>";
+            mainstring += "viz.renderSVGElement('XXX').then(function(element){document.body.appendChild(element);}).catch(function(error){document.body.appendChild(document.createTextNode(error)); viz = new Viz(); });</script></html>";
+            mainstring = mainstring.Replace("XXX", stringHTML);
+            webViewCompatible1.NavigateToString(mainstring);
+        }
+
     }
 }

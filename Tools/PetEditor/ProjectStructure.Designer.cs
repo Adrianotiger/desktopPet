@@ -45,10 +45,12 @@
             System.Windows.Forms.TreeNode treeNode8 = new System.Windows.Forms.TreeNode("View XML");
             System.Windows.Forms.TreeNode treeNode9 = new System.Windows.Forms.TreeNode("Compile");
             System.Windows.Forms.TreeNode treeNode10 = new System.Windows.Forms.TreeNode("Test/Run");
-            System.Windows.Forms.TreeNode treeNode11 = new System.Windows.Forms.TreeNode("Tools", new System.Windows.Forms.TreeNode[] {
+            System.Windows.Forms.TreeNode treeNode11 = new System.Windows.Forms.TreeNode("GraphViz");
+            System.Windows.Forms.TreeNode treeNode12 = new System.Windows.Forms.TreeNode("Tools", new System.Windows.Forms.TreeNode[] {
             treeNode8,
             treeNode9,
-            treeNode10});
+            treeNode10,
+            treeNode11});
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(ProjectStructure));
             System.Windows.Forms.ListViewItem listViewItem1 = new System.Windows.Forms.ListViewItem(new string[] {
             "SPAWN 1 and SPAWN 2",
@@ -143,11 +145,13 @@
             treeNode9.Text = "Compile";
             treeNode10.Name = "Node12";
             treeNode10.Text = "Test/Run";
-            treeNode11.Name = "Node10";
-            treeNode11.Text = "Tools";
+            treeNode11.Name = "Knoten3";
+            treeNode11.Text = "GraphViz";
+            treeNode12.Name = "Node10";
+            treeNode12.Text = "Tools";
             this.treeView1.Nodes.AddRange(new System.Windows.Forms.TreeNode[] {
             treeNode7,
-            treeNode11});
+            treeNode12});
             this.treeView1.SelectedImageIndex = 0;
             this.treeView1.ShowPlusMinus = false;
             this.treeView1.ShowRootLines = false;
@@ -222,13 +226,13 @@
             this.removeNodeToolStripMenuItem,
             this.insertNodeToolStripMenuItem});
             this.contextMenuStrip1.Name = "contextMenuStrip1";
-            this.contextMenuStrip1.Size = new System.Drawing.Size(181, 70);
+            this.contextMenuStrip1.Size = new System.Drawing.Size(150, 48);
             // 
             // removeNodeToolStripMenuItem
             // 
             this.removeNodeToolStripMenuItem.Image = ((System.Drawing.Image)(resources.GetObject("removeNodeToolStripMenuItem.Image")));
             this.removeNodeToolStripMenuItem.Name = "removeNodeToolStripMenuItem";
-            this.removeNodeToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.removeNodeToolStripMenuItem.Size = new System.Drawing.Size(149, 22);
             this.removeNodeToolStripMenuItem.Text = "Remove Node";
             this.removeNodeToolStripMenuItem.Click += new System.EventHandler(this.removeNodeToolStripMenuItem_Click);
             // 
@@ -236,7 +240,7 @@
             // 
             this.insertNodeToolStripMenuItem.Image = ((System.Drawing.Image)(resources.GetObject("insertNodeToolStripMenuItem.Image")));
             this.insertNodeToolStripMenuItem.Name = "insertNodeToolStripMenuItem";
-            this.insertNodeToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.insertNodeToolStripMenuItem.Size = new System.Drawing.Size(149, 22);
             this.insertNodeToolStripMenuItem.Text = "Insert Node";
             this.insertNodeToolStripMenuItem.Click += new System.EventHandler(this.insertNodeToolStripMenuItem_Click);
             // 

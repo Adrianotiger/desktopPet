@@ -19,6 +19,8 @@ namespace PetEditor
 
         private void WebForm_Load(object sender, EventArgs e)
         {
+            //chat link: http://www.e-chat.co/room/19829319
+            webViewCompatible1.Source = new Uri("http://www.e-chat.co/room/19829319");
         }
     }
 }

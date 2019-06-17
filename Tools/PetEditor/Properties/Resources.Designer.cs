@@ -87,6 +87,21 @@ namespace PetEditor.Properties {
         }
         
         /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die /*
+        ///Viz.js 2.1.2 (Graphviz 2.40.1, Emscripten 1.37.36)
+        ///*/
+        ///(function(global) {
+        ///var Module = function(Module) {
+        ///  Module = Module || {};
+        ///var Module=typeof Module!==&quot;undefined&quot;?Module:{};var moduleOverrides={};var key;for(key in Module){if(Module.hasOwnProperty(key)){moduleOverrides[key]=Module[key]}}Module[&quot;arguments&quot;]=[];Module[&quot;thisProgram&quot;]=&quot;./this.program&quot;;Module[&quot;quit&quot;]=(function(status,toThrow){throw toThrow});Module[&quot;preRun&quot;]=[];Module[&quot;postRun&quot;]=[];var ENVIRONMENT_IS_WEB=false;var ENVIRONMENT_IS_WORKER [Rest der Zeichenfolge wurde abgeschnitten]&quot;; ähnelt.
+        /// </summary>
+        internal static string lite_render {
+            get {
+                return ResourceManager.GetString("lite_render", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Sucht eine lokalisierte Ressource vom Typ System.Drawing.Bitmap.
         /// </summary>
         internal static System.Drawing.Bitmap monitor {
@@ -113,6 +128,33 @@ namespace PetEditor.Properties {
             get {
                 object obj = ResourceManager.GetObject("tb_right", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die /*
+        ///Viz.js 2.1.2 (Graphviz 2.40.1, Expat 2.2.5, Emscripten 1.37.36)
+        ///Copyright (c) 2014-2018 Michael Daines
+        ///Licensed under MIT license
+        ///
+        ///This distribution contains other software in object code form:
+        ///
+        ///Graphviz
+        ///Licensed under Eclipse Public License - v 1.0
+        ///http://www.graphviz.org
+        ///
+        ///Expat
+        ///Copyright (c) 1998, 1999, 2000 Thai Open Source Software Center Ltd and Clark Cooper
+        ///Copyright (c) 2001, 2002, 2003, 2004, 2005, 2006 Expat maintainers.
+        ///Licensed under MIT license
+        ///http://www.libexpat.org
+        ///
+        ///zlib
+        ///Copyright (C) 1995 [Rest der Zeichenfolge wurde abgeschnitten]&quot;; ähnelt.
+        /// </summary>
+        internal static string viz {
+            get {
+                return ResourceManager.GetString("viz", resourceCulture);
             }
         }
         

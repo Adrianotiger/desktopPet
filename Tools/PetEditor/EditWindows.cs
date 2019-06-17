@@ -206,6 +206,9 @@ namespace PetEditor
                     DrawLinesOnPictures(pictureBox1, image.Image, Program.AnimationXML.Image.TilesX, Program.AnimationXML.Image.TilesY);
 
                     XmlTools.GenerateImageIcons(image.Image, Program.AnimationXML.Image.TilesX, Program.AnimationXML.Image.TilesY);
+
+                    panel1.Height = Math.Max(100, image.Image.Height / Program.AnimationXML.Image.TilesY);
+                    panel1.Width = Math.Max(200, image.Image.Width / Program.AnimationXML.Image.TilesX);
                 };
             }
             else
@@ -213,10 +216,19 @@ namespace PetEditor
                 EditValues["tilesx"].Text = h.TilesX.ToString();
                 EditValues["tilesy"].Text = h.TilesY.ToString();
                 EditValues["transparency"].Text = h.Transparency;
-                //pictureBox1.Image = Image.FromStream(new MemoryStream(Convert.FromBase64String(h.Png)));
-                image.Image = Image.FromStream(new MemoryStream(Convert.FromBase64String(h.Png)));
-                DrawLinesOnPictures(pictureBox1, image.Image, h.TilesX, h.TilesY);
-                XmlTools.GenerateImageIcons(image.Image, h.TilesX, h.TilesY);
+                try
+                {
+                    image.Image = Image.FromStream(new MemoryStream(Convert.FromBase64String(h.Png)));
+                    DrawLinesOnPictures(pictureBox1, image.Image, h.TilesX, h.TilesY);
+                    XmlTools.GenerateImageIcons(image.Image, h.TilesX, h.TilesY);
+
+                    panel1.Height = Math.Max(100, image.Image.Height / h.TilesY);
+                    panel1.Width = Math.Max(200, image.Image.Width / h.TilesX);
+                }
+                catch(Exception ex)
+                {
+                    Program.AddLog("Invalid base 64 image (unable to load): " + ex.Message, "LOADING PET IMAGES", Program.LOG_TYPE.ERROR, pictureBox1);
+                }
             }
         }
 
