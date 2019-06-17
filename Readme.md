@@ -12,8 +12,9 @@ a pet on the screen. This pet can fall down up to the taskbar and is able to det
 windows on your desktop.<br />
 In this way, this pet is able to walk, run, etc around your working screen area (on primary screen).
 # Downloads
+
 |        | Windows 7/8/10 | Windows 10 | Webpage | Tools |
-|--------|--------|--------|--------|--------|--------|
+|--------|----------------|------------|---------|-------|
 | Type |  Portable exe | Store app | Javascript | Desktop applications |
 | Description | Download rar, extract exe file and execute it. There is no installation. | Download it directly from the Microsoft store | Javascript file to implement it on your webpage | Some tools to edit and create your own pet.
 | Link | <a href='https://github.com/Adrianotiger/desktopPet/releases/tag/Portable'>Open page</a> to download or <a href='https://github.com/Adrianotiger/desktopPet/releases/download/Portable/eSheep_1.2.0.rar'>download zip</a> | <a href='https://www.microsoft.com/store/apps/9MX2V0TQT6RM'>Windows store</a> | <a href='https://github.com/Adrianotiger/web-esheep'>Open GitHub</a> project | -<a href='https://github.com/Adrianotiger/desktopPet/releases/tag/editor0.2'>Download Pet Editor</a> |
