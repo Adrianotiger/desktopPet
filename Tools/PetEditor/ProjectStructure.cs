@@ -204,7 +204,7 @@ namespace PetEditor
             {
                 soundsList.Add(n.Id);
                 var lv = listView4.Items.Add(" Sound #" + n.Id + " - " + XmlTools.GetXmlAnimationNode(n.Id).Name);
-                lv.ImageIndex = n.Id;
+                lv.ImageIndex = XmlTools.GetXmlAnimationNode(n.Id).Sequence.Frame[0];
                 tot += n.Probability;
             }
             if (tot == 0) tot = 1;
@@ -219,7 +219,7 @@ namespace PetEditor
             if (listView4.SelectedIndices.Count == 0) return;
 
             MainWindow.MainWin.SelectSection("sounds");
-            if (!MainWindow.MainWin.SetSoundEdit(soundsList[listView4.SelectedIndices[0]]))
+            if (!MainWindow.MainWin.SetSoundEdit(listView4.SelectedIndices[0]))
             {
 
             }
@@ -289,7 +289,7 @@ namespace PetEditor
                     if (XmlTools.GetXmlSoundNode(j) == null)
                     {
                         node.Id = j;
-                        XmlTools.UpdateXmlSoundNode(null, node);
+                        XmlTools.UpdateXmlSoundNode(-1, node);
                         MainWindow.MainWin.UpdateData();
                         break;
                     }
@@ -331,7 +331,7 @@ namespace PetEditor
             {
                 treeView1.SelectedNode = treeView1.Nodes[0].Nodes[5];
                 var node = XmlTools.GetXmlSoundNode(soundsList[lv.SelectedIndices[0]]);
-                XmlTools.UpdateXmlSoundNode(node, null);
+                XmlTools.UpdateXmlSoundNode(lv.SelectedIndices[0], null);
             }
             UpdateData();
         }

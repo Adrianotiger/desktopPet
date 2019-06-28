@@ -780,6 +780,41 @@ namespace PetEditor
                     }
                 }
             }
+            foreach (var child in childs)
+            {
+                if(animationLinkTo[child.Id] > 0)
+                {
+                    animationLinkTo[child.Next]++;
+                }
+            }
+            for (var k = 0; k < animations.Length; k++)
+            {
+                foreach (var animation in animations)
+                {
+                    if (animationLinkTo[animation.Id] == 0) continue;
+                    if (animation.Border != null)
+                    {
+                        foreach (var n in animation.Border.Next)
+                        {
+                            animationLinkTo[n.Value]++;
+                        }
+                    }
+                    if (animation.Gravity != null)
+                    {
+                        foreach (var n in animation.Gravity.Next)
+                        {
+                            animationLinkTo[n.Value]++;
+                        }
+                    }
+                    if (animation.Sequence.Next != null)
+                    {
+                        foreach (var n in animation.Sequence.Next)
+                        {
+                            animationLinkTo[n.Value]++;
+                        }
+                    }
+                }
+            }
             foreach (var aniId in animationLinkTo)
             {
                 if(aniId.Value == 0)
@@ -928,8 +963,9 @@ namespace PetEditor
                 {
                     if (PetValues.PositionX + x < 0)    // left screen border!
                     {
-                        SetNewAnimationRequest(false, true, false, TNextAnimation.TOnly.VERTICAL);
+                        PetValues.PositionX = WindowDimensions.Screen.X;
                         x = 0;
+                        SetNewAnimationRequest(false, true, false, TNextAnimation.TOnly.VERTICAL);
                         bNewAnimation = true;
                     }
                 }
@@ -937,8 +973,9 @@ namespace PetEditor
                 {
                     if (PetValues.PositionX + x < panel1.Left)    // left window border!
                     {
+                        PetValues.PositionX = panel1.Left;
+                        x = 0;
                         SetNewAnimationRequest(false, true, false, TNextAnimation.TOnly.WINDOW);
-                        x = panel1.Left;
                         bNewAnimation = true;
                     }
                 }
@@ -949,8 +986,9 @@ namespace PetEditor
                 {
                     if (PetValues.PositionX + x + WindowDimensions.Image.X > WindowDimensions.Area.X)    // right screen border!
                     {
+                        PetValues.PositionX = WindowDimensions.Area.X - pictureBox6.Width;
+                        x = 0;
                         SetNewAnimationRequest(false, true, false, TNextAnimation.TOnly.VERTICAL);
-                        x = WindowDimensions.Area.X - pictureBox6.Width;
                         bNewAnimation = true;
                     }
                 }
@@ -958,8 +996,9 @@ namespace PetEditor
                 {
                     if (PetValues.PositionX + x + WindowDimensions.Image.X > panel1.Left + panel1.Width)    // right window border!
                     {
+                        PetValues.PositionX = panel1.Left + panel1.Width - WindowDimensions.Image.X;
+                        x = 0;
                         SetNewAnimationRequest(false, true, false, TNextAnimation.TOnly.WINDOW);
-                        x = panel1.Left + panel1.Width - WindowDimensions.Image.X;
                         bNewAnimation = true;
                     }
                 }
@@ -972,8 +1011,9 @@ namespace PetEditor
 
                     if (PetValues.PositionY + y > bottomY - WindowDimensions.Image.Y) // border detected!
                     {
-                        y = bottomY - (int)(PetValues.PositionY + WindowDimensions.Image.Y);
+                        PetValues.PositionY = bottomY - WindowDimensions.Image.Y;
                         PetValues.OffsetY = 0;
+                        y = 0;
                         SetNewAnimationRequest(false, true, false, TNextAnimation.TOnly.TASKBAR);
                         bNewAnimation = true;
                     }
@@ -982,8 +1022,9 @@ namespace PetEditor
                         int iWindowTop = FallDetect((int)y);
                         if (iWindowTop > 0)
                         {
-                            y = iWindowTop - PetValues.PositionY - WindowDimensions.Image.Y;
+                            PetValues.PositionY = iWindowTop - WindowDimensions.Image.Y;
                             PetValues.OffsetY = 0;
+                            y = 0;
                             SetNewAnimationRequest(false, true, false, TNextAnimation.TOnly.WINDOW);
                             bNewAnimation = true;
                         }
@@ -996,6 +1037,7 @@ namespace PetEditor
                 {
                     if (PetValues.PositionY < 0) // border detected!
                     {
+                        PetValues.PositionY = WindowDimensions.Area.Y;
                         y = 0;
                         SetNewAnimationRequest(false, true, false, TNextAnimation.TOnly.HORIZONTAL);
                         bNewAnimation = true;
@@ -1096,7 +1138,7 @@ namespace PetEditor
             {
                 timer1.Enabled = false;
                 //timer1.Interval = 1;    // execute immediately the first step of the next animation.
-                x = 0;                  // don't move the pet, if a new animation must be started
+                //x = 0;                  // don't move the pet, if a new animation must be started
                 //y = 0;                //  if falling, set the pet to the new position
                 //pictureBox6.Image = PetValues.Images.Images[PetValues.CurrentAnimation.Sequence.Frames[0]];
             }

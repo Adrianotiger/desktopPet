@@ -540,23 +540,25 @@ namespace PetEditor
             }
         }
 
-        static public XmlData.SoundNode GetXmlSoundNode(int id)
+        static public XmlData.SoundNode GetXmlSoundNode(int index)
         {
             XmlData.SoundNode node = null;
             if (Program.AnimationXML.Sounds != null && Program.AnimationXML.Sounds.Sound != null)
             {
+                int findIndex = 0;
                 foreach (var n in Program.AnimationXML.Sounds.Sound)
                 {
-                    if (n.Id == id) return n;
+                    if(findIndex++ == index)
+                        return n;
                 }
             }
 
             return node;
         }
 
-        static public void UpdateXmlSoundNode(XmlData.SoundNode oldNode, XmlData.SoundNode newNode)
+        static public void UpdateXmlSoundNode(int soundNodeIndex, XmlData.SoundNode newNode)
         {
-            if (Program.AnimationXML.Sounds == null || Program.AnimationXML.Sounds.Sound == null || oldNode == null)
+            if (Program.AnimationXML.Sounds == null || Program.AnimationXML.Sounds.Sound == null || soundNodeIndex < 0 || soundNodeIndex >= Program.AnimationXML.Sounds.Sound.Length)
             {
                 var newNodes = new XmlData.SoundNode[1];
                 newNodes[0] = newNode;
@@ -566,9 +568,10 @@ namespace PetEditor
             }
             else
             {
+                int searchIndex = 0;
                 foreach (var n in Program.AnimationXML.Sounds.Sound)
                 {
-                    if (n.Id == oldNode.Id)
+                    if (searchIndex++ == soundNodeIndex)
                     {
                         if (newNode == null)
                         {

@@ -428,6 +428,7 @@
             // 
             // tabPage3
             // 
+            this.tabPage3.BackColor = System.Drawing.Color.Transparent;
             this.tabPage3.BackgroundImage = global::PetEditor.Properties.Resources.background;
             this.tabPage3.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.tabPage3.ContextMenuStrip = this.contextMenuStrip1;
@@ -441,7 +442,6 @@
             this.tabPage3.Size = new System.Drawing.Size(792, 424);
             this.tabPage3.TabIndex = 2;
             this.tabPage3.Text = "Test / Run";
-            this.tabPage3.UseVisualStyleBackColor = true;
             // 
             // contextMenuStrip1
             // 
@@ -470,6 +470,7 @@
             // 
             // pictureBox6
             // 
+            this.pictureBox6.BackColor = System.Drawing.Color.Black;
             this.pictureBox6.ContextMenuStrip = this.contextMenuStrip2;
             this.pictureBox6.Cursor = System.Windows.Forms.Cursors.SizeAll;
             this.pictureBox6.Location = new System.Drawing.Point(148, 267);

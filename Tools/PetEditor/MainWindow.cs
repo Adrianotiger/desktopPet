@@ -21,6 +21,7 @@ namespace PetEditor
         private List<string> Recent = new List<string>();
         private WebForm formChat = null;
         List<bool> mustSave = new List<bool> {false, false, false, false, false, false, false, false};
+        bool xmlModified = false;
 
         public MainWindow()
         {
@@ -32,33 +33,53 @@ namespace PetEditor
         {
             formProject.SpawnEditing(editFinished);
             mustSave[2] = !editFinished;
+            if (!editFinished) XmlModified();
         }
 
         public void EditAnimation(bool editFinished)
         {
             formProject.AnimationEditing(editFinished);
             mustSave[3] = !editFinished;
+            if (!editFinished) XmlModified();
         }
 
         public void EditChild(bool editFinished)
         {
             formProject.ChildEditing(editFinished);
             mustSave[4] = !editFinished;
+            if (!editFinished) XmlModified();
         }
 
         public void EditSound(bool editFinished)
         {
             formProject.SoundEditing(editFinished);
             mustSave[5] = !editFinished;
+            if(!editFinished) XmlModified();
+        }
+
+        private void XmlModified(bool saved = false)
+        {
+            if(saved)
+            {
+                this.Text = this.Text.Replace(" *", "");
+                xmlModified = false;
+            }
+            else if(this.Text.IndexOf(" *") < 0)
+            {
+                this.Text += " *";
+                xmlModified = true;
+            }
         }
 
         private void ShowNewForm(object sender, EventArgs e)
         {
+            bool messageshow = false;
             foreach (var k in mustSave)
             {
                 if (k)
                 {
-                    if (MessageBox.Show("Current project is not saved, do you want close without saving the changes?", "save", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.No)
+                    messageshow = true;
+                    if (MessageBox.Show("There are still nodes not saved. Do you really want dismiss your changes?", "save", MessageBoxButtons.YesNoCancel, MessageBoxIcon.Question) != DialogResult.Yes)
                     {
                         return;
                     }
@@ -67,6 +88,13 @@ namespace PetEditor
                         mustSave[j] = false;
                     }
                     break;
+                }
+            }
+            if(!messageshow && xmlModified)
+            {
+                if (MessageBox.Show("Current project is not saved, do you want close without saving the changes?", "save", MessageBoxButtons.YesNoCancel, MessageBoxIcon.Question) != DialogResult.Yes)
+                {
+                    return;
                 }
             }
 
@@ -121,6 +149,9 @@ namespace PetEditor
             {
                 UpdateData();
             }
+
+            for (var k = 0; k < 8; k++) mustSave[k] = false;
+            XmlModified(true);
         }
 
         private void OpenFile(object sender, EventArgs e)
@@ -280,9 +311,9 @@ namespace PetEditor
             return editWindows.SetChildEdit(childId);
         }
 
-        public bool SetSoundEdit(int soundId)
+        public bool SetSoundEdit(int soundIndex)
         {
-            return editWindows.SetSoundEdit(soundId);
+            return editWindows.SetSoundEdit(soundIndex);
         }
 
         private void toolStrip_ItemClicked(object sender, ToolStripItemClickedEventArgs e)
@@ -321,6 +352,7 @@ namespace PetEditor
                 {
                     mustSave[k] = false;
                 }
+                XmlModified(true);
             }
         }
 
@@ -396,17 +428,31 @@ namespace PetEditor
 
         private void MainWindow_FormClosing(object sender, FormClosingEventArgs e)
         {
+            bool messageshow = false;
             foreach(var k in mustSave)
             {
                 if(k)
                 {
-                    if(MessageBox.Show("Project is not saved, do you really want close the application without save?", "save", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.No)
+                    messageshow = true;
+                    if(MessageBox.Show("There is still a node that is not saved. Do you want close the editor without saving your project?", "save", MessageBoxButtons.YesNoCancel, MessageBoxIcon.Question) != DialogResult.Yes)
                     {
                         e.Cancel = true;
                     }
                     break;
                 }
             }
+            if(!messageshow && xmlModified)
+            {
+                if (MessageBox.Show("Project is not saved, do you really want close the application without save?", "save", MessageBoxButtons.YesNoCancel, MessageBoxIcon.Question) != DialogResult.Yes)
+                {
+                    e.Cancel = true;
+                }
+            }
+        }
+
+        private void toolStripButton4_Click(object sender, EventArgs e)
+        {
+            System.Diagnostics.Process.Start("https://github.com/Adrianotiger/desktopPet/wiki");
         }
     }
 }

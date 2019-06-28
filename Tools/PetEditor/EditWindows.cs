@@ -862,22 +862,25 @@ namespace PetEditor
             comboBox6.Items.Clear();
             comboBox6.Items.AddRange(listItems);
             tabPage6.Tag = null;
+            comboBox6.Tag = -1;
             groupBox13.Enabled = false;
             groupBox12.Enabled = false;
             groupBox14.Enabled = false;
             groupBox15.Enabled = false;
         }
 
-        public bool SetSoundEdit(int soundId)
+        public bool SetSoundEdit(int soundIndex)
         {
             if (EditSoundNode.Count > 1 && EditSoundNodeIndex > 0)
             {
                 MessageBox.Show("Please save your sound before opening another one.", "sound not saved", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return false;
             }
-            var node = XmlTools.GetXmlSoundNode(soundId);
+            comboBox6.Tag = -1;
+            var node = XmlTools.GetXmlSoundNode(soundIndex);
             if (node != null)
             {
+                comboBox6.Tag = soundIndex;
                 FillSoundFormFromNode(node);
                 
                 EditSoundNode.Clear();
@@ -1536,7 +1539,7 @@ namespace PetEditor
                 if (EditSoundNodeIndex > 0)
                 {
                     var node = EditSoundNode[EditSoundNodeIndex];
-                    XmlTools.UpdateXmlSoundNode(EditSoundNode[0], EditSoundNode[EditSoundNodeIndex]);
+                    XmlTools.UpdateXmlSoundNode(int.Parse(comboBox6.Tag.ToString()), EditSoundNode[EditSoundNodeIndex]);
                     EditSound(true, false, false);
                     tabControl1.SelectedTab.Text = "Sounds";
                     EditSoundNodeIndex = -1;
