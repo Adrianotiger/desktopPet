@@ -227,6 +227,10 @@ namespace DesktopPet
             TSpawn spawn = Animations.GetRandomSpawn(); // Get a random SPAWN, to setting the form properties
             Top = ScreenBounds.Y + spawn.Start.Y.GetValue(DisplayIndex);
             Left = ScreenBounds.X + spawn.Start.X.GetValue(DisplayIndex);
+            pictureBox1.Left = 0;
+            pictureBox1.Top = 0;
+            Width = pictureBox1.Width;
+            Height = pictureBox1.Height;
 			PositionX = Left;
 			PositionY = Top;
 			OffsetY = 0.0;
@@ -441,6 +445,8 @@ namespace DesktopPet
             }
                 // If a new animation need to be started
             bool bNewAnimation = false;
+                // If animation is leaving screen, cut the form so that it is not visibile on multiscreens
+            bool bLeavingScreen = false;
                 // If the pet is "flipped", mirror the movement
             if (!IsMovingLeft) x = -x;
             
@@ -454,9 +460,14 @@ namespace DesktopPet
                         int iBorderAnimation = Animations.SetNextBorderAnimation(CurrentAnimation.ID, TNextAnimation.TOnly.VERTICAL);
                         if (iBorderAnimation >= 0)
                         {
-                            x = ScreenArea.X;
+                            PositionX = ScreenArea.X;
+                            x = 0;
                             SetNewAnimation(iBorderAnimation);
                             bNewAnimation = true;
+                        }
+                        else
+                        {
+                            bLeavingScreen = true;
                         }
                     }
                 }
@@ -470,7 +481,8 @@ namespace DesktopPet
                             int iBorderAnimation = Animations.SetNextBorderAnimation(CurrentAnimation.ID, TNextAnimation.TOnly.WINDOW);
                             if (iBorderAnimation >= 0)
                             {
-                                x = rct.Left;
+                                PositionX = rct.Left;
+                                x = 0;
                                 SetNewAnimation(iBorderAnimation);
                                 bNewAnimation = true;
                             }
@@ -494,9 +506,14 @@ namespace DesktopPet
                         int iBorderAnimation = Animations.SetNextBorderAnimation(CurrentAnimation.ID, TNextAnimation.TOnly.VERTICAL);
                         if (iBorderAnimation >= 0)
                         {
-                            x = ScreenArea.X + ScreenArea.Width - Width;
+                            PositionX = ScreenArea.X + ScreenArea.Width - Width;
+                            x = 0;
                             SetNewAnimation(iBorderAnimation);
                             bNewAnimation = true;
+                        }
+                        else
+                        {
+                            bLeavingScreen = true;
                         }
                     }
                 }
@@ -510,7 +527,8 @@ namespace DesktopPet
                             int iBorderAnimation = Animations.SetNextBorderAnimation(CurrentAnimation.ID, TNextAnimation.TOnly.WINDOW);
                             if (iBorderAnimation >= 0)
                             {
-                                x = rct.Right - Width;
+                                PositionX = rct.Right - Width;
+                                x = 0;
                                 SetNewAnimation(iBorderAnimation);
                                 bNewAnimation = true;
                             }
@@ -525,27 +543,34 @@ namespace DesktopPet
             }
             if(y > 0)   // moving down (detect taskbar and windows)
             {
-                if (CurrentAnimation.EndBorder.Count > 0)
-                {
-                    int bottomY = ScreenArea.Y + ScreenArea.Height;
+                int bottomY = ScreenArea.Y + ScreenArea.Height;
 
-                    if (PositionY + y > bottomY - Height) // border detected!
+                if (PositionY + y > bottomY - Height) // border detected!
+                {
+                    int iBorderAnimation = Animations.SetNextBorderAnimation(CurrentAnimation.ID, TNextAnimation.TOnly.TASKBAR);
+                    if (iBorderAnimation >= 0)
                     {
-                        y = bottomY - (int)(PositionY + Height);
-						OffsetY = 0;
-                        SetNewAnimation(Animations.SetNextBorderAnimation(CurrentAnimation.ID, TNextAnimation.TOnly.TASKBAR));
+                        PositionY = bottomY - Height;
+                        OffsetY = 0;
+                        y = 0;
+                        SetNewAnimation(iBorderAnimation);
                         bNewAnimation = true;
                     }
-                    else
+                }
+                else
+                {
+                    int iWindowTop = FallDetect((int)y);
+                    if (iWindowTop > 0)
                     {
-                        int iWindowTop = FallDetect((int)y);
-                        if (iWindowTop > 0)
+                        int iBorderAnimation = Animations.SetNextBorderAnimation(CurrentAnimation.ID, TNextAnimation.TOnly.WINDOW);
+                        if (iBorderAnimation >= 0)
                         {
-                            y = iWindowTop - PositionY - Height;
-							OffsetY = 0;
-                            SetNewAnimation(Animations.SetNextBorderAnimation(CurrentAnimation.ID, TNextAnimation.TOnly.WINDOW));
+                            PositionY = iWindowTop - Height;
+                            OffsetY = 0;
+                            y = 0;
+                            SetNewAnimation(iBorderAnimation);
                             bNewAnimation = true;
-                            if(CurrentAnimation.Start.Y.Value != 0)
+                            if (CurrentAnimation.Start.Y.Value != 0)
                             {
                                 hwndWindow = (IntPtr)0;
                             }
@@ -555,13 +580,19 @@ namespace DesktopPet
             }
             else if(y < 0)  // moving up, detect upper screen border
             {
-                if (CurrentAnimation.EndBorder.Count > 0)
+                if (PositionY + y < ScreenArea.Y) // border detected!
                 {
-                    if (PositionY < ScreenArea.Y) // border detected!
+                    int iBorderAnimation = Animations.SetNextBorderAnimation(CurrentAnimation.ID, TNextAnimation.TOnly.HORIZONTAL);
+                    if (iBorderAnimation >= 0)
                     {
-                        y = ScreenArea.Y;
-                        SetNewAnimation(Animations.SetNextBorderAnimation(CurrentAnimation.ID, TNextAnimation.TOnly.HORIZONTAL));
+                        PositionY = ScreenArea.Y;
+                        y = 0;
+                        SetNewAnimation(iBorderAnimation);
                         bNewAnimation = true;
+                    }
+                    else
+                    {
+                        bLeavingScreen = true;
                     }
                 }
             }
@@ -663,7 +694,7 @@ namespace DesktopPet
             if(bNewAnimation)
             {
                 timer1.Interval = 1;    // execute immediately the first step of the next animation.
-                x = 0;                  // don't move the pet, if a new animation must be started
+                //x = 0;                  // don't move the pet, if a new animation must be started
                 //y = 0;                  //  if falling, set the pet to the new position
                 pictureBox1.Image = imageList1.Images[CurrentAnimation.Sequence.Frames[0]];
             }
@@ -672,8 +703,46 @@ namespace DesktopPet
 			PositionX += x;
 			PositionY += y;
 
-            Left = (int)PositionX;
-            Top = (int)(PositionY + OffsetY);
+            if (bLeavingScreen)
+            {
+                if ((int)PositionX < ScreenArea.X) // leaving left
+                {
+                    int cut = ScreenArea.X - (int)PositionX;
+                    if (Width > 2)
+                    {
+                        Width -= cut;
+                        Left = (int)PositionX + cut;
+                        pictureBox1.Left -= cut;
+                    }
+                    else
+                    {
+                        Left -= Width;
+                        pictureBox1.Left = Width + 1;
+                    }   
+                }
+                else if ((int)PositionX > ScreenArea.X + ScreenArea.Width) // leaving right
+                {
+                    int cut = (int)PositionX - (ScreenArea.X + ScreenArea.Width);
+                    if (Width > 2)
+                    {
+                        Width -= cut;
+                        Left = (int)PositionX;
+                    }
+                    else
+                    {
+                        Left += Width;
+                        pictureBox1.Left = Width + 1;
+                    }
+                }
+
+            }
+            else
+            {
+                Left = (int)PositionX;
+                Top = (int)(PositionY + OffsetY);
+            }
+
+            
         }
 
             /// <summary>
