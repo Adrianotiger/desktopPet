@@ -11,3 +11,5 @@ disqus: esheep
 
 url: https://adrianotiger.github.io/desktopPet/
 
+collections:
+  - pets
