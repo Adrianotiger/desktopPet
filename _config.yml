@@ -11,13 +11,3 @@ disqus: esheep
 
 url: https://adrianotiger.github.io/desktopPet/
 
-collections:
-  - pets
-
-navbar-links:
-  About Me: "aboutme"
-  Pets: "Pets"
-  Resources:
-    - Beautiful Jekyll: "http://deanattali.com/beautiful-jekyll/"
-    - Learn markdown: "http://www.markdowntutorial.com/"
-  Author's home: "https://esheep.petrucci.ch"
