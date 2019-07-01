@@ -9,8 +9,11 @@ Here a list of all screen mates that can be downloaded from your application.
   function loadPetImage(url, im)
   {
     var img = new Image();
-    img.onload = ()=>{
+    img.onload = function(){
       im.src = img.src;
+    }
+    img.onerror = function(){
+      im.style.width = "48px";
     }
     img.src = url;
   }
