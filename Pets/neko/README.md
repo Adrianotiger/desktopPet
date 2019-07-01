@@ -1,4 +1,4 @@
-# About
+# Neko
 
 ## Description
 Another old screen mate. It is a walking cat. The original was able to follow your mouse cursor. The application is not able to implement this feature at the moment.
