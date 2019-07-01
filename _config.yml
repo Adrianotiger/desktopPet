@@ -14,7 +14,7 @@ url: https://adrianotiger.github.io/desktopPet/
 defaults:
   -
     scope:
-      path: "Pets/*/README.md"
+      path: "Pets/"
       type: "" 
     values:
       layout: "pet"
