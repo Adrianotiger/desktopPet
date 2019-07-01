@@ -5,10 +5,27 @@ title: List of available pets
 
 Here a list of all screen mates that can be downloaded from your application.
 
+<script>
+  function loadPetImage(url)
+  {
+    var img = new Image();
+    img.onload = function () {
+      alert("image" + url + " is loaded");
+    }
+    img.src = url;
+  }
+</script>
+
 <ul>
 {% for page in site.pages %}
   {% if page.name == "README.md" %}
-    <li><a href="{{ site.url }}{{ page.url }}"><img src="{{ site.url }}{{ page.url }}icon.png" height="48px" /> {{ page.title }}</a></li>
+    <li>
+      <a href="{{ site.url }}{{ page.url }}">
+        <img src="src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8/x8AAwMCAO+ip1sAAAAASUVORK5CYII=" 
+          onload="loadPetImage('{{ site.url }}{{ page.url }}icon.png')" height="48px" /> 
+        {{ page.title }}
+      </a>
+    </li>
   {% endif %}
 {% endfor %}  <!-- page -->
 </ul>
