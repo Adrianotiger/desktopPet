@@ -8,7 +8,7 @@ Here a list of all screen mates that can be downloaded from your application.
 <ul>
 {% for page in site.pages %}
   {% if page.name == "README.md" %}
-    <li><a href="{{ site.url }}{{ page.url }}">{{ page.title }}</a></li>
+    <li><a href="{{ site.url }}{{ page.url }}"><img src="{{ site.url }}{{ page.url }}icon.png" height="48px" /> {{ page.title }}</a></li>
   {% endif %}
 {% endfor %}  <!-- page -->
 </ul>
