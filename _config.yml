@@ -15,6 +15,5 @@ defaults:
   -
     scope:
       path: "Pets/"
-      type: "" 
     values:
       layout: "pet"
