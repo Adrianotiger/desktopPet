@@ -11,3 +11,8 @@ disqus: esheep
 
 url: https://adrianotiger.github.io/desktopPet/
 
+scope:
+      path: "Pets"
+      type: "" 
+    values:
+      layout: "pet"
