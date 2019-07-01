@@ -1,3 +1,13 @@
 theme: jekyll-theme-time-machine
 title: Deskopt Pet (eSheep 64bit)
 description: Add a screen mate to your desktop
+
+footer-links:
+  github: adrianotiger/desktopPet
+
+# Enter your Disqus shortname (not your username) to enable commenting on posts
+# You can find your shortname on the Settings page of your Disqus account
+disqus: esheep
+
+url: https://adrianotiger.github.io/desktopPet/
+
