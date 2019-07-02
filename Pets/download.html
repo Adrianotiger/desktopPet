@@ -67,7 +67,7 @@ title: Download pet animations
 
 {% for page in site.pages %}
   {% if page.name == "README.md" %}
-    <div class='aniicon' id='{{ site.url }}{{ page.url }}animations.xml' onclick='loadPetInfo("{{ page.url }}")'>
+    <div class='aniicon' id='{{ page.url }}' onclick='loadPetInfo("{{ site.url }}{{ page.url }}animations.xml")'>
       <img 
           src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8/x8AAwMCAO+ip1sAAAAASUVORK5CYII=" 
           onload="loadPetImage('{{ site.url }}{{ page.url }}icon.png', this)" 
