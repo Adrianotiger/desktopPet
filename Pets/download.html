@@ -21,9 +21,13 @@ title: Download pet animations
     var xobj = new XMLHttpRequest();
     //xobj.overrideMimeType("application/json");
     xobj.onreadystatechange = function() {
-        if (xobj.readyState === 4 && xobj.status === "200") {
+        if (xobj.readyState === 4 && xobj.status === 200) {
             var ani = JSON.parse(xobj.responseText);
             console.log(ani);
+            for(var p in ani.pets)
+            {
+              console.log(p);
+            }
         }
     };
     xobj.open('GET', 'pets.json', true);
