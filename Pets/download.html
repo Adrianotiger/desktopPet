@@ -63,7 +63,7 @@ title: Download pet animations
         info = info.replace(/\[link:([a-zA-Z0-9@:%_\+.~\#?&//=]*)\]/g, "<a target='_blank' href='$1'>$1</a>");
         html += info;
         html += "<hr width='80%'>";
-        html += "<a href='javascript:document.innerHTML=xmlText;' style='font-size:200%;'>DOWNLOAD</a>"
+        html += "<a href='javascript:document.innerHTML=\"-XML-\"+xmlText;' style='font-size:200%;'>DOWNLOAD</a>"
         document.getElementById('xmldiv').innerHTML = html;
         document.getElementById('xmldiv').style.display="block";
       }
