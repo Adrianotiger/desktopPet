@@ -16,19 +16,16 @@ title: Download pet animations
     img.src = url;
   }
   
-  function loadPetInfo()
+  function loadPetsInfo()
   {
     var xobj = new XMLHttpRequest();
     //xobj.overrideMimeType("application/json");
     xobj.onreadystatechange = function() {
         if (xobj.readyState === 4 && xobj.status === 200) {
             var ani = JSON.parse(xobj.responseText);
-            console.log(ani);
             for(var p in ani.pets)
             {
               var tds = document.getElementById('/Pets/' + ani.pets[p].folder + '/').getElementsByTagName("td");
-              console.log(ani.pets[p]);
-              console.log(tds);
               if(tds.length >= 3)
               {
                 tds[1].innerHTML = ani.pets[p].author;
@@ -40,18 +37,36 @@ title: Download pet animations
     xobj.open('GET', 'pets.json', true);
     xobj.send(null);
   }
-  setTimeout(function(){loadPetInfo();}, 200);
+  
+  function loadPetInfo(path)
+  {
+    var xobj = new XMLHttpRequest();
+    //xobj.overrideMimeType("application/json");
+    xobj.onreadystatechange = function() {
+      if (xobj.readyState === 4 && xobj.status === 200) {
+        parser = new DOMParser();
+        xmlDoc = parser.parseFromString(xobj.responseText,"text/xml");
+        console.log(xmlDoc);
+        document.getElementById('xmldiv').innerHTML = html;
+        document.getElementById('xmldiv').style.display="block";
+      }
+    };
+    xobj.open('GET', path+'animations.xml', true);
+    xobj.send(null);
+  }
+  setTimeout(function(){loadPetsInfo();}, 100);
 </script>
 
 <style>
-  .aniicon {width:50px;height:80px;display:inline-block;border-style:solid;border-color:darkblue;background-color:white;border-width:1px;border-radius:5px;cursor:pointer;text-align:center;}
+  .aniicon {width:70px;height:90px;display:inline-block;border-style:solid;border-color:darkblue;background-color:white;border-width:1px;border-radius:5px;cursor:pointer;text-align:center;margin:0 auto;}
   .aniicon img {max-height:48px;max-width:48px;vertical-align:middle;}
-  .aniicon td {overflow:hidden;white-space:nowrap;width:50px;height:10px;text-overflow:ellipsis;text-align:center;font-size:8px;padding:0px;margin:0px;}
+  .aniicon td {display:block;overflow:hidden;white-space:nowrap;width:68px;height:12px;text-overflow:ellipsis;text-align:center;font-size:10px;padding:0px;margin:0px;}
+  .xmldiv {display:none;position:absolute;width:80vw;height:80vh;top:10vh;left:10vw;}
 </style>
 
 {% for page in site.pages %}
   {% if page.name == "README.md" %}
-    <div class='aniicon' id='{{ page.url }}'>
+    <div class='aniicon' id='{{ page.url }}' onclick='loadPetInfo("{{ page.url }}")'>
       <img 
           src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8/x8AAwMCAO+ip1sAAAAASUVORK5CYII=" 
           onload="loadPetImage('{{ site.url }}{{ page.url }}icon.png', this)" 
@@ -65,3 +80,5 @@ title: Download pet animations
     </div>
   {% endif %}
 {% endfor %}  <!-- page -->
+
+<div id="xmldiv"></div>
