@@ -14,7 +14,7 @@ title: Download pet animations
     img.onerror = function(){
       im.style.width = "48px";
     }
-    //img.src = url;
+    img.src = url;
   }
   
   function loadPetsInfo()
@@ -88,8 +88,9 @@ title: Download pet animations
     <div class='aniicon' id='{{ page.url }}' onclick='loadPetInfo("{{ site.url }}{{ page.url }}animations.xml")'>
       <img 
           src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8/x8AAwMCAO+ip1sAAAAASUVORK5CYII=" 
-          onload="loadPetImage('{{ site.url }}{{ page.url }}icon.png', this)" 
+          id='{{ page.url }}ico'
           /> 
+      <script>loadPetImage('{{ site.url }}{{ page.url }}icon.png', document.getElementById('{{ page.url }}ico'));</script>
       <table>
       <tr><td>{{ page.title }}</td></tr>
       <tr><td>-</td></tr>
