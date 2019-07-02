@@ -41,7 +41,7 @@ title: Download pet animations
   function loadPetInfo(path)
   {
     var xobj = new XMLHttpRequest();
-    //xobj.overrideMimeType("application/json");
+    //xobj.overrideMimeType("text/xml");
     xobj.onreadystatechange = function() {
       if (xobj.readyState === 4 && xobj.status === 200) {
         parser = new DOMParser();
@@ -51,13 +51,14 @@ title: Download pet animations
         document.getElementById('xmldiv').style.display="block";
       }
     };
-    xobj.open('GET', path+'animations.xml', true);
+    xobj.open('GET', path, true);
     xobj.send(null);
   }
   setTimeout(function(){loadPetsInfo();}, 100);
 </script>
 
 <style>
+  body {width:100vw;margin:0 auto;text-align:center;}
   .aniicon {width:70px;height:90px;display:inline-block;border-style:solid;border-color:darkblue;background-color:white;border-width:1px;border-radius:5px;cursor:pointer;text-align:center;margin:0 auto;}
   .aniicon img {max-height:48px;max-width:48px;vertical-align:middle;}
   .aniicon td {display:block;overflow:hidden;white-space:nowrap;width:68px;height:12px;text-overflow:ellipsis;text-align:center;font-size:10px;padding:0px;margin:0px;}
@@ -66,7 +67,7 @@ title: Download pet animations
 
 {% for page in site.pages %}
   {% if page.name == "README.md" %}
-    <div class='aniicon' id='{{ page.url }}' onclick='loadPetInfo("{{ page.url }}")'>
+    <div class='aniicon' id='{{ site.url }}{{ page.url }}animations.xml' onclick='loadPetInfo("{{ page.url }}")'>
       <img 
           src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8/x8AAwMCAO+ip1sAAAAASUVORK5CYII=" 
           onload="loadPetImage('{{ site.url }}{{ page.url }}icon.png', this)" 
