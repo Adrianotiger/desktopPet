@@ -5,12 +5,14 @@ Can you remember eSheep, the lovely desktop sheep?
 If you had a lot of them on the desktop... welcome to this page!<br />
 This project gives you the possibility to add a pet to your desktop.<br />[![eSheep for 64bit systems](https://img.youtube.com/vi/xN90p16tKGE/0.jpg)](https://www.youtube.com/watch?v=xN90p16tKGE) 
 
-With a simple XML file (animations.xml) it is possible to change pet and animations.<br />
+With a simple XML file (animations.xml) it is possible to change pet and animations.
+
 # Application
 This application is not a game, not an utility and not useful :P it simply shows you
 a pet on the screen. This pet can fall down up to the taskbar and is able to detect 
 windows on your desktop.<br />
-In this way, this pet is able to walk, run, etc around your working screen area (on primary screen).
+In this way, this pet is able to walk, run, etc around your working screen area (also on multiscreens).
+
 # Downloads
 
 |        | Windows 7/8/10 | Windows 10 | Webpage | Tools |
@@ -19,19 +21,27 @@ In this way, this pet is able to walk, run, etc around your working screen area 
 | Description | Download rar, extract exe file and execute it. There is no installation. | Download it directly from the Microsoft store | Javascript file to implement it on your webpage | Some tools to edit and create your own pet.
 | Link | <a href='https://github.com/Adrianotiger/desktopPet/releases/tag/Portable'>Open page</a> to download or <a href='https://github.com/Adrianotiger/desktopPet/releases/download/Portable/eSheep_1.2.0.rar'>download zip</a> | <a href='https://www.microsoft.com/store/apps/9MX2V0TQT6RM'>Windows store</a> | <a href='https://github.com/Adrianotiger/web-esheep'>Open GitHub</a> project | -<a href='https://github.com/Adrianotiger/desktopPet/releases/tag/editor0.2'>Download Pet Editor</a> |
 
+# Screen Mates included in this application
+## eSheep
+[![eSheeps](Pets/esheep64/icon.png)](Pets/) 
+- esheep 64bit: Stray Sheep - the one delivered with the app 
+- gsheep, a more powerful sheep and with much more animations (like the original one)
+## Neko
+[![Neko](Pets/neko/icon.png)](Pets/) 
+Neko is another screen mate from 1995, ported to many systems.
+
 # Credits
 This project used other Open Source projects:
 <ul>
 <li><a href='https://github.com/naudio/NAudio'>NAudio</a> to play sounds
 </ul>
+
 # Thanks
 <a href='https://github.com/Grunwaldt'>Sergi</a> for the Tray Icon<br>
 <a href='https://github.com/rluiten'>Robin</a> improving the code and implementing the <a href='https://github.com/Adrianotiger/desktopPet/issues/6'>Graphviz tool</a>
 
 # Want to create your own mate/pet?
-The easy and fast way is to use the online editor: <a href='http://esheep.petrucci.ch/?pagina=editor'>Open online editor webpage</a>.<br>
-I am working on an offline editor, it will give a lot of tools and is faster than the online editor: <a href='https://github.com/Adrianotiger/desktopPet/releases/tag/editor0.2'>Download offline editor from GitHub</a>.<br>
-But you can also download the original <a href='Resources/animations.xml'>animations.xml</a> and create your own desktop mate/pet.<br />
+I am working on an offline editor: <a href='https://github.com/Adrianotiger/desktopPet/releases/tag/editor0.2'>Download offline editor from GitHub</a>.<br>
 What you need are:
 <ul>
 <li>1 application icon (.ico file)

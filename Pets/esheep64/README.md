@@ -1,4 +1,4 @@
-# About
+# eSheep 64bit
 
 ## Description
 This is the default animation for this application.
