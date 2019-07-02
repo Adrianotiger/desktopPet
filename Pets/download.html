@@ -20,21 +20,22 @@ title: Download pet animations
   {
     var xobj = new XMLHttpRequest();
     //xobj.overrideMimeType("application/json");
-    xobj.open('GET', 'pets.json', true);
     xobj.onreadystatechange = function() {
         if (xobj.readyState === 4 && xobj.status === "200") {
             var ani = JSON.parse(xobj.responseText);
             console.log(ani);
         }
     };
+    xobj.open('GET', 'pets.json', true);
     xobj.send(null);
   }
-  setTimeout(function(){loadPetInfo();}, 100);
+  setTimeout(function(){loadPetInfo();}, 200);
 </script>
 
 <style>
-  .aniicon {width:50px;height:80px;display:inline-block;border-style:solid;border-color:darkblue;background-color:white;border-width:1px;border-radius:5px;cursor:pointer;font-size:8px;}
+  .aniicon {width:50px;height:80px;display:inline-block;border-style:solid;border-color:darkblue;background-color:white;border-width:1px;border-radius:5px;cursor:pointer;font-size:8px;text-align:center;}
   .aniicon img {max-height:48px;max-width:48px;vertical-align:middle;}
+  .aniicon td {overflow:hidden;width:50px;text-overflow:ellipsis;text-align:center;}
 </style>
 
 {% for page in site.pages %}
