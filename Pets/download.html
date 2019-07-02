@@ -21,6 +21,7 @@ title: Download pet animations
   {
     var xobj = new XMLHttpRequest();
     //xobj.overrideMimeType("application/json");
+    xobj.open('GET', 'pets.json', true);
     xobj.onreadystatechange = function() {
         if (xobj.readyState === 4 && xobj.status === 200) {
             var ani = JSON.parse(xobj.responseText);
@@ -35,7 +36,6 @@ title: Download pet animations
             }
         }
     };
-    xobj.open('GET', 'pets.json', true);
     xobj.send(null);
   }
   
