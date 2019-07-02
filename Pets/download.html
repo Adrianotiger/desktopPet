@@ -33,21 +33,23 @@ title: Download pet animations
 </script>
 
 <style>
-  .aniicon {width:50px;height:70px;display:inline-block;border-style:solid;border-color:darkblue;background-color:white;border-width:1px;border-radius:5px;cursor:pointer;}
+  .aniicon {width:50px;height:80px;display:inline-block;border-style:solid;border-color:darkblue;background-color:white;border-width:1px;border-radius:5px;cursor:pointer;font-size:8px;}
   .aniicon img {max-height:48px;max-width:48px;vertical-align:middle;}
 </style>
 
 {% for page in site.pages %}
-  <div class='aniicon' id='{{ page.url }}'>
-    <img 
-        src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8/x8AAwMCAO+ip1sAAAAASUVORK5CYII=" 
-        onload="loadPetImage('{{ site.url }}{{ page.url }}icon.png', this)" 
-        /> 
-    <table>
-    <tr><td>{{ page.title }}</td></tr>
-    <tr><td>-</td></tr>
-    <tr><td>-</td></tr>
-    </table>
-      
-  </div>
+  {% if page.name == "README.md" %}
+    <div class='aniicon' id='{{ page.url }}'>
+      <img 
+          src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8/x8AAwMCAO+ip1sAAAAASUVORK5CYII=" 
+          onload="loadPetImage('{{ site.url }}{{ page.url }}icon.png', this)" 
+          /> 
+      <table>
+      <tr><td>{{ page.title }}</td></tr>
+      <tr><td>-</td></tr>
+      <tr><td>-</td></tr>
+      </table>
+
+    </div>
+  {% endif %}
 {% endfor %}  <!-- page -->
