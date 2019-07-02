@@ -26,7 +26,14 @@ title: Download pet animations
             console.log(ani);
             for(var p in ani.pets)
             {
-              console.log(p);
+              var tds = document.getElementById('/Pets/' + ani.pets[p].folder + '/').getElementsByTagName("td");
+              console.log(ani.pets[p]);
+              console.log(tds);
+              if(tds.length >= 3)
+              {
+                tds[1].innerHTML = ani.pets[p].author;
+                tds[2].innerHTML = ani.pets[p].lastupdate;
+              }
             }
         }
     };
