@@ -2,12 +2,12 @@
 layout: page
 ---
 
-Can you remember this application from the '95? This nice sheep covered our desktops for years :D 
+Can you remember this application from the '95? This nice sheep covered our desktops for years :D <br>
 Since, this application was a 16-bit version and it doesn't work anymore on Windows7/8/10, I wrote a little application in c# to see this sheep again on the desktop! 
-
+<br>
 <div class="page">
   {% for post in site.posts %}
-    <article class="post">
+    <article class="post-box">
 
       <h1><a href="{{ site.baseurl }}{{ post.url }}">{{ post.title }}</a></h1>
 
@@ -16,7 +16,9 @@ Since, this application was a 16-bit version and it doesn't work anymore on Wind
       </div>
 
       <a href="{{ site.baseurl }}{{ post.url }}" class="read-more">Read More</a>
+      <br>
       <hr width="80%">
+      <br>
     </article>
   {% endfor %}
 </div>
