@@ -57,7 +57,10 @@ title: Download pet animations
         html += "<tr><td>Last update: </td><td>" + xmlDoc.lastModified + "</td></tr>";
         html += "<tr><td>Size: </td><td>" + parseInt(xobj.responseText.length / 1024) + " kb</td></tr>";
         html += "</table>";
-        html += h.getElementsByTagName("info")[0].textContent;
+        var info = h.getElementsByTagName("info")[0].textContent;
+        info = info.replace(/\[br\]/g, "<br>");
+        info = info.replace(/\[link:([a-zA-Z0-9@:%_\+.~\#?&//=]*)\]/g, "<a target='_blank' href='$1'>$1</a>");
+        html += info;
         document.getElementById('xmldiv').innerHTML = html;
         document.getElementById('xmldiv').style.display="block";
       }
@@ -73,7 +76,8 @@ title: Download pet animations
   .aniicon {width:70px;height:90px;display:inline-block;border-style:solid;border-color:darkblue;background-color:white;border-width:1px;border-radius:5px;cursor:pointer;text-align:center;margin:0 auto;}
   .aniicon img {max-height:48px;max-width:48px;vertical-align:middle;}
   .aniicon td {display:block;overflow:hidden;white-space:nowrap;width:68px;height:12px;text-overflow:ellipsis;text-align:center;font-size:10px;padding:0px;margin:0px;}
-  .xmldiv {display:none;position:fixed;width:80vw;height:80vh;top:10vh;left:10vw;overflow:auto;background-color:#ddddff;}
+  .xmldiv {display:none;position:fixed;width:80vw;height:80vh;top:10vh;left:10vw;overflow:auto;background-color:#ddddff;text-align:center;margin:0 auto;}
+  .xmldiv table {margin:0 auto;border-style:ridge;border-width:2px;border-radius:4px;}
 </style>
 
 {% for page in site.pages %}
