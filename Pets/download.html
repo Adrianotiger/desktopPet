@@ -4,6 +4,7 @@ title: Download pet animations
 ---
 
 <script>
+  var xmlText;
   function loadPetImage(url, im)
   {
     var img = new Image();
@@ -44,23 +45,25 @@ title: Download pet animations
     //xobj.overrideMimeType("text/xml");
     xobj.onreadystatechange = function() {
       if (xobj.readyState === 4 && xobj.status === 200) {
-        parser = new DOMParser();
-        xmlDoc = parser.parseFromString(xobj.responseText,"text/xml");
+        var parser = new DOMParser();
+        xmlText = xobj.responseText;
+        var xmlDoc = parser.parseFromString(xmlText,"text/xml");
         console.log(xmlDoc);
         var html = "";
         var h = xmlDoc.getElementsByTagName("header")[0];
         html += "<img src='data:image/icon;base64," +  h.getElementsByTagName("icon")[0].textContent + "' /><br>";
-        html += "<table><tr><td>Author: </td><td>" + h.getElementsByTagName("author")[0].textContent + "</td></tr>";
+        html += "<table border='1'><tr><td>Author: </td><td>" + h.getElementsByTagName("author")[0].textContent + "</td></tr>";
         html += "<tr><td>Project: </td><td>" + h.getElementsByTagName("title")[0].textContent + "</td></tr>";
         html += "<tr><td>Pet name: </td><td>" + h.getElementsByTagName("petname")[0].textContent + "</td></tr>";
         html += "<tr><td>Version: </td><td>" + h.getElementsByTagName("version")[0].textContent + "</td></tr>";
-        html += "<tr><td>Last update: </td><td>" + xmlDoc.lastModified + "</td></tr>";
         html += "<tr><td>Size: </td><td>" + parseInt(xobj.responseText.length / 1024) + " kb</td></tr>";
-        html += "</table>";
+        html += "</table><br><br>";
         var info = h.getElementsByTagName("info")[0].textContent;
         info = info.replace(/\[br\]/g, "<br>");
         info = info.replace(/\[link:([a-zA-Z0-9@:%_\+.~\#?&//=]*)\]/g, "<a target='_blank' href='$1'>$1</a>");
         html += info;
+        html += "<hr width='80%'>";
+        html += "<a href='javascript:document.innerHTML=xmlText;' style='font-size:200%;'>DOWNLOAD</a>"
         document.getElementById('xmldiv').innerHTML = html;
         document.getElementById('xmldiv').style.display="block";
       }
@@ -76,8 +79,8 @@ title: Download pet animations
   .aniicon {width:70px;height:90px;display:inline-block;border-style:solid;border-color:darkblue;background-color:white;border-width:1px;border-radius:5px;cursor:pointer;text-align:center;margin:0 auto;}
   .aniicon img {max-height:48px;max-width:48px;vertical-align:middle;}
   .aniicon td {display:block;overflow:hidden;white-space:nowrap;width:68px;height:12px;text-overflow:ellipsis;text-align:center;font-size:10px;padding:0px;margin:0px;}
-  .xmldiv {display:none;position:fixed;width:80vw;height:80vh;top:10vh;left:10vw;overflow:auto;background-color:#ddddff;text-align:center;margin:0 auto;}
-  .xmldiv table {margin:0 auto;border-style:ridge;border-width:2px;border-radius:4px;}
+  .xmldiv {display:none;position:fixed;width:80vw;height:80vh;top:10vh;left:10vw;overflow:auto;background-color:#ddddff;text-align:center;margin:0 auto;border-style:ridge;border-width:3px;border-radius:20px;}
+  .xmldiv table {margin:0 auto;border-style:ridge;border-width:2px;border-radius:4px;font-size:120%;}
 </style>
 
 {% for page in site.pages %}
