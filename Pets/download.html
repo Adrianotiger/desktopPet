@@ -1,0 +1,53 @@
+---
+layout: page
+title: Download pet animations
+---
+
+<script>
+  function loadPetImage(url, im)
+  {
+    var img = new Image();
+    img.onload = function(){
+      im.src = img.src;
+    }
+    img.onerror = function(){
+      im.style.width = "48px";
+    }
+    img.src = url;
+  }
+  
+  function loadPetInfo()
+  {
+    var xobj = new XMLHttpRequest();
+    //xobj.overrideMimeType("application/json");
+    xobj.open('GET', 'pets.json', true);
+    xobj.onreadystatechange = function() {
+        if (xobj.readyState === 4 && xobj.status === "200") {
+            var ani = JSON.parse(xobj.responseText);
+            console.log(ani);
+        }
+    };
+    xobj.send(null);
+  }
+  setTimeout(function(){loadPetInfo();}, 100);
+</script>
+
+<style>
+  .aniicon {width:50px;height:70px;display:inline-block;border-style:solid;border-color:darkblue;background-color:white;border-width:1px;border-radius:5px;cursor:pointer;}
+  .aniicon img {max-height:48px;max-width:48px;vertical-align:middle;}
+</style>
+
+{% for page in site.pages %}
+  <div class='aniicon' id='{{ page.url }}'>
+    <img 
+        src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8/x8AAwMCAO+ip1sAAAAASUVORK5CYII=" 
+        onload="loadPetImage('{{ site.url }}{{ page.url }}icon.png', this)" 
+        /> 
+    <table>
+    <tr><td>{{ page.title }}</td></tr>
+    <tr><td>-</td></tr>
+    <tr><td>-</td></tr>
+    </table>
+      
+  </div>
+{% endfor %}  <!-- page -->
