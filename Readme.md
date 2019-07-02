@@ -11,7 +11,7 @@ With a simple XML file (animations.xml) it is possible to change pet and animati
 This application is not a game, not an utility and not useful :P it simply shows you
 a pet on the screen. This pet can fall down up to the taskbar and is able to detect 
 windows on your desktop.<br />
-In this way, this pet is able to walk, run, etc around your working screen area (on primary screen).
+In this way, this pet is able to walk, run, etc around your working screen area (also on multiscreens).
 
 # Downloads
 
@@ -41,9 +41,7 @@ This project used other Open Source projects:
 <a href='https://github.com/rluiten'>Robin</a> improving the code and implementing the <a href='https://github.com/Adrianotiger/desktopPet/issues/6'>Graphviz tool</a>
 
 # Want to create your own mate/pet?
-The easy and fast way is to use the online editor: <a href='http://esheep.petrucci.ch/?pagina=editor'>Open online editor webpage</a>.<br>
-I am working on an offline editor, it will give a lot of tools and is faster than the online editor: <a href='https://github.com/Adrianotiger/desktopPet/releases/tag/editor0.2'>Download offline editor from GitHub</a>.<br>
-But you can also download the original <a href='Resources/animations.xml'>animations.xml</a> and create your own desktop mate/pet.<br />
+I am working on an offline editor: <a href='https://github.com/Adrianotiger/desktopPet/releases/tag/editor0.2'>Download offline editor from GitHub</a>.<br>
 What you need are:
 <ul>
 <li>1 application icon (.ico file)
