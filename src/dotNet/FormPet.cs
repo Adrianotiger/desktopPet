@@ -234,10 +234,9 @@ namespace DesktopPet
 			PositionX = Left;
 			PositionY = Top;
 			OffsetY = 0.0;
-            Visible = true;                             // Now we can show the form
-            Opacity = 1.0;
             SetNewAnimation(spawn.Next);                // Set next animation
-            
+            Visible = true;                             // Now we can show the form
+            Opacity = 0.0;                              // do not show first frame (as it is undefined)
             timer1.Enabled = true;                      // Enable the timer (interval is well known now)
         }
 

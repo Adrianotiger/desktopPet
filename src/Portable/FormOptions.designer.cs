@@ -35,29 +35,29 @@ namespace DesktopPet
             this.tabPage1 = new System.Windows.Forms.TabPage();
             this.tabPage2 = new System.Windows.Forms.TabPage();
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
+            this.label7 = new System.Windows.Forms.Label();
+            this.checkBox3 = new System.Windows.Forms.CheckBox();
             this.label1 = new System.Windows.Forms.Label();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.checkBox2 = new System.Windows.Forms.CheckBox();
             this.label3 = new System.Windows.Forms.Label();
+            this.checkBox1 = new System.Windows.Forms.CheckBox();
+            this.label2 = new System.Windows.Forms.Label();
+            this.trackBar1 = new System.Windows.Forms.TrackBar();
             this.tabPage4 = new System.Windows.Forms.TabPage();
             this.tableLayoutPanel2 = new System.Windows.Forms.TableLayoutPanel();
             this.label4 = new System.Windows.Forms.Label();
             this.trackBar2 = new System.Windows.Forms.TrackBar();
             this.label5 = new System.Windows.Forms.Label();
-            this.checkBox1 = new System.Windows.Forms.CheckBox();
-            this.label2 = new System.Windows.Forms.Label();
-            this.trackBar1 = new System.Windows.Forms.TrackBar();
-            this.checkBox3 = new System.Windows.Forms.CheckBox();
-            this.label7 = new System.Windows.Forms.Label();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
             this.tabPage2.SuspendLayout();
             this.tableLayoutPanel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.trackBar1)).BeginInit();
             this.tabPage4.SuspendLayout();
             this.tableLayoutPanel2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.trackBar2)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.trackBar1)).BeginInit();
             this.SuspendLayout();
             // 
             // webBrowser1
@@ -68,7 +68,7 @@ namespace DesktopPet
             this.webBrowser1.Name = "webBrowser1";
             this.webBrowser1.Size = new System.Drawing.Size(351, 327);
             this.webBrowser1.TabIndex = 1;
-            this.webBrowser1.Url = new System.Uri("http://esheep.petrucci.ch/pets.php", System.UriKind.Absolute);
+            this.webBrowser1.Url = new System.Uri("https://adrianotiger.github.io/desktopPet/Pets/download.html", System.UriKind.Absolute);
             this.webBrowser1.DocumentCompleted += new System.Windows.Forms.WebBrowserDocumentCompletedEventHandler(this.webBrowser1_DocumentCompleted);
             // 
             // button1
@@ -155,6 +155,29 @@ namespace DesktopPet
             this.tableLayoutPanel1.Size = new System.Drawing.Size(351, 327);
             this.tableLayoutPanel1.TabIndex = 1;
             // 
+            // label7
+            // 
+            this.label7.AutoSize = true;
+            this.label7.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.label7.Location = new System.Drawing.Point(143, 140);
+            this.label7.Name = "label7";
+            this.label7.Size = new System.Drawing.Size(205, 50);
+            this.label7.TabIndex = 9;
+            this.label7.Text = "If you have more than 1 monitor, the sheep can spawn also on other screens.";
+            this.label7.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
+            // checkBox3
+            // 
+            this.checkBox3.AutoSize = true;
+            this.checkBox3.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.checkBox3.Location = new System.Drawing.Point(3, 143);
+            this.checkBox3.Name = "checkBox3";
+            this.checkBox3.Size = new System.Drawing.Size(134, 44);
+            this.checkBox3.TabIndex = 8;
+            this.checkBox3.Text = "Allow Multiscreen";
+            this.checkBox3.UseVisualStyleBackColor = true;
+            this.checkBox3.CheckedChanged += new System.EventHandler(this.checkBox3_CheckedChanged);
+            // 
             // label1
             // 
             this.label1.AutoSize = true;
@@ -202,6 +225,42 @@ namespace DesktopPet
             this.label3.Text = "The original eSheep was able to bring in front the collided window. It will decre" +
     "ase your productivity, so it is disabled by default.";
             this.label3.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
+            // checkBox1
+            // 
+            this.checkBox1.AutoSize = true;
+            this.checkBox1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.checkBox1.Location = new System.Drawing.Point(3, 193);
+            this.checkBox1.Name = "checkBox1";
+            this.tableLayoutPanel1.SetRowSpan(this.checkBox1, 2);
+            this.checkBox1.Size = new System.Drawing.Size(134, 64);
+            this.checkBox1.TabIndex = 5;
+            this.checkBox1.Text = "Allow sounds";
+            this.checkBox1.UseVisualStyleBackColor = true;
+            this.checkBox1.CheckedChanged += new System.EventHandler(this.checkBox1_CheckedChanged);
+            // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.label2.Location = new System.Drawing.Point(143, 197);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(205, 13);
+            this.label2.TabIndex = 6;
+            this.label2.Text = "ERR";
+            this.label2.TextAlign = System.Drawing.ContentAlignment.BottomCenter;
+            // 
+            // trackBar1
+            // 
+            this.trackBar1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.trackBar1.Enabled = false;
+            this.trackBar1.Location = new System.Drawing.Point(143, 213);
+            this.trackBar1.Name = "trackBar1";
+            this.trackBar1.Size = new System.Drawing.Size(205, 44);
+            this.trackBar1.TabIndex = 7;
+            this.trackBar1.TickFrequency = 2;
+            this.trackBar1.TickStyle = System.Windows.Forms.TickStyle.TopLeft;
+            this.trackBar1.Scroll += new System.EventHandler(this.trackBar1_Scroll);
             // 
             // tabPage4
             // 
@@ -270,65 +329,6 @@ namespace DesktopPet
             this.label5.TabIndex = 1;
             this.label5.Text = "ERR";
             // 
-            // checkBox1
-            // 
-            this.checkBox1.AutoSize = true;
-            this.checkBox1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.checkBox1.Location = new System.Drawing.Point(3, 193);
-            this.checkBox1.Name = "checkBox1";
-            this.tableLayoutPanel1.SetRowSpan(this.checkBox1, 2);
-            this.checkBox1.Size = new System.Drawing.Size(134, 64);
-            this.checkBox1.TabIndex = 5;
-            this.checkBox1.Text = "Allow sounds";
-            this.checkBox1.UseVisualStyleBackColor = true;
-            this.checkBox1.CheckedChanged += new System.EventHandler(this.checkBox1_CheckedChanged);
-            // 
-            // label2
-            // 
-            this.label2.AutoSize = true;
-            this.label2.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.label2.Location = new System.Drawing.Point(143, 197);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(205, 13);
-            this.label2.TabIndex = 6;
-            this.label2.Text = "ERR";
-            this.label2.TextAlign = System.Drawing.ContentAlignment.BottomCenter;
-            // 
-            // trackBar1
-            // 
-            this.trackBar1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.trackBar1.Enabled = false;
-            this.trackBar1.Location = new System.Drawing.Point(143, 213);
-            this.trackBar1.Name = "trackBar1";
-            this.trackBar1.Size = new System.Drawing.Size(205, 44);
-            this.trackBar1.TabIndex = 7;
-            this.trackBar1.TickFrequency = 2;
-            this.trackBar1.TickStyle = System.Windows.Forms.TickStyle.TopLeft;
-            this.trackBar1.Scroll += new System.EventHandler(this.trackBar1_Scroll);
-            // 
-            // checkBox3
-            // 
-            this.checkBox3.AutoSize = true;
-            this.checkBox3.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.checkBox3.Location = new System.Drawing.Point(3, 143);
-            this.checkBox3.Name = "checkBox3";
-            this.checkBox3.Size = new System.Drawing.Size(134, 44);
-            this.checkBox3.TabIndex = 8;
-            this.checkBox3.Text = "Allow Multiscreen";
-            this.checkBox3.UseVisualStyleBackColor = true;
-            this.checkBox3.CheckedChanged += new System.EventHandler(this.checkBox3_CheckedChanged);
-            // 
-            // label7
-            // 
-            this.label7.AutoSize = true;
-            this.label7.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.label7.Location = new System.Drawing.Point(143, 140);
-            this.label7.Name = "label7";
-            this.label7.Size = new System.Drawing.Size(205, 50);
-            this.label7.TabIndex = 9;
-            this.label7.Text = "If you have more than 1 monitor, the sheep can spawn also on other screens.";
-            this.label7.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            // 
             // FormOptions
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -350,11 +350,11 @@ namespace DesktopPet
             this.tableLayoutPanel1.ResumeLayout(false);
             this.tableLayoutPanel1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.trackBar1)).EndInit();
             this.tabPage4.ResumeLayout(false);
             this.tableLayoutPanel2.ResumeLayout(false);
             this.tableLayoutPanel2.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.trackBar2)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.trackBar1)).EndInit();
             this.ResumeLayout(false);
 
         }
