@@ -49,13 +49,15 @@ title: Download pet animations
         console.log(xmlDoc);
         var html = "";
         var h = xmlDoc.getElementsByTagName("header")[0];
+        html += "<img src='data:image/icon;base64," +  h.getElementsByTagName("icon")[0].textContent + "' /><br>";
         html += "<table><tr><td>Author: </td><td>" + h.getElementsByTagName("author")[0].textContent + "</td></tr>";
         html += "<tr><td>Project: </td><td>" + h.getElementsByTagName("title")[0].textContent + "</td></tr>";
         html += "<tr><td>Pet name: </td><td>" + h.getElementsByTagName("petname")[0].textContent + "</td></tr>";
         html += "<tr><td>Version: </td><td>" + h.getElementsByTagName("version")[0].textContent + "</td></tr>";
         html += "<tr><td>Last update: </td><td>" + xmlDoc.lastModified + "</td></tr>";
-        html += "<tr><td>Size: </td><td>" + parseInt(xmlDoc.length / 1024) + " kb</td></tr>";
+        html += "<tr><td>Size: </td><td>" + parseInt(xobj.responseText.length / 1024) + " kb</td></tr>";
         html += "</table>";
+        html += h.getElementsByTagName("info")[0].textContent;
         document.getElementById('xmldiv').innerHTML = html;
         document.getElementById('xmldiv').style.display="block";
       }
@@ -91,4 +93,4 @@ title: Download pet animations
   {% endif %}
 {% endfor %}  <!-- page -->
 
-<div id="xmldiv" onclick="this.style.display='none';"></div>
+<div class="xmldiv" id="xmldiv" onclick="this.style.display='none';"></div>
