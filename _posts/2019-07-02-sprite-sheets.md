@@ -3,8 +3,6 @@ layout: post
 title:  "Sprite Sheets"
 ---
 
-# Download sprite sheets
-
 Sprite sheets are a collection of single frames. 
 Once you have 2 or more frames, you can animate your mate selecting another image every 20-100ms.
 
