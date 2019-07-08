@@ -26,7 +26,7 @@ namespace LocalData
         private static string DeveloperPets = "";
 
         private static readonly String GITHUB_FOLDER = "https://raw.githubusercontent.com/Adrianotiger/desktopPet/master";
-        public static readonly String GITHUB_PETDOCS = "https://github.com/Adrianotiger/desktopPet/tree/master/Pets/";
+        public static readonly String GITHUB_PETDOCS = "https://adrianotiger.github.io/desktopPet/Pets/";
         private static readonly String GITHUB_PETFOLDER = "/Pets/";
         //public static readonly String GITHUB_APITREE = "https://api.github.com/repos/Adrianotiger/desktopPet/git/trees/9769cf227eaf8322c028d2be2a9671d692b9f293"; <<- can't be used without token/login
 

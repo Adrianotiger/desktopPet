@@ -31,7 +31,7 @@
   <Import Project="$(WapProjPath)\Microsoft.DesktopBridge.props" />
   <PropertyGroup>
     <ProjectGuid>99bc8ccc-5964-4ac0-98cd-5c2b8bfd2d80</ProjectGuid>
-    <TargetPlatformVersion>10.0.17134.0</TargetPlatformVersion>
+    <TargetPlatformVersion>10.0.17763.0</TargetPlatformVersion>
     <TargetPlatformMinVersion>10.0.17134.0</TargetPlatformMinVersion>
     <DefaultLanguage>en-GB</DefaultLanguage>
     <PackageCertificateKeyFile>UWPSheep_StoreKey.pfx</PackageCertificateKeyFile>
@@ -39,7 +39,7 @@
     <PackageCertificateThumbprint>5F42B0C0AA58D9BF5C19EF0C2C270BE782F2AD18</PackageCertificateThumbprint>
     <GenerateAppInstallerFile>False</GenerateAppInstallerFile>
     <AppxAutoIncrementPackageRevision>False</AppxAutoIncrementPackageRevision>
-    <AppxBundlePlatforms>x64</AppxBundlePlatforms>
+    <AppxBundlePlatforms>x86</AppxBundlePlatforms>
     <AppInstallerUpdateFrequency>1</AppInstallerUpdateFrequency>
     <AppInstallerCheckForUpdateFrequency>OnApplicationRun</AppInstallerCheckForUpdateFrequency>
     <AppxPackageDir>D:\GitHub\desktopPet\src\UWPSheep\..\..\build\AppPackages\</AppxPackageDir>

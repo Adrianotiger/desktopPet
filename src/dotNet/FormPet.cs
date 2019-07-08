@@ -621,6 +621,10 @@ namespace DesktopPet
                     {
                         iNextAni = -1;
                     }
+                    else if (Top < ScreenBounds.Y - Height || Top > ScreenBounds.Y + ScreenBounds.Height)
+                    {
+                        iNextAni = -1;
+                    }
                     else
                     {
                         iNextAni = Animations.SetNextSequenceAnimation(
@@ -657,6 +661,7 @@ namespace DesktopPet
                     else
                     {
                         Play(false);
+                        return;
                     }
                 }
             }
@@ -709,14 +714,15 @@ namespace DesktopPet
                     int cut = ScreenArea.X - (int)PositionX;
                     if (Width > 2)
                     {
-                        Width -= cut;
-                        Left = (int)PositionX + cut;
+                        Width = pictureBox1.Width - cut;
+                        Left = ScreenArea.X;
                         pictureBox1.Left -= cut;
                     }
                     else
                     {
                         Left -= Width;
                         pictureBox1.Left = Width + 1;
+                        AnimationStep += CurrentAnimation.Sequence.Frames.Count / 3;
                     }   
                 }
                 else if ((int)PositionX > ScreenArea.X + ScreenArea.Width) // leaving right
@@ -731,6 +737,23 @@ namespace DesktopPet
                     {
                         Left += Width;
                         pictureBox1.Left = Width + 1;
+                        AnimationStep += CurrentAnimation.Sequence.Frames.Count / 3;
+                    }
+                }
+                if (PositionY - OffsetY < ScreenArea.Y) // leaving up
+                {
+                    int cut = (int)(ScreenArea.Y - PositionY - OffsetY);
+                    if (Height > 2)
+                    {
+                        Height -= cut;
+                        Top = ScreenArea.Y;
+                        pictureBox1.Top -= cut;
+                    }
+                    else
+                    {
+                        Top -= Height;
+                        pictureBox1.Top = Height + 1;
+                        AnimationStep += CurrentAnimation.Sequence.Frames.Count / 3;
                     }
                 }
 
@@ -1091,7 +1114,9 @@ namespace DesktopPet
             {
                 if (file.Contains(".xml"))
                 {
+                    Program.Mainthread.KillSheep(this);
                     Program.MyData.SetXml(File.ReadAllText(file), "..");
+                    Program.Mainthread.LoadNewXMLFromString(File.ReadAllText(file));
                     break;  // Currently only 1 file, in future maybe more animations at the same time
                 }
             }
