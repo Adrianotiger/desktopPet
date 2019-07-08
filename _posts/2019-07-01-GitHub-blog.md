@@ -3,8 +3,6 @@ layout: post
 title:  "Welcome to the new blog!"
 ---
 
-# Welcome
-
 This will be the next official page for the esheep project.
 
 I want to move everything to GitHub and once the webpage is here, I can linke everything to this webserver.

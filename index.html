@@ -1,18 +1,27 @@
 ---
 layout: page
 ---
-
+<style>
+  .post-box {background:linear-gradient(to bottom, rgba(255,255,255,0.2), rgba(180,180,180,0.1));background-color:white;border-radius:20px;padding:10px;}
+</style>
+<div style="text-align:center;color:black;margin:0 auto;">
+  Can you remember this application from the '95? This nice sheep covered our desktops for years :D <br>
+  Since, this application was a 16-bit version and it doesn't work anymore on Windows7/8/10, I wrote a little application in c# to see this sheep again on the desktop! 
+</div>
+<br>
 <div class="page">
   {% for post in site.posts %}
-    <article class="post">
+    <article class="post-box">
 
       <h1><a href="{{ site.baseurl }}{{ post.url }}">{{ post.title }}</a></h1>
 
       <div class="entry">
         {{ post.excerpt }}
       </div>
-
+      
+      <hr>
       <a href="{{ site.baseurl }}{{ post.url }}" class="read-more">Read More</a>
+      <br>
     </article>
   {% endfor %}
 </div>

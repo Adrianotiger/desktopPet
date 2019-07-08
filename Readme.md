@@ -48,3 +48,8 @@ What you need are:
 <li>1 animation image: an image with transparency with all possible positions. (.png not too big... Something like 1000x500 px)
 </ul><br />
 For more info about editing the xml file and add your own pet, follow the <a href='../../wiki/'>Wiki</a> page.<br /> or download the manual to develop your pet online: <a href='https://github.com/Adrianotiger/desktopPet/raw/master/Manual/Manual%20-%20online%20editor.docx'>Manual-online editor.docx</a>
+
+# Do you like the project?
+If you like this project, you can donate 2-3$. 
+I will use them to pay certificates or paying someone to create new sprites
+[![paypal](https://www.paypalobjects.com/en_US/CH/i/btn/btn_donateCC_LG.gif)](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=HWNG87K85CJFA)
