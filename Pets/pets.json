@@ -2,12 +2,12 @@
   "pets" : [
     {
       "folder" : "esheep64",
-      "author" : "Adriano Petrucci",
+      "author" : "Adriano",
       "lastupdate" : "2019-02-21"
     },
     {
       "folder" : "bbunny",
-      "author" : "Adriano Petrucci",
+      "author" : "Adriano",
       "lastupdate" : "2019-02-25"
     },
     {
@@ -22,8 +22,13 @@
     },
     {
       "folder" : "neko",
-      "author" : "Adriano Petrucci",
+      "author" : "Adriano",
       "lastupdate" : "2019-06-28"
+    },
+    {
+      "folder" : "pingus",
+      "author" : "Adriano",
+      "lastupdate" : "2019-07-08"
     }
   ]
 }
