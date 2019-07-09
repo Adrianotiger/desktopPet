@@ -17,4 +17,5 @@ v0.1 first version
 
 ## About pet
 Author: Adriano Petrucci
+
 Copyright: sprites from https://github.com/Pingus/
