@@ -15,4 +15,5 @@ v1.8 first version for UWP app
 
 ## About pet
 Author: Adriano Petrucci
+
 Copyright: sprites from [LiL_Stenly](http://spritedatabase.net/game/2071)
