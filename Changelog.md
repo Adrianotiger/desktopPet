@@ -1,10 +1,4 @@
-<img src='Images/icon_changelog.png' style='float:left;height:16px;position:relative;top:-19px;left:5px;' alt='Changelog Icon'>
-<b class='windowtitle'>Changelog</b>
-<a class='windowbuttonx' href='?'>x</a>
-<a class='windowbuttonm' onclick='resizeWindow(this);'>-</a>
-<div style='text-align:left;'>
- <h1 style='margin:0 auto;text-align:center;'>Changelog:</h1>
- <br />
+# Changelog
  
  <h3>In the next release:</h3>
  <ol>
@@ -12,7 +6,7 @@
    <li>Auto update over GitHub for portable version
  </ol>
  
- <h3><a href='https://github.com/Adrianotiger/desktopPet/releases/latest'>Version 1.2.2</a><sup>08 jul 2019</sup>:</h3>
+ <h3>Version 1.2.2<sup>08 jul 2019</sup>:</h3>
  <ul>
    <li>Improved border detection, also top and bottom border (not only left and right)
    <li>Some times on respawn, pet was cut in a wrong way
