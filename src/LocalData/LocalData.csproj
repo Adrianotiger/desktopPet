@@ -3,24 +3,45 @@
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
     <IntermediateOutputPath>..\..\build\LocalData\obj\</IntermediateOutputPath>
-    <Platforms>AnyCPU</Platforms>
+    <Platforms>AnyCPU;x86;x64</Platforms>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
     <OutputPath>..\..\build\LocalData\bin\Release\</OutputPath>
     <IntermediateOutputPath>..\..\build\LocalData\obj\</IntermediateOutputPath>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <OutputPath>..\..\build\LocalData\bin\Release\</OutputPath>
+    <IntermediateOutputPath>..\..\build\LocalData\obj\</IntermediateOutputPath>
+    <PlatformTarget>x64</PlatformTarget>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x86'">
+    <OutputPath>..\..\build\LocalData\bin\Release\</OutputPath>
+    <IntermediateOutputPath>..\..\build\LocalData\obj\</IntermediateOutputPath>
+    <PlatformTarget>x86</PlatformTarget>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
     <OutputPath>..\..\build\LocalData\bin\Debug\</OutputPath>
     <IntermediateOutputPath>..\..\build\LocalData\obj\</IntermediateOutputPath>
+    <PlatformTarget>x86</PlatformTarget>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <OutputPath>..\..\build\LocalData\bin\Debug\</OutputPath>
+    <IntermediateOutputPath>..\..\build\LocalData\obj\</IntermediateOutputPath>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x86'">
+    <OutputPath>..\..\build\LocalData\bin\Debug\</OutputPath>
+    <IntermediateOutputPath>..\..\build\LocalData\obj\</IntermediateOutputPath>
   </PropertyGroup>
 
   <ItemGroup>
-    <Reference Include="Windows">
-      <HintPath>C:\Program Files (x86)\Windows Kits\10\UnionMetadata\10.0.17763.0\Windows.winmd</HintPath>
-      <IsWinMDFile>true</IsWinMDFile>
-    </Reference>
+    <PackageReference Include="Newtonsoft.Json" Version="12.0.2" />
   </ItemGroup>
 
 </Project>

@@ -56,7 +56,7 @@ namespace DesktopPet
         bool isAboutLoaded = false;
         bool isOptionLoaded = false;
 #else
-        LocalData.LocalData MyData = new LocalData.LocalData();
+        LocalData.LocalData MyData = new LocalData.LocalData(Windows.Storage.ApplicationData.Current.LocalFolder.Path, Windows.Storage.ApplicationData.Current.LocalFolder.Path + "\\eSheep.exe");
 #endif
 
         /// <summary>

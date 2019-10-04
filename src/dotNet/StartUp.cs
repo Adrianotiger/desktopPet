@@ -163,7 +163,7 @@ namespace DesktopPet
                 var newSheep = new FormPet(animations, xml);
                 foreach (var sprite in xml.sprites)
                 {
-                    newSheep.addImage(sprite);
+                    newSheep.AddImage(sprite);
                 }
                 sheeps[iSheeps] = newSheep;
                 sheeps[iSheeps].Show(xml.spriteWidth, xml.spriteHeight);

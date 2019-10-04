@@ -5,65 +5,67 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
-using Windows.ApplicationModel;
+using System.Configuration;
+using Newtonsoft.Json;
 
 namespace LocalData
 {
+    public class PetUpdate
+    {
+        public string Name { get; set; } = "";
+        public DateTime Date { get; set; } = new DateTime(2000,1,1);
+    }
+    public class Settings
+    {
+        public string Xml { get; set; } = "";
+        public double Volume { get; set; } = 0.3;
+        public bool WinForeGround { get; set; } = false;
+        public int AutostartPets { get; set; } = 1;
+        public bool MultiScreenEnabled { get; set; } = true;
+        public string CurrentPet { get; set; } = "esheep64";
+        public List<PetUpdate> LastUpdate { get; set; } = new List<PetUpdate>();
+    }
+
     public class LocalData
     {
-        static Windows.Storage.ApplicationDataContainer LocalSettings = null;
-        static Windows.Storage.StorageFolder LocalFolder = null;
+        static Settings LocalSettings = null;
+        static string LocalFolder;
 
-        private static string Images = "";
-        private static string Icon = "";
-        private static string Xml = "";
-        private static double Volume = 0.3;
-        private static bool WinForeGround = false;
-        private static int AutostartPets = 1;
-        private static bool MultiScreenEnabled = true;
-        private static bool FirstBoot = false;
-        private static bool Developer = false;
-        private static string DeveloperPets = "";
+        static bool FirstBoot = false;
+        static string Images = "";
+        static string Icon = "";
+        static bool Developer = false;
+        static string DeveloperPets = "";
+
+        private FileSystemWatcher watcher = null;
 
         private static readonly String GITHUB_FOLDER = "https://raw.githubusercontent.com/Adrianotiger/desktopPet/master";
         public static readonly String GITHUB_PETDOCS = "https://adrianotiger.github.io/desktopPet/Pets/";
         private static readonly String GITHUB_PETFOLDER = "/Pets/";
         //public static readonly String GITHUB_APITREE = "https://api.github.com/repos/Adrianotiger/desktopPet/git/trees/9769cf227eaf8322c028d2be2a9671d692b9f293"; <<- can't be used without token/login
 
-        public LocalData()
+        public LocalData(string StorageFolder, string exeFile)
         {
+            LocalFolder = StorageFolder;
+
             DeveloperPets = GITHUB_FOLDER + GITHUB_PETFOLDER + "pets.json";
 
+            if (!Directory.Exists(LocalFolder)) Directory.CreateDirectory(LocalFolder);
             if (LocalSettings == null)
             {
-                LocalSettings = Windows.Storage.ApplicationData.Current.LocalSettings;
-                LocalFolder = Windows.Storage.ApplicationData.Current.LocalFolder;
-
-                if (!LocalSettings.Values.ContainsKey("MultiScreen"))
+                try
+                {
+                    LocalSettings = JsonConvert.DeserializeObject<Settings>(File.ReadAllText(LocalFolder + "\\_settings_.json"));
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine("Error: " + ex.Message);
+                }
+                if (LocalSettings == null)
+                {
+                    LocalSettings = new Settings();
                     FirstBoot = true;
-
-                if (!LocalSettings.Values.ContainsKey("CurrentPet"))
-                    LocalSettings.Values["CurrentPet"] = "esheep64";
-
-                if (LocalSettings.Values.ContainsKey("Volume"))
-                    Volume = (double)LocalSettings.Values["Volume"];
-                else
-                    LocalSettings.Values["Volume"] = Volume;
-
-                if (LocalSettings.Values.ContainsKey("WinForeGround"))
-                    WinForeGround = (bool)LocalSettings.Values["WinForeGround"];
-                else
-                    LocalSettings.Values["WinForeGround"] = WinForeGround;
-
-                if (LocalSettings.Values.ContainsKey("AutostartPets"))
-                    AutostartPets = (int)LocalSettings.Values["AutostartPets"];
-                else
-                    LocalSettings.Values["AutostartPets"] = AutostartPets;
-
-                if (LocalSettings.Values.ContainsKey("MultiScreen"))
-                    MultiScreenEnabled = (bool)LocalSettings.Values["MultiScreen"];
-                else
-                    LocalSettings.Values["MultiScreen"] = MultiScreenEnabled;
+                }
 
                 LoadXML();
                 LoadImages();
@@ -78,102 +80,103 @@ namespace LocalData
 
         public void SetVolume(double volume)
         {
-            if (volume != Volume && Math.Abs(volume - Volume) > 0.04)
+            if (volume != LocalSettings.Volume && Math.Abs(volume - LocalSettings.Volume) > 0.04)
             {
-                Volume = volume;
-                LocalSettings.Values["Volume"] = volume;
+                LocalSettings.Volume = volume;
+                SaveSettings();
             }
         }
 
         public double GetVolume()
         {
-            return Volume;
+            return LocalSettings.Volume;
         }
 
         public void SetMultiscreen(bool enable)
         {
-            if (enable != MultiScreenEnabled)
+            if (enable != LocalSettings.MultiScreenEnabled)
             {
-                MultiScreenEnabled = enable;
-                LocalSettings.Values["MultiScreen"] = enable;
+                LocalSettings.MultiScreenEnabled = enable;
+                SaveSettings();
             }
         }
 
         public bool GetMultiscreen()
         {
-            return MultiScreenEnabled;
+            return LocalSettings.MultiScreenEnabled;
         }
 
         public void SetWindowForeground(bool setOnCollision)
         {
-            if (WinForeGround != setOnCollision)
+            if (LocalSettings.WinForeGround != setOnCollision)
             {
-                WinForeGround = setOnCollision;
-                LocalSettings.Values["WinForeground"] = setOnCollision;
+                LocalSettings.WinForeGround = setOnCollision;
+                SaveSettings();
             }
         }
 
         public bool GetWindowForeground()
         {
-            return WinForeGround;
+            return LocalSettings.WinForeGround;
         }
 
         public void SetAutoStartPets(int startingPets)
         {
-            if (AutostartPets != startingPets)
+            if (LocalSettings.AutostartPets != startingPets)
             {
-                AutostartPets = startingPets;
-                LocalSettings.Values["AutostartPets"] = startingPets;
+                LocalSettings.AutostartPets = startingPets;
+                SaveSettings();
             }
         }
 
         public int GetAutoStartPets()
         {
-            return AutostartPets;
+            return LocalSettings.AutostartPets;
         }
 
         public void SetXml(string newXml, string folder)
         {
-            if (Xml != newXml)
+            if (LocalSettings.Xml != newXml)
             {
-                Xml = newXml;
+                LocalSettings.Xml = newXml;
 
                 var buffer = Encoding.UTF8.GetBytes(newXml);
-                File.Delete(LocalFolder.Path + "\\animations.xml");
+                File.Delete(LocalFolder + "\\animations.xml");
 
-                var f = File.Create(LocalFolder.Path + "\\animations.xml");
+                var f = File.Create(LocalFolder + "\\animations.xml");
                 f.Write(buffer, 0, buffer.Length);
                 f.Close();
 
-                LocalSettings.Values["CurrentPet"] = folder;
+                LocalSettings.CurrentPet = folder;
+                SaveSettings();
             }
         }
 
         public string GetCurrentPet()
         {
-            return LocalSettings.Values["CurrentPet"].ToString();
+            return LocalSettings.CurrentPet;
         }
 
         public string GetXml()
         {
-            return Xml;
+            return LocalSettings.Xml;
         }
 
         public void LoadXML()
         {
             var buffer = new Byte[1024 * 64];
-            if (!File.Exists(LocalFolder.Path + "\\animations.xml"))
+            if (!File.Exists(LocalFolder + "\\animations.xml"))
             {
-                var fs = File.Create(LocalFolder.Path + "\\animations.xml");
+                var fs = File.Create(LocalFolder + "\\animations.xml");
                 fs.Close();
             }
-            Xml = "";
-            var f = File.OpenRead(LocalFolder.Path + "\\animations.xml");
-            var bytesRead = 0;
+            LocalSettings.Xml = "";
+            var f = File.OpenRead(LocalFolder + "\\animations.xml");
+            int bytesRead;
             do
             {
                 bytesRead = f.Read(buffer, 0, 1024 * 64);
-                Xml += Encoding.UTF8.GetString(buffer, 0, bytesRead);
+                LocalSettings.Xml += Encoding.UTF8.GetString(buffer, 0, bytesRead);
             } while (bytesRead > 0);
             f.Close();
         }
@@ -183,8 +186,8 @@ namespace LocalData
             Icon = newIcon;
 
             var buffer = Encoding.UTF8.GetBytes(newIcon);
-            File.Delete(LocalFolder.Path + "\\icon.xml");
-            var f = File.Create(LocalFolder.Path + "\\icon.xml");
+            File.Delete(LocalFolder + "\\icon.xml");
+            var f = File.Create(LocalFolder + "\\icon.xml");
             f.Write(buffer, 0, buffer.Length);
             f.Close();
         }
@@ -197,14 +200,14 @@ namespace LocalData
         private void LoadIcon()
         {
             var buffer = new Byte[1024 * 64];
-            if (!File.Exists(LocalFolder.Path + "\\icon.xml"))
+            if (!File.Exists(LocalFolder + "\\icon.xml"))
             {
-                var fs = File.Create(LocalFolder.Path + "\\icon.xml");
+                var fs = File.Create(LocalFolder + "\\icon.xml");
                 fs.Close();
             }
             Icon = "";
-            var f = File.OpenRead(LocalFolder.Path + "\\icon.xml");
-            var bytesRead = 0;
+            var f = File.OpenRead(LocalFolder + "\\icon.xml");
+            int bytesRead;
             do
             {
                 bytesRead = f.Read(buffer, 0, 1024 * 64);
@@ -218,8 +221,8 @@ namespace LocalData
             Images = newImages;
 
             var buffer = Encoding.UTF8.GetBytes(newImages);
-            File.Delete(LocalFolder.Path + "\\images.xml");
-            var f = File.Create(LocalFolder.Path + "\\images.xml");
+            File.Delete(LocalFolder + "\\images.xml");
+            var f = File.Create(LocalFolder + "\\images.xml");
             f.Write(buffer, 0, buffer.Length);
             f.Close();
         }
@@ -232,14 +235,14 @@ namespace LocalData
         private void LoadImages()
         {
             var buffer = new Byte[1024 * 64];
-            if (!File.Exists(LocalFolder.Path + "\\images.xml"))
+            if (!File.Exists(LocalFolder + "\\images.xml"))
             {
-                var fs = File.Create(LocalFolder.Path + "\\images.xml");
+                var fs = File.Create(LocalFolder + "\\images.xml");
                 fs.Close();
             }
             Images = "";
-            var f = File.OpenRead(LocalFolder.Path + "\\images.xml");
-            var bytesRead = 0;
+            var f = File.OpenRead(LocalFolder + "\\images.xml");
+            int bytesRead;
             do
             {
                 bytesRead = f.Read(buffer, 0, 1024 * 64);
@@ -250,9 +253,10 @@ namespace LocalData
 
         public bool NeedToLoadNew(string petFolder, DateTimeOffset lastUpdate)
         {
-            if(LocalSettings.Values.ContainsKey("pet_" + petFolder))
+            var itemFound = LocalSettings.LastUpdate.Find(item => item.Name == petFolder);
+            if (itemFound != null)
             {
-                return ((DateTimeOffset)LocalSettings.Values["pet_" + petFolder] < lastUpdate);
+                return (itemFound.Date < lastUpdate);
             }
             else
             {
@@ -263,19 +267,23 @@ namespace LocalData
         public void SavePetXML(string xml, string petName, DateTime lastUpdate)
         {
             var buffer = Encoding.UTF8.GetBytes(xml);
-            var f = File.OpenWrite(LocalFolder.Path + "\\pet_" + petName + ".xml");
+            var f = File.OpenWrite(LocalFolder + "\\pet_" + petName + ".xml");
             f.Write(buffer, 0, buffer.Length);
             f.Close();
             DateTimeOffset dto = lastUpdate;
-            LocalSettings.Values["pet_" + petName] = dto;
+
+            var itemFound = LocalSettings.LastUpdate.Find(item => item.Name == petName);
+            if (itemFound != null) itemFound.Date = dto.DateTime;
+            else LocalSettings.LastUpdate.Add(new PetUpdate { Date = dto.DateTime, Name = petName });
+            SaveSettings();
         }
 
         public string GetPetXML(string petName)
         {
             string retXML = "";
             var buffer = new Byte[1024 * 64];
-            var f = File.OpenRead(LocalFolder.Path + "\\pet_" + petName + ".xml");
-            var bytesRead = 0;
+            var f = File.OpenRead(LocalFolder + "\\pet_" + petName + ".xml");
+            int bytesRead;
             do
             {
                 bytesRead = f.Read(buffer, 0, 1024 * 64);
@@ -289,14 +297,22 @@ namespace LocalData
 
         public void ListenOnXMLChanged(MyFunction f)
         {
-            FileSystemWatcher watcher = new FileSystemWatcher();
-            watcher.Path = LocalFolder.Path;
-            /* Watch for changes in LastAccess and LastWrite times, and 
-               the renaming of files or directories. */
-            watcher.NotifyFilter = NotifyFilters.LastAccess | NotifyFilters.LastWrite
-               | NotifyFilters.FileName | NotifyFilters.DirectoryName;
-            // Only watch text files.
-            watcher.Filter = "animations.xml";
+            if (watcher == null)
+            {
+                watcher = new FileSystemWatcher
+                {
+                    Path = LocalFolder,
+                    /* Watch for changes in LastAccess and LastWrite times, and 
+                       the renaming of files or directories. */
+                    NotifyFilter = NotifyFilters.LastAccess | NotifyFilters.LastWrite | NotifyFilters.FileName | NotifyFilters.DirectoryName,
+                    // Only watch text files.
+                    Filter = "animations.xml"
+                };
+            }
+            else
+            {
+                watcher.EnableRaisingEvents = false;
+            }
 
             // Add event handlers.
             watcher.Changed += new FileSystemEventHandler(f);
@@ -346,6 +362,19 @@ namespace LocalData
             else
             {
                 return GITHUB_FOLDER + "/Pets/" + petId + "/animations.xml";
+            }
+        }
+
+        private void SaveSettings()
+        {
+            try
+            {
+                var output = JsonConvert.SerializeObject(LocalSettings);
+                File.WriteAllText(LocalFolder + "\\_settings_.json", output);
+            }
+            catch(Exception ex)
+            {
+                Console.WriteLine("Error: " + ex.Message);
             }
         }
     }

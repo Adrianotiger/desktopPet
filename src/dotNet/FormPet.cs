@@ -50,15 +50,19 @@ namespace DesktopPet
             /// <summary>
             /// Animations class. The entire animation and its values are described here.
             /// </summary>
-        Animations Animations;
+        readonly Animations Animations;
             /// <summary>
             /// Xml class. Xml parser and functionality are stored here.
             /// </summary>
-        Xml Xml;
+        readonly Xml Xml;
             /// <summary>
             /// If the pet is in dragging mode (user is holding the pet with the mouse)
             /// </summary>
         bool IsDragging = false;
+            /// <summary>
+            /// If the pet is leaving the screen
+            /// </summary>
+        bool IsLeaving = false;
             /// <summary>
             /// Offset Y - Sprite size is taken and not the single image. So, over the taskbar or over the windows, the pet could be 1-2 pixels over the border if you didn't drawn it on the bottom of the sprite frame.<br />
             /// With this offset, you can re-place the pet or you can give them an offset so that it is positioned over the window (for example if you want to show a girl sitting over the taskbar, you need this function)
@@ -78,7 +82,7 @@ namespace DesktopPet
             /// </summary>
         int DisplayIndex = 0;
 
-        private List<FormPet> childs = new List<FormPet>(4);
+        private readonly List<FormPet> childs = new List<FormPet>(4);
 
         /// <summary>
         /// Form constructor. This is never called. <br />
@@ -193,7 +197,7 @@ namespace DesktopPet
             /// This function is called for every single image in the sprite sheet and will be saved in the Image List component.
             /// </summary>
             /// <param name="im">Single frame image, beginning from top left to bottom right</param>
-        public void addImage(Image im)
+        public void AddImage(Image im)
         {
             if(imageList1.Images.Count == 0)
             {
@@ -234,6 +238,7 @@ namespace DesktopPet
 			PositionX = Left;
 			PositionY = Top;
 			OffsetY = 0.0;
+            IsLeaving = false;
             SetNewAnimation(spawn.Next);                // Set next animation
             Visible = true;                             // Now we can show the form
             Opacity = 0.0;                              // do not show first frame (as it is undefined)
@@ -267,6 +272,7 @@ namespace DesktopPet
 			OffsetY = 0.0;
             Visible = true;                             // Now we can show this child
             Opacity = 1.0;
+            IsLeaving = false;
             pictureBox1.Cursor = Cursors.Default;
             pictureBox1.MouseDown += (s, e) => { };     // Replace the "drag and drop" functionality
 
@@ -320,7 +326,7 @@ namespace DesktopPet
             /// <remarks>
             /// On each tick, the next step is called. If it fails an error message will be show and the animation will stop.
             /// </remarks>
-        private void timer1_Tick(object sender, EventArgs e)
+        private void Timer1_Tick(object sender, EventArgs e)
         {
             timer1.Enabled = false;
             if (AnimationStep < 0) AnimationStep = 0;
@@ -380,7 +386,7 @@ namespace DesktopPet
 							FormPet child = new FormPet(Animations, Xml, new Point(Left, Top), !IsMovingLeft, DisplayIndex);
 							for (int i = 0; i < imageList1.Images.Count; i++)
 							{
-								child.addImage(imageList1.Images[i]);
+								child.AddImage(imageList1.Images[i]);
 							}
 							// To detect if it is a child, the name of the form will be renamed.
 							if (Name.IndexOf("child") < 0) // first child
@@ -406,7 +412,7 @@ namespace DesktopPet
             /// <summary>
             /// The most important function. Each movement step is managed by this function:<br />
             /// Will calculate how much and where a pet should be positioned in the next step.<br />
-            /// This function is called from <see cref="timer1_Tick(object, EventArgs)"/>.
+            /// This function is called from <see cref="Timer1_Tick(object, EventArgs)"/>.
             /// </summary>
         private void NextStep()
         {
@@ -472,8 +478,7 @@ namespace DesktopPet
                 }
                 else
                 {
-                    NativeMethods.RECT rct;
-                    if (NativeMethods.GetWindowRect(new HandleRef(this, hwndWindow), out rct))
+                    if (NativeMethods.GetWindowRect(new HandleRef(this, hwndWindow), out NativeMethods.RECT rct))
                     {
                         if (PositionX + x < rct.Left)    // left window border!
                         {
@@ -518,8 +523,7 @@ namespace DesktopPet
                 }
                 else
                 {
-                    NativeMethods.RECT rct;
-                    if (NativeMethods.GetWindowRect(new HandleRef(this, hwndWindow), out rct))
+                    if (NativeMethods.GetWindowRect(new HandleRef(this, hwndWindow), out NativeMethods.RECT rct))
                     {
                         if (PositionX + x + Width > rct.Right)    // right window border!
                         {
@@ -533,14 +537,18 @@ namespace DesktopPet
                             }
                             else
                             {
-                                    // not anymore on the window
+                                // not anymore on the window
                                 hwndWindow = (IntPtr)0;
                             }
                         }
                     }
                 }
             }
-            if(y > 0)   // moving down (detect taskbar and windows)
+            if(bNewAnimation || bLeavingScreen)
+            {
+                // don't check anymore for y movement
+            }
+            else if(y > 0)   // moving down (detect taskbar and windows)
             {
                 int bottomY = ScreenArea.Y + ScreenArea.Height;
 
@@ -635,8 +643,7 @@ namespace DesktopPet
                 }
                 if(CurrentAnimation.ID == Animations.AnimationKill)
                 {
-                    double op;
-                    if (timer1.Tag == null || !double.TryParse(timer1.Tag.ToString(), out op)) timer1.Tag = 1.0;
+                    if (timer1.Tag == null || !double.TryParse(timer1.Tag.ToString(), out double op)) timer1.Tag = 1.0;
                     op = double.Parse(timer1.Tag.ToString());
                     timer1.Tag = op - 0.1;
                     Opacity = op;
@@ -709,6 +716,7 @@ namespace DesktopPet
 
             if (bLeavingScreen)
             {
+                IsLeaving = true;
                 if ((int)PositionX < ScreenArea.X) // leaving left
                 {
                     int cut = ScreenArea.X - (int)PositionX;
@@ -725,13 +733,13 @@ namespace DesktopPet
                         AnimationStep += CurrentAnimation.Sequence.Frames.Count / 3;
                     }   
                 }
-                else if ((int)PositionX > ScreenArea.X + ScreenArea.Width) // leaving right
+                else if ((int)(PositionX + x + Width) >= ScreenArea.X + ScreenArea.Width) // leaving right
                 {
-                    int cut = (int)PositionX - (ScreenArea.X + ScreenArea.Width);
+                    int cut = (int)(PositionX + x + Width) - (ScreenArea.X + ScreenArea.Width);
                     if (Width > 2)
                     {
                         Width -= cut;
-                        Left = (int)PositionX;
+                        Left = ScreenArea.X + ScreenArea.Width - Width;
                     }
                     else
                     {
@@ -758,6 +766,19 @@ namespace DesktopPet
                 }
 
             }
+            else if (IsLeaving)  // was leaving screen just a moment ago. This could be an XML error. Reset cutting.
+            {                    // it could also happens if during the leaving, a new animation was set.
+                IsLeaving = false;
+                if ((int)PositionX < ScreenArea.X) // leaving left
+                {
+                    Left = -pictureBox1.Width + Width;
+                }
+                pictureBox1.Top = 0;
+                pictureBox1.Left = 0;
+                Width = pictureBox1.Width;
+                Height = pictureBox1.Height;
+                Top = (int)(PositionY + OffsetY);
+            }
             else
             {
                 Left = (int)PositionX;
@@ -774,7 +795,6 @@ namespace DesktopPet
             /// <returns>Y position of the window or taskbar. -1 if pet is still falling.</returns>
         private int FallDetect(int y)
         {
-            NativeMethods.RECT rct;
             Dictionary<IntPtr, string> windows = new Dictionary<IntPtr, string>();
             NativeMethods.TITLEBARINFO titleBarInfo = new NativeMethods.TITLEBARINFO();
             titleBarInfo.cbSize = Marshal.SizeOf(titleBarInfo);
@@ -813,7 +833,7 @@ namespace DesktopPet
             foreach (KeyValuePair<IntPtr, string> window in windows)
             {
                     // Get size and position of window
-                if (NativeMethods.GetWindowRect(new HandleRef(this, window.Key), out rct))
+                if (NativeMethods.GetWindowRect(new HandleRef(this, window.Key), out NativeMethods.RECT rct))
                 {
                         // If vertical position is in the falling range and pet is over window and window is at least 20 pixels under the screen border
                     if (PositionY + Height < rct.Top && PositionY + Height + y >= rct.Top &&

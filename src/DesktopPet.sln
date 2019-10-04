@@ -1,6 +1,6 @@
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 15
-VisualStudioVersion = 15.0.28307.329
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.29306.81
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DesktopPet", "DesktopPet.csproj", "{87663C46-C416-4AED-971B-7A16624C1F1D}"
 EndProject
@@ -53,14 +53,14 @@ Global
 		{1F2CE52E-2521-4181-8939-0E8CE00222E6}.Release|x86.ActiveCfg = Release|x86
 		{1F2CE52E-2521-4181-8939-0E8CE00222E6}.Release|x86.Build.0 = Release|x86
 		{1F2CE52E-2521-4181-8939-0E8CE00222E6}.Release|x86.Deploy.0 = Release|x86
-		{E95D998F-DF30-4C58-8FE7-EF10374D8AC5}.Debug|x64.ActiveCfg = Debug|Any CPU
-		{E95D998F-DF30-4C58-8FE7-EF10374D8AC5}.Debug|x64.Build.0 = Debug|Any CPU
-		{E95D998F-DF30-4C58-8FE7-EF10374D8AC5}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{E95D998F-DF30-4C58-8FE7-EF10374D8AC5}.Debug|x86.Build.0 = Debug|Any CPU
-		{E95D998F-DF30-4C58-8FE7-EF10374D8AC5}.Release|x64.ActiveCfg = Release|Any CPU
-		{E95D998F-DF30-4C58-8FE7-EF10374D8AC5}.Release|x64.Build.0 = Release|Any CPU
-		{E95D998F-DF30-4C58-8FE7-EF10374D8AC5}.Release|x86.ActiveCfg = Release|Any CPU
-		{E95D998F-DF30-4C58-8FE7-EF10374D8AC5}.Release|x86.Build.0 = Release|Any CPU
+		{E95D998F-DF30-4C58-8FE7-EF10374D8AC5}.Debug|x64.ActiveCfg = Debug|x64
+		{E95D998F-DF30-4C58-8FE7-EF10374D8AC5}.Debug|x64.Build.0 = Debug|x64
+		{E95D998F-DF30-4C58-8FE7-EF10374D8AC5}.Debug|x86.ActiveCfg = Debug|x86
+		{E95D998F-DF30-4C58-8FE7-EF10374D8AC5}.Debug|x86.Build.0 = Debug|x86
+		{E95D998F-DF30-4C58-8FE7-EF10374D8AC5}.Release|x64.ActiveCfg = Release|x64
+		{E95D998F-DF30-4C58-8FE7-EF10374D8AC5}.Release|x64.Build.0 = Release|x64
+		{E95D998F-DF30-4C58-8FE7-EF10374D8AC5}.Release|x86.ActiveCfg = Release|x86
+		{E95D998F-DF30-4C58-8FE7-EF10374D8AC5}.Release|x86.Build.0 = Release|x86
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

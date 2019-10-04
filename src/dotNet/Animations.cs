@@ -258,8 +258,10 @@ namespace DesktopPet
             EndAnimation = new List<TNextAnimation>(8);
             EndBorder = new List<TNextAnimation>(8);
             EndGravity = new List<TNextAnimation>(8);
-            Sequence = new TSequence();
-            Sequence.Frames = new List<int>(16);
+            Sequence = new TSequence
+            {
+                Frames = new List<int>(16)
+            };
             Gravity = false;
             Border = false;
             ID = id;
@@ -431,7 +433,7 @@ namespace DesktopPet
             /// <summary>
             /// Random used for the "random" key value in the xml.
             /// </summary>
-        Random rand;
+        private readonly Random rand;
             /// <summary>
             /// A copy of the xml document
             /// </summary>

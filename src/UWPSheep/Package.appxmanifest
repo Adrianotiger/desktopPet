@@ -1,17 +1,24 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Package xmlns="http://schemas.microsoft.com/appx/manifest/foundation/windows10" xmlns:mp="http://schemas.microsoft.com/appx/2014/phone/manifest" xmlns:desktop="http://schemas.microsoft.com/appx/manifest/desktop/windows10" xmlns:uap="http://schemas.microsoft.com/appx/manifest/uap/windows10" xmlns:uap5="http://schemas.microsoft.com/appx/manifest/uap/windows10/5" xmlns:rescap="http://schemas.microsoft.com/appx/manifest/foundation/windows10/restrictedcapabilities" IgnorableNamespaces="uap mp rescap">
-  <Identity Name="6469Adriano.esheep" Publisher="CN=39092E3A-7130-410B-B315-09A9DDDBDEA9" Version="2.2.1.0" />
+<Package 
+  xmlns="http://schemas.microsoft.com/appx/manifest/foundation/windows10" 
+  xmlns:mp="http://schemas.microsoft.com/appx/2014/phone/manifest" 
+  xmlns:desktop="http://schemas.microsoft.com/appx/manifest/desktop/windows10" 
+  xmlns:uap="http://schemas.microsoft.com/appx/manifest/uap/windows10" 
+  xmlns:uap5="http://schemas.microsoft.com/appx/manifest/uap/windows10/5" 
+  xmlns:rescap="http://schemas.microsoft.com/appx/manifest/foundation/windows10/restrictedcapabilities" 
+  IgnorableNamespaces="uap mp rescap">
+  <Identity Name="6469Adriano.esheep" Publisher="CN=39092E3A-7130-410B-B315-09A9DDDBDEA9" Version="2.3.2.0" />
   <Properties>
     <DisplayName>esheep</DisplayName>
     <PublisherDisplayName>Adriano</PublisherDisplayName>
     <Logo>Images\StoreLogo.png</Logo>
   </Properties>
   <Dependencies>
-    <TargetDeviceFamily Name="Windows.Universal" MinVersion="10.0.17134.0" MaxVersionTested="10.0.17134.0" />
+    <TargetDeviceFamily Name="Windows.Universal" MinVersion="10.0.17134.0" MaxVersionTested="10.0.18362.0" />
     <TargetDeviceFamily Name="Windows.Desktop" MinVersion="10.0.14393.0" MaxVersionTested="10.0.14393.0" />
   </Dependencies>
   <Resources>
-    <Resource Language="x-generate" />
+    <Resource Language="en-GB" />
   </Resources>
   <Applications>
     <Application Id="App" Executable="$targetnametoken$.exe" EntryPoint="$targetentrypoint$">
@@ -25,7 +32,10 @@
           <desktop:StartupTask TaskId="eSheepId" Enabled="false" DisplayName="eSheep 64bit" />
         </desktop:Extension>
         <uap:Extension Category="windows.protocol" Executable="Options.exe" EntryPoint="OptionsWindow.App">
-          <uap:Protocol Name="xamlesheep" DesiredView="default" />
+          <uap:Protocol Name="xamlesheep" DesiredView="default" >
+            <uap:Logo>Images\StoreLogo.png</uap:Logo>
+            <uap:DisplayName>Settings</uap:DisplayName>
+          </uap:Protocol >
         </uap:Extension>
       </Extensions>
     </Application>

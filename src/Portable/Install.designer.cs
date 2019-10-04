@@ -81,7 +81,7 @@
             this.checkBox1.Text = "Add shortcut to Start Menu";
             this.checkBox1.UseVisualStyleBackColor = true;
             this.checkBox1.Visible = false;
-            this.checkBox1.CheckedChanged += new System.EventHandler(this.checkBox1_CheckedChanged);
+            this.checkBox1.CheckedChanged += new System.EventHandler(this.CheckBox1_CheckedChanged);
             // 
             // checkBox2
             // 
@@ -93,7 +93,7 @@
             this.checkBox2.Text = "Add Shortcut to Desktop";
             this.checkBox2.UseVisualStyleBackColor = true;
             this.checkBox2.Visible = false;
-            this.checkBox2.CheckedChanged += new System.EventHandler(this.checkBox2_CheckedChanged);
+            this.checkBox2.CheckedChanged += new System.EventHandler(this.CheckBox2_CheckedChanged);
             // 
             // checkBox3
             // 
@@ -107,7 +107,7 @@
             this.checkBox3.Text = "Add to Autostart";
             this.checkBox3.UseVisualStyleBackColor = true;
             this.checkBox3.Visible = false;
-            this.checkBox3.CheckedChanged += new System.EventHandler(this.checkBox3_CheckedChanged);
+            this.checkBox3.CheckedChanged += new System.EventHandler(this.CheckBox3_CheckedChanged);
             // 
             // button1
             // 
@@ -117,7 +117,7 @@
             this.button1.TabIndex = 6;
             this.button1.Text = "Accept";
             this.button1.UseVisualStyleBackColor = true;
-            this.button1.Click += new System.EventHandler(this.button1_Click);
+            this.button1.Click += new System.EventHandler(this.Button1_Click);
             // 
             // button2
             // 
@@ -127,7 +127,7 @@
             this.button2.TabIndex = 7;
             this.button2.Text = "Update";
             this.button2.UseVisualStyleBackColor = true;
-            this.button2.Click += new System.EventHandler(this.button2_Click);
+            this.button2.Click += new System.EventHandler(this.Button2_Click);
             // 
             // textBox1
             // 
@@ -148,7 +148,7 @@
             this.button3.TabIndex = 9;
             this.button3.Text = "Uninstall";
             this.button3.UseVisualStyleBackColor = true;
-            this.button3.Click += new System.EventHandler(this.button3_Click);
+            this.button3.Click += new System.EventHandler(this.Button3_Click);
             // 
             // Install
             // 

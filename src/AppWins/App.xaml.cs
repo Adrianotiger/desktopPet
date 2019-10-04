@@ -30,9 +30,10 @@ namespace OptionsWindow
         {
             this.InitializeComponent();
             this.Suspending += OnSuspending;
+            MyData = new LocalData.LocalData(Windows.Storage.ApplicationData.Current.LocalFolder.Path, Environment.CurrentDirectory + "\\DesktopPet\\eSheep.exe");
         }
 
-        public static LocalData.LocalData MyData = new LocalData.LocalData();
+        public static LocalData.LocalData MyData = null;
 
         protected override void OnActivated(Windows.ApplicationModel.Activation.IActivatedEventArgs e)
         {

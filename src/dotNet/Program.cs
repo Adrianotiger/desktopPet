@@ -182,7 +182,7 @@ namespace DesktopPet
 
             Application.SetCompatibleTextRenderingDefault(false);
 
-            MyData = new LocalData.LocalData();
+            MyData = new LocalData.LocalData(Windows.Storage.ApplicationData.Current.LocalFolder.Path, Application.ExecutablePath);
 
             // Show the system tray icon.					
             using (ProcessIcon pi = new ProcessIcon())

@@ -3,6 +3,7 @@ using System;
 using System.Diagnostics;
 using System.IO;
 using System.Net;
+using System.Text.RegularExpressions;
 using System.Windows.Forms;
 
 namespace DesktopPet
@@ -16,35 +17,35 @@ namespace DesktopPet
             /// <summary>
             /// Path where the application is located.
             /// </summary>
-        string appPath;
+        readonly string appPath;
             /// <summary>
             /// Path where the application can be installed.
             /// </summary>
-        string installPath;
+        readonly string installPath;
             /// <summary>
             /// Path to the user desktop location.
             /// </summary>
-        string desktopPath;
+        readonly string desktopPath;
             /// <summary>
             /// Path to the user start menu location.
             /// </summary>
-        string startMenuPath;
+        readonly string startMenuPath;
             /// <summary>
             /// Path to the start-up location.
             /// </summary>
-        string autostartPath;
+        readonly string autostartPath;
             /// <summary>
             /// Webpage for this application.
             /// </summary>
-        string webpage = "http://esheep.petrucci.ch";
+        readonly string webpage = "http://esheep.petrucci.ch";
             /// <summary>
             /// Application Name.
             /// </summary>
-        string appName = "DesktopPet";
+        readonly string appName = "DesktopPet";
             /// <summary>
             /// Name of the uninstall batch file.
             /// </summary>
-        string uninstallBatch = "uninstall.cmd";
+        readonly string uninstallBatch = "uninstall.cmd";
 
             /// <summary>
             /// Constructor. Set the path of the different locations and start the update-check process.
@@ -122,7 +123,7 @@ namespace DesktopPet
             /// </summary>
             /// <param name="sender">Caller as object.</param>
             /// <param name="e">Mouse event values.</param>
-        private void button1_Click(object sender, EventArgs e)
+        private void Button1_Click(object sender, EventArgs e)
         {
             if (button1.Text == "Accept")
             {
@@ -280,10 +281,12 @@ rd /s /q ""{appName}""
             }
 
             button1.Text = "Installed";
-            
-            Process petProcess = new Process();
-            petProcess.StartInfo.FileName = installPath + "\\" + appName + ".exe";
-            petProcess.Start();
+
+            using (var petProcess = new Process())
+            {
+                petProcess.StartInfo.FileName = installPath + "\\" + appName + ".exe";
+                petProcess.Start();
+            }
 
             Hide();
             Application.DoEvents();
@@ -295,7 +298,7 @@ rd /s /q ""{appName}""
             /// </summary>
             /// <param name="sender">Caller as object.</param>
             /// <param name="e">Mouse event values.</param>
-        private void button2_Click(object sender, EventArgs e)
+        private void Button2_Click(object sender, EventArgs e)
         {
             string sDestExe = installPath + "\\" + appName + ".exe";
 
@@ -340,11 +343,13 @@ IconIndex=0
             /// </summary>
             /// <param name="sender">Caller as object.</param>
             /// <param name="e">Mouse event values.</param>
-        private void button3_Click(object sender, EventArgs e)
+        private void Button3_Click(object sender, EventArgs e)
         {
-            Process uninstallProcess = new Process();
-            uninstallProcess.StartInfo.FileName = installPath + "\\" + uninstallBatch;
-            uninstallProcess.Start();
+            using (var uninstallProcess = new Process())
+            {
+                uninstallProcess.StartInfo.FileName = installPath + "\\" + uninstallBatch;
+                uninstallProcess.Start();
+            }
         }
 
             /// <summary>
@@ -366,7 +371,7 @@ IconIndex=0
             /// </summary>
             /// <param name="sender">Caller as object.</param>
             /// <param name="e">Check event values.</param>
-        private void checkBox1_CheckedChanged(object sender, EventArgs e)
+        private void CheckBox1_CheckedChanged(object sender, EventArgs e)
         {
             if (button2.Visible) button2.Enabled = true;
         }
@@ -376,7 +381,7 @@ IconIndex=0
             /// </summary>
             /// <param name="sender">Caller as object.</param>
             /// <param name="e">Check event values.</param>
-        private void checkBox2_CheckedChanged(object sender, EventArgs e)
+        private void CheckBox2_CheckedChanged(object sender, EventArgs e)
         {
             if (button2.Visible) button2.Enabled = true;
         }
@@ -386,7 +391,7 @@ IconIndex=0
             /// </summary>
             /// <param name="sender">Caller as object.</param>
             /// <param name="e">Check event values.</param>
-        private void checkBox3_CheckedChanged(object sender, EventArgs e)
+        private void CheckBox3_CheckedChanged(object sender, EventArgs e)
         {
             if (button2.Visible) button2.Enabled = true;
         }
@@ -396,7 +401,7 @@ IconIndex=0
             /// </summary>
         private void CheckUpdates()
         {
-            string sExeFile = appPath + "\\" + appName + ".exe";
+            string sZipFile = appPath + "\\" + appName + ".gz";
             string sOldFile = appPath + "\\" + appName + "_old.exe";
             try
             {
@@ -404,43 +409,43 @@ IconIndex=0
                 {
                     File.Delete(sOldFile);
                 }
+                if (File.Exists(sZipFile))
+                {
+                    File.Delete(sZipFile);
+                }
             }
             catch(Exception)
             {
             }
-            WebRequest request = WebRequest.Create(webpage + "/version.php");
+            WebRequest request = WebRequest.Create("https://github.com/Adrianotiger/desktopPet/releases/latest");
             WebResponse response = request.GetResponse();
+            var version = response.ResponseUri.Segments.GetValue(response.ResponseUri.Segments.Length - 1).ToString();
+            version = Regex.Replace(version, "[^0-9.]", "");
             Stream data = response.GetResponseStream();
-            string versionWeb = string.Empty;
-            string versionApp = Application.ProductVersion;
-            using (StreamReader sr = new StreamReader(data))
-            {
-                versionWeb = sr.ReadToEnd();
-            }
+            string versionWeb = version;
+            string versionApp = Application.ProductVersion.Substring(0, Application.ProductVersion.LastIndexOf("."));
+
             if(versionApp != versionWeb)
             {
-                WebRequest requestChangelog = WebRequest.Create(webpage + "/version.php?changelog");
-
-                WebResponse responseChangelog = requestChangelog.GetResponse();
-                Stream dataChangelog = responseChangelog.GetResponseStream();
+                Stream dataChangelog = response.GetResponseStream();
                 string changeLog = Application.ProductVersion;
                 using (StreamReader sr = new StreamReader(dataChangelog))
                 {
-                    changeLog = sr.ReadToEnd();
-                    changeLog = changeLog.Substring(changeLog.IndexOf("<ul>")+4);
-                    changeLog = changeLog.Substring(0, changeLog.IndexOf("</ul>"));
-                    changeLog = changeLog.Replace("<li>", " - ");
+                    var changelogPage = sr.ReadToEnd();
+                    var pattern = @"<ul>([\S\s]*?)<\/ul>";
+                    changeLog = Regex.Match(changelogPage, pattern).Groups[1].ToString();
+                    changeLog = changeLog.Replace("<li>", " - ").Replace("</li>", "");
                 }
 
                 if (MessageBox.Show("A newer version was found on the web: " + versionWeb + "\n==========================\nCHANGELOG:\n" + changeLog  + "\n========================== \nDo you want install it now?", appName + " version: " + versionApp, MessageBoxButtons.YesNoCancel, MessageBoxIcon.Question) == DialogResult.Yes)
                 {
-                    var webClient = new WebClient();
-                    webClient.DownloadFileCompleted += WebClient_DownloadFileCompleted;
-                    File.Move(sExeFile, sOldFile);
-
-                    webClient.DownloadFileAsync(
-                            new Uri(webpage + "/download.php?exe"),
-                            $@"{sExeFile}");
+                    using (var webClient = new WebClient())
+                    {
+                        webClient.DownloadFileCompleted += WebClient_DownloadFileCompleted;
+                        webClient.DownloadFileAsync(
+                                new Uri(response.ResponseUri.ToString().Replace("/tag/", "/download/") + "/DesktopPet.gz"),
+                                $@"{sZipFile}");
+                    }
                 }
             }
         }
@@ -453,13 +458,34 @@ IconIndex=0
         private void WebClient_DownloadFileCompleted(object sender, System.ComponentModel.AsyncCompletedEventArgs e)
         {
             string sExeFile = appPath + "\\" + appName + ".exe";
+            string sZipFile = appPath + "\\" + appName + ".gz";
             string sOldFile = appPath + "\\" + appName + "_old.exe";
+            if(e.Error != null)
+            {
+                MessageBox.Show("Unable to update: " + e.Error.Message);
+                return;
+            }
 
             try
             {
-                Process petProcess = new Process();
-                petProcess.StartInfo.FileName = sExeFile;
-                petProcess.Start();
+                File.Move(sExeFile, sOldFile);
+
+                using (var fileStream = System.IO.File.OpenRead(sZipFile))
+                {
+                    using (var zipStream = new System.IO.Compression.GZipStream(fileStream, System.IO.Compression.CompressionMode.Decompress))
+                    {
+                        using (var destFile = System.IO.File.Create(sExeFile))
+                        {
+                            zipStream.CopyTo(destFile);
+                        }
+                    }
+                }
+
+                using (var petProcess = new Process())
+                {
+                    petProcess.StartInfo.FileName = sExeFile;
+                    petProcess.Start();
+                }
 
                 Hide();
                 MessageBox.Show("Application was updated.");
