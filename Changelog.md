@@ -1,9 +1,11 @@
 # Changelog
  
- <h3>In the next release:</h3> 
+ <h3>Version 1.2.3<sup>04 oct 2019</sup>:</h3> 
  
- + Fixed cutting problem
- + Auto update over GitHub for portable version
+ - Fixed cutting problem
+ - Auto update over GitHub for portable version
+ - Compiled with Visual Studio 2019 and with new libraries
+ - UWP: better option dialog 
  
  <h3>Version 1.2.2<sup>08 jul 2019</sup>:</h3> 
  
