@@ -2,6 +2,9 @@
 
 This application has different versions, you can download a Windows 7/8/10 portable exe, a UWP or also a Javascript version.
 
+## Changelog
+To see the last changes on this application, check the <a href="Changelog.html">Changelog</a> page.
+
 ## Windows 10
 The easiest way to install it is over the Windows Store. As UWP it is simple to execute and to remove once you don't want it anymore. 
 Works only with Windows 10.
