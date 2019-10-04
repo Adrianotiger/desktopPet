@@ -1,15 +1,9 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>netstandard2.0</TargetFramework>
+    <TargetFrameworks>netstandard2.0;net47</TargetFrameworks>
     <IntermediateOutputPath>..\..\build\LocalData\obj\</IntermediateOutputPath>
-    <Platforms>AnyCPU;x86;x64</Platforms>
-  </PropertyGroup>
-
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
-    <OutputPath>..\..\build\LocalData\bin\Release\</OutputPath>
-    <IntermediateOutputPath>..\..\build\LocalData\obj\</IntermediateOutputPath>
-    <PlatformTarget>AnyCPU</PlatformTarget>
+    <Platforms>x86;x64</Platforms>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -20,12 +14,6 @@
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x86'">
     <OutputPath>..\..\build\LocalData\bin\Release\</OutputPath>
-    <IntermediateOutputPath>..\..\build\LocalData\obj\</IntermediateOutputPath>
-    <PlatformTarget>x86</PlatformTarget>
-  </PropertyGroup>
-
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
-    <OutputPath>..\..\build\LocalData\bin\Debug\</OutputPath>
     <IntermediateOutputPath>..\..\build\LocalData\obj\</IntermediateOutputPath>
     <PlatformTarget>x86</PlatformTarget>
   </PropertyGroup>
