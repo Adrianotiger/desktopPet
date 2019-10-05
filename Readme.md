@@ -19,7 +19,7 @@ In this way, this pet is able to walk, run, etc around your working screen area 
 |--------|----------------|------------|---------|-------|
 | Type |  Portable exe | Store app | Javascript | Desktop applications |
 | Description | Download rar, extract exe file and execute it. There is no installation. | Download it directly from the Microsoft store | Javascript file to implement it on your webpage | Some tools to edit and create your own pet.
-| Link | <a href='https://github.com/Adrianotiger/desktopPet/releases/tag/Portable'>Open page</a> to download or <a href='https://github.com/Adrianotiger/desktopPet/releases/download/Portable/eSheep_1.2.0.rar'>download zip</a> | <a href='https://www.microsoft.com/store/apps/9MX2V0TQT6RM'>Windows store</a> | <a href='https://github.com/Adrianotiger/web-esheep'>Open GitHub</a> project | -<a href='https://github.com/Adrianotiger/desktopPet/releases/tag/editor0.2'>Download Pet Editor</a> |
+| Link | <a href='https://github.com/Adrianotiger/desktopPet/releases/latest'><img src='https://img.shields.io/github/downloads/adrianotiger/desktopPet/total.svg'></a> | <a href='https://www.microsoft.com/store/apps/9MX2V0TQT6RM'>Windows store</a> | <a href='https://github.com/Adrianotiger/web-esheep'>Open GitHub</a> project | -<a href='https://github.com/Adrianotiger/desktopPet/releases/tag/editor0.2'>Download Pet Editor</a> |
 
 # Screen Mates included in this application
 ## eSheep
