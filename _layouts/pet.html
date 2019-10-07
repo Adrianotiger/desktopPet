@@ -12,7 +12,9 @@ layout: default
   {% include disqus.html %}
   
   <script>
-    var testPetLink = "https://raw.githubusercontent.com/Adrianotiger/desktopPet/master/Pets/{{ page.title }}/animations.xml";
+    var petName = "{{ page.title }}";
+    petName = petName.toLowerCase();
+    var testPetLink = "https://raw.githubusercontent.com/Adrianotiger/desktopPet/master/Pets/" + petName + "/animations.xml";
     console.log("Pet xml: " + testPetLink);
     var testPet = new eSheep();
     testPet.Start(testPetLink);
