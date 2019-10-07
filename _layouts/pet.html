@@ -12,6 +12,9 @@ layout: default
   {% include disqus.html %}
   
   <script>
-    console.log("Pet xml: " + "https://raw.githubusercontent.com/Adrianotiger/desktopPet/master/Pets/" + {{ page.title }} + "/animations.xml");
+    var testPetLink = "https://raw.githubusercontent.com/Adrianotiger/desktopPet/master/Pets/{{ page.title }}/animations.xml";
+    console.log("Pet xml: " + testPetLink);
+    var testPet = new eSheep(testPetLink);
+    testPet.Start();
   </script>
 </article>
