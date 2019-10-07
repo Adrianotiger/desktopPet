@@ -13,7 +13,8 @@ layout: default
   
   <script>
     var petLink = window.location.href.toString().split("/");
-    var petName = petLink[petLink.length() - 1];
+    var petName = petLink[petLink.length - 1];
+    if(petName == "") petName = petLink[petLink.length - 2];
     petName = petName.toLowerCase();
     var testPetLink = "https://raw.githubusercontent.com/Adrianotiger/desktopPet/master/Pets/" + petName + "/animations.xml";
     console.log("Pet xml: " + testPetLink);
