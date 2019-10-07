@@ -22,5 +22,5 @@ v0.3
 v0.2 first version
 
 ## About pet
-Author: Adriano Petrucci
+Author: Adriano Petrucci  
 Copyright: sprites from [webneko.net](https://webneko.net/)
