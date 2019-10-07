@@ -14,7 +14,7 @@ layout: default
   <script>
     var testPetLink = "https://raw.githubusercontent.com/Adrianotiger/desktopPet/master/Pets/{{ page.title }}/animations.xml";
     console.log("Pet xml: " + testPetLink);
-    var testPet = new eSheep(testPetLink);
-    testPet.Start();
+    var testPet = new eSheep();
+    testPet.Start(testPetLink);
   </script>
 </article>
