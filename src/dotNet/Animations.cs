@@ -47,7 +47,7 @@ namespace DesktopPet
         {
             if (IsDynamic)
             {
-                return Animations.Xml.ParseValue(Compute, "Animations.GetValue()");
+                return Animations.Xml.ParseValue(Compute, "Animations.GetValue()", screenIndex);
             }
             else if(IsScreen && screenIndex >= 0)
             {
@@ -193,9 +193,9 @@ namespace DesktopPet
             /// This is used to calculate the movements, opacity and offset if they are different from START to END.
             /// </summary>
             /// <returns>Number of steps in the sequence.</returns>
-        public int CalculateTotalSteps()
+        public int CalculateTotalSteps(int screenIndex = -1)
         {
-            return Frames.Count + (Frames.Count - RepeatFrom) * Repeat.GetValue();
+            return Frames.Count + (Frames.Count - RepeatFrom) * Repeat.GetValue(screenIndex);
         }
     }
 
@@ -265,6 +265,27 @@ namespace DesktopPet
             Gravity = false;
             Border = false;
             ID = id;
+        }
+
+        public void UpdateValues(int screenIndex = -1)
+        {
+            if (Sequence.Repeat.IsDynamic)
+            {
+                // Calculate the total steps, based on the repeat values.
+                Sequence.TotalSteps = Sequence.CalculateTotalSteps(screenIndex);
+            }
+            if (Start.Interval.IsDynamic || Start.X.IsDynamic || Start.Y.IsDynamic)
+            {
+                Start.Interval.Value = Start.Interval.GetValue(screenIndex);
+                Start.X.Value = Start.X.GetValue(screenIndex);
+                Start.Y.Value = Start.Y.GetValue(screenIndex);
+            }
+            if (End.Interval.IsDynamic || End.X.IsDynamic || End.Y.IsDynamic)
+            {
+                End.Interval.Value = End.Interval.GetValue(screenIndex);
+                End.X.Value = End.X.GetValue(screenIndex);
+                End.Y.Value = End.Y.GetValue(screenIndex);
+            }
         }
     }
 

@@ -18,25 +18,34 @@ namespace DesktopPet
 
         public LocalData()
         {
-            if (Program.IsApplicationInstalled())
+            try
             {
-                isInstalled = true;
-                AppConfiguration = ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.PerUserRoamingAndLocal);
-            }
-            else
-            {
-                AppConfiguration = ConfigurationManager.OpenMappedExeConfiguration(
-                        new ExeConfigurationFileMap { ExeConfigFilename = "DesktopPet.config" }, ConfigurationUserLevel.None);
-            }
-            var settings = AppConfiguration.AppSettings.Settings;
-            foreach (SettingsProperty currentProperty in Properties.Settings.Default.Properties)
-            {
-                if (AppConfiguration.AppSettings.Settings[currentProperty.Name] == null)
+                if (Program.IsApplicationInstalled())
                 {
-                    AppConfiguration.AppSettings.Settings.Add(currentProperty.Name, currentProperty.DefaultValue.ToString());
+                    isInstalled = true;
+                    //AppConfiguration = ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.PerUserRoamingAndLocal);
+                    AppConfiguration = ConfigurationManager.OpenMappedExeConfiguration(
+                        new ExeConfigurationFileMap { ExeConfigFilename = "DesktopPet.config" }, ConfigurationUserLevel.None);
                 }
+                else
+                {
+                    AppConfiguration = ConfigurationManager.OpenMappedExeConfiguration(
+                        new ExeConfigurationFileMap { ExeConfigFilename = "DesktopPet.config" }, ConfigurationUserLevel.None);
+                }
+                var settings = AppConfiguration.AppSettings.Settings;
+                foreach (SettingsProperty currentProperty in Properties.Settings.Default.Properties)
+                {
+                    if (AppConfiguration.AppSettings.Settings[currentProperty.Name] == null)
+                    {
+                        AppConfiguration.AppSettings.Settings.Add(currentProperty.Name, currentProperty.DefaultValue.ToString());
+                    }
+                }
+                AppSettings = AppConfiguration.AppSettings.Settings;
             }
-            AppSettings = AppConfiguration.AppSettings.Settings;
+            catch(Exception ex)
+            {
+                MessageBox.Show("Error opening settings: " + ex.Message, "Settings", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
         }
 
         public void SetVolume(double volume)
@@ -160,7 +169,7 @@ namespace DesktopPet
         {
             Properties.Settings.Default.Images = images;
             AppSettings["Images"].Value = images;
-            Save();
+            //Save();
         }
 
         public string GetIcon()
@@ -172,7 +181,7 @@ namespace DesktopPet
         {
             Properties.Settings.Default.Icon = icon;
             AppSettings["Icon"].Value = icon;
-            Save();
+            //Save();
         }
 
         public bool IsFirstBoot()
@@ -192,6 +201,7 @@ namespace DesktopPet
             if (isInstalled)
             {
                 Properties.Settings.Default.Save();
+                AppConfiguration.Save();
             }
             else
             {

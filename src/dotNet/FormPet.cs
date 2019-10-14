@@ -225,7 +225,12 @@ namespace DesktopPet
             if(Program.MyData.GetMultiscreen())
             {
                 Random rand = new Random();
+                int oldDisplayIndex = DisplayIndex;
                 DisplayIndex = rand.Next(0, Screen.AllScreens.Length);
+                if(oldDisplayIndex != DisplayIndex) // display changed, all computed values could be wrong
+                {
+
+                }
             }
 
             TSpawn spawn = Animations.GetRandomSpawn(); // Get a random SPAWN, to setting the form properties
@@ -258,14 +263,14 @@ namespace DesktopPet
 			AnimationStep = 0;                          // First step
             hwndWindow = (IntPtr)0;                     // It is not over a window
             
-            Top = child.Position.Y.GetValue();          // Set position. If parent is flipped, mirror the position
+            Top = ScreenBounds.Y + child.Position.Y.GetValue(DisplayIndex);          // Set position. If parent is flipped, mirror the position
             if (IsMovingLeft)
             {
-                Left = child.Position.X.GetValue();
+                Left = ScreenBounds.X + child.Position.X.GetValue(DisplayIndex);
             }
             else
             {
-                Left = child.Position.X.GetValue();
+                Left = ScreenBounds.X + child.Position.X.GetValue(DisplayIndex);
             }
 			PositionX = Left;
 			PositionY = Top;
@@ -375,15 +380,16 @@ namespace DesktopPet
             {
 				AnimationStep = -1;
                 CurrentAnimation = Animations.GetAnimation(id);
-                    // Check if animation ID has a child. If so, the child will be created.
-                if(Animations.HasAnimationChild(id))
+                CurrentAnimation.UpdateValues(DisplayIndex);
+                // Check if animation ID has a child. If so, the child will be created.
+                if (Animations.HasAnimationChild(id))
                 {
                         // child creating childs... Maximum 5 sub-childs can be created
                     if (Name.IndexOf("child") < 0 || int.Parse(Name.Substring(5)) < 5)
                     {
 						foreach (TChild childInfo in Animations.GetAnimationChild(id))
 						{
-							FormPet child = new FormPet(Animations, Xml, new Point(Left, Top), !IsMovingLeft, DisplayIndex);
+							FormPet child = new FormPet(Animations, Xml, new Point(ScreenBounds.X + Left, ScreenBounds.Y + Top), !IsMovingLeft, DisplayIndex);
 							for (int i = 0; i < imageList1.Images.Count; i++)
 							{
 								child.AddImage(imageList1.Images[i]);
@@ -405,6 +411,7 @@ namespace DesktopPet
                         }
                     }
                 }
+
                 timer1.Interval = CurrentAnimation.Start.Interval.GetValue();
             }
         }
@@ -1035,8 +1042,8 @@ namespace DesktopPet
                     MenuItem menu = menuSpawn.MenuItems.Add("ID." + spa.Next + " - " + Animations.SheepAnimations[spa.Next].Name + "\t (Prob: " + spa.Probability + ")");
                     menu.Click += (ms, me) => 
                     {
-                        Top = spa.Start.Y.GetValue();
-                        Left = spa.Start.X.GetValue();
+                        Top = ScreenBounds.Y + spa.Start.Y.GetValue(DisplayIndex);
+                        Left = ScreenBounds.X + spa.Start.X.GetValue(DisplayIndex);
 						PositionX = Left;
 						PositionY = Top;
 						OffsetY = 0.0;
