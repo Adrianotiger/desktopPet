@@ -6,6 +6,7 @@ using System.Runtime.InteropServices;
 using System.Collections.Generic;
 using System.IO;
 using System.Diagnostics;
+using System.Threading;
 
 namespace DesktopPet
 {
@@ -39,6 +40,9 @@ namespace DesktopPet
             /// Handle to the full screen window. If this value is 0, there is no full screen window.
             /// </summary>
         IntPtr hwndFullscreenWindow = (IntPtr)0;
+        IntPtr hookTaskbarId = IntPtr.Zero; // not used
+        NativeMethods.RECT currentWindowSize;
+
             /// <summary>
             /// If sheep is walking to left  (default).
             /// </summary>
@@ -150,9 +154,11 @@ namespace DesktopPet
             {
                 CreateParams cp = base.CreateParams;
 
-                cp.ExStyle |= 0x80; // WS_EX_TOOLWINDOW             <- remove from ALT-TAB list
-                cp.ExStyle |= 0x08; // WS_EX_TOPMOST                <- set on TopMost
-                cp.ExStyle |= 0x00080000; // WS_EX_LAYERED          <- increase paint performance
+                cp.ExStyle |= 0x00000080; // WS_EX_TOOLWINDOW             <- remove from ALT-TAB list
+                cp.ExStyle |= 0x00000008; // WS_EX_TOPMOST                <- set on TopMost
+                cp.ExStyle |= 0x00080000; // WS_EX_LAYERED                <- increase paint performance
+                //cp.ExStyle |= 0x00000020; // WS_EX_TRANSPARENT            <- Do not draw window -> unclickable
+                //cp.Style |= 0x80000000; // WS_POPUP
 
                 if (Name.IndexOf("child") == 0)
                 {
@@ -162,9 +168,9 @@ namespace DesktopPet
             }
         }
 
-            /// <summary>
-            /// With this overridden function, it is possible to prevent the form to get the focus once created.
-            /// </summary>
+        /// <summary>
+        /// With this overridden function, it is possible to prevent the form to get the focus once created.
+        /// </summary>
         protected override bool ShowWithoutActivation
         {
             get { return true; }
@@ -178,6 +184,15 @@ namespace DesktopPet
         /// <param name="h">Single frame height</param>
         public void Show(int w, int h)
         {
+            // 5 = WH_CBT
+            if (hookTaskbarId == IntPtr.Zero)
+            {
+                StringBuilder s1 = new StringBuilder("TaskListThumbnailWnd");
+                StringBuilder s2 = new StringBuilder("");
+                hookTaskbarId = NativeMethods.FindWindowEx(IntPtr.Zero, IntPtr.Zero, s1, s2);
+            }
+            //NativeMethods.SetWindowLong(Handle, (int)-16 /*GWL_STYLE*/, (uint)0x80000000);<< does not work to force overlapping taskbar
+
             Width = w;
             Height = h;
 
@@ -378,6 +393,7 @@ namespace DesktopPet
             }
             else
             {
+                TopMost = true; // bring to top again on each new animation
 				AnimationStep = -1;
                 CurrentAnimation = Animations.GetAnimation(id);
                 CurrentAnimation.UpdateValues(DisplayIndex);
@@ -701,9 +717,27 @@ namespace DesktopPet
                 {
                     if (AnimationStep > 0 && CheckTopWindow(true))
                     {
-                        hwndWindow = (IntPtr)0;
-                        SetNewAnimation(Animations.SetNextGravityAnimation(CurrentAnimation.ID, TNextAnimation.TOnly.WINDOW));
-                        bNewAnimation = true;
+                        if (FollowWindow())
+                        {
+                            int iTimeout = 50;
+                            do
+                            {
+                                if (!FollowWindow()) iTimeout--;
+                                else iTimeout = 50;
+                                Thread.Sleep(16);
+                                Application.DoEvents();
+                            }
+                            while (iTimeout > 0);
+                            PositionX = Left;
+                            PositionY = Top - OffsetY;
+                            return;
+                        }
+                        else
+                        {
+                            hwndWindow = (IntPtr)0;
+                            SetNewAnimation(Animations.SetNextGravityAnimation(CurrentAnimation.ID, TNextAnimation.TOnly.WINDOW));
+                            bNewAnimation = true;
+                        }
                     }
                 }
             }
@@ -849,6 +883,7 @@ namespace DesktopPet
                     {
                             // Pet need to walk over THIS window!
                         hwndWindow = window.Key;
+                        currentWindowSize = rct;
 						StringBuilder sTitle = new StringBuilder(128);
 						NativeMethods.GetWindowText(hwndWindow, sTitle, 128);
 
@@ -908,7 +943,35 @@ namespace DesktopPet
                 }
             }
         }
-        
+
+        private bool FollowWindow()
+        {
+            if ((int)hwndWindow != 0)
+            {
+                NativeMethods.RECT rctO;
+                // Get window size and position of the current pet
+                NativeMethods.GetWindowRect(new HandleRef(this, hwndWindow), out rctO);
+
+                if (currentWindowSize.Top != rctO.Top || currentWindowSize.Left != rctO.Left || currentWindowSize.Right != rctO.Right)
+                {
+                    // same width as before
+                    if (rctO.Right - rctO.Left == currentWindowSize.Right - currentWindowSize.Left)
+                    {
+                        Top -= (currentWindowSize.Top - rctO.Top);
+                        Left -= (currentWindowSize.Left - rctO.Left);
+                    }
+                    else // new width
+                    {
+                        Top -= (currentWindowSize.Top - rctO.Top);
+                        Left = rctO.Left + (Left - currentWindowSize.Left) * (rctO.Right - rctO.Left) / (currentWindowSize.Right - currentWindowSize.Left);
+                    }
+                    currentWindowSize = rctO;
+                    return true;
+                }
+            }
+            return false;
+        }
+
             /// <summary>
             /// Check if current window handler is still valid (if another window cover the visual of this window, it must not be used as window)
             /// </summary>
@@ -929,10 +992,10 @@ namespace DesktopPet
                     // If pet was walking on a window, check if window is still in the same position
                 if (bCheck)
                 {
-                    if (rctO.Top > PositionY + Height + 2) return true;
-                    else if (rctO.Top < PositionY + Height - 2) return true;
-                    else if (rctO.Left > PositionX + Width - 5) return true;
-                    else if (rctO.Right < PositionX + 5) return true;
+                    if(currentWindowSize.Top != rctO.Top || currentWindowSize.Left != rctO.Left || currentWindowSize.Right != rctO.Right)
+                    {
+                        return true;
+                    }
                 }
 
                     // Get more informations about the current window title bar
@@ -1154,6 +1217,7 @@ namespace DesktopPet
         {
             if(!IsDisposed) Dispose();
         }
+
     }
 
     /// <summary>
@@ -1253,6 +1317,9 @@ namespace DesktopPet
         /// <returns>Pointer to the first window.</returns>
         [DllImport("user32.dll")]
         internal static extern IntPtr GetForegroundWindow();
+
+        [DllImport("user32.dll")]
+        internal static extern IntPtr FindWindowEx(IntPtr hWndParent, IntPtr hWndChildAfter, StringBuilder slpClass, StringBuilder slpWindow);
 
         /// <summary>
         /// Structure with the information about the title bar of the window.

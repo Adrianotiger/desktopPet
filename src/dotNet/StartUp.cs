@@ -72,6 +72,8 @@ namespace DesktopPet
         /// Process Icon. The tray icon on the taskbar.
         /// </summary>
         ProcessIcon pi;
+
+        bool isRealoadingSettings = false;
         
         /// <summary>
         /// Error message for exceptions. It is shown in the options if an error occurs.
@@ -134,6 +136,7 @@ namespace DesktopPet
             timer1.Enabled = true;
 
             Program.MyData.ListenOnXMLChanged(XmlFileChanged);
+            Program.MyData.ListenOnOptionsChanged(OptionFileChanged);
         }
 
 
@@ -142,6 +145,16 @@ namespace DesktopPet
             Thread.Sleep(200);
             Program.MyData.LoadXML();
             Program.Mainthread.LoadNewXMLFromString(Program.MyData.GetXml());
+        }
+
+        private void OptionFileChanged(object source, FileSystemEventArgs e)
+        {
+            if (isRealoadingSettings) return;
+            isRealoadingSettings = true;
+            Thread.Sleep(1000);
+            Program.MyData.LoadSettings();
+            Thread.Sleep(200);
+            isRealoadingSettings = false;
         }
 
         /// <summary>

@@ -39,7 +39,7 @@
     <PackageCertificateThumbprint>5F42B0C0AA58D9BF5C19EF0C2C270BE782F2AD18</PackageCertificateThumbprint>
     <GenerateAppInstallerFile>False</GenerateAppInstallerFile>
     <AppxAutoIncrementPackageRevision>False</AppxAutoIncrementPackageRevision>
-    <AppxBundlePlatforms>x64</AppxBundlePlatforms>
+    <AppxBundlePlatforms>x86</AppxBundlePlatforms>
     <AppInstallerUpdateFrequency>0</AppInstallerUpdateFrequency>
     <AppInstallerCheckForUpdateFrequency>OnApplicationRun</AppInstallerCheckForUpdateFrequency>
     <AppxPackageDir>D:\GitHub\desktopPet\src\UWPSheep\..\..\build\AppPackages\</AppxPackageDir>

@@ -32,20 +32,25 @@ namespace DesktopPet
                     AppConfiguration = ConfigurationManager.OpenMappedExeConfiguration(
                         new ExeConfigurationFileMap { ExeConfigFilename = "DesktopPet.config" }, ConfigurationUserLevel.None);
                 }
-                var settings = AppConfiguration.AppSettings.Settings;
-                foreach (SettingsProperty currentProperty in Properties.Settings.Default.Properties)
-                {
-                    if (AppConfiguration.AppSettings.Settings[currentProperty.Name] == null)
-                    {
-                        AppConfiguration.AppSettings.Settings.Add(currentProperty.Name, currentProperty.DefaultValue.ToString());
-                    }
-                }
-                AppSettings = AppConfiguration.AppSettings.Settings;
+                LoadSettings();
             }
             catch(Exception ex)
             {
                 MessageBox.Show("Error opening settings: " + ex.Message, "Settings", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
+        }
+
+        public void LoadSettings()
+        {
+            var settings = AppConfiguration.AppSettings.Settings;
+            foreach (SettingsProperty currentProperty in Properties.Settings.Default.Properties)
+            {
+                if (AppConfiguration.AppSettings.Settings[currentProperty.Name] == null)
+                {
+                    AppConfiguration.AppSettings.Settings.Add(currentProperty.Name, currentProperty.DefaultValue.ToString());
+                }
+            }
+            AppSettings = AppConfiguration.AppSettings.Settings;
         }
 
         public void SetVolume(double volume)
@@ -192,6 +197,11 @@ namespace DesktopPet
         public delegate void MyFunction(object source, FileSystemEventArgs e);
 
         public void ListenOnXMLChanged(MyFunction f)
+        {
+            // not implemented in the portable version
+        }
+
+        public void ListenOnOptionsChanged(MyFunction f)
         {
             // not implemented in the portable version
         }

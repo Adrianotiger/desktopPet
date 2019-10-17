@@ -17,7 +17,6 @@ namespace LocalData
     }
     public class Settings
     {
-        public string Xml { get; set; } = "";
         public double Volume { get; set; } = 0.3;
         public bool WinForeGround { get; set; } = false;
         public int AutostartPets { get; set; } = 1;
@@ -36,8 +35,10 @@ namespace LocalData
         static string Icon = "";
         static bool Developer = false;
         static string DeveloperPets = "";
+        static string Xml = "";
 
-        private FileSystemWatcher watcher = null;
+        private FileSystemWatcher watcherXml = null;
+        private FileSystemWatcher watcherJson = null;
 
         private static readonly String GITHUB_FOLDER = "https://raw.githubusercontent.com/Adrianotiger/desktopPet/master";
         public static readonly String GITHUB_PETDOCS = "https://adrianotiger.github.io/desktopPet/Pets/";
@@ -53,23 +54,28 @@ namespace LocalData
             if (!Directory.Exists(LocalFolder)) Directory.CreateDirectory(LocalFolder);
             if (LocalSettings == null)
             {
-                try
-                {
-                    LocalSettings = JsonConvert.DeserializeObject<Settings>(File.ReadAllText(LocalFolder + "\\_settings_.json"));
-                }
-                catch (Exception ex)
-                {
-                    Console.WriteLine("Error: " + ex.Message);
-                }
-                if (LocalSettings == null)
-                {
-                    LocalSettings = new Settings();
-                    FirstBoot = true;
-                }
+                LoadSettings();
 
                 LoadXML();
                 LoadImages();
                 LoadIcon();
+            }
+        }
+
+        public void LoadSettings()
+        {
+            try
+            {
+                LocalSettings = JsonConvert.DeserializeObject<Settings>(File.ReadAllText(LocalFolder + "\\_settings_.json"));
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Error: " + ex.Message);
+            }
+            if (LocalSettings == null)
+            {
+                LocalSettings = new Settings();
+                FirstBoot = true;
             }
         }
 
@@ -136,9 +142,9 @@ namespace LocalData
 
         public void SetXml(string newXml, string folder)
         {
-            if (LocalSettings.Xml != newXml)
+            if (Xml != newXml)
             {
-                LocalSettings.Xml = newXml;
+                Xml = newXml;
 
                 var buffer = Encoding.UTF8.GetBytes(newXml);
                 File.Delete(LocalFolder + "\\animations.xml");
@@ -159,7 +165,7 @@ namespace LocalData
 
         public string GetXml()
         {
-            return LocalSettings.Xml;
+            return Xml;
         }
 
         public void LoadXML()
@@ -170,13 +176,13 @@ namespace LocalData
                 var fs = File.Create(LocalFolder + "\\animations.xml");
                 fs.Close();
             }
-            LocalSettings.Xml = "";
+            Xml = "";
             var f = File.OpenRead(LocalFolder + "\\animations.xml");
             int bytesRead;
             do
             {
                 bytesRead = f.Read(buffer, 0, 1024 * 64);
-                LocalSettings.Xml += Encoding.UTF8.GetString(buffer, 0, bytesRead);
+                Xml += Encoding.UTF8.GetString(buffer, 0, bytesRead);
             } while (bytesRead > 0);
             f.Close();
         }
@@ -297,9 +303,9 @@ namespace LocalData
 
         public void ListenOnXMLChanged(MyFunction f)
         {
-            if (watcher == null)
+            if (watcherXml == null)
             {
-                watcher = new FileSystemWatcher
+                watcherXml = new FileSystemWatcher
                 {
                     Path = LocalFolder,
                     /* Watch for changes in LastAccess and LastWrite times, and 
@@ -311,14 +317,40 @@ namespace LocalData
             }
             else
             {
-                watcher.EnableRaisingEvents = false;
+                watcherXml.EnableRaisingEvents = false;
             }
 
             // Add event handlers.
-            watcher.Changed += new FileSystemEventHandler(f);
+            watcherXml.Changed += new FileSystemEventHandler(f);
 
             // Begin watching.
-            watcher.EnableRaisingEvents = true;
+            watcherXml.EnableRaisingEvents = true;
+        }
+
+        public void ListenOnOptionsChanged(MyFunction f)
+        {
+            if (watcherJson == null)
+            {
+                watcherJson = new FileSystemWatcher
+                {
+                    Path = LocalFolder,
+                    /* Watch for changes in LastAccess and LastWrite times, and 
+                       the renaming of files or directories. */
+                    NotifyFilter = NotifyFilters.LastAccess | NotifyFilters.LastWrite | NotifyFilters.FileName | NotifyFilters.DirectoryName,
+                    // Only watch text files.
+                    Filter = "_settings_.json"
+                };
+            }
+            else
+            {
+                watcherJson.EnableRaisingEvents = false;
+            }
+
+            // Add event handlers.
+            watcherJson.Changed += new FileSystemEventHandler(f);
+
+            // Begin watching.
+            watcherJson.EnableRaisingEvents = true;
         }
 
         public void SetDeveloper(bool isDev)
@@ -369,12 +401,17 @@ namespace LocalData
         {
             try
             {
+                if (watcherJson != null) watcherJson.EnableRaisingEvents = false;
                 var output = JsonConvert.SerializeObject(LocalSettings);
                 File.WriteAllText(LocalFolder + "\\_settings_.json", output);
             }
             catch(Exception ex)
             {
                 Console.WriteLine("Error: " + ex.Message);
+            }
+            finally
+            {
+                if (watcherJson != null) watcherJson.EnableRaisingEvents = true;
             }
         }
     }

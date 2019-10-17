@@ -72,8 +72,11 @@ namespace OptionsWindow
 
         private void VolumeSlider_ValueChanged(object sender, RangeBaseValueChangedEventArgs e)
         {
-            App.MyData.SetVolume(volumeSlider.Value);
-            volumeSlider.Header = (volumeSlider.Value * 100).ToString() + " %";
+            if ((int)(e.OldValue * 100) != (int)(e.NewValue * 100))
+            {
+                App.MyData.SetVolume(volumeSlider.Value);
+                volumeSlider.Header = ((int)(volumeSlider.Value * 100)).ToString() + " %";
+            }
         }
     }
 }

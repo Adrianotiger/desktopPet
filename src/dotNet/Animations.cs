@@ -266,7 +266,10 @@ namespace DesktopPet
             Border = false;
             ID = id;
         }
-
+            /// <summary>
+            /// Update the xml values to update them on multiscreen
+            /// </summary>
+            /// <param name="screenIndex">Set to screen id used for the calculation</param>
         public void UpdateValues(int screenIndex = -1)
         {
             if (Sequence.Repeat.IsDynamic)

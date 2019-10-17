@@ -45,6 +45,7 @@ namespace DesktopPet
             /// </summary>
         public void SetIcon(System.IO.MemoryStream icon, string petName, string aboutAuthor, string aboutTitle, string aboutVersion, string aboutInfo)
         {
+            bool success = true;
 			try
 			{
 				ni.Icon = new Icon(icon, 32, 32);
@@ -53,10 +54,18 @@ namespace DesktopPet
 			}
 			catch(Exception)
 			{
-				StartUp.AddDebugInfo(StartUp.DEBUG_TYPE.error, "Animation ICON is invalid (icon converter is on the webpage)");
-				ni.Icon = new Icon(Icon.ExtractAssociatedIcon(Assembly.GetExecutingAssembly().Location), 32, 32);
-				ContextMenus.UpdateIcon(ni.Icon, petName, aboutAuthor, aboutTitle, aboutVersion, aboutInfo);
+                success = false;
 			}
+            if(!success)
+            {
+                try
+                {
+                    StartUp.AddDebugInfo(StartUp.DEBUG_TYPE.error, "Animation ICON is invalid (icon converter is on the webpage)");
+                    ni.Icon = new Icon(Icon.ExtractAssociatedIcon(Assembly.GetExecutingAssembly().Location), 32, 32);
+                    ContextMenus.UpdateIcon(ni.Icon, petName, aboutAuthor, aboutTitle, aboutVersion, aboutInfo);
+                }
+                catch (Exception) { } // probably thread error.
+            }
         }
 
             /// <summary>
