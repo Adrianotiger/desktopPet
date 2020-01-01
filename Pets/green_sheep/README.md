@@ -14,8 +14,7 @@ Happy new year :)
 - Oliver, Jan. 1, 2020.
 
 ## Changelog
-7.0 Changes:
-
+7.0 Changes:[br]
 Many animation/probability improvements.
 
 New falling & jumping animations.
