@@ -25,7 +25,7 @@ New falling & jumping animations.
 
 New flower animation.
 
-The King Sheep, Pump, does flips, spawns sheep, and disappears now!
+Pump, The King Sheep, does flips, spawns sheep, and disappears now!
 
 ## About pet
 Author: Oliver B.
