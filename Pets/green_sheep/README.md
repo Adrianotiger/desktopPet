@@ -15,6 +15,7 @@ Happy new year :)
 
 ## Changelog
 7.0 Changes:
+
 Many animation/probability improvements.
 
 New falling & jumping animations.
