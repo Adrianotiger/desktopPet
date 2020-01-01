@@ -3,20 +3,23 @@
 ## Description
 A very active sheep with cute green horns.
 
-Lots of changes from the original stray sheep.
-Gus plays sounds, has all the old animations, and has plenty of new/custom animations, including many uncommon and rare ones!
-(Best viewed with only one monitor.)
+Gus plays sounds, has many of the original animations, has plenty of custom animations, and lots of uncommon/rare/super rare animations!
 
 Thanks for using!
 You can send feedback to
-greenstraysheep at gmail.com
+greenstraysheep@gmail.com
+
+Thank you, Adriano.
+Happy new year :)
+- Oliver, Jan. 1, 2020.
 
 ## Changelog
-6.5 Changes:
-Many bug fixes.
-Animation/spawn improvements.
-Improved King Sheep jumps.
-King Sheep spawns more sheep.
+7.0 Changes:
+Many animation/probability improvements.
+New falling & jumping animations.
+New flower animation.
+The King Sheep, named Pump, does flips,
+spawns sheep, and disappears now!
 
 ## About pet
 Author: Oliver B.
