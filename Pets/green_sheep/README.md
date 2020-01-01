@@ -3,10 +3,7 @@
 ## Description
 A very active sheep with cute green horns.
 
-Gus plays sounds,
-has many of the original animations,
-has plenty of custom animations,
-and lots of uncommon/rare/super rare animations!
+Gus plays sounds, has many of the original animations, has plenty of custom animations, and lots of uncommon/rare/super rare animations!
 
 Thanks for using!
 You can send feedback to
@@ -18,10 +15,15 @@ Happy new year :D
 
 ## Changelog
 7.0 Changes:
+
 Many animation/probability improvements.
+
 New falling & jumping animations.
+
 New flower animation.
+
 The King Sheep, Pump, does flips,
+
 spawns sheep, and disappears now!
 
 ## About pet
