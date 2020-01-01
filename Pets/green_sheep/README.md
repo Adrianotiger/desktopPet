@@ -16,9 +16,13 @@ Happy new year :)
 ## Changelog
 7.0 Changes:
 Many animation/probability improvements.
+
 New falling & jumping animations.
+
 New flower animation.
+
 The King Sheep, named Pump, does flips,
+
 spawns sheep, and disappears now!
 
 ## About pet
