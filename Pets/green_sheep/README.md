@@ -1,4 +1,4 @@
-# gSheep green
+# Green Sheep
 
 ## Description
 A very active sheep with cute green horns.
