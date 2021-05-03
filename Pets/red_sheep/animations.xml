@@ -6409,22 +6409,20 @@
     <animation id="190">
       <name>walk_death</name>
       <start>
-        <x>-1</x>
+        <x>-2</x>
         <y>0</y>
         <offsety>0</offsety>
         <opacity>1</opacity>
         <interval>200</interval>
       </start>
       <end>
-        <x>-1</x>
+        <x>-2</x>
         <y>0</y>
         <offsety>0</offsety>
         <opacity>1</opacity>
         <interval>200</interval>
       </end>
-      <sequence repeatfrom="0" repeat="15">
-        <frame>2</frame>
-        <frame>3</frame>
+      <sequence repeatfrom="0" repeat="20">
         <frame>2</frame>
         <frame>3</frame>
         <next probability="100" only="none">261</next>
@@ -8531,14 +8529,14 @@
         <x>0</x>
         <y>0</y>
         <offsety>0</offsety>
-        <opacity>0</opacity>
+        <opacity>1</opacity>
         <interval>100</interval>
       </start>
       <end>
         <x>0</x>
         <y>0</y>
         <offsety>0</offsety>
-        <opacity>0</opacity>
+        <opacity>1</opacity>
         <interval>100</interval>
       </end>
       <sequence repeatfrom="0" repeat="0">
