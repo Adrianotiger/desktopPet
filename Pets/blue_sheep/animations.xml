@@ -17,7 +17,7 @@
   </image>
   <spawns>
     <spawn id="1" probability="5">
-      <x>screenW</x>
+      <x>screenW+10</x>
       <y>areaH-imageH</y>
       <next probability="0">1</next>
     </spawn>
@@ -37,7 +37,7 @@
       <next probability="0">28</next>
     </spawn>
     <spawn id="5" probability="10">
-      <x>screenW</x>
+      <x>screenW+10</x>
       <y>areaH-imageH</y>
       <next probability="0">82</next>
     </spawn>
@@ -47,7 +47,7 @@
       <next probability="0">108</next>
     </spawn>
     <spawn id="7" probability="10">
-      <x>screenW</x>
+      <x>screenW+10</x>
       <y>areaH-imageH</y>
       <next probability="0">7</next>
     </spawn>
@@ -57,12 +57,12 @@
       <next probability="0">65</next>
     </spawn>
     <spawn id="9" probability="10">
-      <x>screenW</x>
+      <x>screenW+10</x>
       <y>0</y>
       <next probability="0">39</next>
     </spawn>
     <spawn id="10" probability="10">
-      <x>screenW</x>
+      <x>screenW+10</x>
       <y>areaH-imageH</y>
       <next probability="0">55</next>
     </spawn>
@@ -2360,12 +2360,12 @@
         <frame>176</frame>
         <frame>8</frame>
         <frame>176</frame>
-        <next probability="15" only="none">68</next>
+        <next probability="20" only="none">68</next>
         <next probability="20" only="none">50</next>
         <next probability="5" only="none">1</next>
         <next probability="15" only="none">77</next>
         <next probability="20" only="none">96</next>
-        <next probability="25" only="none">70</next>
+        <next probability="20" only="none">70</next>
         <action>none</action>
       </sequence>
       <border>
@@ -6413,14 +6413,14 @@
         <y>0</y>
         <offsety>0</offsety>
         <opacity>1</opacity>
-        <interval>250</interval>
+        <interval>200</interval>
       </start>
       <end>
         <x>-1</x>
         <y>0</y>
         <offsety>0</offsety>
         <opacity>1</opacity>
-        <interval>250</interval>
+        <interval>200</interval>
       </end>
       <sequence repeatfrom="0" repeat="15">
         <frame>2</frame>
