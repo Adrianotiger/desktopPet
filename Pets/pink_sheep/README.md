@@ -1,9 +1,9 @@
-# gSheep - Green
+# gSheep - Pink
 
 ## Description
-A very active sheep with cute green horns.
+A very active sheep with cute pink horns.
 
-Gus plays cute sounds,
+Pearl plays cute sounds,
 has many of the original animations,
 has plenty of custom animations,
 and lots of uncommon/rare/super rare animations!

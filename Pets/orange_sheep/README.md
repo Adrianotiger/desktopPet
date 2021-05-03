@@ -1,9 +1,9 @@
-# gSheep - Green
+# gSheep - Orange
 
 ## Description
-A very active sheep with cute green horns.
+A very active sheep with cute orange horns.
 
-Gus plays cute sounds,
+Omar plays cute sounds,
 has many of the original animations,
 has plenty of custom animations,
 and lots of uncommon/rare/super rare animations!
