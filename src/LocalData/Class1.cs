@@ -19,6 +19,7 @@ namespace LocalData
     {
         public double Volume { get; set; } = 0.3;
         public bool WinForeGround { get; set; } = false;
+        public bool StealTaskbarFocus { get; set; } = false;
         public int AutostartPets { get; set; } = 1;
         public bool MultiScreenEnabled { get; set; } = true;
         public string CurrentPet { get; set; } = "esheep64";
@@ -124,6 +125,20 @@ namespace LocalData
         public bool GetWindowForeground()
         {
             return LocalSettings.WinForeGround;
+        }
+
+        public void SetStealTaskbarFocus(bool steal)
+        {
+            if (LocalSettings.StealTaskbarFocus != steal)
+            {
+                LocalSettings.StealTaskbarFocus = steal;
+                SaveSettings();
+            }
+        }
+
+        public bool GetStealTaskbarFocus()
+        {
+            return LocalSettings.StealTaskbarFocus;
         }
 
         public void SetAutoStartPets(int startingPets)
@@ -247,14 +262,21 @@ namespace LocalData
                 fs.Close();
             }
             Images = "";
-            var f = File.OpenRead(LocalFolder + "\\images.xml");
-            int bytesRead;
-            do
+            try
             {
-                bytesRead = f.Read(buffer, 0, 1024 * 64);
-                Images += Encoding.UTF8.GetString(buffer, 0, bytesRead);
-            } while (bytesRead > 0);
-            f.Close();
+                var f = File.OpenRead(LocalFolder + "\\images.xml");
+                int bytesRead;
+                do
+                {
+                    bytesRead = f.Read(buffer, 0, 1024 * 64);
+                    Images += Encoding.UTF8.GetString(buffer, 0, bytesRead);
+                } while (bytesRead > 0);
+                f.Close();
+            }
+            catch(Exception)
+            {
+                Images = "";
+            }
         }
 
         public bool NeedToLoadNew(string petFolder, DateTimeOffset lastUpdate)

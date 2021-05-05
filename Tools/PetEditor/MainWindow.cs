@@ -276,6 +276,7 @@ namespace PetEditor
                 editWindows.SelectSection(section);
                 if (!editWindows.Visible)
                 {
+                    formChat.Hide();
                     xmlViewer.Hide();
                     editWindows.Show();
                 }
@@ -286,6 +287,7 @@ namespace PetEditor
                 if (editWindows.Visible)
                 {
                     xmlViewer.Show();
+                    formChat.Hide();
                     editWindows.Hide();
                 }
             }
@@ -359,6 +361,7 @@ namespace PetEditor
         private void toolStripButton2_Click(object sender, EventArgs e)
         {
             if (editWindows == null || xmlViewer == null) return;
+            if (formChat != null) formChat.Hide();
             editWindows.Hide();
             xmlViewer.Show();
             formProject.XmlView();

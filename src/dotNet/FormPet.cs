@@ -263,6 +263,7 @@ namespace DesktopPet
             Visible = true;                             // Now we can show the form
             Opacity = 0.0;                              // do not show first frame (as it is undefined)
             timer1.Enabled = true;                      // Enable the timer (interval is well known now)
+            TopMost = true;     // new in 1.2.6
         }
 
 			/// <summary>
@@ -393,10 +394,16 @@ namespace DesktopPet
             }
             else
             {
-                TopMost = true; // bring to top again on each new animation
 				AnimationStep = -1;
                 CurrentAnimation = Animations.GetAnimation(id);
                 CurrentAnimation.UpdateValues(DisplayIndex);
+
+                // v.1.2.6: this will steal taskbar focus and the tray menu will disappear. So this should not be used too often.
+                if (Program.MyData.GetStealTaskbarFocus() && CurrentAnimation.Start.OffsetY != 0 && CurrentAnimation.Start.X.Value != 0)
+                {
+                    TopMost = true; // bring to top again on each new animation
+                }
+
                 // Check if animation ID has a child. If so, the child will be created.
                 if (Animations.HasAnimationChild(id))
                 {
@@ -717,9 +724,9 @@ namespace DesktopPet
                 {
                     if (AnimationStep > 0 && CheckTopWindow(true))
                     {
-                        if (FollowWindow())
+                        if (CurrentAnimation.Start.X.Value != 0 && FollowWindow())
                         {
-                            int iTimeout = 50;
+                            int iTimeout = 20;
                             do
                             {
                                 if (!FollowWindow()) iTimeout--;
@@ -951,6 +958,12 @@ namespace DesktopPet
                 NativeMethods.RECT rctO;
                 // Get window size and position of the current pet
                 NativeMethods.GetWindowRect(new HandleRef(this, hwndWindow), out rctO);
+
+                    // window disappeared! Maybe it was closed.
+                if(rctO.Top == 0 && rctO.Bottom == 0)
+                {
+                    return false;
+                }
 
                 if (currentWindowSize.Top != rctO.Top || currentWindowSize.Left != rctO.Left || currentWindowSize.Right != rctO.Right)
                 {

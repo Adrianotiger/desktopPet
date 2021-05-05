@@ -92,7 +92,8 @@ namespace DesktopPet
                 checkBox1.Enabled = false;
             }
 			checkBox2.Checked = Program.MyData.GetWindowForeground();
-			trackBar2.Value = Program.MyData.GetAutoStartPets();
+            checkBox4.Checked = Program.MyData.GetStealTaskbarFocus();
+            trackBar2.Value = Program.MyData.GetAutoStartPets();
             label5.Text = trackBar2.Value.ToString();
             label2.Text = trackBar1.Value.ToString();
             checkBox3.Checked = Program.MyData.GetMultiscreen();
@@ -124,7 +125,12 @@ namespace DesktopPet
             Program.MyData.SetWindowForeground(checkBox2.Checked);
 		}
 
-		private void trackBar2_Scroll(object sender, EventArgs e)
+        private void checkBox4_CheckedChanged(object sender, EventArgs e)
+        {
+            Program.MyData.SetStealTaskbarFocus(checkBox4.Checked);
+        }
+
+        private void trackBar2_Scroll(object sender, EventArgs e)
 		{
             Program.MyData.SetAutoStartPets(trackBar2.Value);
             label5.Text = trackBar2.Value.ToString();
@@ -134,5 +140,6 @@ namespace DesktopPet
         {
             Program.MyData.SetMultiscreen(checkBox3.Checked);
         }
+
     }
 }

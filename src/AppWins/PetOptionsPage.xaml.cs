@@ -51,13 +51,20 @@ namespace OptionsWindow
 
             volumeSlider.Value = App.MyData.GetVolume();
             foregroundWindowToggle.IsOn = App.MyData.GetWindowForeground();
+            stealTaskbarToggle.IsOn = App.MyData.GetStealTaskbarFocus();
             multiScreenToggle.IsOn = App.MyData.GetMultiscreen();
 
             volumeSlider.Header = ((int)(volumeSlider.Value * 100)).ToString() + " %";
 
             volumeSlider.ValueChanged += VolumeSlider_ValueChanged;
             foregroundWindowToggle.Toggled += ForegroundWindowToggle_Toggled;
+            stealTaskbarToggle.Toggled += StealTaskbarToggle_Toggled;
             multiScreenToggle.Toggled += MultiScreenToggle_Toggled;
+        }
+
+        private void StealTaskbarToggle_Toggled(object sender, RoutedEventArgs e)
+        {
+            App.MyData.SetStealTaskbarFocus(stealTaskbarToggle.IsOn);
         }
 
         private void MultiScreenToggle_Toggled(object sender, RoutedEventArgs e)

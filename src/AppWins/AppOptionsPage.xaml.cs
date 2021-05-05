@@ -37,7 +37,24 @@ namespace OptionsWindow
 
         private async void AppOptionsPage_Loaded(object sender, RoutedEventArgs e)
         {
-            StartupTask startupTask = await StartupTask.GetAsync("eSheepId");
+            StartupTask startupTask = null;
+            try
+            {
+                startupTask = await StartupTask.GetAsync("eSheepId");
+            }
+            catch(Exception)
+            {
+                startupTask = null;
+            }
+
+            if (startupTask == null)
+            {
+                MessageDialog dialog = new MessageDialog(
+                                "Unable to get application Id",
+                                "eSheep Id");
+                await dialog.ShowAsync();
+                return;
+            }
 
             switch (startupTask.State)
             {

@@ -102,6 +102,22 @@ namespace DesktopPet
             }
         }
 
+        public void SetStealTaskbarFocus(bool steal)
+        {
+            if (steal.ToString() != AppSettings["StealTaskbarFocus"].Value)
+            {
+                Properties.Settings.Default.WinForeground = steal;
+                AppSettings["StealTaskbarFocus"].Value = steal.ToString();
+                Save();
+            }
+        }
+
+        public bool GetStealTaskbarFocus()
+        {
+            bool.TryParse(AppSettings["StealTaskbarFocus"].Value, out bool ret);
+            return ret;
+        }
+
         public int GetAutoStartPets()
         {
             int.TryParse(AppSettings["AutostartPets"].Value, out int ret);

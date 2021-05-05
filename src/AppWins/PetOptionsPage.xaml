@@ -21,6 +21,11 @@
                 <ToggleSwitch Margin="10" OnContent="Foreground enabled" OffContent="Foreground disabled" x:Name="foregroundWindowToggle"></ToggleSwitch>
                 <TextBlock>The original eSheep was able to bring to front the touched window. If you activate this option, your productivity will decrease ;)</TextBlock>
             </StackPanel>
+            <TextBlock Style="{StaticResource TitleTextBlockStyle}" Padding="0,20,0,0">Steal Taskbar Focus</TextBlock>
+            <StackPanel Margin="30,0,0,0">
+                <ToggleSwitch Margin="10" OnContent="Steal focus" OffContent="Stay behind taskbar" x:Name="stealTaskbarToggle"></ToggleSwitch>
+                <TextBlock>Windows Taskbar is on topmost. Mate can "steal" the focus, but the tray icon will disappear if this occours.</TextBlock>
+            </StackPanel>
             <TextBlock Style="{StaticResource TitleTextBlockStyle}" Padding="0,20,0,0">Multi Screen</TextBlock>
             <StackPanel Margin="30,0,0,0">
                 <ToggleSwitch Margin="10" OnContent="Allow multiscreen" OffContent="Only on mainscreen" x:Name="multiScreenToggle"></ToggleSwitch>

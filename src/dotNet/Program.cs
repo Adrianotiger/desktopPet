@@ -78,13 +78,15 @@ namespace DesktopPet
         static void Main(string[] args)
         {
             int iMutexIndex = 0;
-
             string resource1 = "DesktopPet.Portable.NAudio.dll";
+
+            Application.EnableVisualStyles();
+            Application.SetCompatibleTextRenderingDefault(false);
+
             EmbeddedAssembly.Load(resource1, "NAudio.dll");
 
             AppDomain.CurrentDomain.AssemblyResolve += new ResolveEventHandler(CurrentDomain_AssemblyResolve);
 
-            Application.EnableVisualStyles();
             // if you like to wait a few seconds in case that the instance is just 
             // shutting down
             try
@@ -144,8 +146,6 @@ namespace DesktopPet
                 }
             }
 
-            Application.SetCompatibleTextRenderingDefault(false);
-
             // Show the system tray icon.					
             using (ProcessIcon pi = new ProcessIcon())
             {
@@ -176,11 +176,10 @@ namespace DesktopPet
             //string resource1 = "DesktopPet.dll.NAudio.dll";
             //EmbeddedAssembly.Load(resource1, "NAudio.dll");
 
-            AppDomain.CurrentDomain.AssemblyResolve += new ResolveEventHandler(CurrentDomain_AssemblyResolve);
-
             Application.EnableVisualStyles();
-
             Application.SetCompatibleTextRenderingDefault(false);
+
+            AppDomain.CurrentDomain.AssemblyResolve += new ResolveEventHandler(CurrentDomain_AssemblyResolve);
 
             MyData = new LocalData.LocalData(Windows.Storage.ApplicationData.Current.LocalFolder.Path, Application.ExecutablePath);
 

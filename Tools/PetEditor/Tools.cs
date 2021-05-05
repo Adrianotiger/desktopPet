@@ -733,6 +733,10 @@ namespace PetEditor
                 {
                     listView2.Items.Add("ANIMATION " + animation.Id).SubItems.Add("There is no frame inside this animation, this list can't be empty");
                 }
+                if(animation.Sequence.RepeatFromFrame >= animation.Sequence.Frame.Length)
+                {
+                    listView2.Items.Add("ANIMATION " + animation.Id).SubItems.Add("Repeat-from index is higher than the number of frames");
+                }
                 animationIds.Add(animation.Id);
                 animationNames.Add(animation.Name);
             }

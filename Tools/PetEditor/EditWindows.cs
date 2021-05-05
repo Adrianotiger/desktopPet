@@ -1206,6 +1206,12 @@ namespace PetEditor
             }
             pictureBox2.Image = listView1.LargeImageList.Images[imageIndex];
             pictureBox2.Tag = val;
+            if (stats.SubSteps.Count <= 0)
+            {
+                timer1.Enabled = false;
+                return;
+            }
+
             int nextIndex = (int.Parse(timer1.Tag.ToString()) + 1) % stats.SubSteps.Count;
             timer1.Tag = nextIndex;
             timer1.Interval = stats.SubSteps[nextIndex].Interval;

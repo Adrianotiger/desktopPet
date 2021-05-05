@@ -22,16 +22,25 @@
             <TextBlock x:Name="loadingText" Text="Loading XML..." TextAlignment="Center" Padding="5" />
         </StackPanel>
 
-        <ListView x:Name="PetsBox" HorizontalAlignment="Stretch" VerticalAlignment="Top" IsItemClickEnabled="True" ItemClick="PetsBox_ItemClick">
+        <ListView 
+                    ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                    ScrollViewer.VerticalScrollMode="Enabled"
+                    ScrollViewer.VerticalScrollBarVisibility="Auto"
+                    Margin="30"
+                    x:Name="PetsBox" 
+                    HorizontalAlignment="Center" 
+                    VerticalAlignment="Top" 
+                    IsItemClickEnabled="True" 
+                    ItemClick="PetsBox_ItemClick">
             <ListView.ItemsPanel>
                 <ItemsPanelTemplate>
-                    <ItemsStackPanel Orientation="Horizontal"/>
+                    <ItemsWrapGrid Orientation="Horizontal" HorizontalAlignment="Stretch"/>
                 </ItemsPanelTemplate>
             </ListView.ItemsPanel>
-            
+
             <ListView.ItemTemplate>
                 <DataTemplate>
-                    <Grid Width="80" Height="110" CornerRadius="2" Background="{Binding ItemColor}">
+                    <Grid Margin="5" Width="80" Height="110" CornerRadius="2" Background="{Binding ItemColor}">
                         <ProgressRing Width="80" Height="80" IsActive="{Binding IsLoading}" VerticalAlignment="Top"></ProgressRing>
                         <Image Source="{Binding Image}" Stretch="None" Width="80" Height="80" VerticalAlignment="Top" />
                         <Viewbox StretchDirection="DownOnly" Stretch="Uniform" VerticalAlignment="Bottom" Width="80" Height="50" >
