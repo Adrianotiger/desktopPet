@@ -3,7 +3,7 @@ layout: post
 title:  "Rainbow sheeps"
 ---
 
-<img src='https://raw.githubusercontent.com/Adrianotiger/desktopPet/master/Pets/green_sheep/icon.png' />
+<img src='https://raw.githubusercontent.com/Adrianotiger/desktopPet/master/Pets/green_sheep/icon.png' /> <img src='https://raw.githubusercontent.com/Adrianotiger/desktopPet/master/Pets/blue_sheep/icon.png' /> <img src='https://raw.githubusercontent.com/Adrianotiger/desktopPet/master/Pets/orange_sheep/icon.png' /> <img src='https://raw.githubusercontent.com/Adrianotiger/desktopPet/master/Pets/pink_sheep/icon.png' /> <img src='https://raw.githubusercontent.com/Adrianotiger/desktopPet/master/Pets/purple_sheep/icon.png' /> <img src='https://raw.githubusercontent.com/Adrianotiger/desktopPet/master/Pets/red_sheep/icon.png' />
 
 <h2>Version 8.0 is available</h2>
 
