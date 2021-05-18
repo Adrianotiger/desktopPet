@@ -3,7 +3,7 @@ layout: post
 title:  "Android App"
 ---
 
-<img src='https://raw.githubusercontent.com/Adrianotiger/desktopPet/master/Pets/green_sheep/icon.png' />
+<img src='https://github.com/Adrianotiger/desktopPet/raw/master/_posts/googleplay.png' height='128px' />
 
 <h2>Test version for Android</h2>
 
