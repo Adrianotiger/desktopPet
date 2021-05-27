@@ -31,3 +31,8 @@ If you want more mates or are a designer, why not create your own pet?
 If you have a sprite sheet, you can just use my offline editor to create and animate your pet.
 
 <a href="https://github.com/Adrianotiger/desktopPet/releases">DOWNLOAD FROM GITHUB</a>
+
+## Desktop Pet Android Port
+You could also install the android port of this project . its still in beta so it might be unstable and it may have bugs .
+
+<a href="https://play.google.com/store/apps/details?id=ch.petrucci.androsheep">INSTALL FOR ANDROID</a>
