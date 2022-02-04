@@ -93,9 +93,6 @@ namespace PetEditor
             int h = Math.Min(256, (int)(img.PhysicalDimension.Height / TilesY));
             AnimationImages.ImageSize = new Size(w, h);
             AnimationIcons.ImageSize = new Size(32, 32);
-
-            var stream = new MemoryStream();
-            img.Save(stream, img.RawFormat);
             
             for (var y = 0; y < TilesY; y++)
             {
