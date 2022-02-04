@@ -200,7 +200,7 @@ namespace PetEditor
                 image.BackgroundImageChanged += (s, e) =>
                 {
                     var stream = new MemoryStream();
-                    image.Image.Save(stream, image.Image.RawFormat);
+                    image.Image.Save(stream, System.Drawing.Imaging.ImageFormat.Png);
                     var bytes = stream.ToArray();
                     Program.AnimationXML.Image.Png = Convert.ToBase64String(bytes);
                     DrawLinesOnPictures(pictureBox1, image.Image, Program.AnimationXML.Image.TilesX, Program.AnimationXML.Image.TilesY);
@@ -1061,7 +1061,9 @@ namespace PetEditor
                 openFileDialog.Filter = "Image (*.png, *.ico)|*.png;*.ico|All files (*.*)|*.*";
                 if (openFileDialog.ShowDialog(this) == DialogResult.OK)
                 {
-                    t.Image = Image.FromFile(openFileDialog.FileName);
+                    using (Bitmap bmp = new Bitmap(openFileDialog.FileName))
+                        t.Image = new Bitmap(bmp);
+
                     t.BackgroundImage = t.Image;
                 }
             };
