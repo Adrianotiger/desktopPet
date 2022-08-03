@@ -768,7 +768,7 @@ namespace DesktopPet
 
                     iRandMax += anim.Probability;
                 }
-                iVal = rand.Next(0, iRandMax);
+                iVal = rand.Next(1, iRandMax+1);
                 foreach (TNextAnimation anim in list)
                 {
                     if (anim.only != TNextAnimation.TOnly.NONE && (anim.only & where) == 0) continue;

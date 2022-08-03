@@ -928,8 +928,9 @@
         <next probability="25" only="taskbar">227</next>
         <next probability="5" only="taskbar">67</next>
         <next probability="5" only="taskbar">238</next>
-        <next probability="50" only="vertical">49</next>
+        <next probability="40" only="vertical">49</next>
         <next probability="25" only="vertical">242</next>
+        <next probability="10" only="vertical">79</next>
       </border>
     </animation>
     <animation id="26">
@@ -1508,10 +1509,12 @@
       </sequence>
       <border>
         <next probability="50" only="taskbar">46</next>
-        <next probability="50" only="vertical">242</next>
+        <next probability="25" only="vertical">242</next>
         <next probability="50" only="taskbar">25</next>
         <next probability="100" only="horizontal">64</next>
-        <next probability="50" only="vertical">53</next>
+        <next probability="25" only="vertical">53</next>
+        <next probability="35" only="vertical">49</next>
+        <next probability="15" only="vertical">79</next>
       </border>
     </animation>
     <animation id="45">
@@ -1537,13 +1540,14 @@
       </sequence>
       <border>
         <next probability="100" only="window">45</next>
-        <next probability="20" only="taskbar">46</next>
+        <next probability="10" only="taskbar">46</next>
         <next probability="10" only="taskbar">67</next>
         <next probability="10" only="taskbar">118</next>
-        <next probability="20" only="taskbar">25</next>
+        <next probability="15" only="taskbar">25</next>
         <next probability="15" only="taskbar">7</next>
         <next probability="10" only="taskbar">36</next>
-        <next probability="15" only="taskbar">238</next>
+        <next probability="10" only="taskbar">238</next>
+        <next probability="20" only="taskbar">227</next>
       </border>
     </animation>
     <animation id="46">
@@ -1575,12 +1579,13 @@
         <frame>3</frame>
         <frame>3</frame>
         <frame>3</frame>
-        <next probability="30" only="none">1</next>
-        <next probability="20" only="none">35</next>
+        <next probability="20" only="none">1</next>
+        <next probability="15" only="none">35</next>
         <next probability="10" only="none">50</next>
         <next probability="10" only="none">17</next>
         <next probability="10" only="none">19</next>
-        <next probability="20" only="none">61</next>
+        <next probability="15" only="none">61</next>
+        <next probability="20" only="none">227</next>
         <action>none</action>
       </sequence>
       <gravity>
@@ -6476,14 +6481,14 @@
         <interval>100</interval>
       </end>
       <sequence repeatfrom="0" repeat="1000">
-        <frame>205</frame>
-        <frame>202</frame>
-        <frame>204</frame>
         <frame>237</frame>
-        <frame>240</frame>
-        <frame>249</frame>
-        <frame>222</frame>
+        <frame>204</frame>
+        <frame>202</frame>
+        <frame>205</frame>
         <frame>220</frame>
+        <frame>222</frame>
+        <frame>249</frame>
+        <frame>240</frame>
         <next probability="100" only="none">192</next>
         <action>none</action>
       </sequence>
@@ -6836,20 +6841,24 @@
         <interval>100</interval>
       </end>
       <sequence repeatfrom="0" repeat="1000">
-        <frame>205</frame>
-        <frame>202</frame>
-        <frame>204</frame>
-        <frame>237</frame>
-        <frame>240</frame>
-        <frame>249</frame>
-        <frame>222</frame>
-        <frame>220</frame>
+        <frame>238</frame>
+        <frame>238</frame>
         <next probability="100" only="none">204</next>
         <action>none</action>
       </sequence>
       <border>
-        <next probability="100" only="taskbar">139</next>
-        <next probability="100" only="window">139</next>
+        <next probability="10" only="taskbar">139</next>
+        <next probability="10" only="window">139</next>
+        <next probability="20" only="taskbar">134</next>
+        <next probability="10" only="taskbar">135</next>
+        <next probability="20" only="window">134</next>
+        <next probability="10" only="window">135</next>
+        <next probability="20" only="taskbar">136</next>
+        <next probability="10" only="taskbar">179</next>
+        <next probability="20" only="window">136</next>
+        <next probability="10" only="window">179</next>
+        <next probability="30" only="taskbar">232</next>
+        <next probability="30" only="window">232</next>
       </border>
     </animation>
     <animation id="205">
@@ -6869,30 +6878,30 @@
         <interval>100</interval>
       </end>
       <sequence repeatfrom="0" repeat="0">
-        <frame>205</frame>
-        <frame>202</frame>
-        <frame>204</frame>
         <frame>237</frame>
-        <frame>240</frame>
-        <frame>249</frame>
-        <frame>222</frame>
-        <frame>220</frame>
-        <frame>205</frame>
-        <frame>202</frame>
         <frame>204</frame>
-        <frame>237</frame>
-        <frame>240</frame>
-        <frame>249</frame>
-        <frame>222</frame>
-        <frame>220</frame>
-        <frame>205</frame>
         <frame>202</frame>
-        <frame>204</frame>
-        <frame>237</frame>
-        <frame>240</frame>
-        <frame>249</frame>
-        <frame>222</frame>
+        <frame>205</frame>
         <frame>220</frame>
+        <frame>222</frame>
+        <frame>249</frame>
+        <frame>240</frame>
+        <frame>237</frame>
+        <frame>204</frame>
+        <frame>202</frame>
+        <frame>205</frame>
+        <frame>220</frame>
+        <frame>222</frame>
+        <frame>249</frame>
+        <frame>240</frame>
+        <frame>237</frame>
+        <frame>204</frame>
+        <frame>202</frame>
+        <frame>205</frame>
+        <frame>220</frame>
+        <frame>222</frame>
+        <frame>249</frame>
+        <frame>240</frame>
         <action>none</action>
       </sequence>
     </animation>
@@ -6999,25 +7008,30 @@
       <name>king_hangB</name>
       <start>
         <x>0</x>
-        <y>2</y>
+        <y>0</y>
         <offsety>0</offsety>
         <opacity>1</opacity>
-        <interval>100</interval>
+        <interval>200</interval>
       </start>
       <end>
         <x>0</x>
-        <y>-2</y>
+        <y>0</y>
         <offsety>0</offsety>
         <opacity>1</opacity>
         <interval>100</interval>
       </end>
-      <sequence repeatfrom="0" repeat="random/5+10">
+      <sequence repeatfrom="0" repeat="0">
         <frame>221</frame>
-        <frame>221</frame>
-        <frame>221</frame>
-        <frame>221</frame>
-        <next probability="70" only="none">204</next>
-        <next probability="10" only="none">192</next>
+        <frame>220</frame>
+        <frame>222</frame>
+        <frame>262</frame>
+        <frame>263</frame>
+        <frame>263</frame>
+        <frame>264</frame>
+        <frame>237</frame>
+        <frame>238</frame>
+        <next probability="50" only="none">204</next>
+        <next probability="30" only="none">192</next>
         <next probability="20" only="none">205</next>
         <action>none</action>
       </sequence>
@@ -8015,12 +8029,14 @@
       </sequence>
       <border>
         <next probability="100" only="window">244</next>
-        <next probability="25" only="taskbar">46</next>
+        <next probability="10" only="taskbar">46</next>
         <next probability="10" only="taskbar">118</next>
-        <next probability="20" only="taskbar">25</next>
+        <next probability="15" only="taskbar">25</next>
         <next probability="15" only="taskbar">7</next>
         <next probability="10" only="taskbar">36</next>
-        <next probability="20" only="taskbar">243</next>
+        <next probability="10" only="taskbar">243</next>
+        <next probability="20" only="taskbar">227</next>
+        <next probability="10" only="taskbar">67</next>
       </border>
     </animation>
     <animation id="245">

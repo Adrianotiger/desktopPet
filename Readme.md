@@ -19,16 +19,14 @@ In this way, this pet is able to walk, run, etc around your working screen area 
 |--------|----------------|------------|---------|-------|
 | Type |  Portable exe | Store app | Javascript | Desktop applications |
 | Description | Download rar, extract exe file and execute it. There is no installation. | Download it directly from the Microsoft store | Javascript file to implement it on your webpage | Some tools to edit and create your own pet.
-| Link | <a href='https://github.com/Adrianotiger/desktopPet/releases/latest'><img src='https://img.shields.io/github/downloads/adrianotiger/desktopPet/total.svg'></a> | <a href='https://www.microsoft.com/store/apps/9MX2V0TQT6RM'>Windows store</a> | <a href='https://github.com/Adrianotiger/web-esheep'>Open GitHub</a> project | -<a href='https://github.com/Adrianotiger/desktopPet/releases/tag/editor0.2'>Download Pet Editor</a> |
+| Link | <a href='https://github.com/Adrianotiger/desktopPet/releases/latest'><img src='https://img.shields.io/github/downloads/adrianotiger/desktopPet/total.svg'></a> | <a href='https://www.microsoft.com/store/apps/9MX2V0TQT6RM'>Windows store</a> | <a href='https://github.com/Adrianotiger/web-esheep'>Open GitHub</a> project | -<a href='https://github.com/Adrianotiger/desktopPet/releases/latest'>Download Pet Editor</a> |
 
 # Screen Mates included in this application
-## eSheep
-[![eSheeps](Pets/esheep64/icon.png)](Pets/) 
-- esheep 64bit: Stray Sheep - the one delivered with the app 
-- gsheep, a more powerful sheep and with much more animations (like the original one)
-## Neko
-[![Neko](Pets/neko/icon.png)](Pets/) 
-Neko is another screen mate from 1995, ported to many systems.
+| | | | |
+|--------|--------|----|-----|
+| eSheep <br> [![eSheeps](Pets/esheep64/icon.png)](https://adrianotiger.github.io/desktopPet/Pets/esheep64/)  | gSheep Blue <br> [![Blue Sheep](Pets/blue_sheep/icon.png)](https://adrianotiger.github.io/desktopPet/Pets/blue_sheep/)  | gSheep Green <br> [![Green Sheep](Pets/green_sheep/icon.png)](https://adrianotiger.github.io/desktopPet/Pets/green_sheep/) | gSheep Orange <br> [![Orange Sheep](Pets/orange_sheep/icon.png)](https://adrianotiger.github.io/desktopPet/Pets/orange_sheep/)  |
+| gSheep Pink <br> [![Pink Sheep](Pets/pink_sheep/icon.png)](https://adrianotiger.github.io/desktopPet/Pets/pink_sheep/)  | gSheep Purple <br> [![Purple Sheep](Pets/purple_sheep/icon.png)](https://adrianotiger.github.io/desktopPet/Pets/purple_sheep/)  | gSheep Red <br> [![Red Sheep](Pets/red_sheep/icon.png)](https://adrianotiger.github.io/desktopPet/Pets/red_sheep/) | gSheep Yellow <br> [![Yellow Sheep](Pets/yellow_sheep/icon.png)](https://adrianotiger.github.io/desktopPet/Pets/yellow_sheep/)  |
+|Bunny <br> [![Bugs Bunny](Pets/bbunny/icon.png)](https://adrianotiger.github.io/desktopPet/Pets/bbunny/)  | Asuna <br> [![Asuna](Pets/negima/icon.png)](https://adrianotiger.github.io/desktopPet/Pets/negima/)  | Neko <br> [![Neko](Pets/neko/icon.png)](https://adrianotiger.github.io/desktopPet/Pets/neko/) | Pingus <br> [![Pingus](Pets/pingus/icon.png)](https://adrianotiger.github.io/desktopPet/Pets/pingus/)  |
 
 # Credits
 This project used other Open Source projects:
@@ -38,7 +36,8 @@ This project used other Open Source projects:
 
 # Thanks
 <a href='https://github.com/Grunwaldt'>Sergi</a> for the Tray Icon<br>
-<a href='https://github.com/rluiten'>Robin</a> improving the code and implementing the <a href='https://github.com/Adrianotiger/desktopPet/issues/6'>Graphviz tool</a>
+<a href='https://github.com/rluiten'>Robin</a> improving the code and implementing the <a href='https://github.com/Adrianotiger/desktopPet/issues/6'>Graphviz tool</a><br>
+<a href='https://github.com/OliverPets'>Oliver</a> for the rainbow sheeps and the many animations<br>
 
 # Want to create your own mate/pet?
 I am working on an offline editor: <a href='https://github.com/Adrianotiger/desktopPet/releases/tag/editor0.2'>Download offline editor from GitHub</a>.<br>
