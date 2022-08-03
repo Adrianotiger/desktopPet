@@ -35,6 +35,8 @@ namespace DesktopPet
             this.tabPage1 = new System.Windows.Forms.TabPage();
             this.tabPage2 = new System.Windows.Forms.TabPage();
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
+            this.label6 = new System.Windows.Forms.Label();
+            this.checkBox4 = new System.Windows.Forms.CheckBox();
             this.label7 = new System.Windows.Forms.Label();
             this.checkBox3 = new System.Windows.Forms.CheckBox();
             this.label1 = new System.Windows.Forms.Label();
@@ -49,8 +51,9 @@ namespace DesktopPet
             this.label4 = new System.Windows.Forms.Label();
             this.trackBar2 = new System.Windows.Forms.TrackBar();
             this.label5 = new System.Windows.Forms.Label();
-            this.checkBox4 = new System.Windows.Forms.CheckBox();
-            this.label6 = new System.Windows.Forms.Label();
+            this.label8 = new System.Windows.Forms.Label();
+            this.trackBar3 = new System.Windows.Forms.TrackBar();
+            this.label9 = new System.Windows.Forms.Label();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
             this.tabPage2.SuspendLayout();
@@ -60,6 +63,7 @@ namespace DesktopPet
             this.tabPage4.SuspendLayout();
             this.tableLayoutPanel2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.trackBar2)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.trackBar3)).BeginInit();
             this.SuspendLayout();
             // 
             // webBrowser1
@@ -158,6 +162,30 @@ namespace DesktopPet
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle());
             this.tableLayoutPanel1.Size = new System.Drawing.Size(351, 327);
             this.tableLayoutPanel1.TabIndex = 1;
+            // 
+            // label6
+            // 
+            this.label6.AutoSize = true;
+            this.label6.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.label6.Location = new System.Drawing.Point(143, 140);
+            this.label6.Name = "label6";
+            this.label6.Size = new System.Drawing.Size(205, 45);
+            this.label6.TabIndex = 11;
+            this.label6.Text = "Prevent that the Taskbar can overlap the pet (click on the tray icon will be more" +
+    " difficult)";
+            this.label6.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
+            // checkBox4
+            // 
+            this.checkBox4.AutoSize = true;
+            this.checkBox4.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.checkBox4.Location = new System.Drawing.Point(3, 143);
+            this.checkBox4.Name = "checkBox4";
+            this.checkBox4.Size = new System.Drawing.Size(134, 39);
+            this.checkBox4.TabIndex = 10;
+            this.checkBox4.Text = "Steal Focus";
+            this.checkBox4.UseVisualStyleBackColor = true;
+            this.checkBox4.CheckedChanged += new System.EventHandler(this.checkBox4_CheckedChanged);
             // 
             // label7
             // 
@@ -281,6 +309,9 @@ namespace DesktopPet
             this.tableLayoutPanel2.ColumnCount = 2;
             this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
             this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tableLayoutPanel2.Controls.Add(this.label9, 0, 2);
+            this.tableLayoutPanel2.Controls.Add(this.trackBar3, 0, 3);
+            this.tableLayoutPanel2.Controls.Add(this.label8, 1, 3);
             this.tableLayoutPanel2.Controls.Add(this.label4, 1, 1);
             this.tableLayoutPanel2.Controls.Add(this.trackBar2, 0, 1);
             this.tableLayoutPanel2.Controls.Add(this.label5, 0, 0);
@@ -288,11 +319,11 @@ namespace DesktopPet
             this.tableLayoutPanel2.Location = new System.Drawing.Point(0, 0);
             this.tableLayoutPanel2.Name = "tableLayoutPanel2";
             this.tableLayoutPanel2.RowCount = 10;
-            this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 23.83721F));
-            this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 76.16279F));
-            this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 133F));
             this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
+            this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 40F));
             this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
+            this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 40F));
+            this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
             this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
             this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
@@ -305,9 +336,9 @@ namespace DesktopPet
             // 
             this.label4.AutoSize = true;
             this.label4.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.label4.Location = new System.Drawing.Point(181, 14);
+            this.label4.Location = new System.Drawing.Point(181, 20);
             this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(173, 45);
+            this.label4.Size = new System.Drawing.Size(173, 40);
             this.label4.TabIndex = 2;
             this.label4.Text = "How many pets start with application";
             this.label4.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -315,11 +346,11 @@ namespace DesktopPet
             // trackBar2
             // 
             this.trackBar2.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.trackBar2.Location = new System.Drawing.Point(3, 17);
+            this.trackBar2.Location = new System.Drawing.Point(3, 23);
             this.trackBar2.Maximum = 16;
             this.trackBar2.Minimum = 1;
             this.trackBar2.Name = "trackBar2";
-            this.trackBar2.Size = new System.Drawing.Size(172, 39);
+            this.trackBar2.Size = new System.Drawing.Size(172, 34);
             this.trackBar2.TabIndex = 3;
             this.trackBar2.Value = 1;
             this.trackBar2.Scroll += new System.EventHandler(this.trackBar2_Scroll);
@@ -333,29 +364,38 @@ namespace DesktopPet
             this.label5.TabIndex = 1;
             this.label5.Text = "ERR";
             // 
-            // checkBox4
+            // label8
             // 
-            this.checkBox4.AutoSize = true;
-            this.checkBox4.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.checkBox4.Location = new System.Drawing.Point(3, 143);
-            this.checkBox4.Name = "checkBox4";
-            this.checkBox4.Size = new System.Drawing.Size(134, 39);
-            this.checkBox4.TabIndex = 10;
-            this.checkBox4.Text = "Steal Focus";
-            this.checkBox4.UseVisualStyleBackColor = true;
-            this.checkBox4.CheckedChanged += new System.EventHandler(this.checkBox4_CheckedChanged);
+            this.label8.AutoSize = true;
+            this.label8.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.label8.Location = new System.Drawing.Point(181, 80);
+            this.label8.Name = "label8";
+            this.label8.Size = new System.Drawing.Size(173, 40);
+            this.label8.TabIndex = 4;
+            this.label8.Text = "Increase size on HD monitors";
+            this.label8.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
-            // label6
+            // trackBar3
             // 
-            this.label6.AutoSize = true;
-            this.label6.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.label6.Location = new System.Drawing.Point(143, 140);
-            this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(205, 45);
-            this.label6.TabIndex = 11;
-            this.label6.Text = "Prevent that the Taskbar can overlap the pet (click on the tray icon will be more" +
-    " difficult)";
-            this.label6.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.trackBar3.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.trackBar3.LargeChange = 2;
+            this.trackBar3.Location = new System.Drawing.Point(3, 83);
+            this.trackBar3.Maximum = 3;
+            this.trackBar3.Minimum = 1;
+            this.trackBar3.Name = "trackBar3";
+            this.trackBar3.Size = new System.Drawing.Size(172, 34);
+            this.trackBar3.TabIndex = 5;
+            this.trackBar3.Value = 1;
+            this.trackBar3.Scroll += new System.EventHandler(this.trackBar3_Scroll);
+            // 
+            // label9
+            // 
+            this.label9.AutoSize = true;
+            this.label9.Location = new System.Drawing.Point(3, 60);
+            this.label9.Name = "label9";
+            this.label9.Size = new System.Drawing.Size(30, 13);
+            this.label9.TabIndex = 6;
+            this.label9.Text = "ERR";
             // 
             // FormOptions
             // 
@@ -383,6 +423,7 @@ namespace DesktopPet
             this.tableLayoutPanel2.ResumeLayout(false);
             this.tableLayoutPanel2.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.trackBar2)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.trackBar3)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -410,5 +451,8 @@ namespace DesktopPet
         private System.Windows.Forms.CheckBox checkBox3;
         private System.Windows.Forms.Label label6;
         private System.Windows.Forms.CheckBox checkBox4;
+        private System.Windows.Forms.Label label9;
+        private System.Windows.Forms.TrackBar trackBar3;
+        private System.Windows.Forms.Label label8;
     }
 }

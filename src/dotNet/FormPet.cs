@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Diagnostics;
 using System.Threading;
+using System.Linq;
 
 namespace DesktopPet
 {
@@ -219,6 +220,7 @@ namespace DesktopPet
                 imageList1.ImageSize = new Size(im.Width, im.Height);
             }
             imageList1.Images.Add(im);
+            
         }
 
         private Rectangle ScreenBounds { get { return Screen.AllScreens[DisplayIndex].Bounds; } }
@@ -229,7 +231,7 @@ namespace DesktopPet
         /// It will initialize all variables and start the first animation (SPAWN).
         /// </summary>
         /// <param name="first">If it is playing a spawn for the first time. Does not have any functionality for the moment.</param>
-        public void Play(bool first)
+        public void Play(bool first, int forceSpawn = -1)
         {
             timer1.Enabled = false;                     // Stop the timer
 
@@ -248,9 +250,19 @@ namespace DesktopPet
                 }
             }
 
-            TSpawn spawn = Animations.GetRandomSpawn(); // Get a random SPAWN, to setting the form properties
+            TSpawn spawn;
+            if (forceSpawn < 0) spawn = Animations.GetRandomSpawn(); // Get a random SPAWN, to setting the form properties
+            else
+            {
+                var k = Animations.SheepSpawn.Keys.ToList();
+                spawn = Animations.SheepSpawn[k[forceSpawn]];
+            }
             Top = ScreenBounds.Y + spawn.Start.Y.GetValue(DisplayIndex);
             Left = ScreenBounds.X + spawn.Start.X.GetValue(DisplayIndex);
+            if(!IsMovingLeft)
+            {
+                Left = ScreenBounds.X - (spawn.Start.X.GetValue(DisplayIndex) - ScreenBounds.Width) - pictureBox1.Width;
+            }
             pictureBox1.Left = 0;
             pictureBox1.Top = 0;
             Width = pictureBox1.Width;
@@ -286,7 +298,7 @@ namespace DesktopPet
             }
             else
             {
-                Left = ScreenBounds.X + child.Position.X.GetValue(DisplayIndex);
+                Left = ScreenBounds.X - (child.Position.X.GetValue(DisplayIndex) - ScreenBounds.Width) - pictureBox1.Width;
             }
 			PositionX = Left;
 			PositionY = Top;
@@ -415,7 +427,7 @@ namespace DesktopPet
 							FormPet child = new FormPet(Animations, Xml, new Point(ScreenBounds.X + Left, ScreenBounds.Y + Top), !IsMovingLeft, DisplayIndex);
 							for (int i = 0; i < imageList1.Images.Count; i++)
 							{
-								child.AddImage(imageList1.Images[i]);
+                                child.AddImage(imageList1.Images[i]);
 							}
 							// To detect if it is a child, the name of the form will be renamed.
 							if (Name.IndexOf("child") < 0) // first child
@@ -1118,12 +1130,13 @@ namespace DesktopPet
                     MenuItem menu = menuSpawn.MenuItems.Add("ID." + spa.Next + " - " + Animations.SheepAnimations[spa.Next].Name + "\t (Prob: " + spa.Probability + ")");
                     menu.Click += (ms, me) => 
                     {
-                        Top = ScreenBounds.Y + spa.Start.Y.GetValue(DisplayIndex);
-                        Left = ScreenBounds.X + spa.Start.X.GetValue(DisplayIndex);
-						PositionX = Left;
-						PositionY = Top;
-						OffsetY = 0.0;
-                        SetNewAnimation(spa.Next);
+                        //Top = ScreenBounds.Y + spa.Start.Y.GetValue(DisplayIndex);
+                        //Left = ScreenBounds.X + spa.Start.X.GetValue(DisplayIndex);
+                        //PositionX = Left;
+                        //PositionY = Top;
+                        //OffsetY = 0.0;
+                        int spawnIndex = menu.Index;
+                        Play(false, spawnIndex);
                     };
                 }
 

@@ -117,13 +117,22 @@ namespace PetEditor
                         var graph = Graphics.FromImage(icoBmp);
                         graph.DrawImage(icon.Image, 0, 0, 48, 48);
                     }
-                    
-                    IntPtr hIco = icoBmp.GetHicon();
-                    Icon ico = Icon.FromHandle(hIco);
 
-                    var stream = new MemoryStream();
-                    ico.Save(stream);
-                    var bytes = stream.ToArray();
+                    icoBmp.SetResolution(72, 72);
+
+                    //Icon ico = Icon.FromHandle(icoBmp.GetHicon());
+                    byte[] bytes;
+
+                    using (var stream = new MemoryStream())
+                    {
+                        icoBmp.Save(stream, System.Drawing.Imaging.ImageFormat.Png);
+                        using (var stream2 = new MemoryStream())
+                        {
+                            PngIconConverter.Convert(stream, stream2, 48);
+                            bytes = stream2.ToArray();
+                        }
+                    }
+
                     Program.AnimationXML.Header.Icon = Convert.ToBase64String(bytes);
                     icon.Image = icoBmp;
                 };
@@ -649,9 +658,16 @@ namespace PetEditor
             label30.Text = stats.TotalFrames.ToString();
             label32.Text = stats.TotalTime.ToString();
 
-            timer1.Tag = 0;
-            timer1.Interval = stats.Start.Interval;
-            if(stats.TotalFrames > 0) timer1.Enabled = true;
+            if (stats.Start.Interval > 5)
+            {
+                timer1.Tag = 0;
+                timer1.Interval = stats.Start.Interval;
+                if (stats.TotalFrames > 0) timer1.Enabled = true;
+            }
+            else
+            {
+                stats.Start.Interval = 5;
+            }
         }
 
         private XmlData.AnimationNode FillNodeFromAnimationForm()
@@ -1213,6 +1229,13 @@ namespace PetEditor
             }
 
             int nextIndex = (int.Parse(timer1.Tag.ToString()) + 1) % stats.SubSteps.Count;
+
+            if(stats.SubSteps[nextIndex].Interval < 5)
+            {
+                timer1.Enabled = false;
+                return;
+            }
+
             timer1.Tag = nextIndex;
             timer1.Interval = stats.SubSteps[nextIndex].Interval;
             
@@ -1520,12 +1543,41 @@ namespace PetEditor
             {
                 if (EditAnimationNodeIndex > 0)
                 {
+                    string error = "";
                     var node = EditAnimationNode[EditAnimationNodeIndex];
-                    XmlTools.UpdateXmlAnimationNode(EditAnimationNode[0], EditAnimationNode[EditAnimationNodeIndex]);
-                    EditAnimation(true, false, false);
-                    tabControl1.SelectedTab.Text = "Animations";
-                    EditAnimationNodeIndex = -1;
-                    EditAnimationNode.Clear();
+                    XmlTools.StatisticsDataInput vals = new XmlTools.StatisticsDataInput
+                    {
+                        Area = new Point(Screen.PrimaryScreen.WorkingArea.Width, Screen.PrimaryScreen.WorkingArea.Height),
+                        Screen = new Point(Screen.PrimaryScreen.Bounds.Width, Screen.PrimaryScreen.Bounds.Height),
+                        Image = new Rectangle(0, 0, image.Width, image.Height)
+                    };
+                    if (node.Sequence.Frame.Length <= 0)
+                    {
+                        error = "You need to add at least 1 frame";
+                    }
+                    else if (node.Sequence.RepeatFromFrame >= node.Sequence.Frame.Length)
+                    {
+                        error = "Repeat from a frame outside a valid index";
+                    }
+                    else if ((int)XmlTools.EvalValue(node.Start.Interval, vals, richTextBox1) < 5 || (int)XmlTools.EvalValue(node.End.Interval, vals, richTextBox1) < 5)
+                    {
+                        error = "Interval need to be more than 5 (16 to have a move on each screen refresh).";
+                    }
+                    else
+                    {
+                        XmlTools.UpdateXmlAnimationNode(EditAnimationNode[0], EditAnimationNode[EditAnimationNodeIndex]);
+                        EditAnimation(true, false, false);
+                        tabControl1.SelectedTab.Text = "Animations";
+                        EditAnimationNodeIndex = -1;
+                        EditAnimationNode.Clear();
+                        Program.AddLog("Animation " + node.Id + " " + node.Name + " saved", "Animation", Program.LOG_TYPE.MESSAGE);
+                    }
+
+                    if(error.Length > 2)
+                    {
+                        Program.AddLog(error, "Animation", Program.LOG_TYPE.ERROR);
+                        return;
+                    }
                 }
             }
             else if (tabControl1.SelectedTab.Name == "tabPage5")
@@ -1699,4 +1751,96 @@ namespace PetEditor
             }
         }
     }
+
+    class PngIconConverter
+    {
+        /* input image with width = height is suggested to get the best result */
+        /* png support in icon was introduced in Windows Vista */
+        public static bool Convert(System.IO.Stream input_stream, System.IO.Stream output_stream, int size, bool keep_aspect_ratio = false)
+        {
+            System.Drawing.Bitmap input_bit = (System.Drawing.Bitmap)System.Drawing.Bitmap.FromStream(input_stream);
+            if (input_bit != null)
+            {
+                int width, height;
+                if (keep_aspect_ratio)
+                {
+                    width = size;
+                    height = input_bit.Height / input_bit.Width * size;
+                }
+                else
+                {
+                    width = height = size;
+                }
+                System.Drawing.Bitmap new_bit = new System.Drawing.Bitmap(input_bit, new System.Drawing.Size(width, height));
+                if (new_bit != null)
+                {
+                    // save the resized png into a memory stream for future use
+                    System.IO.MemoryStream mem_data = new System.IO.MemoryStream();
+                    new_bit.Save(mem_data, System.Drawing.Imaging.ImageFormat.Png);
+
+                    System.IO.BinaryWriter icon_writer = new System.IO.BinaryWriter(output_stream);
+                    if (output_stream != null && icon_writer != null)
+                    {
+                        // 0-1 reserved, 0
+                        icon_writer.Write((byte)0);
+                        icon_writer.Write((byte)0);
+
+                        // 2-3 image type, 1 = icon, 2 = cursor
+                        icon_writer.Write((short)1);
+
+                        // 4-5 number of images
+                        icon_writer.Write((short)1);
+
+                        // image entry 1
+                        // 0 image width
+                        icon_writer.Write((byte)width);
+                        // 1 image height
+                        icon_writer.Write((byte)height);
+
+                        // 2 number of colors
+                        icon_writer.Write((byte)0);
+
+                        // 3 reserved
+                        icon_writer.Write((byte)0);
+
+                        // 4-5 color planes
+                        icon_writer.Write((short)0);
+
+                        // 6-7 bits per pixel
+                        icon_writer.Write((short)32);
+
+                        // 8-11 size of image data
+                        icon_writer.Write((int)mem_data.Length);
+
+                        // 12-15 offset of image data
+                        icon_writer.Write((int)(6 + 16));
+
+                        // write image data
+                        // png data must contain the whole png data file
+                        icon_writer.Write(mem_data.ToArray());
+
+                        icon_writer.Flush();
+
+                        return true;
+                    }
+                }
+                return false;
+            }
+            return false;
+        }
+
+        public static bool Convert(string input_image, string output_icon, int size, bool keep_aspect_ratio = false)
+        {
+            System.IO.FileStream input_stream = new System.IO.FileStream(input_image, System.IO.FileMode.Open);
+            System.IO.FileStream output_stream = new System.IO.FileStream(output_icon, System.IO.FileMode.OpenOrCreate);
+
+            bool result = Convert(input_stream, output_stream, size, keep_aspect_ratio);
+
+            input_stream.Close();
+            output_stream.Close();
+
+            return result;
+        }
+    }
 }
+

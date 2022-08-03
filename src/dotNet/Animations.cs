@@ -289,6 +289,14 @@ namespace DesktopPet
                 End.X.Value = End.X.GetValue(screenIndex);
                 End.Y.Value = End.Y.GetValue(screenIndex);
             }
+            if(Program.MyData.GetScale() > 1)
+            {
+                int scale = Program.MyData.GetScale();
+                Start.X.Value *= scale;
+                Start.Y.Value *= scale;
+                End.X.Value *= scale;
+                End.Y.Value *= scale;
+            }
         }
     }
 

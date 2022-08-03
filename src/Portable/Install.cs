@@ -433,8 +433,17 @@ IconIndex=0
                 {
                     var changelogPage = sr.ReadToEnd();
                     var pattern = @"<ul>([\S\s]*?)<\/ul>";
-                    changeLog = Regex.Match(changelogPage, pattern).Groups[1].ToString();
-                    changeLog = changeLog.Replace("<li>", " - ").Replace("</li>", "");
+                    var matches = Regex.Matches(changelogPage, pattern);
+                    changeLog = "";
+                    for (var j=0;j<matches.Count;j++)
+                    {
+                        if(matches[j].Length < 1000 && !matches[j].ToString().Contains("<li "))
+                        {
+                            changeLog += matches[j].Groups[1].ToString().Replace("<li>", " - ").Replace("</li>", "");
+                        }
+                    }
+                    //changeLog = Regex.Match(changelogPage, pattern).Groups[1].ToString();
+                    //changeLog = changeLog.Replace("<li>", " - ").Replace("</li>", "");
                 }
 
                 if (MessageBox.Show("A newer version was found on the web: " + versionWeb + "\n==========================\nCHANGELOG:\n" + changeLog  + "\n========================== \nDo you want install it now?", appName + " version: " + versionApp, MessageBoxButtons.YesNoCancel, MessageBoxIcon.Question) == DialogResult.Yes)

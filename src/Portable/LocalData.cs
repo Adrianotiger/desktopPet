@@ -70,6 +70,24 @@ namespace DesktopPet
             return (float)(iVolume / 100.0);
         }
 
+        public void SetScale(int pow2)
+        {
+            if (pow2.ToString() != AppSettings["Scale"].Value)
+            {
+                Properties.Settings.Default.Scale = pow2;
+                AppSettings["Scale"].Value = pow2.ToString();
+                Save();
+            }
+        }
+        public int GetScale()
+        {
+            if (int.TryParse(AppSettings["Scale"].Value, out int iScale))
+            {
+                return iScale;
+            }
+            return 1;
+        }
+
         public bool GetMultiscreen()
         {
             bool.TryParse(AppSettings["Multiscreen"].Value, out bool ret);

@@ -65,13 +65,18 @@ namespace DesktopPet
             /// Random spawn, this value changes each time the XML is reloaded. Used in the animation xml.
             /// </summary>
         int iRandomSpawn = 10;
+            /// <summary>
+            /// Scale the pet on HD monitors.
+            /// </summary>
+        int iScale = 1;
 
             /// <summary>
             /// Constructor. Initialize member variables.
             /// </summary>
-        public Xml()
+        public Xml(int scaleFactor = 1)
         {
             sprites = new List<Bitmap>();
+            iScale = scaleFactor;
 
             parentX = -1;                   // -1 means it is not a child.
             parentY = -1;
@@ -513,8 +518,9 @@ namespace DesktopPet
             var image = new Bitmap(imageStream);
             // no longer need stream
             imageStream.Close();
-            spriteWidth = image.Width / AnimationXML.Image.TilesX;
-            spriteHeight = image.Height / AnimationXML.Image.TilesY;
+            while (image.Width * iScale / AnimationXML.Image.TilesX > 255) iScale--; // be sure to not exceed this value! As this will cause a crash in the imagelist component.
+            spriteWidth = image.Width * iScale / AnimationXML.Image.TilesX;
+            spriteHeight = image.Height * iScale / AnimationXML.Image.TilesY;
             sprites = BuildSprites(image);
             // have sprites no longer need source sheet
             image.Dispose();
@@ -529,16 +535,25 @@ namespace DesktopPet
         {
             var sprites = new List<Bitmap>();
 
-            for (var yOffset = 0; yOffset < spriteSheet.Height; yOffset += spriteHeight)
+            for (var yOffset = 0; yOffset < spriteSheet.Height; yOffset += spriteHeight / iScale)
             {
-                for (var xOffset = 0; xOffset < spriteSheet.Width; xOffset += spriteWidth)
+                for (var xOffset = 0; xOffset < spriteSheet.Width; xOffset += spriteWidth / iScale)
                 {
                     var bmpImage = new Bitmap(spriteWidth, spriteHeight, spriteSheet.PixelFormat);
                     var destRectangle = new Rectangle(0, 0, spriteWidth, spriteHeight);
                     using (var graphics = Graphics.FromImage(bmpImage))
                     {
-                        var sourceRectangle = new Rectangle(xOffset, yOffset, spriteWidth, spriteHeight);
-                        graphics.DrawImage(spriteSheet, destRectangle, sourceRectangle, GraphicsUnit.Pixel);
+                        for(int x = 0; x < spriteWidth / iScale; x++)
+                        {
+                            for (int y = 0; y < spriteHeight / iScale; y++)
+                            {
+                                var pen = spriteSheet.GetPixel(xOffset + x, yOffset + y);
+                                graphics.FillRectangle(new SolidBrush(pen), new Rectangle(x * iScale, y * iScale, iScale, iScale));
+                            }
+                        }
+                        //graphics.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.NearestNeighbor;
+                        //var sourceRectangle = new Rectangle(xOffset, yOffset, spriteWidth / iScale, spriteHeight / iScale);
+                        //graphics.DrawImage(spriteSheet, destRectangle, sourceRectangle, GraphicsUnit.Pixel);
                     }
                     sprites.Add(bmpImage);
                 }

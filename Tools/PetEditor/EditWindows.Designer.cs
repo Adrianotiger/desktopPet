@@ -30,7 +30,7 @@
         {
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(EditWindows));
-            System.Windows.Forms.ListViewItem listViewItem2 = new System.Windows.Forms.ListViewItem("");
+            System.Windows.Forms.ListViewItem listViewItem1 = new System.Windows.Forms.ListViewItem("");
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabPage1 = new System.Windows.Forms.TabPage();
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
@@ -746,8 +746,9 @@
             this.listView1.AllowDrop = true;
             this.listView1.ContextMenuStrip = this.contextMenuStrip3;
             this.listView1.HeaderStyle = System.Windows.Forms.ColumnHeaderStyle.None;
+            this.listView1.HideSelection = false;
             this.listView1.Items.AddRange(new System.Windows.Forms.ListViewItem[] {
-            listViewItem2});
+            listViewItem1});
             this.listView1.Location = new System.Drawing.Point(15, 68);
             this.listView1.Name = "listView1";
             this.listView1.Size = new System.Drawing.Size(570, 142);
@@ -918,6 +919,7 @@
             // 
             // toolStripTextBox1
             // 
+            this.toolStripTextBox1.Font = new System.Drawing.Font("Segoe UI", 9F);
             this.toolStripTextBox1.Name = "toolStripTextBox1";
             this.toolStripTextBox1.Size = new System.Drawing.Size(100, 23);
             // 
@@ -1982,6 +1984,7 @@
             // 
             this.openFileDialog1.FileName = "*.mp3";
             this.openFileDialog1.Filter = "MP3 files|*.mp3";
+            this.openFileDialog1.RestoreDirectory = true;
             this.openFileDialog1.Title = "Import mp3";
             // 
             // timer2

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Drawing;
 using System.Windows.Forms;
 
@@ -94,8 +95,10 @@ namespace DesktopPet
 			checkBox2.Checked = Program.MyData.GetWindowForeground();
             checkBox4.Checked = Program.MyData.GetStealTaskbarFocus();
             trackBar2.Value = Program.MyData.GetAutoStartPets();
+            trackBar3.Value = (int)(Program.MyData.GetScale());
             label5.Text = trackBar2.Value.ToString();
             label2.Text = trackBar1.Value.ToString();
+            label9.Text = Math.Pow(2, (trackBar3.Value - 1)).ToString() + "x";
             checkBox3.Checked = Program.MyData.GetMultiscreen();
         }
 
@@ -141,5 +144,19 @@ namespace DesktopPet
             Program.MyData.SetMultiscreen(checkBox3.Checked);
         }
 
+        private void trackBar3_Scroll(object sender, EventArgs e)
+        {
+            Program.MyData.SetScale(trackBar3.Value);
+            label9.Text = Math.Pow(2, (trackBar3.Value - 1)).ToString() + "x";
+
+            using (var petProcess = new Process())
+            {
+                petProcess.StartInfo.FileName = Application.ExecutablePath;
+                petProcess.Start();
+            }
+
+            Hide();
+            Application.Exit();
+        }
     }
 }

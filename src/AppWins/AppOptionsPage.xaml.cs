@@ -49,6 +49,8 @@ namespace OptionsWindow
 
             if (startupTask == null)
             {
+                autostartToggle.IsOn = false;
+                autostartToggle.IsEnabled = false;
                 MessageDialog dialog = new MessageDialog(
                                 "Unable to get application Id",
                                 "eSheep Id");
@@ -75,7 +77,7 @@ namespace OptionsWindow
                     break;
                 case StartupTaskState.Enabled:
                     autostartToggle.IsOn = true;
-                    autostartToggle.IsEnabled = false;
+                    //autostartToggle.IsEnabled = false;
                     Debug.WriteLine("Startup is enabled.");
                     break;
             }
@@ -96,7 +98,18 @@ namespace OptionsWindow
 
         private async void AutostartToggle_Toggled(object sender, RoutedEventArgs e)
         {
-            StartupTask startupTask = await StartupTask.GetAsync("eSheepId");
+            StartupTask startupTask = null;
+            try
+            {
+                startupTask = await StartupTask.GetAsync("eSheepId");
+            }
+            catch(Exception)
+            {
+                startupTask = null;
+            }
+
+            if (startupTask == null)
+                return;
 
             if ((sender as ToggleSwitch).IsOn)
             {
@@ -127,6 +140,10 @@ namespace OptionsWindow
                         Debug.WriteLine("Startup is enabled.");
                         break;
                 }
+            }
+            else
+            {
+                startupTask.Disable();
             }
         }
 

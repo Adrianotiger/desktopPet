@@ -100,7 +100,7 @@ namespace DesktopPet
             pi = processIcon;
                         
                 // Init XML class
-            xml = new Xml();
+            xml = new Xml((int)Math.Pow(2, Program.MyData.GetScale() - 1));
                 // Init Animations class
             animations = new Animations(xml);
 
