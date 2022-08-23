@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <animations xmlns:xsd="https://esheep.petrucci.ch/ https://raw.githubusercontent.com/Adrianotiger/desktopPet/master/Resources/animations.xsd" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="https://esheep.petrucci.ch/">
   <header>
-    <author>Madnuttah</author>
+    <author>madnuttah</author>
     <title>Black Neko Mate</title>
     <petname>Mimiko</petname>
     <version>1</version>
