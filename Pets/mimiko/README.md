@@ -1,7 +1,7 @@
 # Mimiko Mate
 
 ## Description
-This is a sprite of the original Neko Black 2 screen mate. 
+This is a sprite of the original Neko Black 2 screen mate.
 
 For more information about the original mate, visit: webneko.net
 
