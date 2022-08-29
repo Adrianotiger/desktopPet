@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <animations xmlns:xsd="https://esheep.petrucci.ch/ https://raw.githubusercontent.com/Adrianotiger/desktopPet/master/Resources/animations.xsd" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="https://esheep.petrucci.ch/">
   <header>
     <author>Madnuttah</author>
@@ -16,7 +16,7 @@
     <transparency>Magenta</transparency>
   </image>
   <spawns>
-    <spawn id="1" probability="20">
+    <spawn id="1" probability="30">
       <x>screenW/2-imageW/2</x>
       <y>screenH/2-imageH/2</y>
       <next probability="0">1</next>
