@@ -3,10 +3,12 @@ using System.Windows.Forms;
 using DesktopPet.Properties;
 using System.Drawing;
 using System.IO;
+#if !PORTABLE
 using Windows.System;
 using Windows.Foundation.Collections;
 using Windows.ApplicationModel.AppService;
 using Windows.ApplicationModel.Background;
+#endif
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -139,8 +141,10 @@ namespace DesktopPet
 
         private async void OpenOptionWindow(string url)
         {
+#if !PORTABLE
             Uri uri = new Uri(url);
             await Launcher.LaunchUriAsync(uri);
+#endif
         }
 
             /// <summary>

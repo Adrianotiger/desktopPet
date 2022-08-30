@@ -21,6 +21,7 @@ namespace LocalData
         public bool WinForeGround { get; set; } = false;
         public bool StealTaskbarFocus { get; set; } = false;
         public int AutostartPets { get; set; } = 1;
+        public int Scale { get; set; } = 1;
         public bool MultiScreenEnabled { get; set; } = true;
         public string CurrentPet { get; set; } = "esheep64";
         public List<PetUpdate> LastUpdate { get; set; } = new List<PetUpdate>();
@@ -97,6 +98,20 @@ namespace LocalData
         public double GetVolume()
         {
             return LocalSettings.Volume;
+        }
+
+        public void SetScale(int scale)
+        {
+            if (scale != LocalSettings.Scale)
+            {
+                LocalSettings.Scale = scale;
+                SaveSettings();
+            }
+        }
+
+        public int GetScale()
+        {
+            return LocalSettings.Scale;
         }
 
         public void SetMultiscreen(bool enable)

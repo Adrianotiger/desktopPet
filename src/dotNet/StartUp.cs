@@ -3,9 +3,12 @@ using System.Drawing;
 using System.IO;
 using System.Threading;
 using System.Windows.Forms;
+using static DesktopPet.StartUp;
+
+#if !PORTABLE
 using Windows.ApplicationModel.AppService;
 using Windows.ApplicationModel.Background;
-using static DesktopPet.StartUp;
+#endif
 
 namespace DesktopPet
 {

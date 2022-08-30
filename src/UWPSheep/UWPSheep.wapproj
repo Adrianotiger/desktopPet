@@ -31,7 +31,7 @@
   <Import Project="$(WapProjPath)\Microsoft.DesktopBridge.props" />
   <PropertyGroup>
     <ProjectGuid>99bc8ccc-5964-4ac0-98cd-5c2b8bfd2d80</ProjectGuid>
-    <TargetPlatformVersion>10.0.18362.0</TargetPlatformVersion>
+    <TargetPlatformVersion>10.0.19041.0</TargetPlatformVersion>
     <TargetPlatformMinVersion>10.0.17134.0</TargetPlatformMinVersion>
     <DefaultLanguage>en-GB</DefaultLanguage>
     <PackageCertificateKeyFile>UWPSheep_StoreKey.pfx</PackageCertificateKeyFile>
