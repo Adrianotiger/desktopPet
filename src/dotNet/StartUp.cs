@@ -350,7 +350,7 @@ namespace DesktopPet
             iSheeps = 0;
 
                 // reload XML and Animations
-            xml = new Xml();
+            xml = new Xml(Program.MyData.GetScale());
             animations = new Animations(xml);
                         
             if (!xml.readXML())

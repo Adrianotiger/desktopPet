@@ -78,12 +78,12 @@ namespace DesktopPet
         static void Main(string[] args)
         {
             int iMutexIndex = 0;
-            string resource1 = "DesktopPet.Portable.NAudio.dll";
 
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
 
-            EmbeddedAssembly.Load(resource1, "NAudio.dll");
+            EmbeddedAssembly.Load("DesktopPet.Portable.NAudio.dll", "NAudio.dll");
+            EmbeddedAssembly.Load("DesktopPet.Portable.Newtonsoft.Json.dll", "Newtonsoft.Json.dll");
 
             AppDomain.CurrentDomain.AssemblyResolve += new ResolveEventHandler(CurrentDomain_AssemblyResolve);
 

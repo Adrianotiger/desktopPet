@@ -2,15 +2,24 @@
 using System.Diagnostics;
 using System.Drawing;
 using System.Windows.Forms;
+using System.Collections.Generic;
+using System.Net.Http;
+using System.IO;
+using System.Net;
+using System.Xml;
+using System.Text.RegularExpressions;
+using DesktopPet.Properties;
 
 namespace DesktopPet
 {
-        /// <summary>
-        /// Application options. Need a redesign, so it is not documented.
-        /// </summary>
-        /// <preliminary/>
+    /// <summary>
+    /// Application options. Need a redesign, so it is not documented.
+    /// </summary>
+    /// <preliminary/>
     public partial class FormOptions : Form
     {
+        public Pets WebPets;
+
             /// <summary>
             /// Constructor
             /// </summary>
@@ -101,20 +110,206 @@ namespace DesktopPet
             label2.Text = trackBar1.Value.ToString();
             label9.Text = Math.Pow(2, (trackBar3.Value - 1)).ToString() + "x";
             checkBox3.Checked = Program.MyData.GetMultiscreen();
-            /*
-            webBrowser1.DocumentText = "<script>" +
-                "alert(1);fetch('https://raw.githubusercontent.com/Adrianotiger/desktopPet/master/Pets/pets.json').then(f=>{" +
-                "alert(f);" +
-                "});" +
-                "</script>";
-            */
-            LoadWebViewPage();
+
+            flowLayoutPanel2.Visible = false;
         }
 
-        private async void LoadWebViewPage()
+        private void FormOptions_Shown(object sender, EventArgs e)
         {
-            await webView21.EnsureCoreWebView2Async();
+            LoadPets();
+        }
 
+        private async void LoadPets()
+        {
+            var client = new HttpClient();
+            client.DefaultRequestHeaders.Add("User-Agent", "DesktopPet");
+            var url = "https://raw.githubusercontent.com/Adrianotiger/desktopPet/master/Pets/";
+
+            var content = await client.GetStringAsync(url + "pets.json");
+            WebPets = Newtonsoft.Json.JsonConvert.DeserializeObject<Pets>(content);
+
+            WebPets.Reorder();
+
+            List<Button> butts = new List<Button>();
+            for (int j = 0; j < WebPets.pets.Count; j++)
+            {
+                var b = new Button();
+                b.Width = 90;
+                b.Height = 80;
+                b.TextImageRelation = TextImageRelation.Overlay;
+                b.Margin = new Padding(5);
+                b.Padding = new Padding(1);
+                b.FlatStyle = FlatStyle.Popup;
+                b.ImageAlign = ContentAlignment.TopCenter;
+                b.TextAlign = ContentAlignment.BottomCenter;
+                b.Text = WebPets.pets[j].folder;
+                b.Tag = WebPets.pets[j];
+                b.Parent = flowLayoutPanel1;
+                b.Cursor = Cursors.Hand;
+                butts.Add(b);
+            }
+            Application.DoEvents();
+
+            for (int j = 0; j < WebPets.pets.Count; j++)
+            {
+                using (WebResponse wrFileResponse = WebRequest.Create(url + WebPets.pets[j].folder + "/icon.png").GetResponse())
+                {
+                    using (Stream objWebStream = wrFileResponse.GetResponseStream())
+                    {
+                        MemoryStream ms = new MemoryStream();
+                        objWebStream.CopyTo(ms, 8192);
+                        butts[j].Image = Image.FromStream(ms);
+                    }
+                }
+                Application.DoEvents();
+                butts[j].Click += Pet_Click;
+            }
+        }
+
+        private async void Pet_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                var b = sender as Button;
+                var i = b.Tag as Pet;
+
+                while (flowLayoutPanel2.Controls.Count > 1) flowLayoutPanel2.Controls.Remove(flowLayoutPanel2.Controls[1]);
+
+                var l = new Label();
+                l.Font = new Font(l.Font.FontFamily, 15, FontStyle.Bold);
+                l.Width = flowLayoutPanel2.Width - 30;
+                l.Height = 25;
+                l.TextAlign = ContentAlignment.TopCenter;
+                l.AutoSize = false;
+                l.Text = i.folder;
+                flowLayoutPanel2.Controls.Add(l);
+
+                var p = new PictureBox();
+                p.Image = b.Image;
+                p.Width = flowLayoutPanel2.Width - 30;
+                p.Height = 60;
+                p.SizeMode = PictureBoxSizeMode.CenterImage;
+                flowLayoutPanel2.Controls.Add(p);
+
+                Application.DoEvents();
+
+                var client = new HttpClient();
+                client.DefaultRequestHeaders.Add("User-Agent", "DesktopPet");
+                var url = "https://raw.githubusercontent.com/Adrianotiger/desktopPet/master/Pets/";
+
+                var content = await client.GetStringAsync(url + i.folder + "/animations.xml");
+
+                var xml = new XmlDocument();
+                xml.LoadXml(content);
+                var header = xml.GetElementsByTagName("header")[0];
+                var date = xml.CreateNode(XmlNodeType.Element, "date", "");
+                date.InnerText = i.lastupdate;
+                header.AppendChild(date);
+
+                List<string> items = new List<string> { "Author", "Version", "Petname", "date" };
+
+                items.ForEach(item =>
+                {
+                    var p1 = new TableLayoutPanel();
+                    p1.Width = flowLayoutPanel2.Width - 30;
+                    p1.Height = 19;
+                    p1.RightToLeft = RightToLeft.No;
+                    p1.ColumnCount = 2;
+                    p1.RowCount = 1;
+
+                    var l1 = new Label();
+                    l1.Width = p1.Width / 2 - 10;
+                    l1.Text = item + " : ";
+                    l1.TextAlign = ContentAlignment.MiddleRight;
+                    p1.Controls.Add(l1, 0, 0);
+
+                    var l2 = new Label();
+                    l2.Width = p1.Width / 2 - 10;
+                    l2.Text = header[item.ToLower()].InnerText;
+                    l2.TextAlign = ContentAlignment.MiddleLeft;
+                    l2.Font = new Font(l2.Font.FontFamily, 11, FontStyle.Bold);
+                    p1.Controls.Add(l2, 1, 0);
+
+                    flowLayoutPanel2.Controls.Add(p1);
+                });
+                l.Text = header["title"].InnerText;
+
+                var d = new Button();
+                d.Width = flowLayoutPanel2.Width - 30;
+                d.Text = "Download";
+                d.BackColor = Color.MediumTurquoise;
+                d.ForeColor = Color.White;
+                d.Font = new Font(d.Font.FontFamily, 12, FontStyle.Bold);
+                d.Cursor = Cursors.Hand;
+                d.BackgroundImage = Resources.install;
+                d.BackgroundImageLayout = ImageLayout.Zoom;
+                d.TextAlign = ContentAlignment.MiddleRight;
+                d.Height = 60;
+                d.Click += (se, ev) =>
+                {
+                    Program.MyData.SetXml(xml.OuterXml, "");
+                    Program.Mainthread.LoadNewXMLFromString(xml.OuterXml);
+                    Close();
+                };
+                flowLayoutPanel2.Controls.Add(d);
+
+                var l5 = new Label();
+                l5.Width = flowLayoutPanel2.Width - 30;
+                flowLayoutPanel2.Controls.Add(l5);
+
+                var info = header["info"].InnerText;
+
+                Regex rx = new Regex(@"\[(br|link:).*?(?=])]", RegexOptions.Compiled | RegexOptions.IgnoreCase);
+                MatchCollection matches = rx.Matches(info);
+                int pos = 0;
+
+                foreach (Match match in matches)
+                {
+                    var l3 = new Label();
+                    l3.Width = flowLayoutPanel2.Width - 30;
+                    l3.Text = info.Substring(pos, match.Index - pos);
+                    l3.TextAlign = ContentAlignment.MiddleLeft;
+                    l3.AutoSize = true;
+                    flowLayoutPanel2.Controls.Add(l3);
+
+                    if (match.Value == "[br]")
+                    {
+                    }
+                    else if (match.Value.StartsWith("[link:"))
+                    {
+                        var a1 = new LinkLabel();
+                        a1.Width = flowLayoutPanel2.Width - 30;
+                        a1.Text = match.Value.Substring(6, match.Value.Length - 7);
+                        a1.Cursor = Cursors.Hand;
+                        a1.LinkClicked += (se, ev) =>
+                        {
+                            Process.Start(a1.Text);
+                        };
+                        flowLayoutPanel2.Controls.Add(a1);
+                    }
+
+                    pos = match.Index + match.Length;
+                }
+
+                var l4 = new Label();
+                l4.Width = flowLayoutPanel2.Width - 30;
+                l4.Text = info.Substring(pos);
+                l4.TextAlign = ContentAlignment.MiddleLeft;
+                l4.AutoSize = true;
+                flowLayoutPanel2.Controls.Add(l4);
+
+                flowLayoutPanel2.Visible = true;
+                flowLayoutPanel2.HorizontalScroll.Enabled = false;
+            }
+            catch(Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+        }
+        /*
+         * Use it once WebView2 works without any bugs and without requesting redistributable dlls
+        private void LoadWebViewPage()
+        {
             var script = "let pets = []; const url='https://raw.githubusercontent.com/Adrianotiger/desktopPet/master/Pets/';\n" +
                 "function loadPetImage(url,im){var img = new Image();img.addEventListener('load', ()=>{im.src = img.src;}); img.src=url;}\n" +
                 "function loadPetInfo(path) { var xobj = new XMLHttpRequest(); xobj.onreadystatechange = () => { " +
@@ -165,8 +360,8 @@ namespace DesktopPet
                         ".xmldiv {display: none; position: fixed; width: 80vw; height: 80vh; top: 10vh; left: 10vw; overflow: auto; background-color:#ddddff;text-align:center;margin:0 auto;border-style:ridge;border-width:3px;border-radius:20px;}" +
                         ".xmldiv table { margin: 0 auto; left:0px; right: 0px; border-style:ridge; border-width:2px; border-radius:4px; font-weight:bold; }";
 
-                        webView21.NavigateToString("<style>"+style+"</style><script>"+script+ "</script><div class='xmldiv' id='xmldiv' onclick='this.style.display=none'></div>");
-        }
+            webView21.NavigateToString("<style>"+style+"</style><script>"+script+ "</script><div class='xmldiv' id='xmldiv' onclick='this.style.display=none'></div>");
+        }*/
 
         private void checkBox1_CheckedChanged(object sender, EventArgs e)
         {
@@ -224,6 +419,29 @@ namespace DesktopPet
 
             Hide();
             Application.Exit();
+        }
+
+        private void button2_Click(object sender, EventArgs e)
+        {
+            flowLayoutPanel2.Visible = false;
+        }
+    }
+
+    public class Pet
+    {
+        public string folder { get; set; }
+        public string author { get; set; }
+        public string lastupdate { get; set; }
+    }
+    public class Pets
+    {
+        public List<Pet> pets { get; set; }
+        public void Reorder()
+        {
+            pets.Sort(delegate (Pet x, Pet y)
+            {
+                return y.lastupdate.CompareTo(x.lastupdate);
+            });
         }
     }
 }

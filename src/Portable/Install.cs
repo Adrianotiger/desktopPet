@@ -5,6 +5,7 @@ using System.IO;
 using System.Net;
 using System.Text.RegularExpressions;
 using System.Windows.Forms;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 
 namespace DesktopPet
 {
@@ -418,6 +419,7 @@ IconIndex=0
             {
             }
             WebRequest request = WebRequest.Create("https://github.com/Adrianotiger/desktopPet/releases/latest");
+            //WebRequest request = WebRequest.Create("https://github.com/Adrianotiger/desktopPet/releases/tag/v1.3.1");
             WebResponse response = request.GetResponse();
             var version = response.ResponseUri.Segments.GetValue(response.ResponseUri.Segments.Length - 1).ToString();
             version = Regex.Replace(version, "[^0-9.]", "");

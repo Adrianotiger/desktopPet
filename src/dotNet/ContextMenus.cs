@@ -138,25 +138,28 @@ namespace DesktopPet
             
             return menu;
         }
-
+#if !PORTABLE
         private async void OpenOptionWindow(string url)
         {
-#if !PORTABLE
+
             Uri uri = new Uri(url);
             await Launcher.LaunchUriAsync(uri);
-#endif
-        }
 
-            /// <summary>
-            /// Set a new icon in the context menu with the new pet and updated the info to show in the about dialog.<br />
-            /// This function is called every time a new pet is loaded.
-            /// </summary>
-            /// <param name="newIcon">Icon with the new image.</param>
-            /// <param name="petName">Name of the pet, to show in the context menu.</param>
-            /// <param name="aboutAuthor">Name of the author.</param>
-            /// <param name="aboutTitle">Title of the animation.</param>
-            /// <param name="aboutVersion">Version of the animation.</param>
-            /// <param name="aboutInfo">About the animation (copyright and author information)</param>
+        }
+#else
+        private void OpenOptionWindow(string url) { }
+#endif
+
+        /// <summary>
+        /// Set a new icon in the context menu with the new pet and updated the info to show in the about dialog.<br />
+        /// This function is called every time a new pet is loaded.
+        /// </summary>
+        /// <param name="newIcon">Icon with the new image.</param>
+        /// <param name="petName">Name of the pet, to show in the context menu.</param>
+        /// <param name="aboutAuthor">Name of the author.</param>
+        /// <param name="aboutTitle">Title of the animation.</param>
+        /// <param name="aboutVersion">Version of the animation.</param>
+        /// <param name="aboutInfo">About the animation (copyright and author information)</param>
         static public void UpdateIcon(Icon newIcon, string petName, string aboutAuthor, string aboutTitle, string aboutVersion, string aboutInfo)
         {
             newSheepMenuItem.Text = "&Add new " + petName;

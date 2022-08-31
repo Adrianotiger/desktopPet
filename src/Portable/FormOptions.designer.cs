@@ -32,6 +32,7 @@ namespace DesktopPet
             this.button1 = new System.Windows.Forms.Button();
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabPage1 = new System.Windows.Forms.TabPage();
+            this.flowLayoutPanel1 = new System.Windows.Forms.FlowLayoutPanel();
             this.tabPage2 = new System.Windows.Forms.TabPage();
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             this.label6 = new System.Windows.Forms.Label();
@@ -53,7 +54,8 @@ namespace DesktopPet
             this.label4 = new System.Windows.Forms.Label();
             this.trackBar2 = new System.Windows.Forms.TrackBar();
             this.label5 = new System.Windows.Forms.Label();
-            this.webView21 = new Microsoft.Web.WebView2.WinForms.WebView2();
+            this.flowLayoutPanel2 = new System.Windows.Forms.FlowLayoutPanel();
+            this.button2 = new System.Windows.Forms.Button();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
             this.tabPage2.SuspendLayout();
@@ -64,7 +66,7 @@ namespace DesktopPet
             this.tableLayoutPanel2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.trackBar3)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.trackBar2)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.webView21)).BeginInit();
+            this.flowLayoutPanel2.SuspendLayout();
             this.SuspendLayout();
             // 
             // button1
@@ -99,7 +101,8 @@ namespace DesktopPet
             // 
             // tabPage1
             // 
-            this.tabPage1.Controls.Add(this.webView21);
+            this.tabPage1.Controls.Add(this.flowLayoutPanel2);
+            this.tabPage1.Controls.Add(this.flowLayoutPanel1);
             this.tabPage1.Location = new System.Drawing.Point(124, 4);
             this.tabPage1.Name = "tabPage1";
             this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
@@ -107,6 +110,15 @@ namespace DesktopPet
             this.tabPage1.TabIndex = 0;
             this.tabPage1.Text = "Online pets";
             this.tabPage1.UseVisualStyleBackColor = true;
+            // 
+            // flowLayoutPanel1
+            // 
+            this.flowLayoutPanel1.AutoScroll = true;
+            this.flowLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.flowLayoutPanel1.Location = new System.Drawing.Point(3, 3);
+            this.flowLayoutPanel1.Name = "flowLayoutPanel1";
+            this.flowLayoutPanel1.Size = new System.Drawing.Size(351, 327);
+            this.flowLayoutPanel1.TabIndex = 0;
             // 
             // tabPage2
             // 
@@ -387,18 +399,33 @@ namespace DesktopPet
             this.label5.TabIndex = 1;
             this.label5.Text = "ERR";
             // 
-            // webView21
+            // flowLayoutPanel2
             // 
-            this.webView21.AllowExternalDrop = false;
-            this.webView21.CreationProperties = null;
-            this.webView21.DefaultBackgroundColor = System.Drawing.Color.White;
-            this.webView21.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.webView21.Location = new System.Drawing.Point(3, 3);
-            this.webView21.Name = "webView21";
-            this.webView21.Size = new System.Drawing.Size(351, 327);
-            this.webView21.Source = new System.Uri("https://adrianotiger.github.io/desktopPet/Pets/download.html", System.UriKind.Absolute);
-            this.webView21.TabIndex = 2;
-            this.webView21.ZoomFactor = 1D;
+            this.flowLayoutPanel2.AutoScroll = true;
+            this.flowLayoutPanel2.Controls.Add(this.button2);
+            this.flowLayoutPanel2.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.flowLayoutPanel2.FlowDirection = System.Windows.Forms.FlowDirection.TopDown;
+            this.flowLayoutPanel2.Location = new System.Drawing.Point(3, 3);
+            this.flowLayoutPanel2.Name = "flowLayoutPanel2";
+            this.flowLayoutPanel2.Padding = new System.Windows.Forms.Padding(0, 0, 10, 0);
+            this.flowLayoutPanel2.Size = new System.Drawing.Size(351, 327);
+            this.flowLayoutPanel2.TabIndex = 1;
+            this.flowLayoutPanel2.WrapContents = false;
+            // 
+            // button2
+            // 
+            this.button2.BackColor = System.Drawing.Color.MediumTurquoise;
+            this.button2.FlatAppearance.BorderSize = 0;
+            this.button2.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.button2.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.button2.ForeColor = System.Drawing.Color.White;
+            this.button2.Location = new System.Drawing.Point(3, 3);
+            this.button2.Name = "button2";
+            this.button2.Size = new System.Drawing.Size(35, 30);
+            this.button2.TabIndex = 1;
+            this.button2.Text = "<<";
+            this.button2.UseVisualStyleBackColor = false;
+            this.button2.Click += new System.EventHandler(this.button2_Click);
             // 
             // FormOptions
             // 
@@ -415,6 +442,7 @@ namespace DesktopPet
             this.Text = "Options";
             this.TopMost = true;
             this.Load += new System.EventHandler(this.FormOptions_Load);
+            this.Shown += new System.EventHandler(this.FormOptions_Shown);
             this.tabControl1.ResumeLayout(false);
             this.tabPage1.ResumeLayout(false);
             this.tabPage2.ResumeLayout(false);
@@ -427,7 +455,7 @@ namespace DesktopPet
             this.tableLayoutPanel2.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.trackBar3)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.trackBar2)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.webView21)).EndInit();
+            this.flowLayoutPanel2.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -457,6 +485,8 @@ namespace DesktopPet
         private System.Windows.Forms.Label label9;
         private System.Windows.Forms.TrackBar trackBar3;
         private System.Windows.Forms.Label label8;
-        private Microsoft.Web.WebView2.WinForms.WebView2 webView21;
+        private System.Windows.Forms.FlowLayoutPanel flowLayoutPanel1;
+        private System.Windows.Forms.FlowLayoutPanel flowLayoutPanel2;
+        private System.Windows.Forms.Button button2;
     }
 }
