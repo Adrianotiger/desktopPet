@@ -292,14 +292,7 @@ namespace DesktopPet
             hwndWindow = (IntPtr)0;                     // It is not over a window
             
             Top = ScreenBounds.Y + child.Position.Y.GetValue(DisplayIndex);          // Set position. If parent is flipped, mirror the position
-            if (IsMovingLeft)
-            {
-                Left = ScreenBounds.X + child.Position.X.GetValue(DisplayIndex);
-            }
-            else
-            {
-                Left = ScreenBounds.X - (child.Position.X.GetValue(DisplayIndex) - ScreenBounds.Width) - pictureBox1.Width;
-            }
+            Left = ScreenBounds.X + child.Position.X.GetValue(DisplayIndex);
 			PositionX = Left;
 			PositionY = Top;
 			OffsetY = 0.0;
