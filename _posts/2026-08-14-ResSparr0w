@@ -1,0 +1,20 @@
+---
+layout: post
+title:  "Minecraft by RedSparr0w!"
+---
+
+<img src='https://raw.githubusercontent.com/Adrianotiger/desktopPet/master/Pets/zombie/icon.png' /> <img src='https://raw.githubusercontent.com/Adrianotiger/desktopPet/master/Pets/grian/icon.png' /> <img src='https://raw.githubusercontent.com/Adrianotiger/desktopPet/master/Pets/mumbojumbo/icon.png' /> <img src='https://raw.githubusercontent.com/Adrianotiger/desktopPet/master/Pets/skeleton/icon.png' /> 
+
+<h2>Minecraft pets</h2>
+
+RedSparr0w used this tool:
+<a href='https://nogard.dev/tools/minecraft-chibi-skin-maker'>https://nogard.dev/tools/minecraft-chibi-skin-maker</a>
+to make some nice Minecraft mates (they are still available under Options).
+
+As the spritesheet is always the same, an `animation.xml` template* can be used (they all have the same movements).
+
+If you’d like to see more or leave RedSparr0w a comment, check out the [Pets page](https://adrianotiger.github.io/desktopPet/Pets/).
+
+Thank you RedSparr0w and all followers :D
+
+* With some line of code, an `animation.xml` can be generated automatically, using the generated spritesheet from nogard.dev. For a future project, if there are many Minecraft fans :D
