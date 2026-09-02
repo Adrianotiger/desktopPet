@@ -247,12 +247,13 @@ namespace DesktopPet
         private Rectangle ScreenBounds { get { return Screen.AllScreens[DisplayIndex].Bounds; } }
         private Rectangle ScreenArea { get { return Screen.AllScreens[DisplayIndex].WorkingArea; } }
 
-        /// <summary>
-        /// Once the form was created, resized and all images was set, this is the next function to call.<br />
-        /// It will initialize all variables and start the first animation (SPAWN).
-        /// </summary>
-        /// <param name="first">If it is playing a spawn for the first time. Does not have any functionality for the moment.</param>
-        public void Play(bool first, int forceSpawn = -1)
+		/// <summary>
+		/// Once the form was created, resized and all images was set, this is the next function to call.<br />
+		/// It will initialize all variables and start the first animation (SPAWN).
+		/// </summary>
+		/// <param name="first">If it is playing a spawn for the first time. Does not have any functionality for the moment.</param>
+		/// <param name="forceSpawn">Set a spawn animation, or leave empty if a random spawn can be used.</param>
+		public void Play(bool first, int forceSpawn = -1)
         {
             timer1.Enabled = false;                     // Stop the timer
 

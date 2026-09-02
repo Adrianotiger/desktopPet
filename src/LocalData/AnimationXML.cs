@@ -385,7 +385,7 @@ namespace XmlData
         [XmlAttribute("probability")]
         public int Probability;
         /// <summary>
-        ///  Only flag, <see cref="TNextAnimation.TOnly"/>.
+        ///  Only flag. Set it to a keyword if you want to execute the animation only on "window" or "taskbar".
         /// </summary>
         [XmlAttribute("only")]
         public string OnlyFlag;
@@ -396,9 +396,17 @@ namespace XmlData
         public int Value;
     }
 
-    public class AnimationXML
+	/// <summary>
+	/// Class to parse the XML of an animation file and return a RootNode object with all the information.
+	/// </summary>
+	public class AnimationXML
     {
-        public static RootNode ParseXML(string xml)
+		/// <summary>
+		/// Parse the XML of an animation file and return a RootNode object with all the information.
+		/// </summary>
+		/// <param name="xml"></param>
+		/// <returns></returns>
+		public static RootNode ParseXML(string xml)
         {
             var aniXML = new RootNode();
             

@@ -18,7 +18,10 @@ namespace DesktopPet
     /// <preliminary/>
     public partial class FormOptions : Form
     {
-        public Pets WebPets;
+		/// <summary>
+		/// All pets available on the web. Will be loaded from the github repository.
+		/// </summary>
+		public Pets WebPets;
 
             /// <summary>
             /// Constructor
@@ -427,16 +430,38 @@ namespace DesktopPet
         }
     }
 
-    public class Pet
+	/// <summary>
+	/// Represents a pet with its folder, author, and last update date.
+    /// Base-Info to list in the option page.
+	/// </summary>
+	public class Pet
     {
+        /// <summary>
+        /// Folder on GitHub
+        /// </summary>
         public string folder { get; set; }
+        /// <summary>
+        /// Author name
+        /// </summary>
         public string author { get; set; }
+        /// <summary>
+        /// Last update of the animation file
+        /// </summary>
         public string lastupdate { get; set; }
     }
-    public class Pets
+	/// <summary>
+	/// Class conaining a list of pets and a method to reorder them by last update date.
+	/// </summary>
+	public class Pets
     {
-        public List<Pet> pets { get; set; }
-        public void Reorder()
+		/// <summary>
+		/// List of pets
+		/// </summary>
+		public List<Pet> pets { get; set; }
+		/// <summary>
+		/// Reorder the pets, once loaded, by last update date, so the most recent ones are on top.
+		/// </summary>
+		public void Reorder()
         {
             pets.Sort(delegate (Pet x, Pet y)
             {

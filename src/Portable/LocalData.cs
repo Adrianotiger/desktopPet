@@ -10,13 +10,20 @@ using System.Configuration;
 
 namespace DesktopPet
 {
+    /// <summary>
+    /// LocalData for the portable version.
+    /// Todo: Create an interface (Portable + Store version)
+    /// </summary>
     public class LocalData
     {
         Configuration AppConfiguration = null;
         KeyValueConfigurationCollection AppSettings = null;
 		readonly bool isInstalled = false;
 
-        public LocalData()
+		/// <summary>
+		/// Initializes a new instance of the <see cref="LocalData"/> class.
+		/// </summary>
+		public LocalData()
         {
             try
             {
@@ -40,7 +47,10 @@ namespace DesktopPet
             }
         }
 
-        public void LoadSettings()
+		/// <summary>
+		/// Loads the settings from the configuration file (if installed, the cofiguration is in the user data folder)
+		/// </summary>
+		public void LoadSettings()
         {
             //var settings = AppConfiguration.AppSettings.Settings;
             foreach (SettingsProperty currentProperty in Properties.Settings.Default.Properties)
@@ -53,7 +63,11 @@ namespace DesktopPet
             AppSettings = AppConfiguration.AppSettings.Settings;
         }
 
-        public void SetVolume(double volume)
+		/// <summary>
+		/// Set FX-Sound volume (0.0 - 1.0)
+		/// </summary>
+		/// <param name="volume">Value from 0 to 1.0</param>
+		public void SetVolume(double volume)
         {
             int iVolume = (int)(volume * 100);
             if (iVolume.ToString() != AppSettings["Volume"].Value)
@@ -63,13 +77,22 @@ namespace DesktopPet
                 Save();
             }
         }
-        public float GetVolume()
+
+		/// <summary>
+		/// Get the FX-Sound volume (0.0 - 1.0)
+		/// </summary>
+		/// <returns>Value from 0 for no sound to 1.0 for full sound</returns>
+		public float GetVolume()
         {
 			int.TryParse(AppSettings["Volume"].Value, out int iVolume);
 			return (float)(iVolume / 100.0);
         }
 
-        public void SetScale(int pow2)
+		/// <summary>
+		/// Set the scale of the pet (1, 2, 4, 8). The limit is in the option dialog. The scale is stored as a power of 2 (0, 1, 2, 3). The default is 1 (0).
+		/// </summary>
+		/// <param name="pow2">Set the scale as a power of 2</param>
+		public void SetScale(int pow2)
         {
             if (pow2.ToString() != AppSettings["Scale"].Value)
             {
@@ -78,6 +101,10 @@ namespace DesktopPet
                 Save();
             }
         }
+        /// <summary>
+        /// Get the current scale of the pet.
+        /// </summary>
+        /// <returns></returns>
         public int GetScale()
         {
             if (int.TryParse(AppSettings["Scale"].Value, out int iScale))
@@ -87,13 +114,21 @@ namespace DesktopPet
             return 1;
         }
 
+        /// <summary>
+        /// If multiscreen is enable in the option
+        /// </summary>
+        /// <returns>true, if multiscreen is enabled and the pet should move between screens</returns>
         public bool GetMultiscreen()
         {
             bool.TryParse(AppSettings["Multiscreen"].Value, out bool ret);
             return ret;
         }
 
-        public void SetMultiscreen(bool multi)
+		/// <summary>
+		/// Set if the pet should move between screens (multiscreen)
+		/// </summary>
+		/// <param name="multi">true, if you want to see the pet moving over 2 screens</param>
+		public void SetMultiscreen(bool multi)
         {
             if (multi.ToString() != AppSettings["Multiscreen"].Value)
             {
@@ -103,13 +138,21 @@ namespace DesktopPet
             }
         }
 
+        /// <summary>
+        /// If foreground is set in the options.
+        /// </summary>
+        /// <returns>true, if the pet should be in the foreground</returns>
         public bool GetWindowForeground()
         {
             bool.TryParse(AppSettings["WinForeground"].Value, out bool ret);
             return ret;
         }
 
-        public void SetWindowForeground(bool foreground)
+		/// <summary>
+		/// Set if the pet should be in the foreground (always on top)
+		/// </summary>
+		/// <param name="foreground">true, if the pet should be in the foreground</param>
+		public void SetWindowForeground(bool foreground)
         {
             if (foreground.ToString() != AppSettings["WinForeground"].Value)
             {
@@ -119,7 +162,12 @@ namespace DesktopPet
             }
         }
 
-        public void SetStealTaskbarFocus(bool steal)
+		/// <summary>
+		/// Taskbar has a high priority for the focus, so the pet will go to background on it. If this option is set, the pet will steal the focus from the taskbar and will be in the foreground.
+        /// Note: this will have strange effects on Windows.
+		/// </summary>
+		/// <param name="steal">true, if the pet should steal the taskbar focus</param>
+		public void SetStealTaskbarFocus(bool steal)
         {
             if (steal.ToString() != AppSettings["StealTaskbarFocus"].Value)
             {
@@ -129,19 +177,31 @@ namespace DesktopPet
             }
         }
 
-        public bool GetStealTaskbarFocus()
+		/// <summary>
+		/// Get if the pet should steal the taskbar focus. If this option is set, the pet will steal the focus from the taskbar and will be in the foreground.
+		/// </summary>
+		/// <returns>true, if the pet should steal the taskbar focus</returns>
+		public bool GetStealTaskbarFocus()
         {
             bool.TryParse(AppSettings["StealTaskbarFocus"].Value, out bool ret);
             return ret;
         }
 
-        public int GetAutoStartPets()
+		/// <summary>
+		/// Get the number of pets that should be started automatically. The default is 1.
+		/// </summary>
+		/// <returns>the number of pets to start automatically</returns>
+		public int GetAutoStartPets()
         {
             int.TryParse(AppSettings["AutostartPets"].Value, out int ret);
             return Math.Max(1, ret);
         }
 
-        public void SetAutoStartPets(int autostart)
+		/// <summary>
+		/// Set the number of pets that should be started automatically. The default is 1.
+		/// </summary>
+		/// <param name="autostart">the number of pets to start automatically</param>
+		public void SetAutoStartPets(int autostart)
         {
             if (autostart.ToString() != AppSettings["AutostartPets"].Value)
             {
@@ -151,19 +211,32 @@ namespace DesktopPet
             }
         }
 
-        public void SetXml(string xml, string folder)
+		/// <summary>
+		/// Set the XML data for the pet. The XML is a string containing the entire pet animation.
+		/// </summary>
+		/// <param name="xml">xml as string</param>
+		/// <param name="folder">is not used yet (should be removed)</param>
+		public void SetXml(string xml, string folder)
         {
             Properties.Settings.Default.xml = xml;
             AppSettings["xml"].Value = xml;
             Save();
         }
 
-        public string GetXml()
+		/// <summary>
+		/// The XML data for the pet. The XML is a string containing the entire pet animation.
+		/// </summary>
+		/// <returns>xml as string</returns>
+		public string GetXml()
         {
             return AppSettings["xml"].Value;
         }
 
-        public string LoadXML()
+		/// <summary>
+		/// Load the XML data for the pet. The XML is a string containing the entire pet animation. The XML can be loaded from a local file, a web URL or from the settings.
+		/// </summary>
+		/// <returns>xml as string</returns>
+		public string LoadXML()
         {
             //XmlSerializer mySerializer = new XmlSerializer(typeof(XmlData.RootNode));
             // To read the file, create a FileStream.
@@ -198,47 +271,82 @@ namespace DesktopPet
             }
         }
 
-        public string GetImages()
+		/// <summary>
+		/// Get the images from the pets.
+		/// </summary>
+		/// <returns>a base64 encoded string of the images</returns>
+		public string GetImages()
         {
             return AppSettings["Images"].Value;
         }
 
-        public void SetImages(string images)
+		/// <summary>
+		/// Set the images for the pets. The images are stored as a base64 encoded string.
+		/// </summary>
+		/// <param name="images">a base64 encoded string of the images</param>
+		public void SetImages(string images)
         {
             Properties.Settings.Default.Images = images;
             AppSettings["Images"].Value = images;
             //Save();
         }
 
-        public string GetIcon()
+		/// <summary>
+		/// Get the icon for the application. The icon is stored as a base64 encoded string.
+		/// </summary>
+		/// <returns>a base64 encoded string of the icon</returns>
+		public string GetIcon()
         {
             return AppSettings["Icon"].Value;
         }
 
-        public void SetIcon(string icon)
+		/// <summary>
+		/// Set the icon for the application. The icon is stored as a base64 encoded string.
+		/// </summary>
+		/// <param name="icon">a base64 encoded string of the icon</param>
+		public void SetIcon(string icon)
         {
             Properties.Settings.Default.Icon = icon;
             AppSettings["Icon"].Value = icon;
             //Save();
         }
 
-        public bool IsFirstBoot()
+		/// <summary>
+		/// Check if this is the first boot of the application. This is not implemented in the portable version.
+		/// </summary>
+		/// <returns>always returns false</returns>
+		public bool IsFirstBoot()
         {
             return false;
         }
+		/// <summary>
+		/// Can list for changes, to reload the XML or the options. This is not implemented in the portable version.
+		/// </summary>
+		/// <param name="source"></param>
+		/// <param name="e"></param>
+		public delegate void MyFunction(object source, FileSystemEventArgs e);
 
-        public delegate void MyFunction(object source, FileSystemEventArgs e);
-
-        public void ListenOnXMLChanged(MyFunction f)
+		/// <summary>
+		/// Listen for changes in the XML file. This is not implemented in the portable version.
+		/// </summary>
+		/// <param name="f"></param>
+		public void ListenOnXMLChanged(MyFunction f)
         {
             // not implemented in the portable version
         }
 
-        public void ListenOnOptionsChanged(MyFunction f)
+		/// <summary>
+		/// Listen for changes in the options. This is not implemented in the portable version.
+		/// </summary>
+		/// <param name="f"></param>
+		public void ListenOnOptionsChanged(MyFunction f)
         {
             // not implemented in the portable version
         }
 
+        /// <summary>
+        /// Save the settings in the option dialog.
+        /// </summary>
         private void Save()
         {
             if (isInstalled)
