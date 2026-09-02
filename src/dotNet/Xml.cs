@@ -223,6 +223,9 @@ namespace DesktopPet
                     case "drag": animations.AnimationDrag = node.Id; break;
                     case "kill": animations.AnimationKill = node.Id; break;
                     case "sync": animations.AnimationSync = node.Id; break;
+                    case "toss": animations.AnimationToss = node.Id; break;
+                    case "fall soft": animations.AnimationFallSoft = node.Id; break;
+                    case "fall hard": animations.AnimationFallHard = node.Id; break;
                 }
 
                 ani.Start.X = GetXMLCompute(node.Start.X, "animation " + node.Id + ": node.start.X");

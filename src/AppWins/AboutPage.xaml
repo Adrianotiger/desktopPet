@@ -40,6 +40,7 @@
                 <TextBlock Style="{StaticResource BaseTextBlockStyle}" TextAlignment="Center" Padding="0,20,0,0">Thanks to:</TextBlock>
                 <TextBlock TextAlignment="Center"><Hyperlink NavigateUri="https://github.com/Grunwaldt">Sergi</Hyperlink> for the System Tray implementation</TextBlock>
                 <TextBlock TextAlignment="Center"><Hyperlink NavigateUri="https://github.com/rluiten">Robin</Hyperlink> improving the code and implementing the Graphviz tool</TextBlock>
+                <TextBlock TextAlignment="Center"><Hyperlink NavigateUri="https://github.com/ZechsVariety">Zecheriah</Hyperlink> for the pet tossing code</TextBlock>
                 
 
             </StackPanel>

@@ -636,7 +636,7 @@ namespace PetEditor
             Update();
             foreach (var animation in animations)
             {
-                if(animation.Name == "fall" || animation.Name == "drag" || animation.Name == "sync" || animation.Name == "kill")
+                if(animation.Name == "fall" || animation.Name == "drag" || animation.Name == "sync" || animation.Name == "kill" || animation.Name == "toss" || animation.Name == "fall soft" || animation.Name == "fall hard")
                 {
                     animationLinkTo[animation.Id]++;
                 }
@@ -755,6 +755,18 @@ namespace PetEditor
             if (!animationNames.Contains("sync"))
             {
                 listView2.Items.Add("ANIMATION sync").SubItems.Add("There is no animation named 'sync', please add this key value to one of your animations");
+            }
+            if (!animationNames.Contains("toss"))
+            {
+                listView2.Items.Add("ANIMATION toss").SubItems.Add("There is no animation named 'toss', please add this key value to one of your animations");
+            }
+            if (!animationNames.Contains("fall soft"))
+            {
+                listView2.Items.Add("ANIMATION fall soft").SubItems.Add("There is no animation named 'fall soft', please add this key value to one of your animations");
+            }
+            if (!animationNames.Contains("fall hard"))
+            {
+                listView2.Items.Add("ANIMATION fall hard").SubItems.Add("There is no animation named 'fall hard', please add this key value to one of your animations");
             }
             for (var k = 0; k < animations.Length; k++)
             {

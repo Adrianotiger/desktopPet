@@ -490,6 +490,27 @@ namespace DesktopPet
             /// Animation ID once the cancel button on the about box was pressed (default: 1)
             /// </summary>
         public int AnimationSync = 1;
+            /// <summary>
+            /// Animation ID for the tossing animation (default: -1)
+            /// </summary>
+            /// <remarks>
+            /// Does not play if it doesn't exist in the pet XML, in which case the pet continues the drag animation
+            /// </remarks>
+        public int AnimationToss = -1;
+            /// <summary>
+            /// Animation ID for the soft land animation after the pet was tossed (default: 1)
+            /// </summary>
+            /// <remarks>
+            /// This is named based on eSheep64's "fall soft" animation
+            /// </remarks>
+        public int AnimationFallSoft = 1;
+            /// <summary>
+            /// Animation ID for the hard land animation after the pet was tossed (default: 1)
+            /// </summary>
+            /// <remarks>
+            /// This is named based on eSheep64's "fall hard" animation
+            /// </remarks>
+        public int AnimationFallHard = 1;
 
             /// <summary>
             /// Constructor, initialize member variables
