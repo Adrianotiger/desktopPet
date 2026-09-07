@@ -31,9 +31,6 @@ jobs:
     - name: Build solution
       run: msbuild $env:Solution_Name -p:Configuration=Release -p:RestorePackages=false
 
-    - name: Publish portable EXE
-      run: msbuild $env:Project_Path -p:Configuration=Release -p:PublishDir=publish -p:Platform=x64 -t:Publish
-      
     - name: Upload EXE artifact
       uses: actions/upload-artifact@v4
       with:
