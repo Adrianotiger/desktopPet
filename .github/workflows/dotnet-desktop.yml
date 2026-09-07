@@ -11,8 +11,8 @@ jobs:
     runs-on: windows-latest
 
     env:
-      Solution_Name: DesktopPet_Portable.sln
-      Project_Path: DesktopPet_Portable.csproj
+      Solution_Name: src/DesktopPet_Portable.sln
+      Project_Path: src/DesktopPet_Portable.csproj
       Solution_Dir: src/
 
     steps:
