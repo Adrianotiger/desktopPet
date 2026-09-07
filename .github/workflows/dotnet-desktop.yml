@@ -26,11 +26,9 @@ jobs:
       uses: NuGet/setup-nuget@v2
       
     - name: Restore NuGet packages
-      working-directory: ${{ env.Solution_Dir }}
       run: dotnet restore $env:Solution_Name
 
     - name: Build solution
-      working-directory: ${{ env.Solution_Dir }}
       run: dotnet build $env:Solution_Name -c Release --no-restore
 
     - name: Publish portable EXE
