@@ -26,7 +26,7 @@ jobs:
       uses: NuGet/setup-nuget@v2
       
     - name: Restore NuGet packages
-      run: dotnet restore src/$env:Solution_Name
+      run: dotnet restore $env:Solution_Name
 
     - name: Build solution
       run: dotnet build $env:Solution_Name -c Release --no-restore
