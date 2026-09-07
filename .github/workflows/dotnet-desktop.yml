@@ -18,11 +18,12 @@ jobs:
     - name: Checkout repository
       uses: actions/checkout@v4
 
-    - name: Setup .NET
-      uses: actions/setup-dotnet@v4
-      with:
-        dotnet-version: 4.7.x
+    - name: Setup MSBuild
+      uses: microsoft/setup-msbuild@v2
 
+    - name: Install NuGet
+      uses: NuGet/setup-nuget@v2
+      
     - name: Restore NuGet packages
       run: dotnet restore $env:Solution_Name
 
@@ -32,8 +33,11 @@ jobs:
     - name: Publish portable EXE
       run: dotnet publish $env:Project_Path -c Release -r win-x64 --self-contained true -o publish
 
+    - name: Build solution
+      run: msbuild $env:Solution_Name /p:Configuration=Release
+
     - name: Upload EXE artifact
       uses: actions/upload-artifact@v4
       with:
         name: DesktopPet_Portable
-        path: publish/
+        path: bin/Release/
