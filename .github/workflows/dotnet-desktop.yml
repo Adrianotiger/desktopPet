@@ -13,7 +13,7 @@ jobs:
     env:
       Solution_Name: DesktopPet_Portable.sln
       Project_Path: DesktopPet_Portable.csproj
-      Solution_Dir: src/  # Add this line
+      Solution_Dir: src/
 
     steps:
     - name: Checkout repository
@@ -26,7 +26,7 @@ jobs:
       uses: NuGet/setup-nuget@v2
       
     - name: Restore NuGet packages
-      run: dotnet restore $env:Solution_Name
+      run: dotnet restore src/$env:Solution_Name
 
     - name: Build solution
       run: dotnet build $env:Solution_Name -c Release --no-restore
