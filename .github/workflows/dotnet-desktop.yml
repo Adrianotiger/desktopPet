@@ -26,16 +26,13 @@ jobs:
       uses: NuGet/setup-nuget@v2
       
     - name: Restore NuGet packages
-      run: dotnet restore $env:Solution_Name
+      run: nuget restore $env:Solution_Name
 
     - name: Build solution
       run: dotnet build $env:Solution_Name -c Release --no-restore
 
     - name: Publish portable EXE
       run: dotnet publish $env:Project_Path -c Release -r win-x64 --self-contained true -o publish
-
-    - name: Build solution
-      run: msbuild $env:Solution_Name /p:Configuration=Release
 
     - name: Upload EXE artifact
       uses: actions/upload-artifact@v4
