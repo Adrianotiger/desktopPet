@@ -35,4 +35,4 @@ jobs:
       uses: actions/upload-artifact@v4
       with:
         name: DesktopPet_Portable
-        path: bin/
+        path: src/bin/Release/
