@@ -13,6 +13,7 @@ jobs:
     env:
       Solution_Name: src/DesktopPet_Portable.sln
       Project_Path: src/DesktopPet_Portable.csproj
+      Solution_Dir: src/  # Add this line
 
     steps:
     - name: Checkout repository
