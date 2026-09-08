@@ -1,0 +1,35 @@
+name: Build DesktopPet Portable
+
+on:
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: windows-latest
+
+    env:
+      Solution_Name: src/DesktopPet_Portable.sln
+      Project_Path: src/DesktopPet_Portable.csproj
+      Solution_Dir: src/
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+
+    - name: Setup MSBuild
+      uses: microsoft/setup-msbuild@v2
+
+    - name: Install NuGet
+      uses: NuGet/setup-nuget@v2
+      
+    - name: Restore NuGet packages
+      run: nuget restore $env:Solution_Name
+
+    - name: Build solution
+      run: msbuild $env:Solution_Name -p:Configuration=Release -p:RestorePackages=false
+
+    - name: Upload EXE artifact
+      uses: actions/upload-artifact@v4
+      with:
+        name: DesktopPet_Portable
+        path: build/DesktopPetPortable/bin/Release/x64
