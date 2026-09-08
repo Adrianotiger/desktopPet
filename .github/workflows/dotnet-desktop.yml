@@ -32,7 +32,7 @@ jobs:
       uses: sigstore/cosign-installer@v3
 
     - name: Sign EXE with Sigstore
-      run: cosign sign-blob --yes --output-signature build/DesktopPetPortable/bin/Release/x64/signed/DesktopPet.exe.sig build/DesktopPetPortable/bin/Release/x64/signed/DesktopPet.exe
+      run: cosign sign-blob --yes --output-signature build/DesktopPetPortable/bin/Release/x64/DesktopPet.exe.sig build/DesktopPetPortable/bin/Release/x64/DesktopPet.exe
 
     - name: Upload EXE artifact
       uses: actions/upload-artifact@v4
