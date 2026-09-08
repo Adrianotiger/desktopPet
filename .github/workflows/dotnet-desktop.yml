@@ -1,4 +1,4 @@
-name: Build DesktopPet Portable
+name: Build DesktopPet Portable - Sigstore
 
 on:
   workflow_dispatch:
