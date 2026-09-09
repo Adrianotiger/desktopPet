@@ -1,4 +1,36 @@
 # Changelog
+
+ <h3>Version 1.4.0<sup>09 sep 2026</sup>:</h3> 
+ 
+ -  Tossing by [ZechsVariety](https://github.com/ZechsVariety)
+ -  Updated for VS2026 community
+ -  Unfortunately, the UWP version is too old and Microsoft doesn't accept this project anymore. I have to rewrite it if I want to upload it into the store again.
+ -  Play Store app based on v1.4.0, download it from [Play Store](https://play.google.com/store/apps/details?id=ch.petrucci.androsheep)
+   
+ <h3>Version 1.3.2<sup>08 aug 2025</sup>:</h3> 
+ 
+ -  It was not possible to load a local XML
+
+ <h3>Version 1.3.1<sup>30 aug 2022</sup>:</h3> 
+ 
+ - Portable version has the scaling option now
+ - Updated to the last windows libraries
+ - Downloadable pets are filtered by date
+ - The editor can create the icon on the fly, without a converter
+   
+ <h3>Version 1.2.6<sup>05 may 2021</sup>:</h3> 
+ 
+ - increased stability
+ - pet will not steal the focus of the taskbar anymore (but you can activate it under options)
+ - better PET Editor
+ - gSheep with over 250 animations
+   
+ <h3>Version 1.2.5<sup>14 oct 2019</sup>:</h3> 
+
+ - move window toghether with the PET
+ - solved some UWP bugs
+ - solved some Multiscreen bugs
+ - Negima! as new pet
  
  <h3>Version 1.2.3<sup>04 oct 2019</sup>:</h3> 
  
