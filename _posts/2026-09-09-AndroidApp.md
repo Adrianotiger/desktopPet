@@ -11,8 +11,8 @@ After some years and some new library, I used .NET10-Android in MAUI to port thi
 
 I rewrote completely the code, and it is really simple... No error messages, no permissions requests... You have to do everything by you and find out how it works.
 
-Download it directly from the store:
-https://play.google.com/store/apps/details?id=ch.petrucci.androsheep
+Download it directly from the store:  
+<a href="https://play.google.com/store/apps/details?id=ch.petrucci.androsheep">https://play.google.com/store/apps/details?id=ch.petrucci.androsheep</a>  
 
 It seems to be more stable than the last version.
 
