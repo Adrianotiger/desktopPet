@@ -5,6 +5,8 @@ title:  "Android App"
 
 <img src='https://github.com/Adrianotiger/desktopPet/raw/master/_posts/googleplay.png' height='128px' />
 
+<b>Edit 09.2026: A new version is available: see <a href='https://adrianotiger.github.io/desktopPet/2026/09/09/AndroidApp.html'>new Blog entry</a></b>
+
 <h2>Test version for Android</h2>
 
 With Xamarin, it is possible to write c# apps for Android.
