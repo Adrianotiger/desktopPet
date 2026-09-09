@@ -1,3 +1,7 @@
+## NEW
+I try it again with the app. This is just a preview, just to see if it works (Android 14 or later):  
+https://play.google.com/store/apps/details?id=ch.petrucci.androsheep
+
 # Desktop Pet (eSheep)
 
 Can you remember eSheep, the lovely desktop sheep?
@@ -15,11 +19,17 @@ In this way, this pet is able to walk, run, etc around your working screen area 
 
 # Downloads
 
-|        | Windows 7/8/10 | Windows 10 | Webpage | Tools |
-|--------|----------------|------------|---------|-------|
-| Type |  Portable exe | Store app | Javascript | Desktop applications |
-| Description | Download rar, extract exe file and execute it. There is no installation. | Download it directly from the Microsoft store | Javascript file to implement it on your webpage | Some tools to edit and create your own pet.
-| Link | <a href='https://github.com/Adrianotiger/desktopPet/releases/latest'><img src='https://img.shields.io/github/downloads/adrianotiger/desktopPet/total.svg'></a> | <a href='https://www.microsoft.com/store/apps/9MX2V0TQT6RM'>Windows store</a> | <a href='https://github.com/Adrianotiger/web-esheep'>Open GitHub</a> project | -<a href='https://github.com/Adrianotiger/desktopPet/releases/latest'>Download Pet Editor</a> |
+|        | Windows 7/8/10 | Windows 10 | Webpage | Android | Tools |
+|--------|----------------|------------|---------|-------|-------|
+| Type |  Portable exe | Store app | Javascript | Play Store | Desktop applications |
+| Description | Download rar, extract exe file and execute it. There is no installation. | Download it directly from the Microsoft store | Javascript file to implement it on your webpage | Bring the sheep with you on your phone | Some tools to edit and create your own pet.
+| Link | <a href='https://github.com/Adrianotiger/desktopPet/releases/latest'><img src='https://img.shields.io/github/downloads/adrianotiger/desktopPet/total.svg'></a> | <a href='https://www.microsoft.com/store/apps/9MX2V0TQT6RM'>Windows store</a> | <a href='https://github.com/Adrianotiger/web-esheep'>Open GitHub</a> project | <a href='https://play.google.com/store/apps/details?id=ch.petrucci.androsheep'>Play store</a> |  -<a href='https://github.com/Adrianotiger/desktopPet/releases/latest'>Download Pet Editor</a> |
+
+|        | Win Tools | Web Tools |
+|--------|-----------|-----------|
+|   | Desktop applications | Web applications |
+| Description | Some tools to edit and create your own pet. | Minecraft spritesheet generator |
+| Link | <a href='https://github.com/Adrianotiger/desktopPet/releases/latest'>Download Pet Editor</a> | <a href='https://adrianotiger.github.io/web-esheep/tools/minecraft.html'>Minecraft Animation Generator</a> |
 
 # Screen Mates included in this application
 | | | | |
@@ -27,6 +37,7 @@ In this way, this pet is able to walk, run, etc around your working screen area 
 | eSheep <br> [![eSheeps](Pets/esheep64/icon.png)](https://adrianotiger.github.io/desktopPet/Pets/esheep64/)  | gSheep Blue <br> [![Blue Sheep](Pets/blue_sheep/icon.png)](https://adrianotiger.github.io/desktopPet/Pets/blue_sheep/)  | gSheep Green <br> [![Green Sheep](Pets/green_sheep/icon.png)](https://adrianotiger.github.io/desktopPet/Pets/green_sheep/) | gSheep Orange <br> [![Orange Sheep](Pets/orange_sheep/icon.png)](https://adrianotiger.github.io/desktopPet/Pets/orange_sheep/)  |
 | gSheep Pink <br> [![Pink Sheep](Pets/pink_sheep/icon.png)](https://adrianotiger.github.io/desktopPet/Pets/pink_sheep/)  | gSheep Purple <br> [![Purple Sheep](Pets/purple_sheep/icon.png)](https://adrianotiger.github.io/desktopPet/Pets/purple_sheep/)  | gSheep Red <br> [![Red Sheep](Pets/red_sheep/icon.png)](https://adrianotiger.github.io/desktopPet/Pets/red_sheep/) | gSheep Yellow <br> [![Yellow Sheep](Pets/yellow_sheep/icon.png)](https://adrianotiger.github.io/desktopPet/Pets/yellow_sheep/)  |
 |Bunny <br> [![Bugs Bunny](Pets/bbunny/icon.png)](https://adrianotiger.github.io/desktopPet/Pets/bbunny/)  | Asuna <br> [![Asuna](Pets/negima/icon.png)](https://adrianotiger.github.io/desktopPet/Pets/negima/)  | Neko <br> [![Neko](Pets/neko/icon.png)](https://adrianotiger.github.io/desktopPet/Pets/neko/) | Pingus <br> [![Pingus](Pets/pingus/icon.png)](https://adrianotiger.github.io/desktopPet/Pets/pingus/)  |
+|Ham Ham <br> [![Blue Ham Ham](Pets/blue_ham_ham/icon.png)](https://adrianotiger.github.io/desktopPet/Pets/blue_ham_ham/)  | Fox <br> [![Fox Mate](Pets/fox/icon.png)](https://adrianotiger.github.io/desktopPet/Pets/fox/)  | Pikachu <br> [![Pikachu](Pets/pikachu/icon.png)](https://adrianotiger.github.io/desktopPet/Pets/pikachu/) | Zombie <br> [![Zombie](Pets/zombie/icon.png)](https://adrianotiger.github.io/desktopPet/Pets/zombie/)  |
 
 # Credits
 This project used other Open Source projects:
