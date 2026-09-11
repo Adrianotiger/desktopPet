@@ -48,8 +48,10 @@ This project used other Open Source projects:
 # Thanks
 <a href='https://github.com/Grunwaldt'>Sergi</a> for the Tray Icon<br>
 <a href='https://github.com/rluiten'>Robin</a> improving the code and implementing the <a href='https://github.com/Adrianotiger/desktopPet/issues/6'>Graphviz tool</a><br>
-<a href='https://github.com/OliverPets'>Oliver</a> for the rainbow sheeps and the many animations<br>
 <a href='https://github.com/ZechsVariety'>Zecheriah</a> for the pet tossing code<br>
+<a href='https://github.com/OliverPets'>Oliver</a> for the rainbow sheeps and the many animations<br>
+<a href='https://github.com/RedSparr0w'>RedSparr0w</a> for the minecraft tools and spritesheet generator<br>
+Michelle for the cats animations<br>
 
 # Want to create your own mate/pet?
 I am working on an offline editor: <a href='https://github.com/Adrianotiger/desktopPet/releases/tag/editor0.2'>Download offline editor from GitHub</a>.<br>
