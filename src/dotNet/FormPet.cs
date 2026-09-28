@@ -83,14 +83,6 @@ namespace DesktopPet
             /// </summary>
         double PositionY = 0.0;
             /// <summary>
-            /// PositionX of the previous frame while dragging. Used to calculate toss force
-            /// </summary>
-        double PrevPositionX = 0.0;
-            /// <summary>
-            /// PositionY of the previous frame while dragging. Used to calculate toss force
-            /// </summary>
-        double PrevPositionY = 0.0;
-            /// <summary>
             /// The force in which the user tossed the sheep with. Uses Vector2 for easy magnitude calculation.
             /// </summary>
         Vector2 TossForce = Vector2.Zero;
@@ -118,6 +110,7 @@ namespace DesktopPet
         public FormPet()
         {
             InitializeComponent();
+            InitializeMotion();
         }
 
             /// <summary>
@@ -130,6 +123,7 @@ namespace DesktopPet
             Animations = animations;
             Xml = xml;
             InitializeComponent();
+            InitializeMotion();
             Visible = false;            // Is invisible at beginning (we don't know where this sprite should be positioned)
             Opacity = 0.0;
             for (var s = 0; s < Screen.AllScreens.Length; s++)
@@ -160,6 +154,7 @@ namespace DesktopPet
             DisplayIndex = parentDisplay;
 			IsMovingLeft = !parentFlipped;
             InitializeComponent();
+            InitializeMotion();
             Visible = false;            // Is invisible at beginning (we don't know where this sprite should be positioned)
             Opacity = 0.0;
         }
@@ -293,6 +288,7 @@ namespace DesktopPet
 			PositionY = Top;
 			OffsetY = 0.0;
             IsLeaving = false;
+            ResetMotion();
             SetNewAnimation(spawn.Next);                // Set next animation
             Visible = true;                             // Now we can show the form
             Opacity = 0.0;                              // do not show first frame (as it is undefined)
@@ -321,6 +317,7 @@ namespace DesktopPet
             Visible = true;                             // Now we can show this child
             Opacity = 1.0;
             IsLeaving = false;
+            ResetMotion();
             pictureBox1.Cursor = Cursors.Default;
             pictureBox1.MouseDown += (s, e) => { };     // Replace the "drag and drop" functionality
 
@@ -445,7 +442,7 @@ namespace DesktopPet
 							FormPet child = new FormPet(Animations, Xml, new Point(ScreenBounds.X + Left, ScreenBounds.Y + Top), !IsMovingLeft, DisplayIndex);
 							for (int i = 0; i < imageList1.Images.Count; i++)
 							{
-                                child.AddImage(imageList1.Images[i]);
+                                child.AddImage(GetSprite(i));
 							}
 							// To detect if it is a child, the name of the form will be renamed.
 							if (Name.IndexOf("child") < 0) // first child
@@ -479,110 +476,31 @@ namespace DesktopPet
                 // If there is no repeat, we don't need to calculate the frame index.
             if (AnimationStep < CurrentAnimation.Sequence.Frames.Count)
             {
-                pictureBox1.Image = imageList1.Images[CurrentAnimation.Sequence.Frames[AnimationStep]];
+                pictureBox1.Image = GetSprite(CurrentAnimation.Sequence.Frames[AnimationStep]);
             }
             else
             {
                 int index = ((AnimationStep - CurrentAnimation.Sequence.Frames.Count + CurrentAnimation.Sequence.RepeatFrom) % (CurrentAnimation.Sequence.Frames.Count - CurrentAnimation.Sequence.RepeatFrom)) + CurrentAnimation.Sequence.RepeatFrom;
-                pictureBox1.Image = imageList1.Images[CurrentAnimation.Sequence.Frames[index]]; 
+                pictureBox1.Image = GetSprite(CurrentAnimation.Sequence.Frames[index]);
             }
 
                 // Get interval (if not in tossing mode), opacity and offset interpolated from START and END values.
             if(!IsTossing)
                 timer1.Interval = CurrentAnimation.Start.Interval.Value + ((CurrentAnimation.End.Interval.Value - CurrentAnimation.Start.Interval.Value) * AnimationStep / CurrentAnimation.Sequence.TotalSteps);
+            int movementDuration = timer1.Interval;
             Opacity = CurrentAnimation.Start.Opacity + (CurrentAnimation.End.Opacity - CurrentAnimation.Start.Opacity) * AnimationStep / CurrentAnimation.Sequence.TotalSteps;
 			OffsetY = CurrentAnimation.Start.OffsetY + (double)((CurrentAnimation.End.OffsetY - CurrentAnimation.Start.OffsetY) * AnimationStep / CurrentAnimation.Sequence.TotalSteps);
 
                 // If dragging is enabled, move the pet to the mouse position.
             if (IsDragging)
             {
-                // Set previous positions for use when calculating toss force
-                PrevPositionX = PositionX;
-                PrevPositionY = PositionY;
-                
-				PositionX = Left = Cursor.Position.X - Width / 2;
-				PositionY = Top = Cursor.Position.Y - 2;
+                // Position follows mouse messages and the independent render timer.
                 return;
             }
 
-                // If the pet is in toss mode, apply toss physics
-            if(IsTossing)
-            {
-                // Border detection
-                bool hittingLeftBorder = PositionX + TossForce.X <= ScreenArea.X;
-                bool hittingRightBorder = PositionX + TossForce.X >= ScreenArea.X + ScreenArea.Width - Width;
-                bool hittingTaskbar = PositionY + tossVertVel >= ScreenArea.Y + ScreenArea.Height - Height;
-                int iWindowTop = FallDetect((int)tossVertVel); // >0 means a window top border was hit
+            // Physics runs on the independent motion clock, not sprite frames.
+            if (IsTossing) return;
 
-                // If hitting left or right border, bounce
-                if (hittingLeftBorder || hittingRightBorder)
-                {
-                    // Bounce by inverting TossForce.X, and then multiply by an amount for friction
-                    TossForce.X = -TossForce.X * .3f;
-
-                    // Teleport to the correct border
-                    if (hittingLeftBorder)
-                        PositionX = Left = ScreenArea.X; // Left
-                    else
-                        PositionX = Left = ScreenArea.X + ScreenArea.Width - Width; // Right
-
-                    return;
-                }
-                
-                // If hitting taskbar or the top of a window, land
-                if (hittingTaskbar || iWindowTop > 0)
-                {
-                    // Teleport to the correct border
-                    if(hittingTaskbar)
-                        PositionY = Top = ScreenArea.Y + ScreenArea.Height - Height; // Taskbar
-                    else
-                        PositionY = Top = iWindowTop - Height; // Window
-
-                    // Set sprite flip based on the direction the pet hits the ground at
-                    // Originally, this was set whenever the pet hit a wall, but that caused pets with big spritesheets to freeze for a moment, so now this only happens when they land
-                    if ((TossForce.X < 0 && !IsMovingLeft) || (TossForce.X > 0 && IsMovingLeft))
-                    {
-                        IsMovingLeft = !IsMovingLeft;
-
-                        for (int i = 0; i < imageList1.Images.Count; i++)
-                        {
-                            Image im = imageList1.Images[i];
-                            im.RotateFlip(RotateFlipType.RotateNoneFlipX);
-                            imageList1.Images[i] = im;
-                        }
-                    }
-
-                    // Log vertical velocity when landing
-                    StartUp.AddDebugInfo(StartUp.DEBUG_TYPE.info, "Toss vert vel: " + tossVertVel);
-
-                    // Set soft/hard land animation depending on vertical velocity
-                    if (tossVertVel < 40)
-                        SetNewAnimation(Animations.AnimationFallSoft);
-                    else
-                        SetNewAnimation(Animations.AnimationFallHard);
-
-                    // Update sprite instantly (otherwise, it would wait until the next interval)
-                    pictureBox1.Image = imageList1.Images[CurrentAnimation.Sequence.Frames[0]];
-
-                    // Disable tossing
-                    IsTossing = false;
-
-                    return;
-                }
-
-                // If none of those borders were hit, move based on toss physics
-
-                // Move in the toss force direction
-                PositionX = Left = (int)(PositionX + TossForce.X);
-                PositionY = Top = (int)(PositionY + tossVertVel); // tossVertVel is initialized as TossForce.Y when tossed
-
-                // Update vertical velocity with gravity
-                // Y axis is inverted (so positive is down, negative is up)
-                tossVertVel += 1.5f;
-
-                return;
-            }
-            
             double x = CurrentAnimation.Start.X.Value;
             double y = CurrentAnimation.Start.Y.Value;
             // if TotalSteps is more than 1, we have to interpolate START and END values)
@@ -752,14 +670,8 @@ namespace DesktopPet
                 int iNextAni;
                 if(CurrentAnimation.Sequence.Action == "flip")
                 {
-					// flip all images
-					IsMovingLeft = !IsMovingLeft;
-                    for (int i = 0; i < imageList1.Images.Count; i++)
-                    {
-                        Image im = imageList1.Images[i];
-                        im.RotateFlip(RotateFlipType.RotateNoneFlipX);
-                        imageList1.Images[i] = im;
-                    }
+                    IsMovingLeft = !IsMovingLeft;
+                    spritesFlipped = !spritesFlipped;
                 }
                 if(hwndWindow != (IntPtr)0)
                 {
@@ -768,11 +680,11 @@ namespace DesktopPet
                 else
                 {
                         // If pet is outside the borders, spawn it again.
-                    if (Left < ScreenBounds.X - Width || Left > ScreenBounds.X + ScreenBounds.Width)
+                    if (PositionX < ScreenBounds.X - Width || PositionX > ScreenBounds.X + ScreenBounds.Width)
                     {
                         iNextAni = -1;
                     }
-                    else if (Top < ScreenBounds.Y - Height || Top > ScreenBounds.Y + ScreenBounds.Height)
+                    else if (PositionY < ScreenBounds.Y - Height || PositionY > ScreenBounds.Y + ScreenBounds.Height)
                     {
                         iNextAni = -1;
                     }
@@ -838,22 +750,8 @@ namespace DesktopPet
                 {
                     if (AnimationStep > 0 && CheckTopWindow(true))
                     {
-                        if (CurrentAnimation.Start.X.Value != 0 && FollowWindow())
-                        {
-                            int iTimeout = 20;
-                            do
-                            {
-                                if (!FollowWindow()) iTimeout--;
-                                else iTimeout = 50;
-                                Thread.Sleep(16);
-                                Application.DoEvents();
-                            }
-                            while (iTimeout > 0);
-                            PositionX = Left;
-                            PositionY = Top - OffsetY;
-                            return;
-                        }
-                        else
+                        // Window following is non-blocking and also runs at render cadence.
+                        if (!FollowWindow())
                         {
                             hwndWindow = (IntPtr)0;
                             SetNewAnimation(Animations.SetNextGravityAnimation(CurrentAnimation.ID, TNextAnimation.TOnly.WINDOW));
@@ -869,7 +767,7 @@ namespace DesktopPet
                 timer1.Interval = 1;    // execute immediately the first step of the next animation.
                 //x = 0;                  // don't move the pet, if a new animation must be started
                 //y = 0;                  //  if falling, set the pet to the new position
-                pictureBox1.Image = imageList1.Images[CurrentAnimation.Sequence.Frames[0]];
+                pictureBox1.Image = GetSprite(CurrentAnimation.Sequence.Frames[0]);
             }
 
 			// Set the new pet position (and offset) in the screen.
@@ -939,15 +837,14 @@ namespace DesktopPet
                 pictureBox1.Left = 0;
                 Width = pictureBox1.Width;
                 Height = pictureBox1.Height;
-                Top = (int)(PositionY + OffsetY);
+                Location = new Point((int)PositionX, (int)(PositionY + OffsetY));
+                ResetMotion();
             }
             else
             {
-                Left = (int)PositionX;
-                Top = (int)(PositionY + OffsetY);
+                QueueMotion(movementDuration);
             }
-
-            
+            if (bLeavingScreen) ResetMotion();
         }
 
             /// <summary>
@@ -961,6 +858,8 @@ namespace DesktopPet
             NativeMethods.TITLEBARINFO titleBarInfo = new NativeMethods.TITLEBARINFO();
             titleBarInfo.cbSize = Marshal.SizeOf(titleBarInfo);
 
+            if (y <= 0) return -1;
+            Rectangle area = ScreenArea;
             CheckFullScreen();
 
                 // Enumerate all windows on the desktop.
@@ -971,6 +870,11 @@ namespace DesktopPet
                     // Enumerate only visible windows
                 if (NativeMethods.IsWindowVisible(hWnd))
                 {
+                    NativeMethods.RECT candidate;
+                    if (!NativeMethods.GetWindowRect(new HandleRef(this, hWnd), out candidate) ||
+                        PositionY + Height >= candidate.Top || PositionY + Height + y < candidate.Top ||
+                        PositionX < candidate.Left - Width / 2 || PositionX + Width > candidate.Right + Width / 2 ||
+                        PositionY <= 20 + area.Y) return true;
                     StringBuilder sTitle = new StringBuilder(128);
                     NativeMethods.GetWindowText(hWnd, sTitle, 128);
 
@@ -1066,10 +970,10 @@ namespace DesktopPet
 
         private bool FollowWindow()
         {
-            if ((int)hwndWindow != 0)
+            if (hwndWindow != IntPtr.Zero)
             {
 				// Get window size and position of the current pet
-				NativeMethods.GetWindowRect(new HandleRef(this, hwndWindow), out NativeMethods.RECT rctO);
+				if (!NativeMethods.GetWindowRect(new HandleRef(this, hwndWindow), out NativeMethods.RECT rctO)) return false;
 
 				// window disappeared! Maybe it was closed.
 				if (rctO.Top == 0 && rctO.Bottom == 0)
@@ -1079,17 +983,14 @@ namespace DesktopPet
 
                 if (currentWindowSize.Top != rctO.Top || currentWindowSize.Left != rctO.Left || currentWindowSize.Right != rctO.Right)
                 {
-                    // same width as before
-                    if (rctO.Right - rctO.Left == currentWindowSize.Right - currentWindowSize.Left)
-                    {
-                        Top -= (currentWindowSize.Top - rctO.Top);
-                        Left -= (currentWindowSize.Left - rctO.Left);
-                    }
-                    else // new width
-                    {
-                        Top -= (currentWindowSize.Top - rctO.Top);
-                        Left = rctO.Left + (Left - currentWindowSize.Left) * (rctO.Right - rctO.Left) / (currentWindowSize.Right - currentWindowSize.Left);
-                    }
+                    int oldWidth = currentWindowSize.Right - currentWindowSize.Left;
+                    double ratio = oldWidth > 0 ? (double)(rctO.Right - rctO.Left) / oldWidth : 1;
+                    double dy = rctO.Top - currentWindowSize.Top;
+                    PositionX = rctO.Left + (PositionX - currentWindowSize.Left) * ratio;
+                    PositionY += dy;
+                    if (!motion.Initialized) motion.Reset(Left, Top, motionClock.Elapsed.TotalMilliseconds);
+                    motion.Follow(currentWindowSize.Left, rctO.Left, ratio, dy);
+                    RenderMotion(motionClock.Elapsed.TotalMilliseconds);
                     currentWindowSize = rctO;
                     return true;
                 }
@@ -1107,10 +1008,10 @@ namespace DesktopPet
         private bool CheckTopWindow(bool bCheck)
         {
                 // Check only if we have a valid window handler
-            if ((int)hwndWindow != 0)
+            if (hwndWindow != IntPtr.Zero)
             {
 				// Get window size and position of the current pet
-				NativeMethods.GetWindowRect(new HandleRef(this, hwndWindow), out NativeMethods.RECT rctO);
+				if (!NativeMethods.GetWindowRect(new HandleRef(this, hwndWindow), out NativeMethods.RECT rctO)) return true;
 
 				// If pet was walking on a window, check if window is still in the same position
 				if (bCheck)
@@ -1186,6 +1087,7 @@ namespace DesktopPet
                 TopMost = true;                     // Set again the topmost
 				IsDragging = true;                   // Flag it as dragging pet
                 IsTossing = false;                     // Flag it as not being tossed
+                BeginSmoothDrag();
                 SetNewAnimation(Animations.AnimationDrag);  // Set the dragging animation (if present)
             }
             else if(e.Button == MouseButtons.Right && StartUp.IsDebugActive())
@@ -1259,12 +1161,12 @@ namespace DesktopPet
             /// <param name="e">Mouse event values.</param>
         private void PictureBox1_MouseUp(object sender, MouseEventArgs e)
         {
-            if (e.Button == MouseButtons.Left && Name.IndexOf("child") < 0)
+            if (e.Button != MouseButtons.Left || Name.IndexOf("child") >= 0 || !IsDragging) return;
+            if (e.Button == MouseButtons.Left && Name.IndexOf("child") < 0 && IsDragging)
             {
-                // Calculate the difference between this frame and previous frame's positions
-                Vector2 rawTossForce = new Vector2((float)(PositionX - PrevPositionX), (float)(PositionY - PrevPositionY));
-                // Calculate the proper toss force regardless of drag animation interval (so that all pets toss the same). Then apply a multiplier to it
-                TossForce = rawTossForce / timer1.Interval * 10;
+                double now = motionClock.Elapsed.TotalMilliseconds;
+                UpdateDragPosition(Cursor.Position, now);
+                TossForce = dragVelocity.TossForce(now);
 
                 // Log toss force
                 StartUp.AddDebugInfo(StartUp.DEBUG_TYPE.info, "Toss force: (" + TossForce.X + ", " + TossForce.Y + ")");
@@ -1280,6 +1182,7 @@ namespace DesktopPet
 
                     // Init vertical toss velocity
                     tossVertVel = TossForce.Y;
+                    tossUpdatedAt = now;
 
                     // Force the interval while tossing to be a nice and smooth 30 (prevents laggy tossing for pets with slow drag animation intervals)
                     timer1.Interval = 30;
@@ -1314,6 +1217,8 @@ namespace DesktopPet
                 }
             }
 			IsDragging = false;
+            pictureBox1.Capture = false;
+            ResetMotion();
         }
         
             /// <summary>

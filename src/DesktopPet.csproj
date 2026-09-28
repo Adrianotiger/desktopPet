@@ -196,6 +196,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="dotNet\Animations.cs" />
+    <Compile Include="dotNet\MotionTrack.cs" />
+    <Compile Include="dotNet\FormPet.Motion.cs" />
     <Compile Include="dotNet\ContextMenus.cs" />
     <Compile Include="dotNet\EmbeddedAssembly.cs" />
     <Compile Include="dotNet\ProcessIcon.cs" />
