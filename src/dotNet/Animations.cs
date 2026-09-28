@@ -808,13 +808,6 @@ namespace DesktopPet
                 if (iDefaultID > 0)
                 {
                     UpdateAnimationValues(iDefaultID);
-                    if(SheepSound.ContainsKey(iDefaultID))
-                    {
-                        if (rand.Next(0, 100) < SheepSound[iDefaultID].Probability)
-                        {
-                            SheepSound[iDefaultID].Play(SheepSound[iDefaultID].Loop);
-                        }
-                    }
                 }
                 return iDefaultID;
             }
@@ -863,6 +856,21 @@ namespace DesktopPet
             }
 			
             StartUp.AddDebugInfo(StartUp.DEBUG_TYPE.info, "new animation: " + ani.Name + " (" + ani.ID + ")");
+        }
+
+            /// <summary>
+            /// Check if a sound exists for the given animation ID, determine the probability for the sound to play, and then play it.
+            /// </summary>
+            /// <param name="id">The animation ID</param>
+        public void StartSound(int id)
+        {
+            if (SheepSound.ContainsKey(id))
+            {
+                if (rand.Next(0, 100) < SheepSound[id].Probability)
+                {
+                    SheepSound[id].Play(SheepSound[id].Loop);
+                }
+            }
         }
 
             /// <summary>

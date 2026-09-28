@@ -425,6 +425,9 @@ namespace DesktopPet
                 CurrentAnimation = Animations.GetAnimation(id);
                 CurrentAnimation.UpdateValues(DisplayIndex);
 
+                // Play sound if there is one
+                Animations.StartSound(id);
+
                 // v.1.2.6: this will steal taskbar focus and the tray menu will disappear. So this should not be used too often.
                 if (Program.MyData.GetStealTaskbarFocus() && CurrentAnimation.Start.OffsetY != 0 && CurrentAnimation.Start.X.Value != 0)
                 {
