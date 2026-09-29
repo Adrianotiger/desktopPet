@@ -1,0 +1,1 @@
+﻿NDContentPage.OnToolTipsLoaded({902:"<div class=\"NDToolTip TEnumeration LCSharp\"><div id=\"NDPrototype902\" class=\"NDPrototype\"><div class=\"PSection PPlainSection\"><span class=\"SHKeyword\">public enum</span> TOnly</div></div><div class=\"TTSummary\">Enumeration about the Next structure.&nbsp; You can limit the next function to a state:</div></div>"});

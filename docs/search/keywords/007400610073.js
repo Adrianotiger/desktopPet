@@ -1,0 +1,1 @@
+﻿NDSearch.OnPrefixDataLoaded("tas",["Variable"],[["taskText",,[["OptionsWindow.AppOptionsPage",,,,0,"File:AppWins/obj/Debug/AppOptionsPage.g.i.cs:OptionsWindow.AppOptionsPage.taskText","CSharpClass:OptionsWindow.AppOptionsPage:taskText"]]]]);

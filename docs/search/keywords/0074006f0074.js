@@ -1,0 +1,1 @@
+﻿NDSearch.OnPrefixDataLoaded("tot",["Property"],[["TotalSteps",,[["DesktopPet.TSequence",,,,0,"File:dotNet/Animations.cs:DesktopPet.TSequence.TotalSteps","CSharpClass:DesktopPet.TSequence:TotalSteps"]]]]);

@@ -1,0 +1,1 @@
+﻿NDSearch.OnPrefixDataLoaded("eve",["Constant"],[["EventObjectLocationChange",,[["DesktopPet.FormPet",,,,0,"File:dotNet/FormPet.Motion.cs:DesktopPet.FormPet.EventObjectLocationChange","CSharpClass:DesktopPet.FormPet:EventObjectLocationChange"]]]]);

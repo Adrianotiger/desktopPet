@@ -1,0 +1,1 @@
+﻿NDSearch.OnPrefixDataLoaded("too",["Variable"],[["toolsToolStripMenuItem",,[["DesktopPet.FormDebug",,,,0,"File:dotNet/FormDebug.Designer.cs:DesktopPet.FormDebug.toolsToolStripMenuItem","CSharpClass:DesktopPet.FormDebug:toolsToolStripMenuItem"]]]]);

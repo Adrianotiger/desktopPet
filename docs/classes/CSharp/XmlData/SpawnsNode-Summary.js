@@ -1,0 +1,1 @@
+﻿NDFramePage.OnPageTitleLoaded("CSharpClass:XmlData.SpawnsNode","SpawnsNode");NDSummary.OnSummaryLoaded("CSharpClass:XmlData.SpawnsNode",[["C#","CSharp"]],[["Classes","Class"],["Groups","Group"],["Variables","Variable"]],[[1113,0,0,"<span class=\"Qualifier\">XmlData.</span>&#8203;SpawnsNode"],[1114,0,1,"Variables","Variables"],[1115,0,2,"Spawn","Spawn"]]);

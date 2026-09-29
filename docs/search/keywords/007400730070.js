@@ -1,0 +1,1 @@
+﻿NDSearch.OnPrefixDataLoaded("tsp",["Struct"],[["TSpawn",,[["DesktopPet",,,,0,"File:dotNet/Animations.cs:DesktopPet.TSpawn","CSharpClass:DesktopPet.TSpawn"]]]]);

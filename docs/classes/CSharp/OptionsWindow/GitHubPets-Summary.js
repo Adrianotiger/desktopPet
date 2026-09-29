@@ -1,0 +1,1 @@
+﻿NDFramePage.OnPageTitleLoaded("CSharpClass:OptionsWindow.GitHubPets","GitHubPets");NDSummary.OnSummaryLoaded("CSharpClass:OptionsWindow.GitHubPets",[["C#","CSharp"]],[["Classes","Class"],["Groups","Group"],["Properties","Property"]],[[453,0,0,"<span class=\"Qualifier\">OptionsWindow.</span>&#8203;GitHubPets"],[454,0,1,"Properties","Properties"],[455,0,2,"pets","pets"]]);

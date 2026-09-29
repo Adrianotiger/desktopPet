@@ -1,0 +1,1 @@
+﻿NDSearch.OnPrefixDataLoaded("rig",["Variable"],[["Right",,[["DesktopPet.NativeMethods.RECT",,,,0,"File:dotNet/FormPet.cs:DesktopPet.NativeMethods.RECT.Right","CSharpClass:DesktopPet.NativeMethods.RECT:Right"]]]]);

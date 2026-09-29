@@ -1,0 +1,1 @@
+﻿NDSearch.OnPrefixDataLoaded("cre",["Function","Property"],[["Create",,[["DesktopPet.ContextMenus",,,,0,"File:dotNet/ContextMenus.cs:DesktopPet.ContextMenus.Create","CSharpClass:DesktopPet.ContextMenus:Create"]]],["CreateParams",,[["DesktopPet.FormPet",,,,1,"File:dotNet/FormPet.cs:DesktopPet.FormPet.CreateParams","CSharpClass:DesktopPet.FormPet:CreateParams"]]]]);

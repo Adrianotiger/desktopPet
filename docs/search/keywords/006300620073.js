@@ -1,0 +1,1 @@
+﻿NDSearch.OnPrefixDataLoaded("cbs",["Variable"],[["cbSize",,[["DesktopPet.NativeMethods.TITLEBARINFO",,,,0,"File:dotNet/FormPet.cs:DesktopPet.NativeMethods.TITLEBARINFO.cbSize","CSharpClass:DesktopPet.NativeMethods.TITLEBARINFO:cbSize"]]]]);

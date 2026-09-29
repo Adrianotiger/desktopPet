@@ -1,0 +1,1 @@
+﻿NDSearch.OnPrefixDataLoaded("ist",["Variable"],[["IsTossing",,[["DesktopPet.FormPet",,,,0,"File:dotNet/FormPet.cs:DesktopPet.FormPet.IsTossing","CSharpClass:DesktopPet.FormPet:IsTossing"]]]]);

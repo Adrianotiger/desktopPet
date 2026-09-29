@@ -1,0 +1,1 @@
+﻿NDSearch.OnPrefixDataLoaded("fli",["Variable"],[["flippedSprites",,[["DesktopPet.FormPet",,,,0,"File:dotNet/FormPet.Motion.cs:DesktopPet.FormPet.flippedSprites","CSharpClass:DesktopPet.FormPet:flippedSprites"]]]]);

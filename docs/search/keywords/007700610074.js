@@ -1,0 +1,1 @@
+﻿NDSearch.OnPrefixDataLoaded("wat",["Variable"],[["watcherJson",,[["LocalData.LocalData",,,,0,"File:LocalData/Class1.cs:LocalData.LocalData.watcherJson","CSharpClass:LocalData.LocalData:watcherJson"]]],["watcherXml",,[["LocalData.LocalData",,,,0,"File:LocalData/Class1.cs:LocalData.LocalData.watcherXml","CSharpClass:LocalData.LocalData:watcherXml"]]]]);

@@ -1,0 +1,1 @@
+﻿NDSearch.OnPrefixDataLoaded("hea",["Variable","Class"],[["Header",,[["XmlData.RootNode",,,,0,"File:LocalData/AnimationXML.cs:XmlData.RootNode.Header","CSharpClass:XmlData.RootNode:Header"]]],["HeaderNode",,[["XmlData",,,,1,"File:LocalData/AnimationXML.cs:XmlData.HeaderNode","CSharpClass:XmlData.HeaderNode"]]]]);

@@ -1,0 +1,1 @@
+﻿NDSearch.OnPrefixDataLoaded("emb",["Class"],[["EmbeddedAssembly",,[["DesktopPet",,,,0,"File:dotNet/EmbeddedAssembly.cs:DesktopPet.EmbeddedAssembly","CSharpClass:DesktopPet.EmbeddedAssembly"]]]]);

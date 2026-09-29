@@ -1,0 +1,1 @@
+﻿NDSearch.OnPrefixDataLoaded("ter",["Struct"],[["TError",,[["DesktopPet.StartUp",,,,0,"File:dotNet/StartUp.cs:DesktopPet.StartUp.TError","CSharpClass:DesktopPet.StartUp.TError"]]]]);

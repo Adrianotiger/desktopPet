@@ -1,0 +1,1 @@
+﻿NDSearch.OnPrefixDataLoaded("has",["Function"],[["HasAnimationChild",,[["DesktopPet.Animations",,,,0,"File:dotNet/Animations.cs:DesktopPet.Animations.HasAnimationChild","CSharpClass:DesktopPet.Animations:HasAnimationChild"]]]]);

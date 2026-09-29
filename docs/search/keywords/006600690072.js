@@ -1,0 +1,1 @@
+﻿NDSearch.OnPrefixDataLoaded("fir",["Variable"],[["FirstBoot",,[["LocalData.LocalData",,,,0,"File:LocalData/Class1.cs:LocalData.LocalData.FirstBoot","CSharpClass:LocalData.LocalData:FirstBoot"]]]]);

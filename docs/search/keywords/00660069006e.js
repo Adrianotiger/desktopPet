@@ -1,0 +1,1 @@
+﻿NDSearch.OnPrefixDataLoaded("fin",["Function"],[["FindWindowEx",,[["DesktopPet.FormDebug",,,,0,"File:dotNet/FormDebug.cs:DesktopPet.FormDebug.FindWindowEx","CSharpClass:DesktopPet.FormDebug:FindWindowEx"],["DesktopPet.NativeMethods",,,,0,"File:dotNet/FormPet.cs:DesktopPet.NativeMethods.FindWindowEx","CSharpClass:DesktopPet.NativeMethods:FindWindowEx"]]]]);

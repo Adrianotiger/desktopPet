@@ -1,0 +1,1 @@
+﻿NDSearch.OnPrefixDataLoaded("tse",["Struct"],[["TSequence",,[["DesktopPet",,,,0,"File:dotNet/Animations.cs:DesktopPet.TSequence","CSharpClass:DesktopPet.TSequence"]]]]);

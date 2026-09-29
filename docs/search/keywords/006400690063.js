@@ -1,0 +1,1 @@
+﻿NDSearch.OnPrefixDataLoaded("dic",["Variable"],[["dic",,[["DesktopPet.EmbeddedAssembly",,,,0,"File:dotNet/EmbeddedAssembly.cs:DesktopPet.EmbeddedAssembly.dic","CSharpClass:DesktopPet.EmbeddedAssembly:dic"]]]]);

@@ -1,0 +1,1 @@
+﻿NDSearch.OnPrefixDataLoaded("bit",["Variable"],[["bitmapIcon",,[["DesktopPet.Xml",,,,0,"File:dotNet/Xml.cs:DesktopPet.Xml.bitmapIcon","CSharpClass:DesktopPet.Xml:bitmapIcon"]]]]);

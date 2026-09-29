@@ -1,0 +1,1 @@
+﻿NDSearch.OnPrefixDataLoaded("isc",["Variable"],[["iScale",,[["DesktopPet.Xml",,,,0,"File:dotNet/Xml.cs:DesktopPet.Xml.iScale","CSharpClass:DesktopPet.Xml:iScale"]]]]);

@@ -1,0 +1,1 @@
+﻿NDSearch.OnPrefixDataLoaded("deb",["Variable","Enumeration"],[["debug",,[["DesktopPet.StartUp",,,,0,"File:dotNet/StartUp.cs:DesktopPet.StartUp.debug","CSharpClass:DesktopPet.StartUp:debug"]]],["DEBUG_TYPE",,[["DesktopPet.StartUp",,,,1,"File:dotNet/StartUp.cs:DesktopPet.StartUp.DEBUG_TYPE","CSharpClass:DesktopPet.StartUp:DEBUG_TYPE"]]]]);

@@ -1,0 +1,1 @@
+﻿NDSearch.OnPrefixDataLoaded("iso",["Variable"],[["isOptionLoaded",,[["DesktopPet.ContextMenus",,,,0,"File:dotNet/ContextMenus.cs:DesktopPet.ContextMenus.isOptionLoaded","CSharpClass:DesktopPet.ContextMenus:isOptionLoaded"]]]]);

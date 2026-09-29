@@ -1,0 +1,1 @@
+﻿NDSearch.OnPrefixDataLoaded("png",["Variable"],[["Png",,[["XmlData.ImageNode",,,,0,"File:LocalData/AnimationXML.cs:XmlData.ImageNode.Png","CSharpClass:XmlData.ImageNode:Png"]]]]);

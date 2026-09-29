@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="12" height="12" version="1.1" viewBox="0 0 18 18" xmlns="http://www.w3.org/2000/svg">
+ <g fill="none" stroke="#f4f4f4">
+  <g>
+   <rect x=".5" y=".5" width="10" height="4"/>
+   <rect x="7.5" y="6.5" width="10" height="4"/>
+   <rect x="7.5" y="12.5" width="10" height="4"/>
+  </g>
+  <path d="m3.5 4v10.5h3.5" stroke-opacity=".5" stroke-width="1px"/>
+  <path d="m4 8.5h3" stroke-opacity=".5" stroke-width="1px"/>
+ </g>
+</svg>

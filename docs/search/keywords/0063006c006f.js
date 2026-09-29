@@ -1,0 +1,1 @@
+﻿NDSearch.OnPrefixDataLoaded("clo",["Variable"],[["closeSheepMenuItem",,[["DesktopPet.ContextMenus",,,,0,"File:dotNet/ContextMenus.cs:DesktopPet.ContextMenus.closeSheepMenuItem","CSharpClass:DesktopPet.ContextMenus:closeSheepMenuItem"]]]]);

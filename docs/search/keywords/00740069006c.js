@@ -1,0 +1,1 @@
+﻿NDSearch.OnPrefixDataLoaded("til",["Variable"],[["TilesX",,[["XmlData.ImageNode",,,,0,"File:LocalData/AnimationXML.cs:XmlData.ImageNode.TilesX","CSharpClass:XmlData.ImageNode:TilesX"]]],["TilesY",,[["XmlData.ImageNode",,,,0,"File:LocalData/AnimationXML.cs:XmlData.ImageNode.TilesY","CSharpClass:XmlData.ImageNode:TilesY"]]]]);

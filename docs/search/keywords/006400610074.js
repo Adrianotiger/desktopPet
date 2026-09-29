@@ -1,0 +1,1 @@
+﻿NDSearch.OnPrefixDataLoaded("dat",["Property"],[["Date",,[["LocalData.PetUpdate",,,,0,"File:LocalData/Class1.cs:LocalData.PetUpdate.Date","CSharpClass:LocalData.PetUpdate:Date"]]]]);

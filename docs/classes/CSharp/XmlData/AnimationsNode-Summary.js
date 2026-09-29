@@ -1,0 +1,1 @@
+﻿NDFramePage.OnPageTitleLoaded("CSharpClass:XmlData.AnimationsNode","AnimationsNode");NDSummary.OnSummaryLoaded("CSharpClass:XmlData.AnimationsNode",[["C#","CSharp"]],[["Classes","Class"],["Groups","Group"],["Variables","Variable"]],[[1116,0,0,"<span class=\"Qualifier\">XmlData.</span>&#8203;AnimationsNode"],[1117,0,1,"Variables","Variables"],[1118,0,2,"Animation","Animation"]]);

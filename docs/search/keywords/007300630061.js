@@ -1,0 +1,1 @@
+﻿NDSearch.OnPrefixDataLoaded("sca",["Property"],[["Scale",,[["DesktopPet.Properties.Settings",,,,0,"File:Properties/Settings1.Designer.cs:DesktopPet.Properties.Settings.Scale","CSharpClass:DesktopPet.Properties.Settings:Scale"],["LocalData.Settings",,,,0,"File:LocalData/Class1.cs:LocalData.Settings.Scale","CSharpClass:LocalData.Settings:Scale"]]]]);

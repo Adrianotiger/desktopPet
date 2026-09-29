@@ -1,0 +1,1 @@
+﻿NDSearch.OnPrefixDataLoaded("isw",["Function"],[["IsWindowVisible",,[["DesktopPet.NativeMethods",,,,0,"File:dotNet/FormPet.cs:DesktopPet.NativeMethods.IsWindowVisible","CSharpClass:DesktopPet.NativeMethods:IsWindowVisible"]]]]);

@@ -1,0 +1,1 @@
+﻿NDSearch.OnPrefixDataLoaded("rct",["Variable"],[["rcTitleBar",,[["DesktopPet.NativeMethods.TITLEBARINFO",,,,0,"File:dotNet/FormPet.cs:DesktopPet.NativeMethods.TITLEBARINFO.rcTitleBar","CSharpClass:DesktopPet.NativeMethods.TITLEBARINFO:rcTitleBar"]]]]);

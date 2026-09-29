@@ -1,0 +1,1 @@
+﻿NDSearch.OnPrefixDataLoaded("ism",["Function","Variable"],[["IsMoving",,[["DesktopPet.MotionTrack",,,,0,"File:dotNet/MotionTrack.cs:DesktopPet.MotionTrack.IsMoving","CSharpClass:DesktopPet.MotionTrack:IsMoving"]]],["IsMovingLeft",,[["DesktopPet.FormPet",,,,1,"File:dotNet/FormPet.cs:DesktopPet.FormPet.IsMovingLeft","CSharpClass:DesktopPet.FormPet:IsMovingLeft"]]]]);

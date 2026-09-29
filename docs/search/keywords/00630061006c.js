@@ -1,0 +1,1 @@
+﻿NDSearch.OnPrefixDataLoaded("cal",["Function"],[["CalculateTotalSteps",,[["DesktopPet.TSequence",,,,0,"File:dotNet/Animations.cs:DesktopPet.TSequence.CalculateTotalSteps","CSharpClass:DesktopPet.TSequence:CalculateTotalSteps"]]]]);

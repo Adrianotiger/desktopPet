@@ -1,0 +1,1 @@
+﻿NDSearch.OnPrefixDataLoaded("uni",["Variable"],[["uninstallBatch",,[["DesktopPet.Install",,,,0,"File:dotNet/Portable/Install.cs:DesktopPet.Install.uninstallBatch","CSharpClass:DesktopPet.Install:uninstallBatch"]]]]);

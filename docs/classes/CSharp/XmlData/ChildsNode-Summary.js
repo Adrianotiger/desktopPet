@@ -1,0 +1,1 @@
+﻿NDFramePage.OnPageTitleLoaded("CSharpClass:XmlData.ChildsNode","ChildsNode");NDSummary.OnSummaryLoaded("CSharpClass:XmlData.ChildsNode",[["C#","CSharp"]],[["Classes","Class"],["Groups","Group"],["Variables","Variable"]],[[1119,0,0,"<span class=\"Qualifier\">XmlData.</span>&#8203;ChildsNode"],[1120,0,1,"Variables","Variables"],[1121,0,2,"Child","Child"]]);

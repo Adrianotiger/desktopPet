@@ -1,0 +1,1 @@
+﻿NDSearch.OnPrefixDataLoaded("int",["Variable"],[["Interval",,[["DesktopPet.TMovement",,,,0,"File:dotNet/Animations.cs:DesktopPet.TMovement.Interval","CSharpClass:DesktopPet.TMovement:Interval"],["XmlData.MovingNode",,,,0,"File:LocalData/AnimationXML.cs:XmlData.MovingNode.Interval","CSharpClass:XmlData.MovingNode:Interval"]]]]);

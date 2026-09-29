@@ -1,0 +1,1 @@
+﻿NDFramePage.OnPageTitleLoaded("CSharpClass:LocalData.PetUpdate","PetUpdate");NDSummary.OnSummaryLoaded("CSharpClass:LocalData.PetUpdate",[["C#","CSharp"]],[["Classes","Class"],["Groups","Group"],["Properties","Property"]],[[995,0,0,"<span class=\"Qualifier\">LocalData.</span>&#8203;PetUpdate"],[996,0,1,"Properties","Properties"],[997,0,2,"Name","Name"],[998,0,2,"Date","Date"]]);

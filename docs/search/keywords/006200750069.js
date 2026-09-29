@@ -1,0 +1,1 @@
+﻿NDSearch.OnPrefixDataLoaded("bui",["Function"],[["BuildSprites",,[["DesktopPet.Xml",,,,0,"File:dotNet/Xml.cs:DesktopPet.Xml.BuildSprites","CSharpClass:DesktopPet.Xml:BuildSprites"]]]]);

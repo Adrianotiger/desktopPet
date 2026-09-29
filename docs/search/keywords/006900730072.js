@@ -1,0 +1,1 @@
+﻿NDSearch.OnPrefixDataLoaded("isr",["Variable"],[["isRealoadingSettings",,[["DesktopPet.StartUp",,,,0,"File:dotNet/StartUp.cs:DesktopPet.StartUp.isRealoadingSettings","CSharpClass:DesktopPet.StartUp:isRealoadingSettings"]]]]);

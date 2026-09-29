@@ -1,0 +1,1 @@
+﻿NDSearch.OnPrefixDataLoaded("spl",["Variable"],[["splitContainer1",,[["DesktopPet.FormDebug",,,,0,"File:dotNet/FormDebug.Designer.cs:DesktopPet.FormDebug.splitContainer1","CSharpClass:DesktopPet.FormDebug:splitContainer1"]]]]);

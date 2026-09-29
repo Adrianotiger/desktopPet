@@ -1,0 +1,1 @@
+﻿NDSearch.OnPrefixDataLoaded("fra",["Variable"],[["Frame",,[["XmlData.SequenceNode",,,,0,"File:LocalData/AnimationXML.cs:XmlData.SequenceNode.Frame","CSharpClass:XmlData.SequenceNode:Frame"]]],["Frames",,[["DesktopPet.TSequence",,,,0,"File:dotNet/Animations.cs:DesktopPet.TSequence.Frames","CSharpClass:DesktopPet.TSequence:Frames"]]]]);

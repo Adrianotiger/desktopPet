@@ -1,0 +1,1 @@
+﻿NDSearch.OnPrefixDataLoaded("dur",["Variable"],[["duration",,[["DesktopPet.MotionTrack",,,,0,"File:dotNet/MotionTrack.cs:DesktopPet.MotionTrack.duration","CSharpClass:DesktopPet.MotionTrack:duration"]]]]);

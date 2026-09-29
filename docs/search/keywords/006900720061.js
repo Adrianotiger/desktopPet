@@ -1,0 +1,1 @@
+﻿NDSearch.OnPrefixDataLoaded("ira",["Variable"],[["iRandomSpawn",,[["DesktopPet.Xml",,,,0,"File:dotNet/Xml.cs:DesktopPet.Xml.iRandomSpawn","CSharpClass:DesktopPet.Xml:iRandomSpawn"]]]]);

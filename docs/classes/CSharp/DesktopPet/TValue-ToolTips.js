@@ -1,0 +1,1 @@
+﻿NDContentPage.OnToolTipsLoaded({889:"<div class=\"NDToolTip TVariable LCSharp\"><div id=\"NDPrototype889\" class=\"NDPrototype\"><div class=\"PSection PPlainSection\"><span class=\"SHKeyword\">public string</span> Compute</div></div><div class=\"TTSummary\">String with the expression to compute</div></div>"});

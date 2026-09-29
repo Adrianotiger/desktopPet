@@ -1,0 +1,1 @@
+﻿NDFramePage.OnPageTitleLoaded("CSharpClass:XmlData.AnimationXML","AnimationXML");NDSummary.OnSummaryLoaded("CSharpClass:XmlData.AnimationXML",[["C#","CSharp"]],[["Classes","Class"],["Functions","Function"],["Groups","Group"]],[[1175,0,0,"<span class=\"Qualifier\">XmlData.</span>&#8203;AnimationXML"],[1176,0,2,"Functions","Functions"],[1177,0,1,"ParseXML","ParseXML"]]);

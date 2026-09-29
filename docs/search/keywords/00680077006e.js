@@ -1,0 +1,1 @@
+﻿NDSearch.OnPrefixDataLoaded("hwn",["Variable"],[["hwndFullscreenWindow",,[["DesktopPet.FormPet",,,,0,"File:dotNet/FormPet.cs:DesktopPet.FormPet.hwndFullscreenWindow","CSharpClass:DesktopPet.FormPet:hwndFullscreenWindow"]]],["hwndWindow",,[["DesktopPet.FormPet",,,,0,"File:dotNet/FormPet.cs:DesktopPet.FormPet.hwndWindow","CSharpClass:DesktopPet.FormPet:hwndWindow"]]]]);

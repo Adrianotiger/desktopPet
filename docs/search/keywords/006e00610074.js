@@ -1,0 +1,1 @@
+﻿NDSearch.OnPrefixDataLoaded("nat",["Class"],[["NativeMethods",,[["DesktopPet",,,,0,"File:dotNet/FormPet.cs:DesktopPet.NativeMethods","CSharpClass:DesktopPet.NativeMethods"]]]]);

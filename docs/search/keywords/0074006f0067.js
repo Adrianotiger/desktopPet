@@ -1,0 +1,1 @@
+﻿NDSearch.OnPrefixDataLoaded("tog",["Function"],[["ToggleSwitch_Toggled",,[["OptionsWindow.AppOptionsPage",,,,0,"File:AppWins/AppOptionsPage.xaml.cs:OptionsWindow.AppOptionsPage.ToggleSwitch_Toggled","CSharpClass:OptionsWindow.AppOptionsPage:ToggleSwitch_Toggled"]]]]);

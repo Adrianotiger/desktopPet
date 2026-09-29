@@ -1,0 +1,1 @@
+﻿NDSearch.OnPrefixDataLoaded("iss",["Variable"],[["IsScreen",,[["DesktopPet.TValue",,,,0,"File:dotNet/Animations.cs:DesktopPet.TValue.IsScreen","CSharpClass:DesktopPet.TValue:IsScreen"]]]]);

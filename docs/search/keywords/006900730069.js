@@ -1,0 +1,1 @@
+﻿NDSearch.OnPrefixDataLoaded("isi",["Variable"],[["isInstalled",,[["DesktopPet.LocalData",,,,0,"File:Portable/LocalData.cs:DesktopPet.LocalData.isInstalled","CSharpClass:DesktopPet.LocalData:isInstalled"]]]]);

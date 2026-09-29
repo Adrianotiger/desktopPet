@@ -1,0 +1,1 @@
+﻿NDSearch.OnPrefixDataLoaded("adv",["Function"],[["AdvanceToss",,[["DesktopPet.FormPet",,,,0,"File:dotNet/FormPet.Motion.cs:DesktopPet.FormPet.AdvanceToss","CSharpClass:DesktopPet.FormPet:AdvanceToss"]]]]);

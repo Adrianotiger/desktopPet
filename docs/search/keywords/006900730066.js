@@ -1,0 +1,1 @@
+﻿NDSearch.OnPrefixDataLoaded("isf",["Function"],[["IsFirstBoot",,[["DesktopPet.LocalData",,,,0,"File:Portable/LocalData.cs:DesktopPet.LocalData.IsFirstBoot","CSharpClass:DesktopPet.LocalData:IsFirstBoot"],["LocalData.LocalData",,,,0,"File:LocalData/Class1.cs:LocalData.LocalData.IsFirstBoot","CSharpClass:LocalData.LocalData:IsFirstBoot"]]]]);

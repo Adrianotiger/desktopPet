@@ -1,0 +1,1 @@
+﻿NDSearch.OnPrefixDataLoaded("myf",["Delegate"],[["MyFunction",,[["DesktopPet.LocalData",,,,0,"File:Portable/LocalData.cs:DesktopPet.LocalData.MyFunction","CSharpClass:DesktopPet.LocalData:MyFunction"],["LocalData.LocalData",,,,0,"File:LocalData/Class1.cs:LocalData.LocalData.MyFunction","CSharpClass:LocalData.LocalData:MyFunction"]]]]);

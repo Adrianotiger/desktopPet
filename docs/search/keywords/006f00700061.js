@@ -1,0 +1,1 @@
+﻿NDSearch.OnPrefixDataLoaded("opa",["Variable"],[["Opacity",,[["DesktopPet.TMovement",,,,0,"File:dotNet/Animations.cs:DesktopPet.TMovement.Opacity","CSharpClass:DesktopPet.TMovement:Opacity"],["XmlData.MovingNode",,,,0,"File:LocalData/AnimationXML.cs:XmlData.MovingNode.Opacity","CSharpClass:XmlData.MovingNode:Opacity"]]]]);

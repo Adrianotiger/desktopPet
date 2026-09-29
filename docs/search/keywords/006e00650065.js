@@ -1,0 +1,1 @@
+﻿NDSearch.OnPrefixDataLoaded("nee",["Function"],[["NeedToLoadNew",,[["LocalData.LocalData",,,,0,"File:LocalData/Class1.cs:LocalData.LocalData.NeedToLoadNew","CSharpClass:LocalData.LocalData:NeedToLoadNew"]]]]);

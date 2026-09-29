@@ -1,0 +1,1 @@
+﻿NDSearch.OnPrefixDataLoaded("all",["Variable"],[["AllPets",,[["OptionsWindow.GitHubClass",,,,0,"File:AppWins/GitHubClass.cs:OptionsWindow.GitHubClass.AllPets","CSharpClass:OptionsWindow.GitHubClass:AllPets"]]]]);

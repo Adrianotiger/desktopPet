@@ -1,0 +1,1 @@
+﻿NDFramePage.OnPageTitleLoaded("CSharpClass:XmlData.SoundsNode","SoundsNode");NDSummary.OnSummaryLoaded("CSharpClass:XmlData.SoundsNode",[["C#","CSharp"]],[["Classes","Class"],["Groups","Group"],["Variables","Variable"]],[[1122,0,0,"<span class=\"Qualifier\">XmlData.</span>&#8203;SoundsNode"],[1123,0,1,"Variables","Variables"],[1124,0,2,"Sound","Sound"]]);

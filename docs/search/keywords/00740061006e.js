@@ -1,0 +1,1 @@
+﻿NDSearch.OnPrefixDataLoaded("tan",["Struct"],[["TAnimation",,[["DesktopPet",,,,0,"File:dotNet/Animations.cs:DesktopPet.TAnimation","CSharpClass:DesktopPet.TAnimation"]]]]);

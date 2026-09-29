@@ -1,0 +1,1 @@
+﻿NDFramePage.OnPageTitleLoaded("CSharpClass:XmlData.HitNode","HitNode");NDSummary.OnSummaryLoaded("CSharpClass:XmlData.HitNode",[["C#","CSharp"]],[["Classes","Class"],["Groups","Group"],["Variables","Variable"]],[[1167,0,0,"<span class=\"Qualifier\">XmlData.</span>&#8203;HitNode"],[1168,0,1,"Variables","Variables"],[1169,0,2,"Next","Next"]]);

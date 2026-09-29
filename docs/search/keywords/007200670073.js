@@ -1,0 +1,1 @@
+﻿NDSearch.OnPrefixDataLoaded("rgs",["Variable"],[["rgstate",,[["DesktopPet.NativeMethods.TITLEBARINFO",,,,0,"File:dotNet/FormPet.cs:DesktopPet.NativeMethods.TITLEBARINFO.rgstate","CSharpClass:DesktopPet.NativeMethods.TITLEBARINFO:rgstate"]]]]);

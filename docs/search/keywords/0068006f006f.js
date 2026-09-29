@@ -1,0 +1,1 @@
+﻿NDSearch.OnPrefixDataLoaded("hoo",["Variable"],[["hookedWindow",,[["DesktopPet.FormPet",,,,0,"File:dotNet/FormPet.Motion.cs:DesktopPet.FormPet.hookedWindow","CSharpClass:DesktopPet.FormPet:hookedWindow"]]],["hookTaskbarId",,[["DesktopPet.FormPet",,,,0,"File:dotNet/FormPet.cs:DesktopPet.FormPet.hookTaskbarId","CSharpClass:DesktopPet.FormPet:hookTaskbarId"]]]]);

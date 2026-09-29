@@ -1,0 +1,1 @@
+﻿NDContentPage.OnToolTipsLoaded({612:"<div class=\"NDToolTip TFunction LCSharp\"><div id=\"NDPrototype612\" class=\"NDPrototype\"><div class=\"PSection PPlainSection\"><span class=\"SHKeyword\">public</span> ProcessIcon()</div></div><div class=\"TTSummary\">Initializes a new instance of the ProcessIcon class.</div></div>"});
