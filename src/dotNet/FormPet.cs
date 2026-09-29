@@ -126,9 +126,10 @@ namespace DesktopPet
             InitializeMotion();
             Visible = false;            // Is invisible at beginning (we don't know where this sprite should be positioned)
             Opacity = 0.0;
-            for (var s = 0; s < Screen.AllScreens.Length; s++)
+            Screen[] screens = Screen.AllScreens;
+            for (var s = 0; s < screens.Length; s++)
             {
-                if (Screen.AllScreens[s].Primary)
+                if (screens[s].Primary)
                 {
                     DisplayIndex = s;
                     break;
@@ -239,8 +240,20 @@ namespace DesktopPet
             
         }
 
-        private Rectangle ScreenBounds { get { return Screen.AllScreens[DisplayIndex].Bounds; } }
-        private Rectangle ScreenArea { get { return Screen.AllScreens[DisplayIndex].WorkingArea; } }
+        private Screen CurrentScreen
+        {
+            get
+            {
+                // Display indices can become stale after unplugging a monitor or an RDP change.
+                // Resolve against one snapshot so enumeration cannot change between check and use.
+                Screen[] screens = Screen.AllScreens;
+                if (DisplayIndex < 0 || DisplayIndex >= screens.Length)
+                    DisplayIndex = Math.Max(0, Array.FindIndex(screens, screen => screen.Primary));
+                return screens[DisplayIndex];
+            }
+        }
+        private Rectangle ScreenBounds { get { return CurrentScreen.Bounds; } }
+        private Rectangle ScreenArea { get { return CurrentScreen.WorkingArea; } }
 
 		/// <summary>
 		/// Once the form was created, resized and all images was set, this is the next function to call.<br />
@@ -1199,9 +1212,10 @@ namespace DesktopPet
                 // if it was dragged, check if the screen is different
                 // if(Program.MyData.GetMultiscreen()) <-- If manually moved to another screen, set the new screen as default screen.
                 {
-                    for(var k=0;k<Screen.AllScreens.Length;k++)
+                    Screen[] screens = Screen.AllScreens;
+                    for(var k=0;k<screens.Length;k++)
                     {
-                        Rectangle bounds = Screen.AllScreens[k].Bounds;
+                        Rectangle bounds = screens[k].Bounds;
 
                         if (Left + Width / 2 >= bounds.X && 
                             Left + Width / 2 <= bounds.X + bounds.Width)

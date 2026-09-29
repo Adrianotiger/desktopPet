@@ -1,4 +1,4 @@
-param(
+﻿param(
     [string]$FrameworkPath = "${env:ProgramFiles(x86)}/Reference Assemblies/Microsoft/Framework/.NETFramework/v4.7.2",
     [string]$MSBuildPath,
     [string[]]$Platforms = @('x64', 'x86'),
@@ -30,6 +30,10 @@ foreach ($platform in $Platforms) {
     if ($LASTEXITCODE -ne 0) { throw 'Motion tests failed.' }
     & $compiler /nologo "/platform:$platform" /r:System.Drawing.dll /r:System.Windows.Forms.dll "/out:$runtime/RuntimeMotionTests.exe" "$repo/tests/RuntimeMotionTests.cs"
     if ($LASTEXITCODE -ne 0) { throw 'Runtime test compilation failed.' }
+    & $compiler /nologo "/platform:$platform" /r:System.Drawing.dll /r:System.Windows.Forms.dll "/out:$runtime/DisplayTopologyTests.exe" "$repo/tests/DisplayTopologyTests.cs"
+    if ($LASTEXITCODE -ne 0) { throw 'Display topology test compilation failed.' }
+    & "$runtime/DisplayTopologyTests.exe"
+    if ($LASTEXITCODE -ne 0) { throw 'Display topology tests failed.' }
     Copy-Item "$repo/src/Resources/animations.xml" "$runtime/motion-fixture.xml"
     foreach ($scale in $Scales) {
         foreach ($display in $Displays) {

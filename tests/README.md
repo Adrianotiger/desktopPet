@@ -28,6 +28,8 @@ does not download packages or access an installed pet.
 
 ## Coverage
 
+- Removed-display indices in XML expressions and pet bounds, relocation from a
+  removed monitor, and display-change recovery callbacks after disposal.
 - Interpolation endpoints, direction changes, negative desktop coordinates, window
   resize transforms, and timestamp-based drag velocity.
 - Real WinForms movement between animation ticks, immediate drag positioning,

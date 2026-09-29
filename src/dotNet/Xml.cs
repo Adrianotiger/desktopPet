@@ -417,7 +417,8 @@ namespace DesktopPet
                 }
             }
             var screen = Screen.PrimaryScreen;
-            if (screenIndex >= 0) screen = Screen.AllScreens[screenIndex];
+            Screen[] screens = Screen.AllScreens;
+            if (screenIndex >= 0 && screenIndex < screens.Length) screen = screens[screenIndex];
 
             parsingText = parsingText.Replace("screenW", screen.Bounds.Width.ToString(CultureInfo.InvariantCulture));
             parsingText = parsingText.Replace("screenH", screen.Bounds.Height.ToString(CultureInfo.InvariantCulture));

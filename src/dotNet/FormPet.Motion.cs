@@ -129,6 +129,7 @@ namespace DesktopPet
 
         private void DisposeMotion()
         {
+            Microsoft.Win32.SystemEvents.DisplaySettingsChanged -= DisplaySettingsChanged;
             // Releasing a captured PictureBox during disposal must not start a toss.
             IsDragging = false;
             IsTossing = false;
@@ -139,8 +140,40 @@ namespace DesktopPet
             flippedSprites.Clear();
         }
 
+        private void DisplaySettingsChanged(object sender, EventArgs e)
+        {
+            if (IsDisposed || Disposing || !IsHandleCreated) return;
+            try { BeginInvoke((Action)RecoverDisplayLayout); }
+            catch (InvalidOperationException) when (IsDisposed || Disposing || !IsHandleCreated)
+            {
+                // The form can close between the handle check and marshaling to its UI thread.
+            }
+        }
+
+        private void RecoverDisplayLayout()
+        {
+            if (IsDisposed || Disposing) return;
+            Screen nearest = Screen.FromRectangle(Bounds);
+            Screen[] screens = Screen.AllScreens;
+            DisplayIndex = Math.Max(0, Array.FindIndex(screens, screen => screen.DeviceName == nearest.DeviceName));
+            Rectangle area = ScreenArea;
+            if (IsDragging || Bounds.IntersectsWith(area)) return;
+            // A pet on a removed display should reappear on the remaining desktop.
+            hwndWindow = IntPtr.Zero;
+            IsLeaving = false;
+            pictureBox1.Location = Point.Empty;
+            Size = pictureBox1.Size;
+            int x = Math.Max(area.Left, Math.Min(Left, area.Right - Width));
+            int y = Math.Max(area.Top, Math.Min(Top, area.Bottom - Height));
+            Location = new Point(x, y);
+            PositionX = x;
+            PositionY = y - OffsetY;
+            ResetMotion();
+        }
+
         private void InitializeMotion()
         {
+            Microsoft.Win32.SystemEvents.DisplaySettingsChanged += DisplaySettingsChanged;
             followCallback = (hook, evt, window, objectId, childId, thread, time) =>
             {
                 if (!IsDisposed && !Disposing && window == hwndWindow && objectId == 0 && childId == 0 && !IsLeaving && !IsDragging)
