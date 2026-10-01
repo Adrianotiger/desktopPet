@@ -22,7 +22,7 @@ Compiled with .NET4.7, this application is just an exe and works on every 64-bit
 
 | OS |  Windows 7/8/9/10/11 |
 |---|---|
-| Version |  1.4.0 | 
+| Version |  1.5.0 | 
 | Last update | october 2026 | 
 | Link | <a href='https://github.com/Adrianotiger/desktopPet/releases/latest'><img src='https://img.shields.io/github/downloads/adrianotiger/desktopPet/total.svg' style='vertical-align:middle'> &nbsp; Download Page</a> |
 
@@ -46,7 +46,7 @@ It contains only 2 pets for the moment. In future, all GitHub pets will be integ
 | OS |  Android 14+ |
 |---|---|
 | Version |  1.4.0 | 
-| Last update | october 2026 | 
+| Last update | september 2026 | 
 | Link | <a href='https://play.google.com/store/apps/details?id=ch.petrucci.androsheep'><img width="128" height="41" alt="image" src="https://github.com/user-attachments/assets/8609a885-8e26-4e87-a0c5-e2f0e785d5bb" /></a> |
 
 ## MAC OS (GitHub)
@@ -56,7 +56,7 @@ You have to build it on your system, there is no download for the moment.
 | OS |  macOS 26+ |
 |---|---|
 | Version |  1.4.0 | 
-| Last update | october 2026 | 
+| Last update | september 2026 | 
 | Link | <a href='https://github.com/iappyx/DesktopPetMac'><img width="128" height="45" alt="image" src="https://github.com/user-attachments/assets/9e989761-17d3-4d70-bb38-5069873fe38c" /></a> |
 
 ## Browser (GitHub | Javascript)
