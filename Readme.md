@@ -1,6 +1,6 @@
 # Desktop Pet (eSheep)
 
-Can you remember eSheep, the lovely desktop sheep? <img src='src/Images/esheep.png' />
+Can you remember eSheep, the lovely desktop sheep? <img src='src/Images/esheep.png' />  
 **If you had a lot of them on the desktop... welcome to this page!**  
 
 This project gives you the possibility to add a pet to your desktop.  
@@ -35,17 +35,19 @@ Note: Windows 10 and Windows 11 now expect modern UWP applications instead of Si
 |---|---|
 | Version |  1.2.6 | 
 | Last update | may 2021 | 
-| Link | <a href='https://www.microsoft.com/store/apps/9MX2V0TQT6RM'>Windows store</a> |
+| Link | <a href='https://www.microsoft.com/store/apps/9MX2V0TQT6RM'><img width="128" height="45" alt="image" src="https://github.com/user-attachments/assets/6c9aac7d-5830-4695-a954-647e116c7aa6" /></a> |
 
 ## Android (Store)
 Just a simple port, based on Version 1.4.0 for Android and with a nostalgic Windows95 look.  
 It contains only 2 pets for the moment. In future, all GitHub pets will be integrated.
 
+<img width="240" height="126" alt="image" src="https://github.com/user-attachments/assets/14e4caec-ce2e-4396-a224-6fd875bc36fb" />
+
 | OS |  Android 14+ |
 |---|---|
 | Version |  1.4.0 | 
 | Last update | october 2026 | 
-| Link | <a href='https://play.google.com/store/apps/details?id=ch.petrucci.androsheep'>Google Play</a> |
+| Link | <a href='https://play.google.com/store/apps/details?id=ch.petrucci.androsheep'><img width="128" height="41" alt="image" src="https://github.com/user-attachments/assets/8609a885-8e26-4e87-a0c5-e2f0e785d5bb" /></a> |
 
 ## MAC OS (GitHub)
 [iappyx](https://github.com/iappyx) created a macOS-Version with Swift/AppKit.
@@ -55,7 +57,7 @@ You have to build it on your system, there is no download for the moment.
 |---|---|
 | Version |  1.4.0 | 
 | Last update | october 2026 | 
-| Link | <a href='https://github.com/iappyx/DesktopPetMac'>GitHub Project</a> |
+| Link | <a href='https://github.com/iappyx/DesktopPetMac'><img width="128" height="45" alt="image" src="https://github.com/user-attachments/assets/9e989761-17d3-4d70-bb38-5069873fe38c" /></a> |
 
 ## Browser (GitHub | Javascript)
 Since the animations are stored in a XML, you can integrate this sheep inside your webpage using a simple Javascript. 
@@ -65,21 +67,45 @@ This version is really limited, but is able to show and animate every Pet from t
 |---|---|
 | Version |  1.2.6 | 
 | Last update | may 2021 | 
-| Link | <a href='https://github.com/Adrianotiger/web-esheep'>GitHub Project</a> |
+| Link | <a href='https://github.com/Adrianotiger/web-esheep'><img width="128" height="45" alt="image" src="https://github.com/user-attachments/assets/9e989761-17d3-4d70-bb38-5069873fe38c" /></a> |
 
 
 # Tools
 
 Some tools, used to create new pet animations and spritesheets:
 
-
-
-  Name  | Type | Description | Link  
--|-|-|-|  
-Pet Editor | Win-Application | Official editor to create new Pets, using a spritesheet. | <a href='https://github.com/Adrianotiger/desktopPet/releases/latest'>Pet Editor</a>  
-Minecraft Generator | Web-Page | Select avatar, generate spritesheet, download animation. | <a href='https://adrianotiger.github.io/web-esheep/tools/minecraft.html'>Open Generator</a>  
-Spritesheets | Collection <td colspan=2> [spritedatabase.net](https://spritedatabase.net/) <br /> <br /> [www.spriters-resource.com](https://www.spriters-resource.com/) <br /> <br /> [www.deviantart.com](https://www.deviantart.com/)  
-Spritesheet Editors | Collection <td colspan=2> [graphicsgale.com](https://graphicsgale.com/) <br /> <br /> [www.piskelapp.com](https://www.piskelapp.com/)  
+<table>
+  <tr><th>Name</th><th>Type</th><th>Link</th></tr>
+  <tr>
+    <td>Pet Editor</td>
+    <td>Win-Application</td>
+    <td>Official editor to create new Pets, using a spritesheet.</td>
+    <td><a href='https://github.com/Adrianotiger/desktopPet/releases/latest'>Pet Editor</a></td>
+  </tr>
+  <tr>
+    <td>Minecraft Generator</td>
+    <td>Web-Page</td>
+    <td>Select avatar, generate spritesheet, download animation.</td>
+    <td><a href='https://adrianotiger.github.io/web-esheep/tools/minecraft.html'>Open Generator</a></td>
+  </tr>
+  <tr>
+    <td>Spritesheets</td>
+    <td>Collection</td>
+    <td colspan=2>
+      <a href="https://spritedatabase.net/">spritedatabase.net</a><br>
+      <a href="https://www.spriters-resource.com/">www.spriters-resource.com</a><br>
+      <a href="https://www.deviantart.com/">www.deviantart.com</a><br>
+    </td>
+  </tr>
+  <tr>
+    <td>Spritesheet Editors</td>
+    <td>Collection</td>
+    <td colspan=2>
+      <a href="https://www.piskelapp.com/">www.piskelapp.com</a><br>
+      <a href="https://graphicsgale.com/">graphicsgale.com</a><br>
+    </td>
+  </tr>
+</table>
 
 # Screen Mates included in this application
 | | | | |
@@ -88,7 +114,8 @@ Spritesheet Editors | Collection <td colspan=2> [graphicsgale.com](https://graph
 | gSheep Pink <br> [![Pink Sheep](Pets/pink_sheep/icon.png)](https://adrianotiger.github.io/desktopPet/Pets/pink_sheep/)  | gSheep Purple <br> [![Purple Sheep](Pets/purple_sheep/icon.png)](https://adrianotiger.github.io/desktopPet/Pets/purple_sheep/)  | gSheep Red <br> [![Red Sheep](Pets/red_sheep/icon.png)](https://adrianotiger.github.io/desktopPet/Pets/red_sheep/) | gSheep Yellow <br> [![Yellow Sheep](Pets/yellow_sheep/icon.png)](https://adrianotiger.github.io/desktopPet/Pets/yellow_sheep/)  |
 |Bunny <br> [![Bugs Bunny](Pets/bbunny/icon.png)](https://adrianotiger.github.io/desktopPet/Pets/bbunny/)  | Asuna <br> [![Asuna](Pets/negima/icon.png)](https://adrianotiger.github.io/desktopPet/Pets/negima/)  | Neko <br> [![Neko](Pets/neko/icon.png)](https://adrianotiger.github.io/desktopPet/Pets/neko/) | Pingus <br> [![Pingus](Pets/pingus/icon.png)](https://adrianotiger.github.io/desktopPet/Pets/pingus/)  |
 |Ham Ham <br> [![Blue Ham Ham](Pets/blue_ham_ham/icon.png)](https://adrianotiger.github.io/desktopPet/Pets/blue_ham_ham/)  | Fox <br> [![Fox Mate](Pets/fox/icon.png)](https://adrianotiger.github.io/desktopPet/Pets/fox/)  | Pikachu <br> [![Pikachu](Pets/pikachu/icon.png)](https://adrianotiger.github.io/desktopPet/Pets/pikachu/) | Zombie <br> [![Zombie](Pets/zombie/icon.png)](https://adrianotiger.github.io/desktopPet/Pets/zombie/)  |
-| <td colspan=3> [And many more...](https://adrianotiger.github.io/desktopPet/Pets/)
+
+[And many more...](https://adrianotiger.github.io/desktopPet/Pets/)
 
 # Credits
 ## Libraries
