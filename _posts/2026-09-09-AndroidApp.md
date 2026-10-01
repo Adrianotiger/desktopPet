@@ -4,7 +4,8 @@ title:  "Android App - Reloaded!"
 ---
 
 <h2>Android App</h2>
-<img width="250" alt="play store" src="https://github.com/user-attachments/assets/d6fed2ff-e674-46ce-9e69-6f520e9ddeb1" />
+<img width="600" height="316" alt="image" src="https://github.com/user-attachments/assets/648bb1f8-8f7a-40ea-a4bf-48775d42bce6" />
+
 
 
 After some years and some new library, I used .NET10-Android in MAUI to port this tools also on Android... Again!
