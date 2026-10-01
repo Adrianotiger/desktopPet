@@ -191,7 +191,9 @@
   <ItemGroup>
     <Compile Include="dotNet\Animations.cs" />
     <Compile Include="dotNet\MotionTrack.cs" />
-    <Compile Include="dotNet\FormPet.Motion.cs" />
+    <Compile Include="dotNet\FormPet.Motion.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="dotNet\ContextMenus.cs" />
     <Compile Include="dotNet\EmbeddedAssembly.cs" />
     <Compile Include="dotNet\ProcessIcon.cs" />
@@ -213,6 +215,20 @@
     </Compile>
     <Compile Include="Portable\FormOptions.designer.cs">
       <DependentUpon>FormOptions.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Portable\FormOptions2.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Portable\FormOptions2.Designer.cs">
+      <DependentUpon>FormOptions2.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Portable\FormOptions2.SurfacePets.cs">
+      <DependentUpon>FormOptions2.cs</DependentUpon>
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Portable\FormOptions2.SurfaceMenu.cs">
+      <DependentUpon>FormOptions2.cs</DependentUpon>
+      <SubType>Component</SubType>
     </Compile>
     <Compile Include="Portable\Install.cs">
       <SubType>Form</SubType>
@@ -265,6 +281,9 @@
     <EmbeddedResource Include="Portable\FormOptions.resx">
       <DependentUpon>FormOptions.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Portable\FormOptions2.resx">
+      <DependentUpon>FormOptions2.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Portable\Install.resx">
       <DependentUpon>Install.cs</DependentUpon>
     </EmbeddedResource>
@@ -295,6 +314,7 @@
     <Content Include="icon.ico" />
     <Content Include="Images\exit.png" />
     <Content Include="Images\help.png" />
+    <Content Include="Images\wvleft.jpg" />
     <EmbeddedResource Include="Portable\Newtonsoft.Json.dll" />
     <EmbeddedResource Include="Portable\NAudio.dll" />
     <None Include="Images\install.png" />

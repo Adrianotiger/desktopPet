@@ -58,7 +58,10 @@ namespace DesktopPet
         /// </summary>
         public static void OpenOptionDialog()
         {
-            FormOptions formoptions = new FormOptions();
+			FormOptions2 formoptions2 = new FormOptions2("Pet List", FormOptions2.WindowType.Pets);
+            formoptions2.ShowDialog();
+            /*
+			FormOptions formoptions = new FormOptions();
             switch (formoptions.ShowDialog())
             {
                 case DialogResult.Retry:
@@ -69,6 +72,7 @@ namespace DesktopPet
                     MyData.SetXml("","");
                     break;
             }
+            */
         }
 
         /// <summary>
@@ -79,7 +83,7 @@ namespace DesktopPet
         {
             int iMutexIndex = 0;
 
-            Application.EnableVisualStyles();
+            //Application.EnableVisualStyles(); << Disable Visual Styles, so it gives the Windows95 look
             Application.SetCompatibleTextRenderingDefault(false);
 
             EmbeddedAssembly.Load("DesktopPet.Portable.NAudio.dll", "NAudio.dll");

@@ -119,9 +119,10 @@ namespace DesktopPet
 
         private void FormOptions_Shown(object sender, EventArgs e)
         {
-            LoadPets();
+            tabControl1.Controls.Remove(tabPage1);
+            //LoadPets();
         }
-
+        /*
         private async void LoadPets()
         {
             var client = new HttpClient();
@@ -309,6 +310,7 @@ namespace DesktopPet
                 MessageBox.Show(ex.Message);
             }
         }
+        */
         /*
          * Use it once WebView2 works without any bugs and without requesting redistributable dlls
         private void LoadWebViewPage()
