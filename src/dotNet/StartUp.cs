@@ -5,11 +5,6 @@ using System.Threading;
 using System.Windows.Forms;
 using static DesktopPet.StartUp;
 
-#if !PORTABLE
-using Windows.ApplicationModel.AppService;
-using Windows.ApplicationModel.Background;
-#endif
-
 namespace DesktopPet
 {
     /// <summary>

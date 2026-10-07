@@ -27,19 +27,24 @@ namespace DesktopPet
         {
             try
             {
+#if PORTABLE
+                string configFile = "DesktopPet.config";
+
                 if (Program.IsApplicationInstalled())
                 {
                     isInstalled = true;
-                    //AppConfiguration = ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.PerUserRoamingAndLocal);
-                    AppConfiguration = ConfigurationManager.OpenMappedExeConfiguration(
-                        new ExeConfigurationFileMap { ExeConfigFilename = "DesktopPet.config" }, ConfigurationUserLevel.None);
                 }
-                else
-                {
-                    AppConfiguration = ConfigurationManager.OpenMappedExeConfiguration(
-                        new ExeConfigurationFileMap { ExeConfigFilename = "DesktopPet.config" }, ConfigurationUserLevel.None);
-                }
-                LoadSettings();
+#else
+				string configDir = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "eSheep64");
+				if(!Directory.Exists(configDir))
+					Directory.CreateDirectory(configDir);
+
+				string configFile = Path.Combine(configDir, "DesktopPet.config");
+#endif
+				AppConfiguration = ConfigurationManager.OpenMappedExeConfiguration(
+					new ExeConfigurationFileMap { ExeConfigFilename = configFile }, ConfigurationUserLevel.None);
+
+				LoadSettings();
             }
             catch(Exception ex)
             {
@@ -243,6 +248,7 @@ namespace DesktopPet
             MemoryStream stream = new MemoryStream();
             StreamWriter writer = new StreamWriter(stream);
 
+#if PORTABLE
             if (File.Exists(Application.StartupPath + "\\installpet.xml"))
             {
                 string sXML = System.Text.Encoding.Default.GetString(File.ReadAllBytes(Application.StartupPath + "\\installpet.xml"));
@@ -265,6 +271,7 @@ namespace DesktopPet
                 return sXML;
             }
             else
+#endif
             {
                 writer.Write(AppSettings["xml"].Value);
                 return AppSettings["xml"].Value;

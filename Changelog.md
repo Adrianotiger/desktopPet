@@ -1,5 +1,17 @@
 # Changelog
 
+<h3>Version 1.5.0<sup>01 oct 2026</sup>:</h3> 
+ 
+ -  Smoother pet movements
+ -  Sounds improvements
+ -  Option Window redesign
+ -  Developer improvements
+ 
+ The new Option Window (store and portable are the same now):
+ <img src="https://private-user-images.githubusercontent.com/7373079/663049165-7ae8a4a0-6329-418c-b6ee-d8a3a02b092e.png?jwt=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJnaXRodWIuY29tIiwiYXVkIjoicmF3LmdpdGh1YnVzZXJjb250ZW50LmNvbSIsImtleSI6ImtleTUiLCJleHAiOjE3OTEzNjExNzAsIm5iZiI6MTc5MTM2MDg3MCwicGF0aCI6Ii83MzczMDc5LzY2MzA0OTE2NS03YWU4YTRhMC02MzI5LTQxOGMtYjZlZS1kOGEzYTAyYjA5MmUucG5nP1gtQW16LUFsZ29yaXRobT1BV1M0LUhNQUMtU0hBMjU2JlgtQW16LUNyZWRlbnRpYWw9QUtJQVZDT0RZTFNBNTNQUUs0WkElMkYyMDI2MTAwNyUyRnVzLWVhc3QtMSUyRnMzJTJGYXdzNF9yZXF1ZXN0JlgtQW16LURhdGU9MjAyNjEwMDdUMDgxNDMwWiZYLUFtei1FeHBpcmVzPTMwMCZYLUFtei1TaWduYXR1cmU9ZWUwMDI2M2UyNjlkNjE4NDM1ODE0MDBhOGQ5M2I4ZmIwYjY5MWU3YTU3NTc1NDAyMzY1NzM0YzFhYjYzMzUyMCZYLUFtei1TaWduZWRIZWFkZXJzPWhvc3QmcmVzcG9uc2UtY29udGVudC10eXBlPWltYWdlJTJGcG5nIn0.weB0Upjw9BXzO_6uc1cuOdeiLmW2585zlQxlLyRQTuY">
+ 
+   
+
  <h3>Version 1.4.0<sup>09 sep 2026</sup>:</h3> 
  
  -  Tossing by [ZechsVariety](https://github.com/ZechsVariety)

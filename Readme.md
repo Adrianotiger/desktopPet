@@ -28,13 +28,12 @@ Compiled with .NET4.7, this application is just an exe and works on every 64-bit
 
 
 ## Windows 10 (Store)
-After the Silverlight era, Microsoft encouraged developers to migrate their applications to UA. If you would rather install the application from the Microsoft Store, this version is for you.  
-Note: Windows 10 and Windows 11 now expect modern UWP applications instead of Silverlight-based apps. Since this project is quite old, it would need a substantial refactoring before a new Store release would be possible.
+Version 1.5.0 (store version: 2.6.**150**) is a new version and removed all UA and UWP parts from the older version (as Microsoft allows native .NET applications in the store). The store project has just the installer project to create a MSIX package. You can build and install it locally now.
 
 | OS |  Windows 10/11 |
 |---|---|
-| Version |  1.2.6 | 
-| Last update | may 2021 | 
+| Version |  2.6.150 (1.5.0) | 
+| Last update | october 2026 | 
 | Link | <a href='https://www.microsoft.com/store/apps/9MX2V0TQT6RM'><img width="128" height="45" alt="image" src="https://github.com/user-attachments/assets/6c9aac7d-5830-4695-a954-647e116c7aa6" /></a> |
 
 ## Android (Store)

@@ -24,6 +24,14 @@ using XmlData;
 using static DesktopPet.FormOptions2;
 using static DesktopPet.FormOptions2SurfaceMenu;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement;
+using Microsoft.Win32;
+using System.IO.Packaging;
+using System.Diagnostics;
+
+
+#if !PORTABLE
+using Windows.ApplicationModel;
+#endif
 
 namespace DesktopPet
 {
@@ -45,13 +53,26 @@ namespace DesktopPet
 		private Pen White;
 		private Pen Black;
 		private int pageSelected = 0;
-		public OptionsPets WebPets;
 		private FormOptions2SurfacePets surfacePets;
 		private FormOptions2SurfaceMenu surfaceMenu;
+		/// <summary>
+		/// List of pets available to download from the web. This is updated every 24 hours, and stored in a temporary folder.
+		/// </summary>
+		public OptionsPets WebPets;
+		/// <summary>
+		/// Infotext used to show some debug info or status on the status bar.
+		/// </summary>
 		public string InfoText = "Options";
 
+		/// <summary>
+		/// FormOptions2 can be called with different window types. 
+		/// Depending on the window type, menubar and content will be different.
+		/// </summary>
 		public enum WindowType
 		{
+			/// <summary>
+			/// Show Pets list (only this is implemented)
+			/// </summary>
 			Pets = 1,
 			AppOptions = 2,
 			AppConfiguration = 3,
@@ -59,6 +80,11 @@ namespace DesktopPet
 			Info = 5
 		};
 
+		/// <summary>
+		/// Constructor for FormOptions2. Create a windows95-style window to show a list of pets, info or options.
+		/// </summary>
+		/// <param name="Title">The text to display as title</param>
+		/// <param name="winType">The type of window to display</param>
 		public FormOptions2(string Title, WindowType winType)
 		{
 			InitializeComponent();
@@ -77,6 +103,7 @@ namespace DesktopPet
 
 			RecalculateSizes();
 
+			// Some windows95 colors
 			Gray = new Pen(Color.FromArgb(193, 196, 200), 3);
 			Blue = new Pen(Color.FromArgb( 13,   6, 164), 2);
 			White = new Pen(Color.FromArgb(255, 255, 255), 1);
@@ -88,6 +115,9 @@ namespace DesktopPet
 			Controls.Add(surfaceMenu);
 		}
 
+		/// <summary>
+		/// Resizing window
+		/// </summary>
 		private void RecalculateSizes()
 		{
 			_closeButtonRect = new Rectangle(Width - 28, 8, 20, 20);
@@ -105,6 +135,13 @@ namespace DesktopPet
 					24);
 		}
 
+		/// <summary>
+		/// Handle:
+		/// - Moving window
+		/// - Resizing window
+		/// - Closing window
+		/// </summary>
+		/// <param name="e"></param>
 		protected override void OnMouseDown(MouseEventArgs e)
 		{
 			base.OnMouseDown(e);
@@ -131,7 +168,11 @@ namespace DesktopPet
 			if (surfaceMenu.MenuActivated) { surfaceMenu.MenuActivated = false; surfaceMenu.UnHighlight(); surfaceMenu.Invalidate(); }
 		}
 
-		public void MenuClicked(MenuItemIndex menu)
+		/// <summary>
+		/// Called from menu, handles the menu click and performs the action for the selected menu item.
+		/// </summary>
+		/// <param name="menu"></param>
+		public async void MenuClicked(MenuItemIndex menu)
 		{
 			switch(menu)
 			{
@@ -145,6 +186,7 @@ namespace DesktopPet
 						if (surfacePets.showReadme)
 						{
 							surfacePets.showReadme = false;
+							surfacePets.showDetails = false;
 							surfacePets.Invalidate();
 
 							//if (surfaceMenu.MenuActivated) { surfaceMenu.MenuActivated = false; surfaceMenu.UnHighlight(); surfaceMenu.Invalidate(); }
@@ -174,6 +216,38 @@ namespace DesktopPet
 						}
 						break;
 					}
+				case MenuItemIndex.Option_Autostart:
+					{
+#if !PORTABLE
+						try
+						{
+							var tasks = await StartupTask.GetForCurrentPackageAsync();
+
+							foreach (var task2 in tasks)
+							{
+								if(task2.State == StartupTaskState.Enabled)
+								{
+									// Only user can disable it.
+									Process.Start(new ProcessStartInfo
+									{
+										FileName = "ms-settings:startupapps",
+										UseShellExecute = true
+									});
+								}
+								else
+								{
+									await task2.RequestEnableAsync();
+								}
+								break; // only one task should be enabled
+							}
+						}
+						catch (Exception ex)
+						{
+							InfoText = "Error: " + ex.Message;
+						}
+#endif
+						break;
+					}
 				case MenuItemIndex.Help_Help:
 					{
 						var formhelp = new FormHelp();
@@ -195,6 +269,10 @@ namespace DesktopPet
 			}
 		}
 
+		/// <summary>
+		/// End of moving or resizing window, reset the move and resize points.
+		/// </summary>
+		/// <param name="e"></param>
 		protected override void OnMouseUp(MouseEventArgs e)
 		{
 			base.OnMouseUp(e);
@@ -209,6 +287,10 @@ namespace DesktopPet
 			}
 		}
 
+		/// <summary>
+		/// Move or resize window, depending on where the mouse is located. Change cursor to indicate what action is possible.
+		/// </summary>
+		/// <param name="e"></param>
 		protected override void OnMouseMove(MouseEventArgs e)
 		{
 			base.OnMouseMove(e);
@@ -238,7 +320,10 @@ namespace DesktopPet
 			}
 		}
 
-
+		/// <summary>
+		/// Paint the window, not the content. The content is painted by the surface controls.
+		/// </summary>
+		/// <param name="e"></param>
 		protected override void OnPaint(PaintEventArgs e)
 		{
 			base.OnPaint(e);
@@ -334,7 +419,7 @@ namespace DesktopPet
 						new RectangleF(20, 140 - (int)(sizeF.Height / 3), 130, 80)					
 						);
 
-					g.DrawImage(surfacePets.selectedPet.image, new Rectangle(50, 90 - (int)(sizeF.Height / 3), 48, 48));
+					g.DrawImage(surfacePets.selectedPet.Image, new Rectangle(50, 90 - (int)(sizeF.Height / 3), 48, 48));
 
 					g.DrawString(
 						"Author: \n  " + surfacePets.selectedPet.author,
@@ -408,7 +493,7 @@ namespace DesktopPet
 					while(!taskEnd)
 					{
 						await Task.Delay(1000);
-						Invalidate();
+						surfacePets?.Invalidate();
 					}
 				});
 				WebPets = await OptionsGit.GetPetList();
@@ -426,6 +511,12 @@ namespace DesktopPet
 			surfacePets.Invalidate();
 		}
 
+		/// <summary>
+		/// Download Pet from Github.
+		/// It will return the downloaded file, if it exists.
+		/// Once downloaded, the pet will be set as default mate in the application.
+		/// </summary>
+		/// <param name="name">folder (ID) of the pet</param>
 		public async void DownloadPet(string name)
 		{
 			InfoText = "Downloading " + name + "...";
@@ -451,13 +542,62 @@ namespace DesktopPet
 			}
 			Invalidate();
 		}
+
+		/// <summary>
+		/// Download Pet from Github to retrieve details.
+		/// It will return the downloaded file, if it exists.
+		/// Once downloaded, the details of this pet will be filled.
+		/// </summary>
+		/// <param name="name">folder (ID) of the pet</param>
+		public async void PetDetails(string name)
+		{
+			InfoText = "Downloading " + name + "...";
+			surfacePets.showDetails = true;
+			Invalidate();
+			surfacePets.Invalidate();
+
+			try
+			{
+				var content = await OptionsGit.GetPetXml(name);
+
+				WebPets.pets.ForEach(wp =>
+				{
+					if(wp.folder == name)
+					{
+						wp.Detail = new XmlDocument();
+						wp.Detail.LoadXml(content);
+					}
+				});
+
+				InfoText = name + " details";
+			}
+			catch (Exception ex)
+			{
+				InfoText = "Error downloading " + name + ": " + ex.Message;
+			}
+			Invalidate();
+		}
 	}
 
+	/// <summary>
+	/// All GitHub functionality to the retrieve pet information and files is in this class. 
+	/// It downloads the pets.json file from GitHub, checks if it is updated, and downloads the pet icon and readme files as needed.
+	/// </summary>
 	public class OptionsGit
 	{
+		/// <summary>
+		/// Base path to the pets
+		/// </summary>
 		public static string BaseGitUrl = "https://raw.githubusercontent.com/Adrianotiger/desktopPet/master/Pets/";
+		/// <summary>
+		/// Local temporary path, to store the github files.
+		/// </summary>
 		public static string BaseLocalPath = Path.Combine(Path.GetTempPath(), "esheep64");
 
+		/// <summary>
+		/// Get the list of pets, from Github or locally.
+		/// </summary>
+		/// <returns>List of OptionsPets pets</returns>
 		public static async Task<OptionsPets> GetPetList()
 		{
 			OptionsPets pets = null;
@@ -533,13 +673,18 @@ namespace DesktopPet
 			{
 				using (Stream stream = GetOrDownload(pets.pets[j].folder, "icon.png"))
 				{
-					pets.pets[j].image = Image.FromStream(stream);
+					pets.pets[j].Image = Image.FromStream(stream);
 				}
 			}
 
 			return pets;
 		}
 
+		/// <summary>
+		/// Get (if neccessary, download) the README.md file for a pet, and return it as a list of strings, one string per line.
+		/// </summary>
+		/// <param name="folder">folder on Github or name of the pet</param>
+		/// <returns>list of lines, markdown formatted</returns>
 		public static List<string> GetReadMe(string folder)	
 		{
 			List<string> readme = new List<string>();
@@ -554,6 +699,11 @@ namespace DesktopPet
 			return readme;
 		}
 
+		/// <summary>
+		/// Get (if neccessary, download) the animations.xml file for a pet, and return it as a string.
+		/// </summary>
+		/// <param name="folder">folder on Github or name of the pet</param>
+		/// <returns>the xml as string</returns>
 		public static async Task<string> GetPetXml(string folder)
 		{
 			var xmlStr = "";
@@ -567,6 +717,12 @@ namespace DesktopPet
 			return xmlStr;
 		}
 
+		/// <summary>
+		/// Get the file, if not present locally, download it from Github and store it in the local temporary folder. Return the file as a stream.
+		/// </summary>
+		/// <param name="folder">folder on Github or name of the pet</param>
+		/// <param name="filename">name of the file to get</param>
+		/// <returns>the file as a stream</returns>
 		static private Stream GetOrDownload(string folder, string filename)
 		{
 			string localFile = Path.Combine(BaseLocalPath, folder + "." + filename.Substring(filename.IndexOf(".") + 1));
@@ -582,13 +738,6 @@ namespace DesktopPet
 							stream.CopyTo(file);
 						}
 					}
-					/*
-					using (Stream objWebStream = wrFileResponse.GetResponseStream())
-					{
-						MemoryStream ms = new MemoryStream();
-						objWebStream.CopyTo(ms, 1024 * 16);
-						File.WriteAllBytes(localFile, ms.GetBuffer());
-					}*/
 				}
 			}
 

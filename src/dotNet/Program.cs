@@ -22,7 +22,6 @@ namespace DesktopPet
             return EmbeddedAssembly.Get(args.Name);
         }
 
-#if PORTABLE
         /// <summary>
         /// Mutual Exclusion, to allow only 1 instance of this application.
         /// </summary>
@@ -36,6 +35,18 @@ namespace DesktopPet
         /// </summary>
         static readonly Mutex mutex2 = new Mutex(false, "eSheep_Running2");
 
+		public static LocalData MyData = new LocalData();
+
+		/// <summary>
+		/// Open the option dialog, to show some options like reset XML animation or load animation from the webpage.
+		/// </summary>
+		public static void OpenOptionDialog()
+		{
+			FormOptions2 formoptions2 = new FormOptions2("Pet List", FormOptions2.WindowType.Pets);
+			formoptions2.ShowDialog();
+		}
+
+#if PORTABLE
         /// <summary>
         /// Argument: load local animation XML.
         /// </summary>
@@ -50,30 +61,6 @@ namespace DesktopPet
         /// Argument: open the installer when application starts.
         /// </summary>
         public static string ArgumentInstall = "";
-
-        public static LocalData MyData = new LocalData();
-
-        /// <summary>
-        /// Open the option dialog, to show some options like reset XML animation or load animation from the webpage.
-        /// </summary>
-        public static void OpenOptionDialog()
-        {
-			FormOptions2 formoptions2 = new FormOptions2("Pet List", FormOptions2.WindowType.Pets);
-            formoptions2.ShowDialog();
-            /*
-			FormOptions formoptions = new FormOptions();
-            switch (formoptions.ShowDialog())
-            {
-                case DialogResult.Retry:
-                    StartUp.AddDebugInfo(StartUp.DEBUG_TYPE.warning, "restoring default XML");
-
-                    MyData.SetIcon("");
-                    MyData.SetImages("");
-                    MyData.SetXml("","");
-                    break;
-            }
-            */
-        }
 
         /// <summary>
         /// The main entry point for the application.
@@ -178,23 +165,56 @@ namespace DesktopPet
 
 #else
 
-        public static LocalData.LocalData MyData = null;
 
-        /// <summary>
-        /// The main entry point for the application.
-        /// </summary>
-        [STAThread]
+		/// <summary>
+		/// The main entry point for the application.
+		/// </summary>
+		[STAThread]
         static void Main(string[] args)
         {
-            //string resource1 = "DesktopPet.dll.NAudio.dll";
-            //EmbeddedAssembly.Load(resource1, "NAudio.dll");
+			int iMutexIndex = 0;
 
-            Application.EnableVisualStyles();
-            Application.SetCompatibleTextRenderingDefault(false);
+			//Application.EnableVisualStyles(); << Disable Visual Styles, so it gives the Windows95 look
+			Application.SetCompatibleTextRenderingDefault(false);
+
+			EmbeddedAssembly.Load("DesktopPet.Portable.NAudio.dll", "NAudio.dll");
+			EmbeddedAssembly.Load("DesktopPet.Portable.Newtonsoft.Json.dll", "Newtonsoft.Json.dll");
+
+			AppDomain.CurrentDomain.AssemblyResolve += new ResolveEventHandler(CurrentDomain_AssemblyResolve);
+
+			// if you like to wait a few seconds in case that the instance is just 
+			// shutting down
+			try
+			{
+				if (!mutex.WaitOne(TimeSpan.FromSeconds(1), false))
+				{
+					iMutexIndex = 1;
+					try
+					{
+						if (!mutex2.WaitOne(TimeSpan.FromSeconds(1), false))
+						{
+							MessageBox.Show("Application is already running! Only 2 instances are allowed.", "Information", MessageBoxButtons.OK, MessageBoxIcon.Information);
+							return;
+						}
+					}
+					catch (Exception)
+					{
+
+					}
+				}
+			}
+			catch (Exception ex)
+			{
+				MessageBox.Show("Can't execute application: " + ex.Message);
+				return;
+			}
+
+			//Application.EnableVisualStyles();
+            Application.SetCompatibleTextRenderingDefault(true);
 
             AppDomain.CurrentDomain.AssemblyResolve += new ResolveEventHandler(CurrentDomain_AssemblyResolve);
 
-            MyData = new LocalData.LocalData(Windows.Storage.ApplicationData.Current.LocalFolder.Path, Application.ExecutablePath);
+            //MyData = new LocalData.LocalData(Windows.Storage.ApplicationData.Current.LocalFolder.Path, Application.ExecutablePath);
 
             // Show the system tray icon.					
             using (ProcessIcon pi = new ProcessIcon())
@@ -206,7 +226,12 @@ namespace DesktopPet
                 // Make sure the application runs!
                 Application.Run();
             }
-        }
+
+			if (iMutexIndex == 0)
+				mutex.ReleaseMutex();
+			else if (iMutexIndex == 1)
+				mutex2.ReleaseMutex();
+		}
 #endif
 
         /// <summary>

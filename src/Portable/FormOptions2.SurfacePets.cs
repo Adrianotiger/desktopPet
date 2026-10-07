@@ -13,20 +13,19 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Xml;
 using static System.Windows.Forms.LinkLabel;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement.Window;
 
 namespace DesktopPet
 {
+	/// <summary>
+	/// This class represents the surface for displaying pets in the options form.
+	/// </summary>
 	internal class FormOptions2SurfacePets : Panel
 	{
-		public int ScrollY { get; set; } = 0;
-
 		private FormOptions2 form;
 		private Font fontText;
-		public OptionsPet selectedPet = null;
-		public bool showReadme = false;
-
 		private class Links
 		{
 			public Rectangle rect;
@@ -34,6 +33,19 @@ namespace DesktopPet
 		};
 		private List<Links> links = new List<Links>();
 		private List<Links> buttons = new List<Links>();
+
+		/// <summary>
+		/// Selected PET, for the readme or for the highligt.
+		/// </summary>
+		public OptionsPet selectedPet = null;
+		/// <summary>
+		/// If readme should be shawn.
+		/// </summary>
+		public bool showReadme = false;
+		/// <summary>
+		/// If pet details should be shawn.
+		/// </summary>
+		public bool showDetails = false;
 
 		public FormOptions2SurfacePets(FormOptions2 formOption)
 		{
@@ -57,9 +69,11 @@ namespace DesktopPet
 			g.Clear(Color.White);
 
 			// Controls
-			pety += 20;
+			pety += 5;
 			buttons = new List<Links>();
 			buttons.Add(new Links { rect = new Rectangle(petx + 20, pety, 130, 30), url = "Download" });
+			buttons.Add(new Links { rect = new Rectangle(petx + 180, pety, 130, 30), url = "Detail" });
+			buttons.Add(new Links { rect = new Rectangle(petx + 340, pety, 130, 30), url = "Back" });
 
 			buttons.ForEach(b =>
 			{
@@ -68,9 +82,9 @@ namespace DesktopPet
 				g.DrawString(b.url, fontText, Brushes.Black, new Point(b.rect.Left + b.rect.Width / 2 - (int)s.Width / 2, b.rect.Y + 5));
 			});
 
-			pety += 40;
+			pety += 55;
 
-			selectedPet.readme.ForEach(line =>
+			selectedPet.Readme.ForEach(line =>
 			{
 				if (line == String.Empty) return;
 
@@ -188,6 +202,130 @@ namespace DesktopPet
 			return pety;
 		}
 
+		private int OnPaintDetail(Graphics g)
+		{
+			int petx = 25;
+			int pety = -VerticalScroll.Value;
+
+			var regex = new Regex(@"(\*\*(.*?)\*\*)|(\*(.*?)\*)|(\[(.*?)\]\((.*?)\))|(https?://[^\s]+)");
+
+			links = new List<Links>();
+
+			g.Clear(Color.White);
+
+			// Controls
+			pety += 5;
+			buttons = new List<Links>();
+			buttons.Add(new Links { rect = new Rectangle(petx + 20, pety, 130, 30), url = "Back" });
+
+			buttons.ForEach(b =>
+			{
+				ControlPaint.DrawButton(g, b.rect, ButtonState.Normal);
+				var s = g.MeasureString(b.url, fontText);
+				g.DrawString(b.url, fontText, Brushes.Black, new Point(b.rect.Left + b.rect.Width / 2 - (int)s.Width / 2, b.rect.Y + 5));
+			});
+
+			pety += 55;
+
+			var fontBold = new Font(fontText, FontStyle.Bold);
+
+			g.DrawString(selectedPet.folder.Replace("_", " "), new Font(fontText.FontFamily, 24, FontStyle.Bold), Brushes.Black, petx, pety);
+			pety += 50;
+			g.DrawLine(new Pen(Brushes.Gray, 1), 20, pety - 8, Width - 40, pety - 8);
+
+			g.DrawString("Author: ", fontBold, Brushes.Black, petx, pety);
+			g.DrawString(selectedPet.author, fontText, Brushes.Black, petx + 110, pety);
+			pety += 20;
+
+			g.DrawString("Published: ", fontBold, Brushes.Black, petx, pety);
+			g.DrawString(selectedPet.lastupdate, fontText, Brushes.Black, petx + 110, pety);
+			pety += 40;
+
+			g.DrawString("XML", new Font(fontText.FontFamily, 18, FontStyle.Bold), Brushes.Black, petx, pety);
+			pety += 40;
+			g.DrawLine(new Pen(Brushes.Gray, 1), 20, pety - 8, Width - 40, pety - 8);
+
+			g.DrawString("Size: ", fontBold, Brushes.Black, petx, pety);
+			g.DrawString((int)(selectedPet.Detail.InnerText.Length / 1024) + " kb", fontText, Brushes.Black, petx + 110, pety);
+			pety += 20;
+
+			var childs = selectedPet.Detail.ChildNodes[1].ChildNodes;
+			XmlNode xmlheader = null, xmlspawns = null, xmlimage=null, xmlanimations=null, xmlchilds=null, xmlsounds=null;
+			for(var j=0;j<childs.Count;j++)
+			{
+				var childX = childs[j];
+				switch(childs[j].Name)
+				{
+					case "header": xmlheader = childs[j]; break;
+					case "image": xmlimage = childs[j]; break;
+					case "spawns": xmlspawns = childs[j]; break;
+					case "animations": xmlanimations = childs[j]; break;
+					case "childs": xmlchilds = childs[j]; break;
+					case "sounds": xmlsounds = childs[j]; break;
+				}
+			}
+
+			for(var j=0;j<xmlheader?.ChildNodes.Count;j++)
+			{
+				switch(xmlheader.ChildNodes[j].Name)
+				{
+					case "author":
+					case "title":
+					case "petname":
+					case "version":
+						g.DrawString(xmlheader.ChildNodes[j].Name.Substring(0,1).ToUpper() + xmlheader.ChildNodes[j].Name.Substring(1) + ": ", fontBold, Brushes.Black, petx, pety);
+						g.DrawString(xmlheader.ChildNodes[j].InnerText, fontText, Brushes.Black, petx + 110, pety);
+						pety += 20;
+						break;
+					case "info":
+						var splits = new string[] { "[br]", "\n\r", "\n", "<br>" };
+						var lines = xmlheader.ChildNodes[j].InnerText.Split(splits, StringSplitOptions.RemoveEmptyEntries);
+						g.DrawString("Info: ", fontBold, Brushes.Black, petx, pety);
+						for (var k = 0; k < lines.Length; k++)
+						{
+							pety += 20;
+							g.DrawString(lines[k], fontText, Brushes.Black, petx, pety);
+						}
+						pety += 20;
+						break;
+				}
+			}
+
+			int tilesx = 0, tilesy = 0;
+			for (var j = 0; j < xmlimage?.ChildNodes.Count; j++)
+			{
+				switch (xmlimage.ChildNodes[j].Name)
+				{
+					case "tilesx": tilesx = int.Parse(xmlimage.ChildNodes[j].InnerText); break;
+					case "tilesy": tilesy = int.Parse(xmlimage.ChildNodes[j].InnerText);
+						g.DrawString("Spritesheet size: ", fontBold, Brushes.Black, petx, pety);
+						g.DrawString((tilesx * tilesy) + " images", fontText, Brushes.Black, petx + 150, pety);
+						pety += 20;
+						break;
+				}
+			}
+
+			pety += 20;
+
+			g.DrawString("Total Animations: ", fontBold, Brushes.Black, petx, pety);
+			g.DrawString(xmlanimations?.ChildNodes.Count.ToString() ?? "-", fontText, Brushes.Black, petx + 150, pety);
+			pety += 20;
+
+			g.DrawString("Total Childs: ", fontBold, Brushes.Black, petx, pety);
+			g.DrawString(xmlchilds?.ChildNodes.Count.ToString() ?? "-", fontText, Brushes.Black, petx + 150, pety);
+			pety += 20;
+
+			g.DrawString("Total Spawns: ", fontBold, Brushes.Black, petx, pety);
+			g.DrawString(xmlspawns?.ChildNodes.Count.ToString() ?? "-", fontText, Brushes.Black, petx + 150, pety);
+			pety += 20;
+
+			g.DrawString("Total Sounds: ", fontBold, Brushes.Black, petx, pety);
+			g.DrawString(xmlsounds?.ChildNodes.Count.ToString() ?? "-", fontText, Brushes.Black, petx + 150, pety);
+			pety += 20;
+
+			return pety;
+		}
+
 		private int OnPaintPets(Graphics g)
 		{
 			int petx = 25;
@@ -208,7 +346,7 @@ namespace DesktopPet
 						g.DrawRectangle(pen, petx - 25, pety + 34, 82, 16);
 					}
 				}
-				if (pets[j].image == null)
+				if (pets[j].Image == null)
 				{
 					g.FillRectangle(Brushes.AliceBlue, petx, pety, 32, 32);
 				}
@@ -229,18 +367,18 @@ namespace DesktopPet
 						attributes.SetColorMatrix(matrix);
 
 						g.DrawImage(
-							pets[j].image,
+							pets[j].Image,
 							new Rectangle(petx, pety, 32, 32),
 							0,
 							0,
-							pets[j].image.Width,
-							pets[j].image.Height,
+							pets[j].Image.Width,
+							pets[j].Image.Height,
 							GraphicsUnit.Pixel,
 							attributes);
 					}
 					else
 					{
-						g.DrawImage(pets[j].image, petx, pety, 32, 32);
+						g.DrawImage(pets[j].Image, petx, pety, 32, 32);
 					}
 				}
 
@@ -264,7 +402,11 @@ namespace DesktopPet
 
 			int pety = -VerticalScroll.Value;
 
-			if (showReadme)
+			if(showDetails)
+			{
+				pety = OnPaintDetail(g);
+			}
+			else if (showReadme)
 			{
 				pety = OnPaintReadme(g);
 			}
@@ -308,7 +450,13 @@ namespace DesktopPet
 				{
 					if(b.rect.Contains(e.Location))
 					{
-						form.DownloadPet(selectedPet.folder);
+						switch(b.url)
+						{
+							case "Download": form.DownloadPet(selectedPet.folder); break;
+							case "Back": showReadme = false; showDetails = false; Invalidate(); break;
+							case "Detail": form.PetDetails(selectedPet.folder); break;
+						}
+						
 					}
 				});
 
@@ -383,11 +531,11 @@ namespace DesktopPet
 				showReadme = true;
 				VerticalScroll.Value = 0;
 
-				if (selectedPet.readme.Count == 0)
+				if (selectedPet.Readme.Count == 0)
 				{
 					try
 					{
-						selectedPet.readme = OptionsGit.GetReadMe(selectedPet.folder);
+						selectedPet.Readme = OptionsGit.GetReadMe(selectedPet.folder);
 					}catch(Exception ex)
 					{
 						form.InfoText = ex.Message;
@@ -401,7 +549,6 @@ namespace DesktopPet
 			Invalidate();
 		}
 	}
-
 
 	/// <summary>
 	/// Represents a pet with its folder, author, and last update date.
@@ -422,8 +569,18 @@ namespace DesktopPet
 		/// </summary>
 		public string lastupdate { get; set; }
 
-		public Image image { get; set; } = null;
-		public List<String> readme { get; set; } = new List<string>();
+		/// <summary>
+		/// Image to show in the windows95-explorer on the left side
+		/// </summary>
+		public Image Image { get; set; } = null;
+		/// <summary>
+		/// Readme to parse and show on the page
+		/// </summary>
+		public List<String> Readme { get; set; } = new List<string>();
+		/// <summary>
+		/// Detail XML, loaded directly from XML animation file
+		/// </summary>
+		public XmlDocument Detail { get; set; } = null;
 	}
 	/// <summary>
 	/// Class conaining a list of pets and a method to reorder them by last update date.

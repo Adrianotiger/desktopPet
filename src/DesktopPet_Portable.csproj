@@ -77,7 +77,7 @@
     <TargetZone>LocalIntranet</TargetZone>
   </PropertyGroup>
   <PropertyGroup>
-    <ApplicationManifest>Properties\app.manifest</ApplicationManifest>
+    <ApplicationManifest>Properties\app.portable.manifest</ApplicationManifest>
   </PropertyGroup>
   <PropertyGroup>
     <SignManifests>false</SignManifests>
@@ -297,7 +297,7 @@
     </None>
     <None Include="dotNet\app.config" />
     <None Include="packages.config" />
-    <None Include="Properties\app.manifest">
+    <None Include="Properties\app.portable.manifest">
       <SubType>Designer</SubType>
     </None>
     <None Include="Properties\Settings.settings">
