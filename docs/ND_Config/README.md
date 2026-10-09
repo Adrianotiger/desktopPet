@@ -59,7 +59,7 @@ Open a terminal in the repository root and run:
 NaturalDocs.exe docs\ND_Config 
 ```
 
-Or, eveven better, add an external tool to VS:
+Or, eveven better, add an external tool to VS:  
 <img width="457" height="454" alt="image" src="https://github.com/user-attachments/assets/1a67bd44-d7dd-4f9e-9923-37b7288c3e81" />
 
 Adding this as arguments:
@@ -90,7 +90,7 @@ Whenever source code changes:
 ```powershell
 NaturalDocs.exe docs\ND_Config 
 ```
-Or the new menu in Tools:
+Or the new menu in Tools:  
 <img width="281" height="130" alt="image" src="https://github.com/user-attachments/assets/cda61b34-8476-42af-a3f4-6107bcc6ce61" />
 
 
