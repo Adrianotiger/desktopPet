@@ -55,9 +55,4 @@ jobs:
         name: DesktopPet_Portable
         path: build/DesktopPetPortable/bin/Release/x64/
        
-    - name: Download signed artifact
-      uses: actions/download-artifact@v4
-      with:
-        name: signed-artifact
-        path: signed
     
