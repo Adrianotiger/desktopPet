@@ -34,22 +34,27 @@ jobs:
     - name: Build solution
       run: msbuild $env:Solution_Name -p:Configuration=Release -p:RestorePackages=false
 
+    - name: Install SignPath Module
+      shell: pwsh
+      run: Install-Module SignPath -Force -Scope CurrentUser
+
+    - name: Sign DesktopPet
+      shell: pwsh
+      run: Submit-SigningRequest `
+        -InputArtifactPath "build/DesktopPetPortable/bin/Release/x64/app.publish/DesktopPet.exe" `
+        -ApiToken "${{ secrets.SIGNPATH_API_TOKEN }}" `
+        -OrganizationId "dd17bc69-e331-421d-9e86-7fbb26a445d2" `
+        -ProjectSlug "desktopPet" `
+        -SigningPolicySlug "test-signing" `
+        -OutputArtifactPath "signed/DesktopPet.exe" `
+        -WaitForCompletion
+
     - name: Upload unsigned EXE artifact
       uses: actions/upload-artifact@v4
       with:
         name: DesktopPet_Portable
-        path: build/DesktopPetPortable/bin/Release/x64/app.publish/DesktopPet.exe
+        path: build/DesktopPetPortable/bin/Release/x64/
        
-    - name: Submit signing request
-      uses: signpath/github-action-submit-signing-request@v1
-      with:
-        api-token: ${{ secrets.SIGNPATH_API_TOKEN }}
-        organization-id: dd17bc69-e331-421d-9e86-7fbb26a445d2
-        project-slug: desktopPet
-        signing-policy-slug: test-signing
-        artifact-configuration-slug: desktopPet
-        github-artifact-id: DesktopPet.exe
-
     - name: Download signed artifact
       uses: actions/download-artifact@v4
       with:
