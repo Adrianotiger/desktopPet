@@ -1,0 +1,58 @@
+name: Build DesktopPet Portable - SignPath
+
+on:
+  workflow_dispatch:
+
+jobs:
+
+  build:
+
+    strategy:
+      matrix:
+        configuration: [Debug, Release]
+
+    runs-on: windows-latest
+
+    env:
+      Solution_Name: DesktopPet_Portable.sln
+      Project_Path: DesktopPet_Portable.csproj
+      Solution_Dir: src/
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+
+    - name: Setup MSBuild
+      uses: microsoft/setup-msbuild@v2
+
+    - name: Install NuGet
+      uses: NuGet/setup-nuget@v2
+      
+    - name: Restore NuGet packages
+      run: nuget restore $env:Solution_Name
+
+    - name: Build solution
+      run: msbuild $env:Solution_Name -p:Configuration=Release -p:RestorePackages=false
+
+    - name: Upload unsigned EXE artifact
+      uses: actions/upload-artifact@v4
+      with:
+        name: DesktopPet_Portable
+        path: build/DesktopPetPortable/bin/Release/x64
+       
+    - name: Submit signing request
+      uses: signpath/github-action-submit-signing-request@v1
+      with:
+        api-token: ${{ secrets.SIGNPATH_API_TOKEN }}
+        organization-id: dd17bc69-e331-421d-9e86-7fbb26a445d2
+        project-slug: desktopPet
+        signing-policy-slug: test-signing
+        artifact-configuration-slug: desktopPet
+        github-artifact-id: DesktopPet.exe
+
+    - name: Download signed artifact
+      uses: actions/download-artifact@v4
+      with:
+        name: signed-artifact
+        path: signed
+    
