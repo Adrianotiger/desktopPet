@@ -1,0 +1,1 @@
+﻿NDSearch.OnPrefixDataLoaded("spe",["Class"],[["SpecialOptions",,[["DesktopPet.FormOptions2SurfaceOptions",,,,0,"File:Portable/FormOptions2.SurfaceOptions.cs:DesktopPet.FormOptions2SurfaceOptions.SpecialOptions","CSharpClass:DesktopPet.FormOptions2SurfaceOptions.SpecialOptions"]]]]);

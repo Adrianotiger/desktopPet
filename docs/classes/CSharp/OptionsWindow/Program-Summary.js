@@ -1,1 +1,0 @@
-﻿NDFramePage.OnPageTitleLoaded("CSharpClass:OptionsWindow.Program","Program");NDSummary.OnSummaryLoaded("CSharpClass:OptionsWindow.Program",[["C#","CSharp"]],[["Classes","Class"],["Functions","Function"],["Groups","Group"]],[[50,0,0,"<span class=\"Qualifier\">OptionsWindow.</span>&#8203;Program"],[51,0,2,"Functions","Functions"],[52,0,1,"Main","Main"]]);

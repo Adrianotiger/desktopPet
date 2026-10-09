@@ -1,1 +1,0 @@
-﻿NDSearch.OnPrefixDataLoaded("myc",["Variable"],[["myContent",,[["OptionsWindow.MainPage",,,,0,"File:AppWins/obj/Debug/MainPage.g.i.cs:OptionsWindow.MainPage.myContent","CSharpClass:OptionsWindow.MainPage:myContent"]]]]);

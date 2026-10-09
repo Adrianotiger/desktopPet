@@ -1,1 +1,1 @@
-﻿NDSearch.OnPrefixDataLoaded("iss",["Variable"],[["IsScreen",,[["DesktopPet.TValue",,,,0,"File:dotNet/Animations.cs:DesktopPet.TValue.IsScreen","CSharpClass:DesktopPet.TValue:IsScreen"]]]]);
+﻿NDSearch.OnPrefixDataLoaded("iss",["Variable","Property"],[["IsScreen",,[["DesktopPet.TValue",,,,0,"File:dotNet/Animations.cs:DesktopPet.TValue.IsScreen","CSharpClass:DesktopPet.TValue:IsScreen"]]],["IsSelectable",,[["DesktopPet.TMenuItem",,,,1,"File:Portable/FormOptions2.SurfaceMenu.cs:DesktopPet.TMenuItem.IsSelectable","CSharpClass:DesktopPet.TMenuItem:IsSelectable"]]]]);

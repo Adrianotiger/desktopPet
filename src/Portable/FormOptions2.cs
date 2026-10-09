@@ -62,6 +62,9 @@ namespace DesktopPet
 		/// Infotext used to show some debug info or status on the status bar.
 		/// </summary>
 		public string InfoText = "Options";
+		/// <summary>
+		/// A yellow filter to apply to the highlighted icons (like windows 95)
+		/// </summary>
 		public ColorMatrix IconHighlightMatrix { get; private set; }
 
 		/// <summary>
@@ -75,11 +78,20 @@ namespace DesktopPet
 			/// </summary>
 			Pets = 1,
 			/// <summary>
-			/// Show all Options like the old Control Panel
+			/// Show all Options like the old Control Panel (normally just enabled/disabled)
 			/// </summary>
 			AppAnimationOptions = 2,
+			/// <summary>
+			/// Show Application configuration - Or settings for the app
+			/// </summary>
 			AppConfiguration = 3,
+			/// <summary>
+			/// Help window (yet not used)
+			/// </summary>
 			Help = 4,
+			/// <summary>
+			/// Info window (yet not used)
+			/// </summary>
 			Info = 5,
 			/// <summary>
 			/// Show a Dialog Box with OK and Cancel button
@@ -222,6 +234,10 @@ namespace DesktopPet
 			}
 		}
 
+		/// <summary>
+		/// Add a control to the dialog Window [CHECKBOX]
+		/// </summary>
+		/// <param name="enabled">Default value for checkbox</param>
 		public void AddDialogControl(bool enabled)
 		{
 			controls.Add(new TControl
@@ -231,6 +247,11 @@ namespace DesktopPet
 			RecalculateSizes();
 		}
 
+		/// <summary>
+		/// Add a control to the dialog window [scrollbar]
+		/// </summary>
+		/// <param name="value">Default value</param>
+		/// <param name="maxValue">Maximal value inclusive</param>
 		public void AddDialogControl(int value, int maxValue)
 		{
 			controls.Add(new TControl
@@ -242,6 +263,12 @@ namespace DesktopPet
 			RecalculateSizes();
 		}
 
+		/// <summary>
+		/// Add a control to the dialog window [combobox]
+		/// </summary>
+		/// <param name="value">Default value</param>
+		/// <param name="values">List with possibile values</param>
+		/// <param name="valuesText">List for a description of each value</param>
 		public void AddDialogControl(int value, List<int> values, List<string> valuesText)
 		{
 			controls.Add(new TControl
@@ -255,6 +282,11 @@ namespace DesktopPet
 			RecalculateSizes();
 		}
 
+		/// <summary>
+		/// Get the value of a control. Normally, only 1 control is present in the dialog.
+		/// </summary>
+		/// <param name="index"></param>
+		/// <returns></returns>
 		public int GetDialogControl(int index = 0)
 		{
 			return controls[index].Value;
@@ -553,6 +585,12 @@ namespace DesktopPet
 			}
 		}
 
+		/// <summary>
+		/// Update the image, title and details of the left info in the window
+		/// </summary>
+		/// <param name="image">Image to show</param>
+		/// <param name="title">Title of the description</param>
+		/// <param name="details">Description of the the info</param>
 		public void SetLeftInfo(Image image, string title, string details)
 		{
 			WindowsLeftInfo.Image = image;

@@ -1,0 +1,1 @@
+﻿NDSearch.OnPrefixDataLoaded("ise",["Property"],[["IsEnabled",,[["DesktopPet.TMenuItem",,,,0,"File:Portable/FormOptions2.SurfaceMenu.cs:DesktopPet.TMenuItem.IsEnabled","CSharpClass:DesktopPet.TMenuItem:IsEnabled"]]]]);

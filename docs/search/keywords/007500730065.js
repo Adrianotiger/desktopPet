@@ -1,0 +1,1 @@
+﻿NDSearch.OnPrefixDataLoaded("use",["Variable"],[["UseSmoothMovements",,[["DesktopPet.FormPet",,,,0,"File:dotNet/FormPet.cs:DesktopPet.FormPet.UseSmoothMovements","CSharpClass:DesktopPet.FormPet:UseSmoothMovements"]]]]);

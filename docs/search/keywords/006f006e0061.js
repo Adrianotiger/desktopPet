@@ -1,1 +1,0 @@
-﻿NDSearch.OnPrefixDataLoaded("ona",["Function"],[["OnActivated",,[["OptionsWindow.App",,,,0,"File:AppWins/App.xaml.cs:OptionsWindow.App.OnActivated","CSharpClass:OptionsWindow.App:OnActivated"]]]]);

@@ -1,0 +1,1 @@
+﻿NDSearch.OnPrefixDataLoaded("_ok",["Variable"],[["_okRect",,[["DesktopPet.FormOptions2",,,,0,"File:Portable/FormOptions2.cs:DesktopPet.FormOptions2._okRect","CSharpClass:DesktopPet.FormOptions2:_okRect"]]]]);

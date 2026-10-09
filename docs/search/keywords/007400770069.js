@@ -1,0 +1,1 @@
+﻿NDSearch.OnPrefixDataLoaded("twi",["Class"],[["TWindowsLeftInfo",,[["DesktopPet.FormOptions2",,,,0,"File:Portable/FormOptions2.cs:DesktopPet.FormOptions2.TWindowsLeftInfo","CSharpClass:DesktopPet.FormOptions2.TWindowsLeftInfo"]]]]);

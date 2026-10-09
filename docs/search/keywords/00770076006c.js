@@ -1,0 +1,1 @@
+﻿NDSearch.OnPrefixDataLoaded("wvl",["Property"],[["wvleft",,[["DesktopPet.Properties.Resources",,,,0,"File:Properties/Resources.Designer.cs:DesktopPet.Properties.Resources.wvleft","CSharpClass:DesktopPet.Properties.Resources:wvleft"]]]]);

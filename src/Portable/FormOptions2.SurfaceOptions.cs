@@ -354,20 +354,46 @@ namespace DesktopPet
 	/// </summary>
 	public class OptionIcons
 	{
+		/// <summary>
+		/// Title of the icon, you can see it in the left side of the window, on the icon and on the dialog when you change the value.
+		/// </summary>
 		public string Title { get; set; } = "TITLE";
-
+		/// <summary>
+		/// Description of the option, you can see it on the left side of the window
+		/// </summary>
 		public string Description { get; set; } = "Description";
 
 		/// <summary>
 		/// Image to show in the windows95-explorer on the left side
 		/// </summary>
 		public Image Image { get; set; } = null;
+		/// <summary>
+		/// Setting to change in the AppSettings. <see cref="SettingName"/>
+		/// </summary>
 		public string Setting { get; set; } = "";
+		/// <summary>
+		/// If Checkbox, you can ENABLE or DISABLE this option
+		/// </summary>
 		public bool IsCheckbox { get; set; } = false;
+		/// <summary>
+		/// Each Option has a integrer value (a checkbox is 0 or 1, combobox is the index)
+		/// </summary>
 		public int Value { get; set; } = 0;
+		/// <summary>
+		/// If Option is a combobox, set the possible values
+		/// </summary>
 		public List<int> Values { get; set; } = new List<int>();
+		/// <summary>
+		/// If Option is a combobox, set the possible text/description for each value
+		/// </summary>
 		public List<string> ValuesText { get; set; } = new List<string>();
+		/// <summary>
+		/// If Option is a scrollbar, se the maximum possible value
+		/// </summary>
 		public int MaxValue { get; set; } = 0;
+		/// <summary>
+		/// If the application will be restarted, once the option is changed (for example when you scale the pets)
+		/// </summary>
 		public bool NeedRestart { get; set; } = false;
 	}
 

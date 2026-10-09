@@ -1,1 +1,0 @@
-﻿NDSearch.OnPrefixDataLoaded("_ap",["Property"],[["_AppProvider",,[["OptionsWindow.App",,,,0,"File:AppWins/obj/x64/Debug/XamlTypeInfo.g.cs:OptionsWindow.App._AppProvider","CSharpClass:OptionsWindow.App:_AppProvider"]]]]);

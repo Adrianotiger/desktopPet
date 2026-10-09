@@ -1,0 +1,1 @@
+﻿NDSearch.OnPrefixDataLoaded("und",["Constant"],[["Undefined",,[["DesktopPet.LocalData.SettingName",,,,0,"File:Portable/LocalData.cs:DesktopPet.LocalData.SettingName.Undefined","CSharpClass:DesktopPet.LocalData.SettingName:Undefined"]]]]);

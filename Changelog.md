@@ -1,5 +1,12 @@
 # Changelog
 
+<h3>Version 1.6.0<sup>09 oct 2026</sup>:</h3> 
+
+- Revert smooth movements (still available under options)
+- App options are inside a Window - like Control Panel from win95
+- Ready for a certificate from SignPath
+- Windows Store App is like the portable version now, with autostart feature integrated in the menu
+
 <h3>Version 1.5.0<sup>01 oct 2026</sup>:</h3> 
  
  -  Smoother pet movements

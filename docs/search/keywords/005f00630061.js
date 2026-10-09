@@ -1,0 +1,1 @@
+﻿NDSearch.OnPrefixDataLoaded("_ca",["Variable"],[["_cancelRect",,[["DesktopPet.FormOptions2",,,,0,"File:Portable/FormOptions2.cs:DesktopPet.FormOptions2._cancelRect","CSharpClass:DesktopPet.FormOptions2:_cancelRect"]]]]);

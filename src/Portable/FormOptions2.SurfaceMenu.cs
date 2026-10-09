@@ -394,6 +394,9 @@ namespace DesktopPet
 			});
 		}
 
+		/// <summary>
+		/// Generate the menu for the PETS-Window
+		/// </summary>
 		public void GeneratePetsMenu()
 		{
 			List<TMenuText> menuView = new List<TMenuText>();
@@ -427,6 +430,9 @@ namespace DesktopPet
 #endif
 		}
 
+		/// <summary>
+		/// Generate just a File->Close Menu
+		/// </summary>
 		public void GenerateDefaultMenu()
 		{
 			List<TMenuText> menuFile = new List<TMenuText>();

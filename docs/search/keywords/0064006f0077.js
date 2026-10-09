@@ -1,1 +1,1 @@
-﻿NDSearch.OnPrefixDataLoaded("dow",["Function"],[["DownloadPet",,[["OptionsWindow.GitHubClass",,,,0,"File:AppWins/GitHubClass.cs:OptionsWindow.GitHubClass.DownloadPet","CSharpClass:OptionsWindow.GitHubClass:DownloadPet"]]]]);
+﻿NDSearch.OnPrefixDataLoaded("dow",["Function"],[["DownloadPet",,[["DesktopPet.FormOptions2",,,,0,"File:Portable/FormOptions2.cs:DesktopPet.FormOptions2.DownloadPet","CSharpClass:DesktopPet.FormOptions2:DownloadPet"]]]]);

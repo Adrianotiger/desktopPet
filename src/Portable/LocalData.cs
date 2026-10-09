@@ -21,15 +21,42 @@ namespace DesktopPet
         KeyValueConfigurationCollection AppSettings = null;
 		readonly bool isInstalled = false;
 
+        /// <summary>
+        /// Keys for valid Application Settings
+        /// </summary>
         public static class SettingName
         {
+            /// <summary>
+            /// If Undefined is set, no Setting will be modified
+            /// </summary>
             public const string Undefined = "";
+            /// <summary>
+            /// Volume-Key
+            /// </summary>
             public const string Volume = "Volume";
+            /// <summary>
+            /// Pet-Scaling-Key
+            /// </summary>
             public const string PetScale = "Scale";
+            /// <summary>
+            /// Multiscreen-Key
+            /// </summary>
 			public const string Multiscreen = "Multiscreen";
+            /// <summary>
+            /// Window To Foreground-Key
+            /// </summary>
             public const string WinForeground = "WinForeground";
+            /// <summary>
+            /// Steal Taskbar-Key
+            /// </summary>
             public const string StealTaskbarFocus = "StealTaskbarFocus";
+            /// <summary>
+            /// Autostart Pets when application starts - Key
+            /// </summary>
 			public const string AutostartPets = "AutostartPets";
+            /// <summary>
+            /// Smooth animations-Key
+            /// </summary>
 			public const string SmoothMovements = "Smooth";
 		};
 
@@ -229,13 +256,22 @@ namespace DesktopPet
             }
         }
 
+        /// <summary>
+        /// If the Movements of the pet should be smooth
+        /// </summary>
+        /// <returns>true, if movements should be smoother</returns>
         public bool GetSmoothMovements()
         {
 			bool.TryParse(AppSettings[SettingName.SmoothMovements].Value, out bool ret);
 			return ret;
 		}
 
-        public int GetIntValue(string setting)
+		/// <summary>
+		/// To "serialize" the settings, every setting can be retrieved as integer
+		/// </summary>
+		/// <param name="setting">Name of the setting, <see cref="SettingName"/></param>
+		/// <returns>Value of the setting, or 0</returns>
+		public int GetIntValue(string setting)
         {
             if(AppSettings.AllKeys.Contains(setting) && setting != SettingName.Undefined)
             {
@@ -260,7 +296,13 @@ namespace DesktopPet
             return 0;
         }
 
-        public bool SetIntValue(string setting, int value)
+		/// <summary>
+		/// Set a setting with key and value
+		/// </summary>
+		/// <param name="setting">Name of the setting, <see cref="SettingName"/></param>
+		/// <param name="value">integer Value of the setting (checkbox: 0 or 1), (combobox:one of the values in the list)</param>
+		/// <returns>true if setting was set successfully</returns>
+		public bool SetIntValue(string setting, int value)
         {
 			if (AppSettings.AllKeys.Contains(setting) && setting != SettingName.Undefined)
 			{

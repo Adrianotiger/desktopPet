@@ -1,1 +1,1 @@
-﻿NDSearch.OnPrefixDataLoaded("isl",["Variable","Property"],[["IsLeaving",,[["DesktopPet.FormPet",,,,0,"File:dotNet/FormPet.cs:DesktopPet.FormPet.IsLeaving","CSharpClass:DesktopPet.FormPet:IsLeaving"]]],["IsLoading",,[["OptionsWindow.PetSelection",,,,1,"File:AppWins/PetSelectionPage.xaml.cs:OptionsWindow.PetSelection.IsLoading","CSharpClass:OptionsWindow.PetSelection:IsLoading"]]]]);
+﻿NDSearch.OnPrefixDataLoaded("isl",["Variable"],[["IsLeaving",,[["DesktopPet.FormPet",,,,0,"File:dotNet/FormPet.cs:DesktopPet.FormPet.IsLeaving","CSharpClass:DesktopPet.FormPet:IsLeaving"]]]]);

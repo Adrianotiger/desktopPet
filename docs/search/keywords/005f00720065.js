@@ -1,0 +1,1 @@
+﻿NDSearch.OnPrefixDataLoaded("_re",["Variable"],[["_resizeRect",,[["DesktopPet.FormOptions2",,,,0,"File:Portable/FormOptions2.cs:DesktopPet.FormOptions2._resizeRect","CSharpClass:DesktopPet.FormOptions2:_resizeRect"]]],["_resizes",,[["DesktopPet.FormOptions2",,,,0,"File:Portable/FormOptions2.cs:DesktopPet.FormOptions2._resizes","CSharpClass:DesktopPet.FormOptions2:_resizes"]]]]);

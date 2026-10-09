@@ -1,0 +1,1 @@
+﻿NDSearch.OnPrefixDataLoaded("_cl",["Variable"],[["_closeButtonRect",,[["DesktopPet.FormOptions2",,,,0,"File:Portable/FormOptions2.cs:DesktopPet.FormOptions2._closeButtonRect","CSharpClass:DesktopPet.FormOptions2:_closeButtonRect"]]]]);
