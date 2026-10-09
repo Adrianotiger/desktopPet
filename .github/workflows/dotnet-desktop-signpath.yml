@@ -46,7 +46,7 @@ jobs:
         -OrganizationId "dd17bc69-e331-421d-9e86-7fbb26a445d2" `
         -ProjectSlug "desktopPet" `
         -SigningPolicySlug "test-signing" `
-        -OutputArtifactPath "signed/DesktopPet.exe" `
+        -OutputArtifactPath "build/DesktopPetPortable/bin/Release/x64/signed/DesktopPet.exe" `
         -WaitForCompletion
 
     - name: Upload unsigned EXE artifact
