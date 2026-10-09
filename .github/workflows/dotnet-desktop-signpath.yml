@@ -2,15 +2,38 @@ name: Build DesktopPet Portable - SignPath
 
 on:
   workflow_dispatch:
+    inputs:
+      configuration:
+        description: Build Configuration
+        required: true
+        default: Release
+        type: choice
+        options:
+          - Debug
+          - Release
+
+      platform:
+        description: Platform
+        required: true
+        default: x64
+        type: choice
+        options:
+          - x86
+          - x64
+
+      signing:
+        description: Signing Certificate
+        required: true
+        default: test-signing
+        type: choice
+        options:
+          - test-signing
+          - release-signing
 
 jobs:
 
   build:
-
-    strategy:
-      matrix:
-        configuration: [Release]  #configuration: [Debug, Release]
-
+  
     runs-on: windows-latest
 
     env:
@@ -32,7 +55,10 @@ jobs:
       run: nuget restore $env:Solution_Name
 
     - name: Build solution
-      run: msbuild $env:Solution_Name -p:Configuration=Release -p:RestorePackages=false
+      run: msbuild $env:Solution_Name `
+           -p:Configuration=${{ github.event.inputs.configuration }} `
+           -p:Platform=${{ github.event.inputs.platform }}
+           -p:RestorePackages=false
 
     - name: Install SignPath Module
       shell: pwsh
@@ -41,18 +67,18 @@ jobs:
     - name: Sign DesktopPet
       shell: pwsh
       run: Submit-SigningRequest `
-        -InputArtifactPath "build/DesktopPetPortable/bin/Release/x64/app.publish/DesktopPet.exe" `
+        -InputArtifactPath "build/DesktopPetPortable/bin/${{ github.event.inputs.configuration }}/${{ github.event.inputs.platform }}/app.publish/DesktopPet.exe" `
         -ApiToken "${{ secrets.SIGNPATH_API_TOKEN }}" `
         -OrganizationId "dd17bc69-e331-421d-9e86-7fbb26a445d2" `
         -ProjectSlug "desktopPet" `
-        -SigningPolicySlug "test-signing" `
-        -OutputArtifactPath "build/DesktopPetPortable/bin/Release/x64/signed/DesktopPet.exe" `
+        -SigningPolicySlug "${{ github.event.inputs.signing }}" `
+        -OutputArtifactPath "build/DesktopPetPortable/bin/${{ github.event.inputs.configuration }}/${{ github.event.inputs.platform }}/signed/DesktopPet.exe" `
         -WaitForCompletion
 
     - name: Upload unsigned EXE artifact
       uses: actions/upload-artifact@v4
       with:
         name: DesktopPet_Portable
-        path: build/DesktopPetPortable/bin/Release/x64/
+        path: build/DesktopPetPortable/bin/${{ github.event.inputs.configuration }}/${{ github.event.inputs.platform }}/
        
     
