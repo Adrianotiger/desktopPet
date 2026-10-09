@@ -38,7 +38,7 @@ jobs:
       uses: actions/upload-artifact@v4
       with:
         name: DesktopPet_Portable
-        path: build/DesktopPetPortable/bin/Release/x64
+        path: build/DesktopPetPortable/bin/Release/x64/app.publish/DesktopPet.exe
        
     - name: Submit signing request
       uses: signpath/github-action-submit-signing-request@v1
