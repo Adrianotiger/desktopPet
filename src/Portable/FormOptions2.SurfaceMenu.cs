@@ -294,9 +294,17 @@ namespace DesktopPet
 			/// </summary>
 			Options = 30,
 			/// <summary>
-			/// Set Autostart (in instabllable)
+			/// Open Animation Options
 			/// </summary>
-			Option_Autostart = 32,
+			Option_Animation = 31,
+			/// <summary>
+			/// Open Application Options
+			/// </summary>
+			Option_Application = 32,
+			/// <summary>
+			/// Set Autostart (in installable)
+			/// </summary>
+			Option_Autostart = 39,
 			/// <summary>
 			/// Open Info page
 			/// </summary>
@@ -304,7 +312,11 @@ namespace DesktopPet
 			/// <summary>
 			/// Open Help page
 			/// </summary>
-			Help_Help = 42
+			Help_Help = 42,
+			/// <summary>
+			/// Close the window
+			/// </summary>
+			Close = 99
 		};
 
 		/// <summary>
@@ -319,64 +331,115 @@ namespace DesktopPet
 			FontText = new Font(Font.FontFamily, 14, FontStyle.Regular, GraphicsUnit.Pixel);
 			Dock = DockStyle.None;
 
-			int offset = 6;
-			_menus.Add(new TMenuItem(this, null, "Pets"   , new Rectangle(offset, 0, 35, 24),  9)); offset += _menus[_menus.Count - 1].Width;
-			_menus.Add(new TMenuItem(this, null, "View"   , new Rectangle(offset, 0, 39, 24), 10)); offset += _menus[_menus.Count - 1].Width;
-			_menus.Add(new TMenuItem(this, null, "Options", new Rectangle(offset, 0, 58, 24), 10)); offset += _menus[_menus.Count - 1].Width;
-			_menus.Add(new TMenuItem(this, null, "Help"   , new Rectangle(offset, 0, 40, 24), 10)); offset += _menus[_menus.Count - 1].Width;
-
-			_menus[0].MenuIndex = MenuItemIndex.Pets;
-
-			_menus[1].Surface = new FormOptions2SurfaceSubMenu(this);
-			_menus[1].Submenu.Add(new TMenuItem(this, _menus[1], "Date (order by)", new Rectangle(5, 5, 138, 22), 10));
-			_menus[1].Submenu.Add(new TMenuItem(this, _menus[1], "Author (order by)", new Rectangle(5, 25, 138, 22), 10));
-			_menus[1].Submenu.Add(new TMenuItem(this, _menus[1], "Name (order by)", new Rectangle(5, 45, 138, 22), 10));
-			_menus[1].Submenu[0].Selected = true;
-			_menus[1].Submenu[0].IsSelectable = true;
-			_menus[1].Submenu[0].MenuIndex = MenuItemIndex.View_Date;
-			_menus[1].Submenu[1].IsSelectable = true;
-			_menus[1].Submenu[1].MenuIndex = MenuItemIndex.View_Author;
-			_menus[1].Submenu[2].IsSelectable = true;
-			_menus[1].Submenu[2].MenuIndex = MenuItemIndex.View_Name;
-			_menus[1].Surface.Location = new Point(Left + _menus[1].Location.X, 30 + _menus[1].Location.Y + _menus[1].Size.Height);
-			_menus[1].Surface.Size = new Size(150, 8 + 22 * _menus[1].Submenu.Count);
-			_menus[1].Surface.Visible = false;
-			Form.Controls.Add(_menus[1].Surface);
-
-#if PORTABLE
-			_menus[2].MenuIndex = MenuItemIndex.Options;
-#else
-			_menus[2].Surface = new FormOptions2SurfaceSubMenu(this);
-			_menus[2].Submenu.Add(new TMenuItem(this, _menus[2], "More...", new Rectangle(5, 5, 168, 22), 11));
-			_menus[2].Submenu.Add(new TMenuItem(this, _menus[2], "Autostart with Windows", new Rectangle(5, 25, 168, 22), 10));
-			_menus[2].Surface.Location = new Point(Left + _menus[2].Location.X, 30 + _menus[2].Location.Y + _menus[2].Size.Height);
-			_menus[2].Surface.Size = new Size(180, 8 + 22 * _menus[2].Submenu.Count);
-			_menus[2].Surface.Visible = false;
-			Form.Controls.Add(_menus[2].Surface);
-
-			_menus[2].Submenu[1].IsSelectable = true;
-			_menus[2].Submenu[1].MenuIndex = MenuItemIndex.Option_Autostart;
-			_menus[2].Submenu[0].MenuIndex = MenuItemIndex.Options;
-			UpdateAutostartMenuItem();
-#endif
-
-			_menus[3].Surface = new FormOptions2SurfaceSubMenu(this);
-			_menus[3].Submenu.Add(new TMenuItem(this, _menus[3], "Info", new Rectangle(5, 5, 68, 22), 3));
-			_menus[3].Submenu.Add(new TMenuItem(this, _menus[3], "Help", new Rectangle(5, 25, 68, 22), 10));
-			_menus[3].Submenu[0].MenuIndex = MenuItemIndex.Help_Info;
-			_menus[3].Submenu[1].MenuIndex = MenuItemIndex.Help_Help;
-			_menus[3].Surface.Location = new Point(Left + _menus[3].Location.X, 30 + _menus[3].Location.Y + _menus[3].Size.Height);
-			_menus[3].Surface.Size = new Size(80, 8 + 22 * _menus[3].Submenu.Count);
-			_menus[3].Surface.Visible = false;
-			Form.Controls.Add(_menus[3].Surface);
-
-
 			Gray = new Pen(Color.FromArgb(193, 196, 200), 3);
 			Blue = new Pen(Color.FromArgb(13, 6, 164), 2);
+
+		}
+
+		private class TMenuText
+		{
+			public string Text { get; set; }
+			public int Width { get; set; }
+			public int LetterOffset { get; set; }
+			public bool Selectable { get; set; } = false;
+			public bool Selected { get; set; } = false;
+			public MenuItemIndex Index { get; set; } = MenuItemIndex.None;
+			public List<TMenuText> SubItems { get; set; } = new List<TMenuText>();
+			public TMenuItem Menu { get; set; } = null;
+		};
+
+		private void GenerateMenu(List<TMenuText> menuBase)
+		{
+			int offset = 6;
+			menuBase.ForEach(mi =>
+			{
+				var mo = new TMenuItem(this, null, mi.Text, new Rectangle(offset, 0, mi.Width, 24), mi.LetterOffset);
+				_menus.Add(mo);
+				mi.Menu = _menus[_menus.Count - 1];
+				if (mi.Index != MenuItemIndex.None) mo.MenuIndex = mi.Index;
+				offset += mo.Width;
+			});
+
+			// Submenus
+			menuBase.ForEach(mb =>
+			{
+				if (mb.SubItems.Count > 0)
+				{
+					var m = mb.Menu;
+
+					m.Surface = new FormOptions2SurfaceSubMenu(this);
+					offset = 5;
+					int maxWidth = 0;
+
+					mb.SubItems.ForEach(mi =>
+					{
+						var mo = new TMenuItem(this, m, mi.Text, new Rectangle(5, offset, mi.Width, 22), mi.LetterOffset);
+						m.Submenu.Add(mo);
+						mi.Menu = m.Submenu[m.Submenu.Count - 1];
+						if (mi.Index != MenuItemIndex.None) mo.MenuIndex = mi.Index;
+						if (mi.Selectable)
+						{
+							mo.IsSelectable = true;
+							mo.Selected = mi.Selected;
+						}
+						offset += 20;
+						maxWidth = Math.Max(maxWidth, mi.Width);
+					});
+
+					m.Surface.Location = new Point(Left + m.Location.X, 30 + m.Location.Y + m.Size.Height);
+					m.Surface.Size = new Size(maxWidth + 12, 22 * m.Submenu.Count + 8);
+					m.Surface.Visible = false;
+					Form.Controls.Add(m.Surface);
+				}
+			});
+		}
+
+		public void GeneratePetsMenu()
+		{
+			List<TMenuText> menuView = new List<TMenuText>();
+			menuView.Add(new TMenuText { Text = "Date (order by)  ", Width = 138, LetterOffset = 10, Selectable = true, Index = MenuItemIndex.View_Date, Selected = true });
+			menuView.Add(new TMenuText { Text = "Author (order by)", Width = 138, LetterOffset = 10, Selectable = true, Index = MenuItemIndex.View_Author });
+			menuView.Add(new TMenuText { Text = "Name (order by)  ", Width = 138, LetterOffset = 10, Selectable = true, Index = MenuItemIndex.View_Name });
+
+			List<TMenuText> menuHelp = new List<TMenuText>();
+			menuHelp.Add(new TMenuText { Text = "Info ", Width = 68, LetterOffset = 3, Index = MenuItemIndex.Help_Info });
+			menuHelp.Add(new TMenuText { Text = "Help ", Width = 68, LetterOffset = 10, Index = MenuItemIndex.Help_Help });
+
+			List<TMenuText> menuOptions = new List<TMenuText>();
+			menuOptions.Add(new TMenuText { Text = "Pet Options...        ", Width = 168, LetterOffset = 11, Index = MenuItemIndex.Option_Animation });
+			menuOptions.Add(new TMenuText { Text = "App Configurations... ", Width = 168, LetterOffset = 11, Index = MenuItemIndex.Option_Application });
+			menuOptions.Add(new TMenuText { Text = "More... (Legacy)      ", Width = 168, LetterOffset = 11, Index = MenuItemIndex.Options });
+#if !PORTABLE
+			// Has to be the last one!
+			menuOptions.Add(new TMenuText { Text = "Autostart with Windows", Width = 168, LetterOffset = 10, Selectable = true, Index = MenuItemIndex.Option_Autostart });
+#endif
+
+			List<TMenuText> menuBase = new List<TMenuText>();
+			menuBase.Add(new TMenuText { Text = "Pets   ", Width = 35, LetterOffset =  9, Index = MenuItemIndex.Pets  });
+			menuBase.Add(new TMenuText { Text = "View   ", Width = 39, LetterOffset = 10, SubItems = menuView });
+			menuBase.Add(new TMenuText { Text = "Options", Width = 58, LetterOffset = 10, SubItems = menuOptions });
+			menuBase.Add(new TMenuText { Text = "Help   ", Width = 40, LetterOffset = 10, SubItems = menuHelp });
+
+			GenerateMenu(menuBase);
+
+#if !PORTABLE
+			UpdateAutostartMenuItem(menuOptions[menuOptions.Count - 1].Menu);
+#endif
+		}
+
+		public void GenerateDefaultMenu()
+		{
+			List<TMenuText> menuFile = new List<TMenuText>();
+			menuFile.Add(new TMenuText { Text = "Close ", Width = 68, LetterOffset = 10, Index = MenuItemIndex.Close });
+
+			List<TMenuText> menuBase = new List<TMenuText>();
+			menuBase.Add(new TMenuText { Text = "File  ", Width = 35, LetterOffset = 10, SubItems = menuFile });
+
+			GenerateMenu(menuBase);
 		}
 
 #if !PORTABLE
-		private async void UpdateAutostartMenuItem()
+		private async void UpdateAutostartMenuItem(TMenuItem item)
 		{
 			try
 			{
@@ -390,19 +453,19 @@ namespace DesktopPet
 						task.State == StartupTaskState.DisabledByPolicy || 
 						task.State == StartupTaskState.Disabled)
 					{
-						_menus[2].Submenu[1].Selected = false;
+						item.Selected = false;
 					}
 					else if (task.State == StartupTaskState.Enabled)
 					{
-						_menus[2].Submenu[1].IsEnabled = true;
-						_menus[2].Submenu[1].Selected = true;
+						item.IsEnabled = true;
+						item.Selected = true;
 					}
 				}
 			}
 			catch (Exception ex)
 			{
 				Form.InfoText = ex.ToString();
-				_menus[2].Submenu[1].IsEnabled = false;
+				item.IsEnabled = false;
 			}
 		}
 #endif

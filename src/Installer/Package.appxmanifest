@@ -12,7 +12,7 @@
   <Identity
     Name="6469Adriano.esheep"
     Publisher="CN=39092E3A-7130-410B-B315-09A9DDDBDEA9"
-    Version="2.6.150.0" />
+    Version="2.6.160.0" />
 
   <Properties>
     <DisplayName>esheep</DisplayName>

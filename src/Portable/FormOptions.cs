@@ -416,15 +416,9 @@ namespace DesktopPet
             label9.Text = Math.Pow(2, (trackBar3.Value - 1)).ToString() + "x";
 
             MessageBox.Show("Scale changed. Application will be restarted", "New scale", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-            using (var petProcess = new Process())
-            {
-                petProcess.StartInfo.FileName = Application.ExecutablePath;
-                petProcess.Start();
-            }
-
-            Hide();
-            Application.Exit();
-        }
+			Hide();
+			Program.RestartApp();
+		}
 
         private void button2_Click(object sender, EventArgs e)
         {

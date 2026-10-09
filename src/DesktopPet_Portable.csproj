@@ -31,7 +31,7 @@
     <CreateWebPageOnPublish>true</CreateWebPageOnPublish>
     <WebPage>publish.htm</WebPage>
     <ApplicationRevision>0</ApplicationRevision>
-    <ApplicationVersion>1.2.0.%2a</ApplicationVersion>
+    <ApplicationVersion>1.6.0.%2a</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
     <PublishWizardCompleted>true</PublishWizardCompleted>
     <BootstrapperEnabled>false</BootstrapperEnabled>
@@ -154,10 +154,12 @@
     <Reference Include="System.Runtime.CompilerServices.Unsafe, Version=6.0.3.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
       <HintPath>packages\System.Runtime.CompilerServices.Unsafe.6.1.2\lib\net462\System.Runtime.CompilerServices.Unsafe.dll</HintPath>
     </Reference>
+    <!--
     <Reference Include="System.Runtime.WindowsRuntime, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETCore\v4.5\System.Runtime.WindowsRuntime.dll</HintPath>
     </Reference>
+    -->
     <Reference Include="System.Security" />
     <Reference Include="System.Security.AccessControl, Version=6.0.0.1, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
       <HintPath>packages\System.Security.AccessControl.6.0.1\lib\net461\System.Security.AccessControl.dll</HintPath>
@@ -223,6 +225,10 @@
       <DependentUpon>FormOptions2.cs</DependentUpon>
     </Compile>
     <Compile Include="Portable\FormOptions2.SurfacePets.cs">
+      <DependentUpon>FormOptions2.cs</DependentUpon>
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Portable\FormOptions2.SurfaceOptions.cs">
       <DependentUpon>FormOptions2.cs</DependentUpon>
       <SubType>Component</SubType>
     </Compile>
@@ -312,8 +318,17 @@
   <ItemGroup>
     <Content Include="esheep.png.ico" />
     <Content Include="icon.ico" />
+    <Content Include="Images\enabled.png" />
     <Content Include="Images\exit.png" />
     <Content Include="Images\help.png" />
+    <Content Include="Images\ico_focus.png" />
+    <Content Include="Images\ico_foreground.png" />
+    <Content Include="Images\ico_multi.png" />
+    <Content Include="Images\ico_quantity.png" />
+    <Content Include="Images\ico_resize.png" />
+    <Content Include="Images\ico_restore.png" />
+    <Content Include="Images\ico_smooth.png" />
+    <Content Include="Images\ico_sound.png" />
     <Content Include="Images\wvleft.jpg" />
     <EmbeddedResource Include="Portable\Newtonsoft.Json.dll" />
     <EmbeddedResource Include="Portable\NAudio.dll" />

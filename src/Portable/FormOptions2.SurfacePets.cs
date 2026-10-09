@@ -355,16 +355,7 @@ namespace DesktopPet
 					if (selectedPet == pets[j])
 					{
 						ImageAttributes attributes = new ImageAttributes();
-
-						ColorMatrix matrix = new ColorMatrix(new float[][]
-						{
-									new float[] { 1, 0.5f, 0, 0, 0 }, // Rot
-									new float[] { 1, 0.5f, 0, 0, 0 }, // Grün
-									new float[] { 1, 0, 0, 0, 0 }, // Blau
-									new float[] { 0, 0, 0, 1, 0 }, // Alpha
-									new float[] { 0, 0, 0, 0, 1 }
-						});
-						attributes.SetColorMatrix(matrix);
+						attributes.SetColorMatrix(form.IconHighlightMatrix);
 
 						g.DrawImage(
 							pets[j].Image,
@@ -438,11 +429,7 @@ namespace DesktopPet
 				{
 					if (l.rect.Contains(e.Location))
 					{
-						System.Diagnostics.Process.Start(new ProcessStartInfo
-						{
-							FileName = l.url,
-							UseShellExecute = true
-						});
+						Program.OpenLink(l.url);
 					}
 				});
 
@@ -487,7 +474,14 @@ namespace DesktopPet
 			if (oldSelected != selectedPet)
 			{
 				Invalidate();
-				form.Invalidate();
+				if (selectedPet == null)
+					form.SetLeftInfo(null, "Mate", "Select a mate to\nview its description.");
+				else
+					form.SetLeftInfo(
+						selectedPet.Image, 
+						selectedPet.folder.Replace("_", " "),
+						"Author: \n  " + selectedPet.author + "\n\n" + "Last Update: \n  " + selectedPet.lastupdate);
+				//form.Invalidate();
 			}
 		}
 

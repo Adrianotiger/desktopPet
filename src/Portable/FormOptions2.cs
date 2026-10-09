@@ -1,21 +1,14 @@
 ﻿using DesktopPet.Properties;
-using NAudio.SoundFont;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
+using System.Diagnostics;
 using System.Drawing;
-using System.Drawing.Drawing2D;
 using System.Drawing.Imaging;
 using System.IO;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Reflection;
-using System.Runtime.InteropServices.ComTypes;
-using System.Runtime.Remoting.Contexts;
-using System.Security.Policy;
-using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Xml;
@@ -24,9 +17,8 @@ using XmlData;
 using static DesktopPet.FormOptions2;
 using static DesktopPet.FormOptions2SurfaceMenu;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement;
-using Microsoft.Win32;
-using System.IO.Packaging;
-using System.Diagnostics;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement.Window;
+
 
 
 #if !PORTABLE
@@ -35,6 +27,10 @@ using Windows.ApplicationModel;
 
 namespace DesktopPet
 {
+	/// <summary>
+	/// New Option Form, with a nice visual and Windows95 style.
+	/// It replace the new Options and will call the old Option Form for all options that are not yet implemented in this one.
+	/// </summary>
 	public partial class FormOptions2 : Form
 	{
 		private Font fontTitle;
@@ -45,6 +41,8 @@ namespace DesktopPet
 		private Rectangle _closeButtonRect;
 		private Rectangle _resizeRect;
 		private Rectangle _titleRect;
+		private Rectangle _okRect;
+		private Rectangle _cancelRect;
 		private Point _moves;
 		private Point _resizes;
 		private Point _moveStart;
@@ -53,8 +51,9 @@ namespace DesktopPet
 		private Pen White;
 		private Pen Black;
 		private int pageSelected = 0;
-		private FormOptions2SurfacePets surfacePets;
+		private Panel extendedPanel;
 		private FormOptions2SurfaceMenu surfaceMenu;
+		private bool isDialog = false;
 		/// <summary>
 		/// List of pets available to download from the web. This is updated every 24 hours, and stored in a temporary folder.
 		/// </summary>
@@ -63,6 +62,7 @@ namespace DesktopPet
 		/// Infotext used to show some debug info or status on the status bar.
 		/// </summary>
 		public string InfoText = "Options";
+		public ColorMatrix IconHighlightMatrix { get; private set; }
 
 		/// <summary>
 		/// FormOptions2 can be called with different window types. 
@@ -71,14 +71,40 @@ namespace DesktopPet
 		public enum WindowType
 		{
 			/// <summary>
-			/// Show Pets list (only this is implemented)
+			/// Show Pets list
 			/// </summary>
 			Pets = 1,
-			AppOptions = 2,
+			/// <summary>
+			/// Show all Options like the old Control Panel
+			/// </summary>
+			AppAnimationOptions = 2,
 			AppConfiguration = 3,
 			Help = 4,
-			Info = 5
+			Info = 5,
+			/// <summary>
+			/// Show a Dialog Box with OK and Cancel button
+			/// </summary>
+			Dialog = 6
 		};
+
+		private class TControl
+		{
+			public Rectangle Rect = new Rectangle(0,0,100,0);
+			public bool IsCheckbox = true;
+			public int Value = 0;
+			public List<int> Values;
+			public List<string> ValuesText;
+			public int Max = -1;
+		};
+		private List<TControl> controls = new List<TControl>();
+
+		private class TWindowsLeftInfo
+		{
+			public Image Image { get; set; } = null;
+			public string Title { get; set; } = "Mates";
+			public string Details { get; set; } = "Select a mate to\nview its description.";
+		};
+		private TWindowsLeftInfo WindowsLeftInfo = new TWindowsLeftInfo();
 
 		/// <summary>
 		/// Constructor for FormOptions2. Create a windows95-style window to show a list of pets, info or options.
@@ -88,6 +114,7 @@ namespace DesktopPet
 		public FormOptions2(string Title, WindowType winType)
 		{
 			InitializeComponent();
+			Text = Title;
 
 			//this.TopMost = true;
 			fontTitle = new Font(Font.FontFamily, 15, FontStyle.Bold, GraphicsUnit.Pixel);
@@ -98,21 +125,57 @@ namespace DesktopPet
 			_moves = new Point(-1, -1);
 			_resizes = new Point(-1, -1);
 
-			surfacePets = new FormOptions2SurfacePets(this);
-			surfaceMenu = new FormOptions2SurfaceMenu(this);
-
-			RecalculateSizes();
-
 			// Some windows95 colors
 			Gray = new Pen(Color.FromArgb(193, 196, 200), 3);
-			Blue = new Pen(Color.FromArgb( 13,   6, 164), 2);
+			Blue = new Pen(Color.FromArgb(13, 6, 164), 2);
 			White = new Pen(Color.FromArgb(255, 255, 255), 1);
 			Black = new Pen(Color.FromArgb(150, 150, 150), 1);
 
-			Task.Run(async() => { await UpdatePets(); });
+			// Yellow Highlight
+			IconHighlightMatrix = new ColorMatrix(new float[][]
+			{
+				new float[] { 1, 0.5f, 0, 0, 0 }, // Red
+				new float[] { 1, 0.5f, 0, 0, 0 }, // Green
+				new float[] { 1, 0, 0, 0, 0 }, // Blue
+				new float[] { 0, 0, 0, 1, 0 }, // Alpha
+				new float[] { 0, 0, 0, 0, 1 }
+			});
 
-			Controls.Add(surfacePets);
-			Controls.Add(surfaceMenu);
+			surfaceMenu = new FormOptions2SurfaceMenu(this);
+
+			switch (winType)
+			{
+				case WindowType.AppAnimationOptions:
+					extendedPanel = new FormOptions2SurfaceOptions(this);
+					(extendedPanel as FormOptions2SurfaceOptions).GenerateAnimationOptionSurface();
+					surfaceMenu.GenerateDefaultMenu();
+					Width = 500;
+					Height = 400;
+					break;
+				case WindowType.AppConfiguration:
+					extendedPanel = new FormOptions2SurfaceOptions(this);
+					(extendedPanel as FormOptions2SurfaceOptions).GenerateConfigurationSurface();
+					surfaceMenu.GenerateDefaultMenu();
+					Width = 500;
+					Height = 400;
+					break;
+				case WindowType.Dialog:
+					Width = 300;
+					Height = 200;
+					surfaceMenu = null;
+					isDialog = true;
+					break;
+				default:
+					extendedPanel = new FormOptions2SurfacePets(this);
+					surfaceMenu.GeneratePetsMenu();
+					
+					Task.Run(async () => { await UpdatePets(); });
+					break;
+			}
+			
+			RecalculateSizes();
+			if(extendedPanel != null) Controls.Add(extendedPanel);
+			if(surfaceMenu != null) Controls.Add(surfaceMenu);
 		}
 
 		/// <summary>
@@ -124,15 +187,77 @@ namespace DesktopPet
 			_resizeRect = new Rectangle(Width - 28, Height - 28, 28, 28);
 			_titleRect = new Rectangle(6, 6, Width - 12, 24);
 
-			surfacePets.Location = new Point(150, 60);
-			surfacePets.Size = new Size(
-					ClientRectangle.Width - 160,
-					ClientRectangle.Height - 98);
+			if (extendedPanel != null)
+			{
+				extendedPanel.Location = new Point(150, 60);
+				extendedPanel.Size = new Size(
+						ClientRectangle.Width - 160,
+						ClientRectangle.Height - 98);
+			}
 
-			surfaceMenu.Location = new Point(6, 32);
-			surfaceMenu.Size = new Size(
-					Width - 30,
-					24);
+			if (surfaceMenu != null)
+			{
+				surfaceMenu.Location = new Point(6, 32);
+				surfaceMenu.Size = new Size(
+						Width - 30,
+						24);
+			}
+
+			if(isDialog)
+			{
+				int y = 40;
+				int extraHeight = 0;
+				controls.ForEach(c =>
+				{
+					c.Rect = new Rectangle(10, y, ClientRectangle.Width - 20, 50);
+					if (c.Values != null) extraHeight = Math.Max(extraHeight, y + c.Values.Count * 22 + 50 + 30);
+					y += 50;
+				});
+				Height = y + 30;
+
+				if (Height < extraHeight) Height = extraHeight;
+
+				_okRect = new Rectangle(15/*+ClientRectangle.Width/2*/, ClientRectangle.Height - 40, ClientRectangle.Width / 2 - 30, 30);
+				_cancelRect = new Rectangle(15 + ClientRectangle.Width / 2, ClientRectangle.Height - 40, ClientRectangle.Width / 2 - 30, 30);
+			}
+		}
+
+		public void AddDialogControl(bool enabled)
+		{
+			controls.Add(new TControl
+			{
+				Value = (enabled ? 1 : 0)
+			});
+			RecalculateSizes();
+		}
+
+		public void AddDialogControl(int value, int maxValue)
+		{
+			controls.Add(new TControl
+			{
+				Value = value,
+				Max = maxValue,
+				IsCheckbox = false
+			});
+			RecalculateSizes();
+		}
+
+		public void AddDialogControl(int value, List<int> values, List<string> valuesText)
+		{
+			controls.Add(new TControl
+			{
+				Value = value,
+				Values = values,
+				ValuesText = valuesText,
+				IsCheckbox = false,
+				Max = -1 /* use Max=-1 for close and Max=-2 for open*/
+			});
+			RecalculateSizes();
+		}
+
+		public int GetDialogControl(int index = 0)
+		{
+			return controls[index].Value;
 		}
 
 		/// <summary>
@@ -147,13 +272,57 @@ namespace DesktopPet
 			base.OnMouseDown(e);
 
 			if (_closeButtonRect.Contains(e.Location))
-			{
+			{ 
+				if(isDialog) this.DialogResult = DialogResult.Cancel;
 				Close();
 			}
 			else if(_titleRect.Contains(e.Location) && _moves.X < 0)
 			{
 				_moves = new Point(e.Location.X, e.Location.Y);
 				_moveStart = new Point(Left, Top);
+			}
+			else if (isDialog)
+			{
+				if (_okRect.Contains(e.Location)) { this.DialogResult = DialogResult.OK; return; }
+				else if (_cancelRect.Contains(e.Location)) { this.DialogResult = DialogResult.Cancel; return;  }
+				else
+				{
+					controls.ForEach(c =>
+					{
+						if(c.Max == -2) // open select dialog
+						{
+							var rect = new Rectangle(c.Rect.X + 20, c.Rect.Y + 30, c.Rect.Width - 40, 24 * c.Values.Count);
+							if (rect.Contains(e.Location))
+							{
+								int index = (int)(((double)(e.Location.Y - rect.Y - 15) / c.Rect.Height) * c.Values.Count);
+								c.Value = c.Values[Math.Min(index, c.Values.Count - 1)];
+								c.Max = -1;
+								Invalidate();
+								return;
+							}
+						}
+						if(c.Rect.Contains(e.Location))
+						{
+							if (c.IsCheckbox)
+							{
+								c.Value = (c.Value == 0 ? 1 : 0);
+							}
+							else if(c.Values != null)
+							{
+								if (c.Max == -1) // closed
+								{
+									c.Max = -2;
+								}
+								else
+								{
+									c.Max = -1;
+								}
+							}
+
+							Invalidate();
+						}
+					});
+				}
 			}
 			else if(_resizeRect.Contains(e.Location))
 			{
@@ -165,7 +334,7 @@ namespace DesktopPet
 				
 			}
 
-			if (surfaceMenu.MenuActivated) { surfaceMenu.MenuActivated = false; surfaceMenu.UnHighlight(); surfaceMenu.Invalidate(); }
+			if (surfaceMenu != null && surfaceMenu.MenuActivated) { surfaceMenu.MenuActivated = false; surfaceMenu.UnHighlight(); surfaceMenu.Invalidate(); }
 		}
 
 		/// <summary>
@@ -183,22 +352,30 @@ namespace DesktopPet
 					}
 				case MenuItemIndex.Pets: // Pets
 					{
-						if (surfacePets.showReadme)
+						var petsSurface = (extendedPanel as FormOptions2SurfacePets);
+						if (petsSurface != null && petsSurface.showReadme)
 						{
-							surfacePets.showReadme = false;
-							surfacePets.showDetails = false;
-							surfacePets.Invalidate();
+							petsSurface.showReadme = false;
+							petsSurface.showDetails = false;
+							petsSurface.Invalidate();
 
 							//if (surfaceMenu.MenuActivated) { surfaceMenu.MenuActivated = false; surfaceMenu.UnHighlight(); surfaceMenu.Invalidate(); }
 						}
+						break;
+					}
+				case MenuItemIndex.Close: // Close Window
+					{
+						Close();
 						break;
 					}
 				case MenuItemIndex.View_Author: // View - Author
 				case MenuItemIndex.View_Date: // View - Date
 				case MenuItemIndex.View_Name: // View - Name
 					{
+						var petsSurface = (extendedPanel as FormOptions2SurfacePets);
+
 						WebPets.Reorder(menu);
-						if (!surfacePets.showReadme) surfacePets.Invalidate();
+						if (petsSurface != null && !petsSurface.showReadme) petsSurface.Invalidate();
 						break;
 					}
 				case MenuItemIndex.Options: // Options
@@ -212,6 +389,33 @@ namespace DesktopPet
 								Program.MyData.SetIcon("");
 								Program.MyData.SetImages("");
 								Program.MyData.SetXml("", "");
+								break;
+						}
+						break;
+					}
+				case MenuItemIndex.Option_Animation:
+					{
+						FormOptions2 formoptions = new FormOptions2("Animations Options", WindowType.AppAnimationOptions);
+						switch (formoptions.ShowDialog())
+						{
+							case DialogResult.Retry:
+								StartUp.AddDebugInfo(StartUp.DEBUG_TYPE.warning, "restoring default XML");
+
+								Program.MyData.SetIcon("");
+								Program.MyData.SetImages("");
+								Program.MyData.SetXml("", "");
+
+								Program.RestartApp();
+								break;
+						}
+						break;
+					}
+				case MenuItemIndex.Option_Application:
+					{
+						FormOptions2 formoptions = new FormOptions2("Application Configurations", WindowType.AppConfiguration);
+						switch (formoptions.ShowDialog())
+						{
+							case DialogResult.Retry:
 								break;
 						}
 						break;
@@ -318,6 +522,43 @@ namespace DesktopPet
 				RecalculateSizes();
 				Invalidate();
 			}
+			
+			if(isDialog && e.Button == MouseButtons.Left)
+			{
+				var c = controls[0];
+				if (c.Rect.Contains(e.Location))
+				{
+					if (c.Max > 0)
+					{
+						int min = c.Rect.X + 10 + 24;
+						int max = c.Rect.Width - 20;
+						//int val = (max - min) / (c.Max + 1) * c.Value;
+
+						if (e.Location.X < min)
+						{
+							if (c.Value > 0) c.Value--;
+						}
+						else if (e.Location.X > max)
+						{
+							if (c.Value < c.Max) c.Value++;
+						}
+						else
+						{
+							int oldValue = c.Value;
+							c.Value = (int)((double)c.Max / (max - min) * (e.Location.X - min));
+							if (oldValue != c.Value) Invalidate();
+						}
+					}
+				}
+			}
+		}
+
+		public void SetLeftInfo(Image image, string title, string details)
+		{
+			WindowsLeftInfo.Image = image;
+			WindowsLeftInfo.Title = title;
+			WindowsLeftInfo.Details = details;
+			Invalidate();
 		}
 
 		/// <summary>
@@ -387,55 +628,81 @@ namespace DesktopPet
 			}
 
 			// Contents
+			if(isDialog)
+			{
+				ControlPaint.DrawButton(g, new Rectangle(15/*+ClientRectangle.Width/2*/, ClientRectangle.Height - 40, ClientRectangle.Width / 2 - 30, 30), ButtonState.Normal);
+				ControlPaint.DrawButton(g, new Rectangle(15 + ClientRectangle.Width / 2, ClientRectangle.Height - 40, ClientRectangle.Width / 2 - 30, 30), ButtonState.Normal);
+				g.DrawString("OK", fontText, Brushes.Black, ClientRectangle.Width / 4 - 10, ClientRectangle.Height - 35);
+				g.DrawString("Cancel", fontText, Brushes.Black, ClientRectangle.Width / 4 * 3 - 25, ClientRectangle.Height - 35);
+				controls.ForEach(c =>
+				{
+					if(c.IsCheckbox)
+					{
+						ControlPaint.DrawCheckBox(g, new Rectangle(c.Rect.X + 20, c.Rect.Y, 24, 24), c.Value == 1 ? ButtonState.Checked : ButtonState.Normal);
+						g.DrawString("Enable", fontText, Brushes.Black, c.Rect.X + 50, c.Rect.Y + 5);
+					}
+					else if(c.Max > 0)
+					{
+						ControlPaint.DrawBorder(g, new Rectangle(c.Rect.X + 20, c.Rect.Y + 10, c.Rect.Width - 40, 3), Color.Black, ButtonBorderStyle.Outset);
+						ControlPaint.DrawScrollButton(g, c.Rect.X + 10, c.Rect.Y, 24, 24, ScrollButton.Left, ButtonState.Normal);
+						ControlPaint.DrawScrollButton(g, c.Rect.Width - 20, c.Rect.Y, 24, 24, ScrollButton.Right, ButtonState.Normal);
+						int min = c.Rect.X + 10 + 24;
+						int max = c.Rect.Width - 20;
+						int val = (max - min) / (c.Max + 1) * c.Value;
+						ControlPaint.DrawButton(g, new Rectangle(min + val, c.Rect.Y, 20, 24), ButtonState.Normal);
+
+						g.DrawString(
+							Text + " [" + c.Value + "]",
+							fontTitle,
+							Brushes.White,
+							34,
+							8);
+					}
+					else if(c.Values.Count > 0)
+					{
+						ControlPaint.DrawBorder(g, new Rectangle(c.Rect.X + 20, c.Rect.Y + 10, c.Rect.Width - 40, 24), SystemColors.WindowFrame, ButtonBorderStyle.Solid);
+						g.FillRectangle(Brushes.White, c.Rect.X + 20 + 1, c.Rect.Y + 10 + 1, c.Rect.Width - 42, 24 - 2);
+						ControlPaint.DrawComboButton(g, new Rectangle(c.Rect.Width - 27, c.Rect.Y + 11, 17, 22), ButtonState.Normal);
+						int index = c.Values.IndexOf(c.Value);
+						g.DrawString(c.ValuesText[index], new Font(fontText, FontStyle.Bold), Brushes.Black, c.Rect.X + 30, c.Rect.Y + 13);
+
+						if(c.Max == -2) // menu open
+						{
+							ControlPaint.DrawBorder(g, new Rectangle(c.Rect.X + 20, c.Rect.Y + 10 + 24, c.Rect.Width - 60, 24 * c.Values.Count), SystemColors.WindowFrame, ButtonBorderStyle.Solid);
+							g.FillRectangle(Brushes.White, c.Rect.X + 20 + 1, c.Rect.Y + 10 + 24 + 1, c.Rect.Width - 62, 24 * c.Values.Count - 2);
+							for(int k=0;k<c.Values.Count;k++)
+							{
+								g.DrawString(c.ValuesText[k], new Font(fontText, FontStyle.Bold), Brushes.Black, c.Rect.X + 30, c.Rect.Y + 13 + 24 + k*24);
+							}
+						}
+					}
+				});
+				return;
+			}
 			if (pageSelected == 0)
 			{
 				g.FillRectangle(new SolidBrush(Color.White), new Rectangle(8, 58, ClientRectangle.Width - 15, ClientRectangle.Height - 91));
 				g.DrawImage(win98, new Point(8, 58));
 
-				if (surfacePets.selectedPet == null)
-				{
-					g.DrawString(
-						"Mates",
-						new Font(fontText.FontFamily, 24, FontStyle.Bold),
-						Brushes.Black,
-						20,
-						130);
-					g.DrawString(
-						"Select a mate to\nview its description.",
-						fontDetail,
-						Brushes.Black,
-						18,
-						190);
-				}
-				else
-				{
-					var sizeF = g.MeasureString(surfacePets.selectedPet.folder.Replace("_", " "),
-						new Font(fontText.FontFamily, surfacePets.selectedPet.folder.Length < 6 ? 24 : 16, FontStyle.Bold),
+				var sizeF = g.MeasureString(WindowsLeftInfo.Title,
+						new Font(fontText.FontFamily, WindowsLeftInfo.Title.Length < 7 ? 24 : 16, FontStyle.Bold),
 						new SizeF(130, 80));
-					g.DrawString(
-						surfacePets.selectedPet.folder.Replace("_", " "),
-						new Font(fontText.FontFamily, surfacePets.selectedPet.folder.Length < 6 ? 24 : 16, FontStyle.Bold),
-						Brushes.Black,
-						new RectangleF(20, 140 - (int)(sizeF.Height / 3), 130, 80)					
-						);
+				g.DrawString(
+					WindowsLeftInfo.Title,
+					new Font(fontText.FontFamily, WindowsLeftInfo.Title.Length < 6 ? 24 : 16, FontStyle.Bold),
+					Brushes.Black,
+					new RectangleF(20, 140 - (int)(sizeF.Height / 3), 130, 80)
+					);
 
-					g.DrawImage(surfacePets.selectedPet.Image, new Rectangle(50, 90 - (int)(sizeF.Height / 3), 48, 48));
+				if(WindowsLeftInfo.Image != null)
+					g.DrawImage(WindowsLeftInfo.Image, new Rectangle(50, 90 - (int)(sizeF.Height / 3), 48, 48));
 
-					g.DrawString(
-						"Author: \n  " + surfacePets.selectedPet.author,
-						fontDetail,
-						Brushes.Black,
-						20,
-						190);
-
-					g.DrawString(
-						"Last Update: \n  " + surfacePets.selectedPet.lastupdate,
-						fontDetail,
-						Brushes.Black,
-						20,
-						230);
-				}
-
+				g.DrawString(
+					WindowsLeftInfo.Details,
+					fontDetail,
+					Brushes.Black,
+					new Rectangle(20, 190, 130, 300)
+					);
 			}
 
 			// Content Border
@@ -484,20 +751,24 @@ namespace DesktopPet
 		private async Task UpdatePets()
 		{
 			InfoText = "Update pet list...";
-			var taskEnd = false;
+
+			if(WebPets == null)
+			{
+				WebPets = new OptionsPets
+				{
+					pets = new List<OptionsPet>()
+				};
+			}
 
 			try
 			{
-				_ = Task.Run(async () =>
+				var progress = new Progress<OptionsPet>(async pet =>
 				{
-					while(!taskEnd)
-					{
-						await Task.Delay(1000);
-						surfacePets?.Invalidate();
-					}
+					WebPets.pets.Add(pet);
+					if(WebPets.pets.Count == 1 || (WebPets.pets.Count % 3) == 0)
+						extendedPanel?.Invalidate();
 				});
-				WebPets = await OptionsGit.GetPetList();
-				taskEnd = true;
+				await OptionsGit.GetPetList(progress);
 			}
 			catch(Exception ex)
 			{
@@ -505,10 +776,9 @@ namespace DesktopPet
 				Invalidate();
 			}
 
-			taskEnd = true;
 			InfoText = WebPets.pets.Count + " pets available";
 			Invalidate();
-			surfacePets.Invalidate();
+			extendedPanel.Invalidate();
 		}
 
 		/// <summary>
@@ -520,9 +790,13 @@ namespace DesktopPet
 		public async void DownloadPet(string name)
 		{
 			InfoText = "Downloading " + name + "...";
-			surfacePets.showReadme = false;
-			Invalidate();
-			surfacePets.Invalidate();
+			var petsSurface = (extendedPanel as FormOptions2SurfacePets);
+			if (petsSurface != null)
+			{
+				petsSurface.showReadme = false;
+				Invalidate();
+				petsSurface.Invalidate();
+			}
 
 			try
 			{
@@ -552,9 +826,13 @@ namespace DesktopPet
 		public async void PetDetails(string name)
 		{
 			InfoText = "Downloading " + name + "...";
-			surfacePets.showDetails = true;
-			Invalidate();
-			surfacePets.Invalidate();
+			var petsSurface = (extendedPanel as FormOptions2SurfacePets);
+			if (petsSurface != null)
+			{
+				petsSurface.showDetails = true;
+				Invalidate();
+				petsSurface.Invalidate();
+			}
 
 			try
 			{
@@ -598,10 +876,8 @@ namespace DesktopPet
 		/// Get the list of pets, from Github or locally.
 		/// </summary>
 		/// <returns>List of OptionsPets pets</returns>
-		public static async Task<OptionsPets> GetPetList()
+		public static async Task GetPetList(IProgress<OptionsPet> progress)
 		{
-			OptionsPets pets = null;
-
 			bool updateList = true;
 			bool downloadList = false;
 
@@ -646,7 +922,7 @@ namespace DesktopPet
 					{
 						onlinePets.pets.ForEach(op =>
 						{
-							if (op.lastupdate != lp.lastupdate)
+							if (op.folder == lp.folder && op.lastupdate != lp.lastupdate)
 							{
 								File.Delete(Path.Combine(BaseLocalPath, lp.folder + ".png"));
 								File.Delete(Path.Combine(BaseLocalPath, lp.folder + ".xml"));
@@ -666,18 +942,26 @@ namespace DesktopPet
 				jsonString = File.ReadAllText(jsonFile);
 			}
 
-			pets = Newtonsoft.Json.JsonConvert.DeserializeObject<OptionsPets>(jsonString);
-			pets.Reorder();
+			var pets = Newtonsoft.Json.JsonConvert.DeserializeObject<OptionsPets>(jsonString);
+			//pets.Reorder();
 
+			pets.pets.ForEach(p =>
+			{
+				using (Stream stream = GetOrDownload(p.folder, "icon.png"))
+				{
+					p.Image = Image.FromStream(stream);
+					progress.Report(p);
+				}
+			});
+			/*
 			for (int j = 0; j < pets.pets.Count; j++)
 			{
 				using (Stream stream = GetOrDownload(pets.pets[j].folder, "icon.png"))
 				{
 					pets.pets[j].Image = Image.FromStream(stream);
-				}
-			}
 
-			return pets;
+				}
+			}*/
 		}
 
 		/// <summary>

@@ -67,7 +67,7 @@ namespace DesktopPet
             /// <param name="e">Information about the link click event</param>
         private void LinkLabel1_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
-            Process.Start("http://esheep.petrucci.ch");
+			Program.OpenLink("http://esheep.petrucci.ch");
         }
 
             /// <summary>
@@ -88,17 +88,17 @@ namespace DesktopPet
             /// <param name="e">Information about the link click event</param>
         private void LinkLabel2_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
-            Process.Start("https://github.com/Adrianotiger/desktopPet");
+			Program.OpenLink("https://github.com/Adrianotiger/desktopPet");
         }
 
-            /// <summary>
-            /// Link on the richTextbox was pressed. Open it in the browser.
-            /// </summary>
-            /// <param name="sender">Caller as object</param>
-            /// <param name="e">Information about the link click event</param>
+        /// <summary>
+        /// Link on the richTextbox was pressed. Open it in the browser.
+        /// </summary>
+        /// <param name="sender">Caller as object</param>
+        /// <param name="e">Information about the link click event</param>
         private void RichTextBox1_LinkClicked(object sender, LinkClickedEventArgs e)
         {
-            Process.Start(e.LinkText);
+            Program.OpenLink(e.LinkText);
         }
     }
 }

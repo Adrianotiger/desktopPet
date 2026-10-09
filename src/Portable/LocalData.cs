@@ -1,12 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Configuration;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Xml.Serialization;
-using System.Configuration;
 
 namespace DesktopPet
 {
@@ -20,12 +21,24 @@ namespace DesktopPet
         KeyValueConfigurationCollection AppSettings = null;
 		readonly bool isInstalled = false;
 
+        public static class SettingName
+        {
+            public const string Undefined = "";
+            public const string Volume = "Volume";
+            public const string PetScale = "Scale";
+			public const string Multiscreen = "Multiscreen";
+            public const string WinForeground = "WinForeground";
+            public const string StealTaskbarFocus = "StealTaskbarFocus";
+			public const string AutostartPets = "AutostartPets";
+			public const string SmoothMovements = "Smooth";
+		};
+
 		/// <summary>
 		/// Initializes a new instance of the <see cref="LocalData"/> class.
 		/// </summary>
 		public LocalData()
         {
-            try
+			try
             {
 #if PORTABLE
                 string configFile = "DesktopPet.config";
@@ -75,10 +88,10 @@ namespace DesktopPet
 		public void SetVolume(double volume)
         {
             int iVolume = (int)(volume * 100);
-            if (iVolume.ToString() != AppSettings["Volume"].Value)
+            if (iVolume.ToString() != AppSettings[SettingName.Volume].Value)
             {
                 Properties.Settings.Default.Volume = iVolume;
-                AppSettings["Volume"].Value = iVolume.ToString();
+                AppSettings[SettingName.Volume].Value = iVolume.ToString();
                 Save();
             }
         }
@@ -89,7 +102,7 @@ namespace DesktopPet
 		/// <returns>Value from 0 for no sound to 1.0 for full sound</returns>
 		public float GetVolume()
         {
-			int.TryParse(AppSettings["Volume"].Value, out int iVolume);
+			int.TryParse(AppSettings[SettingName.Volume].Value, out int iVolume);
 			return (float)(iVolume / 100.0);
         }
 
@@ -99,10 +112,10 @@ namespace DesktopPet
 		/// <param name="pow2">Set the scale as a power of 2</param>
 		public void SetScale(int pow2)
         {
-            if (pow2.ToString() != AppSettings["Scale"].Value)
+            if (pow2.ToString() != AppSettings[SettingName.PetScale].Value)
             {
                 Properties.Settings.Default.Scale = pow2;
-                AppSettings["Scale"].Value = pow2.ToString();
+                AppSettings[SettingName.PetScale].Value = pow2.ToString();
                 Save();
             }
         }
@@ -112,7 +125,7 @@ namespace DesktopPet
         /// <returns></returns>
         public int GetScale()
         {
-            if (int.TryParse(AppSettings["Scale"].Value, out int iScale))
+            if (int.TryParse(AppSettings[SettingName.PetScale].Value, out int iScale))
             {
                 return iScale;
             }
@@ -125,7 +138,7 @@ namespace DesktopPet
         /// <returns>true, if multiscreen is enabled and the pet should move between screens</returns>
         public bool GetMultiscreen()
         {
-            bool.TryParse(AppSettings["Multiscreen"].Value, out bool ret);
+            bool.TryParse(AppSettings[SettingName.Multiscreen].Value, out bool ret);
             return ret;
         }
 
@@ -135,10 +148,10 @@ namespace DesktopPet
 		/// <param name="multi">true, if you want to see the pet moving over 2 screens</param>
 		public void SetMultiscreen(bool multi)
         {
-            if (multi.ToString() != AppSettings["Multiscreen"].Value)
+            if (multi.ToString() != AppSettings[SettingName.Multiscreen].Value)
             {
                 Properties.Settings.Default.Multiscreen = multi;
-                AppSettings["Multiscreen"].Value = multi.ToString();
+                AppSettings[SettingName.Multiscreen].Value = multi.ToString();
                 Save();
             }
         }
@@ -149,7 +162,7 @@ namespace DesktopPet
         /// <returns>true, if the pet should be in the foreground</returns>
         public bool GetWindowForeground()
         {
-            bool.TryParse(AppSettings["WinForeground"].Value, out bool ret);
+            bool.TryParse(AppSettings[SettingName.WinForeground].Value, out bool ret);
             return ret;
         }
 
@@ -159,10 +172,10 @@ namespace DesktopPet
 		/// <param name="foreground">true, if the pet should be in the foreground</param>
 		public void SetWindowForeground(bool foreground)
         {
-            if (foreground.ToString() != AppSettings["WinForeground"].Value)
+            if (foreground.ToString() != AppSettings[SettingName.WinForeground].Value)
             {
                 Properties.Settings.Default.WinForeground = foreground;
-                AppSettings["WinForeground"].Value = foreground.ToString();
+                AppSettings[SettingName.WinForeground].Value = foreground.ToString();
                 Save();
             }
         }
@@ -174,10 +187,10 @@ namespace DesktopPet
 		/// <param name="steal">true, if the pet should steal the taskbar focus</param>
 		public void SetStealTaskbarFocus(bool steal)
         {
-            if (steal.ToString() != AppSettings["StealTaskbarFocus"].Value)
+            if (steal.ToString() != AppSettings[SettingName.StealTaskbarFocus].Value)
             {
                 Properties.Settings.Default.WinForeground = steal;
-                AppSettings["StealTaskbarFocus"].Value = steal.ToString();
+                AppSettings[SettingName.StealTaskbarFocus].Value = steal.ToString();
                 Save();
             }
         }
@@ -188,7 +201,7 @@ namespace DesktopPet
 		/// <returns>true, if the pet should steal the taskbar focus</returns>
 		public bool GetStealTaskbarFocus()
         {
-            bool.TryParse(AppSettings["StealTaskbarFocus"].Value, out bool ret);
+            bool.TryParse(AppSettings[SettingName.StealTaskbarFocus].Value, out bool ret);
             return ret;
         }
 
@@ -198,7 +211,7 @@ namespace DesktopPet
 		/// <returns>the number of pets to start automatically</returns>
 		public int GetAutoStartPets()
         {
-            int.TryParse(AppSettings["AutostartPets"].Value, out int ret);
+            int.TryParse(AppSettings[SettingName.AutostartPets].Value, out int ret);
             return Math.Max(1, ret);
         }
 
@@ -208,13 +221,73 @@ namespace DesktopPet
 		/// <param name="autostart">the number of pets to start automatically</param>
 		public void SetAutoStartPets(int autostart)
         {
-            if (autostart.ToString() != AppSettings["AutostartPets"].Value)
+            if (autostart.ToString() != AppSettings[SettingName.AutostartPets].Value)
             {
                 Properties.Settings.Default.AutostartPets = autostart;
-                AppSettings["AutostartPets"].Value = autostart.ToString();
+                AppSettings[SettingName.AutostartPets].Value = autostart.ToString();
                 Save();
             }
         }
+
+        public bool GetSmoothMovements()
+        {
+			bool.TryParse(AppSettings[SettingName.SmoothMovements].Value, out bool ret);
+			return ret;
+		}
+
+        public int GetIntValue(string setting)
+        {
+            if(AppSettings.AllKeys.Contains(setting) && setting != SettingName.Undefined)
+            {
+                if (AppSettings[setting] == null) // If setting is not present in the local machine, create it
+                {
+                    AppSettings.Add(setting, "0");
+                }
+
+                if(int.TryParse(AppSettings[setting].Value, NumberStyles.Integer, CultureInfo.InvariantCulture, out int ret1))
+                {
+                    return ret1;
+                }
+				else if (float.TryParse(AppSettings[setting].Value, NumberStyles.Float, CultureInfo.InvariantCulture, out float ret3))
+				{
+					return (int)(ret3 * 100);
+				}
+				else if(bool.TryParse(AppSettings[setting].Value, out bool ret2))
+                {
+                    return (ret2 ? 1 : 0);
+                }
+            }
+            return 0;
+        }
+
+        public bool SetIntValue(string setting, int value)
+        {
+			if (AppSettings.AllKeys.Contains(setting) && setting != SettingName.Undefined)
+			{
+				if (int.TryParse(AppSettings[setting].Value, NumberStyles.Integer, CultureInfo.InvariantCulture, out int ret1))
+				{
+                    try
+                    {
+                        Properties.Settings.Default[setting] = value;
+                    }
+                    catch(Exception)
+                    {
+						Properties.Settings.Default[setting] = (float)value; // we have floats and int (both can be parsed as int, but must be saved separately)
+					}
+					AppSettings[setting].Value = value.ToString(CultureInfo.InvariantCulture);
+					Save();
+					return true;
+				}
+				else if (bool.TryParse(AppSettings[setting].Value, out bool ret2))
+				{
+					Properties.Settings.Default[setting] = (value > 0);
+					AppSettings[setting].Value = ((bool)(value > 0)).ToString(CultureInfo.InvariantCulture);
+					Save();
+					return true;
+				}
+			}
+            return false;
+		}
 
 		/// <summary>
 		/// Set the XML data for the pet. The XML is a string containing the entire pet animation.

@@ -9,6 +9,7 @@ using System.Diagnostics;
 using System.Threading;
 using System.Linq;
 using System.Numerics;
+using DesktopPet.Properties;
 
 namespace DesktopPet
 {
@@ -96,6 +97,11 @@ namespace DesktopPet
         double tossVertVel = 0.0;
 
             /// <summary>
+            /// With Version 1.5, Motion class was added
+            /// </summary>
+        bool UseSmoothMovements = false;
+
+            /// <summary>
             /// If multi screens are available, the pet can be set on a defined screen
             /// </summary>
         int DisplayIndex = 0;
@@ -135,7 +141,8 @@ namespace DesktopPet
                     break;
                 }
             }
-        }
+            UseSmoothMovements = Program.MyData.GetSmoothMovements();
+		}
 
             /// <summary>
             /// Form constructor. Called when a Child is generated. 
@@ -855,7 +862,15 @@ namespace DesktopPet
             }
             else
             {
-                QueueMotion(movementDuration);
+                if (UseSmoothMovements)
+                {
+                    QueueMotion(movementDuration);
+                }
+                else
+                {
+					Left = (int)PositionX;
+					Top = (int)(PositionY + OffsetY);
+				}
             }
             if (bLeavingScreen) ResetMotion();
         }

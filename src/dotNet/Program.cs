@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.IO;
 using System.Reflection;
 using System.Threading;
@@ -240,9 +241,47 @@ namespace DesktopPet
         /// <returns>true if the executed application is installed.</returns>
         public static bool IsApplicationInstalled()
         {
+#if PORTABLE
             string appPath = Application.StartupPath;
             string installPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "DesktopPet");
             return (string.Compare(appPath, installPath) == 0);
+#else
+            return true;
+#endif
+        }
+
+        public static void RestartApp()
+        {
+			Application.Restart();
+			Application.Exit();
+		}
+
+        public static bool OpenLink(string httpsUrl)
+        {
+			if (Uri.TryCreate(httpsUrl, UriKind.Absolute, out Uri validatedUri) && validatedUri.Scheme == Uri.UriSchemeHttps)
+			{
+				try
+				{
+					// 2. Sicher ausführen
+					Process.Start(new ProcessStartInfo
+					{
+						FileName = validatedUri.AbsoluteUri,
+						UseShellExecute = true
+					});
+                    return true;
+				}
+				catch (Exception ex)
+				{
+					// Abfangen, falls z.B. kein Browser im System registriert ist
+					Console.WriteLine($"Error opening browser: {ex.Message}");
+                    return false;
+				}
+			}
+			else
+			{
+				Console.WriteLine("Invalid URL or not a https.");
+                return false;
+			}
         }
     }
 }

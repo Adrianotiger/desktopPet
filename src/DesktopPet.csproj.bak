@@ -232,8 +232,7 @@
     <Compile Include="Portable\FormOptions2.SurfaceOptions.cs">
       <DependentUpon>FormOptions2.cs</DependentUpon>
       <SubType>Component</SubType>
-    </Compile>
-    <Compile Include="Portable\FormOptions2.SurfaceMenu.cs">
+    </Compile>    <Compile Include="Portable\FormOptions2.SurfaceMenu.cs">
       <DependentUpon>FormOptions2.cs</DependentUpon>
       <SubType>Component</SubType>
     </Compile>
@@ -309,17 +308,8 @@
   <ItemGroup>
     <Content Include="esheep.png.ico" />
     <Content Include="icon.ico" />
-    <Content Include="Images\enabled.png" />
     <Content Include="Images\exit.png" />
     <Content Include="Images\help.png" />
-    <Content Include="Images\ico_focus.png" />
-    <Content Include="Images\ico_foreground.png" />
-    <Content Include="Images\ico_multi.png" />
-    <Content Include="Images\ico_quantity.png" />
-    <Content Include="Images\ico_resize.png" />
-    <Content Include="Images\ico_restore.png" />
-    <Content Include="Images\ico_smooth.png" />
-    <Content Include="Images\ico_sound.png" />
     <Content Include="Images\wvleft.jpg" />
     <EmbeddedResource Include="Portable\Newtonsoft.Json.dll" />
     <EmbeddedResource Include="Portable\NAudio.dll" />
@@ -403,29 +393,6 @@
   <PropertyGroup>
     <PreBuildEvent>
     </PreBuildEvent>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|AnyCPU'">
-    <DebugSymbols>true</DebugSymbols>
-    <OutputPath>bin\Debug\</OutputPath>
-    <DefineConstants>TRACE;DEBUG;INSTALLABLE</DefineConstants>
-    <DebugType>full</DebugType>
-    <PlatformTarget>AnyCPU</PlatformTarget>
-    <LangVersion>7.3</LangVersion>
-    <ErrorReport>prompt</ErrorReport>
-    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
-    <Prefer32Bit>true</Prefer32Bit>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|AnyCPU'">
-    <OutputPath>bin\Release\</OutputPath>
-    <DefineConstants>TRACE;INSTALLABLE</DefineConstants>
-    <DocumentationFile>..\build\DesktopPet\bin\Release\eSheep.xml</DocumentationFile>
-    <Optimize>true</Optimize>
-    <DebugType>pdbonly</DebugType>
-    <PlatformTarget>AnyCPU</PlatformTarget>
-    <LangVersion>7.3</LangVersion>
-    <ErrorReport>prompt</ErrorReport>
-    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
-    <Prefer32Bit>true</Prefer32Bit>
   </PropertyGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
