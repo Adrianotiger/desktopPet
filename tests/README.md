@@ -1,64 +1,91 @@
 # Motion regression checks
 
-These Windows desktop checks use the stock, embedded eSheep animation XML. They
-create an isolated temporary runtime and configuration; they do not read or modify
-an installed pet's configuration. Interactive checks briefly show test pets and a
-topmost support window. Do not run them on a locked/headless desktop.
+These checks build an isolated Windows runtime and configuration. They do not
+read or modify an installed pet's configuration. Interactive suites briefly show
+pets and a topmost support window; run them in an active, unlocked desktop session.
 
 ## Run
 
 Prerequisites: Visual Studio Build Tools with desktop MSBuild and Roslyn, NuGet,
-and the .NET Framework 4.7.2 targeting pack.
+and the .NET Framework 4.7.2 targeting pack. From the repository root:
 
 ```powershell
 nuget restore src/DesktopPet_Portable.sln
 powershell -NoProfile -File tests/run-motion-tests.ps1
 ```
 
-If reference assemblies are supplied through the
-`Microsoft.NETFramework.ReferenceAssemblies.net472` NuGet package instead of an
-installed targeting pack, pass its `build/.NETFramework/v4.7.2` directory using
-`-FrameworkPath`. `-MSBuildPath` can select a particular desktop MSBuild executable.
+The default matrix is Portable Release x64/x86, scales 1/3, on every connected
+display. Outputs are retained in a fresh temporary directory printed by the runner.
+Package restore is a separate prerequisite; the runner does not download packages.
 
-The default matrix is Release x64/x86, scale 1/3, and every connected display.
-`-Platforms`, `-Scales`, and `-Displays` accept arrays when invoked directly from
-PowerShell. The script prints the temporary output location and retains it for
-inspection. Package restore is a separate prerequisite; the test runner itself
-does not download packages or access an installed pet.
+Optional parameters:
 
-## Coverage
+- `-FrameworkPath`: reference assembly directory, including the
+  `build/.NETFramework/v4.7.2` directory of the
+  `Microsoft.NETFramework.ReferenceAssemblies.net472` NuGet package.
+- `-MSBuildPath`: desktop MSBuild executable.
+- `-Platforms`, `-Scales`, `-Displays`: arrays when invoked directly in PowerShell.
+- `-OutputDirectory`: a new directory for binaries, configuration and build files.
 
-- Removed-display indices in XML expressions and pet bounds, relocation from a
-  removed monitor, and display-change recovery callbacks after disposal.
-- Interpolation endpoints, direction changes, negative desktop coordinates, window
-  resize transforms, and timestamp-based drag velocity.
-- Real WinForms movement between animation ticks, immediate drag positioning,
-  unchanged stock walking distance and sprite cadence, and idle timer shutdown.
-- Window location events with the high-rate timer disabled, support-window
-  closure, real window landing, wall rebound without a stopped vertical step,
-  taskbar landing, and equal flight trajectories at different render cadences.
-- Lazy sprite mirroring, respawn resets, child initialization, concurrent pets,
-  and disposal while dragging, including timer and hook cleanup.
+For example, from a PowerShell session:
 
-The 8 ms timer is a scheduling request, not a frame-rate guarantee. Presentation
-uses integer window positions and remains subject to the Windows message loop.
-The existing XML still controls sprite frames and animation timing. The temporary
+```powershell
+$output = Join-Path $env:TEMP ('DesktopPet-check-' + [guid]::NewGuid().ToString('N'))
+& ./tests/run-motion-tests.ps1 -Platforms x64,x86 -Scales 1,3 -Displays 0 -OutputDirectory $output
+```
+
+The runner stops on build, compilation or assertion failure. A passing run applies
+only to the architectures, scales and connected displays exercised by that run.
+
+## Timing and transition contract
+
+Logical collision coordinates remain separate from interpolated window positions.
+Before an ordinary sprite tick, elapsed motion is sampled. In smooth mode, a
+transition with remaining movement holds the outgoing animation's last valid frame
+for its terminal XML interval, then commits its endpoint before changing animation.
+This preserves logical distance and gives the final segment real elapsed time:
+**the successor starts one terminal interval later than an immediate transition**.
+Ordinary sprite intervals and the disabled-smoothing path are retained.
+
+The incoming animation's OffsetY is applied before sound and child creation.
+OffsetY corrects the displayed sprite; it does not change logical ground contact.
+Explicit drag, sync, toss animation and respawn changes cancel pending transitions.
+Drag and toss retain their independent motion clocks and frame loops.
+
+`SetNewAnimation` owns cancellation, outgoing endpoint settlement, incoming offset,
+sound and children. `CompleteNaturalTransition` adds the first-frame publication,
+landing attachment decision and sprite scheduling for sequence/border/gravity
+transitions. Explicit actions retain their own presentation and scheduling.
+
+The 8 ms motion timer is a scheduling request, not a frame-rate guarantee. Integer
+window positions and the Windows message loop limit presentation. The temporary
 1 ms timer-resolution request is released when motion stops or the pet is disposed;
-stationary window attachment uses events with a 100 ms polling fallback. Timer
-resolution can affect power use, especially on older Windows versions.
+stationary attachment uses window events with a 100 ms polling fallback.
 
-These checks are not a certification of all pets, mixed-DPI transitions, Windows
-versions, or Store packaging. Additional manual checks: drag across monitors,
-release while the cursor is outside the pet, close/minimize the supporting window,
-and exercise a pet with child animations. Test long sessions and battery use
-separately before making power-consumption claims.
+## Suites
 
-## Validation on this change
+| Suite | Coverage |
+| --- | --- |
+| `MotionTests.cs` | Interpolation endpoints, direction changes, negative coordinates, window transforms and timestamp-based drag velocity. |
+| `DisplayTopologyTests.cs` | Removed display indices, XML bounds, relocation and callbacks after disposal. |
+| `MotionAuditTests.cs` | Nine state checks for elapsed render ordering, transition endpoints, disabled-mode following, child options and live settings. |
+| `RuntimeMotionTests.cs` | Native movement, stock walking distance/cadence, following and support closure, landing, rebound, toss, mirroring, respawn, concurrent pets and resource cleanup. |
+| `TransitionRuntimeTests.cs` | Production `SetNewAnimation -> child.Show -> PlayChild` across borders, landing, sequence completion and dynamic landing expressions; outgoing endpoint order and child anchors in both smooth modes. |
+| `ContinuousTransitionTests.cs` | Running native timers across stock `run_begin -> run` and `fall hard -> walk`; actual sprite pixels, terminal duration/distance, positive/negative OffsetY and children across subsequent sequences. Also live off/on, sync, drag/release, toss with/without an animation, respawn and close during pending transitions. |
 
-The Portable Release x64/x86 matrix passed using stock eSheep at scales 1 and 3
-on two connected displays. Both architectures also passed the pure motion tests.
-The .NET Framework 4.8 desktop/Store source project compiled for x64 and x86 after
-restoring its individually referenced legacy NuGet versions, supplying the locally
-installed Windows SDK with `ReferencePath`, and disabling the Store-copy
-`PostBuildEvent`. This is a source compile check; assembly-resolution warnings
-remain and Store packaging/installation were not validated.
+Continuous frame assertions compare actual PictureBox pixels on every sprite tick.
+The partial-repeat fixture expects `2,3,4,5,4,5` (RepeatFrom=2), then holds the last
+frame only during smooth completion. `ContinuousTransitionTests.exe` accepts
+`run-only` or `offset-only` as its third argument for focused binary comparisons.
+
+## Evidence boundaries
+
+Tests use stock eSheep XML where indicated. Child, repeat and interruption fixtures
+also use deterministic synthetic animation definitions with stock sprites. Some
+state setup and observations use reflection. Interruption checks call production
+handlers with seeded toss velocity; they do not inject real mouse input.
+
+Automated assertions and native windows are not subjective visual acceptance.
+Before release, separately check real pointer capture/release, child choreography,
+multiple monitors, mixed DPI, monitor removal, long sessions and battery use.
+Store packaging and installation are not covered by this Portable runner.

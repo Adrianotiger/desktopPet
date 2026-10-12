@@ -32,6 +32,7 @@ class RuntimeMotionTests
             int display=args.Length>1 ? int.Parse(args[1]) : Array.FindIndex(Screen.AllScreens, s=>s.Primary);
             Call(data,"SetScale",scale);
             Call(data,"SetVolume",0.0);
+            Call(data,"SetIntValue","Smooth",1);
             Call(data,"SetWindowForeground",false);
             Call(data,"SetXml",File.ReadAllText("motion-fixture.xml"),"motion-tests");
             object xml=Activator.CreateInstance(app.GetType("DesktopPet.Xml"),new object[]{scale});
@@ -112,7 +113,8 @@ class RuntimeMotionTests
                     Check(!(bool)Call(pet,"CheckTopWindow",false),"Collision fixture is covered by another window");
                     Set(pet,"hwndWindow",IntPtr.Zero);
                     Call(pet,"AdvanceToss",30.0);
-                    Check(!(bool)Field(pet,"IsTossing") && pet.Bottom==platform.Top && (IntPtr)Field(pet,"hwndWindow")==platform.Handle,"Toss passed through supporting window");
+                    Check(!(bool)Field(pet,"IsTossing") && (double)Field(pet,"PositionY")+pet.Height==platform.Top && (IntPtr)Field(pet,"hwndWindow")==platform.Handle,"Toss passed through supporting window");
+                    Check(pet.Top==(int)((double)Field(pet,"PositionY")+(double)Field(pet,"OffsetY")),"Landing sprite did not apply its own offset");
                     Console.WriteLine("PASS tossed pet lands on a real supporting window");
                     platform.Close();
                     Check((bool)Call(pet,"CheckTopWindow",true),"Closed supporting window was not invalidated");
@@ -157,7 +159,8 @@ class RuntimeMotionTests
                 Set(pet,"PositionY",(double)screen.Bottom-pet.Height-2);
                 Set(pet,"tossVertVel",10f);
                 Call(pet,"AdvanceToss",tossTime+60);
-                Check(!(bool)Field(pet,"IsTossing") && pet.Bottom==screen.Bottom,"Toss landing overshot taskbar");
+                Check(!(bool)Field(pet,"IsTossing") && (double)Field(pet,"PositionY")+pet.Height==screen.Bottom,"Toss landing overshot taskbar");
+                Check(pet.Top==(int)((double)Field(pet,"PositionY")+(double)Field(pet,"OffsetY")),"Taskbar landing sprite offset is stale");
                 Console.WriteLine("PASS continuous bounce preserves residual travel and vertical movement; landing clamps correctly");
                 // A delayed frame and several short frames must integrate the same flight.
                 double[] results = new double[4];

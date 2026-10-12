@@ -3,7 +3,8 @@
     [string]$MSBuildPath,
     [string[]]$Platforms = @('x64', 'x86'),
     [int[]]$Scales = @(1, 3),
-    [int[]]$Displays = @()
+    [int[]]$Displays = @(),
+    [string]$OutputDirectory
 )
 $ErrorActionPreference = 'Stop'
 $repo = Split-Path $PSScriptRoot -Parent
@@ -14,7 +15,8 @@ if (-not $MSBuildPath) {
 if (-not $MSBuildPath) { throw 'Visual Studio MSBuild was not found.' }
 if (-not (Test-Path "$FrameworkPath/System.dll")) { throw 'Provide .NET Framework 4.7.2 reference assemblies through -FrameworkPath.' }
 $compiler = Join-Path (Split-Path $MSBuildPath -Parent) 'Roslyn/csc.exe'
-$output = Join-Path ([IO.Path]::GetTempPath()) ('DesktopPet-motion-tests-' + [guid]::NewGuid().ToString('N'))
+if (-not $OutputDirectory) { $OutputDirectory = Join-Path ([IO.Path]::GetTempPath()) ('DesktopPet-motion-tests-' + [guid]::NewGuid().ToString('N')) }
+$output = $OutputDirectory
 New-Item -ItemType Directory -Path $output | Out-Null
 Add-Type -AssemblyName System.Windows.Forms
 if ($Displays.Count -eq 0) { $Displays = @(0..([Windows.Forms.Screen]::AllScreens.Length - 1)) }
@@ -30,6 +32,14 @@ foreach ($platform in $Platforms) {
     if ($LASTEXITCODE -ne 0) { throw 'Motion tests failed.' }
     & $compiler /nologo "/platform:$platform" /r:System.Drawing.dll /r:System.Windows.Forms.dll "/out:$runtime/RuntimeMotionTests.exe" "$repo/tests/RuntimeMotionTests.cs"
     if ($LASTEXITCODE -ne 0) { throw 'Runtime test compilation failed.' }
+    & $compiler /nologo "/platform:$platform" /r:System.Drawing.dll /r:System.Windows.Forms.dll "/r:$runtime/DesktopPet.exe" "/out:$runtime/MotionAuditTests.exe" "$repo/tests/MotionAuditTests.cs"
+    if ($LASTEXITCODE -ne 0) { throw 'Audit regression compilation failed.' }
+    & "$runtime/MotionAuditTests.exe"
+    if ($LASTEXITCODE -ne 0) { throw 'Audit regression failed.' }
+    & $compiler /nologo "/platform:$platform" /r:System.Drawing.dll /r:System.Windows.Forms.dll "/r:$runtime/DesktopPet.exe" "/out:$runtime/TransitionRuntimeTests.exe" "$repo/tests/TransitionRuntimeTests.cs"
+    if ($LASTEXITCODE -ne 0) { throw 'Transition test compilation failed.' }
+    & $compiler /nologo "/platform:$platform" /r:System.Drawing.dll /r:System.Windows.Forms.dll "/r:$runtime/DesktopPet.exe" "/out:$runtime/ContinuousTransitionTests.exe" "$repo/tests/ContinuousTransitionTests.cs"
+    if ($LASTEXITCODE -ne 0) { throw 'Continuous transition test compilation failed.' }
     & $compiler /nologo "/platform:$platform" /r:System.Drawing.dll /r:System.Windows.Forms.dll "/out:$runtime/DisplayTopologyTests.exe" "$repo/tests/DisplayTopologyTests.cs"
     if ($LASTEXITCODE -ne 0) { throw 'Display topology test compilation failed.' }
     & "$runtime/DisplayTopologyTests.exe"
@@ -39,6 +49,10 @@ foreach ($platform in $Platforms) {
         foreach ($display in $Displays) {
             & "$runtime/RuntimeMotionTests.exe" $scale $display
             if ($LASTEXITCODE -ne 0) { throw "Runtime tests failed: $platform, scale $scale, display $display." }
+            & "$runtime/TransitionRuntimeTests.exe" $scale $display
+            if ($LASTEXITCODE -ne 0) { throw "Transition tests failed: $platform, scale $scale, display $display." }
+            & "$runtime/ContinuousTransitionTests.exe" $scale $display
+            if ($LASTEXITCODE -ne 0) { throw "Continuous transition tests failed: $platform, scale $scale, display $display." }
         }
     }
 }

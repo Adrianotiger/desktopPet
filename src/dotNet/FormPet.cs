@@ -35,6 +35,9 @@ namespace DesktopPet
             /// Structure with all informations about the current animation.
             /// </summary>
         TAnimation CurrentAnimation;
+        private bool transitionPending;
+        private int pendingAnimation;
+        private bool pendingWindowLanding;
             /// <summary>
             /// Handle to the current window. If this value is 0, the sheep is NOT walking on a window.
             /// </summary>
@@ -97,9 +100,9 @@ namespace DesktopPet
         double tossVertVel = 0.0;
 
             /// <summary>
-            /// With Version 1.5, Motion class was added
+            /// Read the live option for both parent and child windows.
             /// </summary>
-        bool UseSmoothMovements = false;
+        private bool UseSmoothMovements { get { return Program.MyData.GetSmoothMovements(); } }
 
             /// <summary>
             /// If multi screens are available, the pet can be set on a defined screen
@@ -141,7 +144,6 @@ namespace DesktopPet
                     break;
                 }
             }
-            UseSmoothMovements = Program.MyData.GetSmoothMovements();
 		}
 
             /// <summary>
@@ -426,12 +428,19 @@ namespace DesktopPet
         }
 
             /// <summary>
-            /// After an animation is over and after a new animation was selected, this function will play the selected animation.
+            /// Replace the animation, settle its position and offset, then publish sound and children.
+            /// Callers retain control of first-frame presentation and sprite scheduling.
             /// </summary>
             /// <param name="id">Animation ID to play.</param>
         private void SetNewAnimation(int id)
         {
+            // Explicit actions (drag, sync, kill or respawn) replace a queued transition.
+            transitionPending = false;
             if (CurrentAnimation.ID == Animations.AnimationKill) return;
+            // Settle the outgoing endpoint while its animation is still current.
+            // This also owns endpoint commitment for a completed pending transition.
+            if (!IsDragging && !IsTossing && !IsLeaving && motion.Initialized)
+                CommitLogicalPosition();
             if (id < 0)  // no animation found, spawn!
             {
                 Play(false);
@@ -441,6 +450,15 @@ namespace DesktopPet
 				AnimationStep = -1;
                 CurrentAnimation = Animations.GetAnimation(id);
                 CurrentAnimation.UpdateValues(DisplayIndex);
+
+                // OffsetY belongs to the displayed sprite, not to the preceding
+                // movement segment. Apply the new frame's offset before its sound
+                // and children become observable; do not interpolate the old offset.
+                if (!IsDragging && !IsTossing && !IsLeaving)
+                {
+                    OffsetY = CurrentAnimation.Start.OffsetY;
+                    CommitLogicalPosition();
+                }
 
                 // Play sound if there is one
                 Animations.StartSound(id);
@@ -459,7 +477,7 @@ namespace DesktopPet
                     {
 						foreach (TChild childInfo in Animations.GetAnimationChild(id))
 						{
-							FormPet child = new FormPet(Animations, Xml, new Point(ScreenBounds.X + Left, ScreenBounds.Y + Top), !IsMovingLeft, DisplayIndex);
+							FormPet child = new FormPet(Animations, Xml, new Point(Left - ScreenBounds.X, Top - ScreenBounds.Y), !IsMovingLeft, DisplayIndex);
 							for (int i = 0; i < imageList1.Images.Count; i++)
 							{
                                 child.AddImage(GetSprite(i));
@@ -493,14 +511,36 @@ namespace DesktopPet
             /// </summary>
         private void NextStep()
         {
-                // If there is no repeat, we don't need to calculate the frame index.
-            if (AnimationStep < CurrentAnimation.Sequence.Frames.Count)
+            if (transitionPending)
             {
-                pictureBox1.Image = GetSprite(CurrentAnimation.Sequence.Frames[AnimationStep]);
+                // The previous tick reserved a complete interval for its final
+                // displacement. Publish the successor only after that interval.
+                CompleteNaturalTransition(pendingAnimation, pendingWindowLanding);
+                return;
+            }
+            // Flush the elapsed render sample before publishing the next sprite.
+            // Otherwise the sprite timer can overtake the last motion timer tick.
+            if (!IsDragging && !IsTossing && !IsLeaving)
+            {
+                if (UseSmoothMovements && motion.Initialized)
+                    RenderMotion(motionClock.Elapsed.TotalMilliseconds);
+                else if (!UseSmoothMovements)
+                    CommitLogicalPosition();
+            }
+            // A completed sequence can still be moving through its terminal
+            // interval. Hold its last valid frame instead of wrapping to the first.
+            // Drag/toss and kill keep their existing independent frame loops.
+            int spriteStep = AnimationStep;
+            if (!IsDragging && !IsTossing && CurrentAnimation.ID != Animations.AnimationKill)
+                spriteStep = Math.Min(spriteStep, CurrentAnimation.Sequence.TotalSteps - 1);
+                // If there is no repeat, we don't need to calculate the frame index.
+            if (spriteStep < CurrentAnimation.Sequence.Frames.Count)
+            {
+                pictureBox1.Image = GetSprite(CurrentAnimation.Sequence.Frames[spriteStep]);
             }
             else
             {
-                int index = ((AnimationStep - CurrentAnimation.Sequence.Frames.Count + CurrentAnimation.Sequence.RepeatFrom) % (CurrentAnimation.Sequence.Frames.Count - CurrentAnimation.Sequence.RepeatFrom)) + CurrentAnimation.Sequence.RepeatFrom;
+                int index = ((spriteStep - CurrentAnimation.Sequence.Frames.Count + CurrentAnimation.Sequence.RepeatFrom) % (CurrentAnimation.Sequence.Frames.Count - CurrentAnimation.Sequence.RepeatFrom)) + CurrentAnimation.Sequence.RepeatFrom;
                 pictureBox1.Image = GetSprite(CurrentAnimation.Sequence.Frames[index]);
             }
 
@@ -531,6 +571,8 @@ namespace DesktopPet
             }
                 // If a new animation need to be started
             bool bNewAnimation = false;
+            int nextAnimation = -1;
+            bool landedOnWindow = false;
                 // If animation is leaving screen, cut the form so that it is not visibile on multiscreens
             bool bLeavingScreen = false;
                 // If the pet is "flipped", mirror the movement
@@ -548,7 +590,7 @@ namespace DesktopPet
                         {
                             PositionX = ScreenArea.X;
                             x = 0;
-                            SetNewAnimation(iBorderAnimation);
+                            nextAnimation = iBorderAnimation;
                             bNewAnimation = true;
                         }
                         else
@@ -568,7 +610,7 @@ namespace DesktopPet
                             {
                                 PositionX = rct.Left;
                                 x = 0;
-                                SetNewAnimation(iBorderAnimation);
+                                nextAnimation = iBorderAnimation;
                                 bNewAnimation = true;
                             }
                             else
@@ -593,7 +635,7 @@ namespace DesktopPet
                         {
                             PositionX = ScreenArea.X + ScreenArea.Width - Width;
                             x = 0;
-                            SetNewAnimation(iBorderAnimation);
+                            nextAnimation = iBorderAnimation;
                             bNewAnimation = true;
                         }
                         else
@@ -613,7 +655,7 @@ namespace DesktopPet
                             {
                                 PositionX = rct.Right - Width;
                                 x = 0;
-                                SetNewAnimation(iBorderAnimation);
+                                nextAnimation = iBorderAnimation;
                                 bNewAnimation = true;
                             }
                             else
@@ -641,7 +683,7 @@ namespace DesktopPet
                         PositionY = bottomY - Height;
                         OffsetY = 0;
                         y = 0;
-                        SetNewAnimation(iBorderAnimation);
+                        nextAnimation = iBorderAnimation;
                         bNewAnimation = true;
                     }
                 }
@@ -656,12 +698,9 @@ namespace DesktopPet
                             PositionY = iWindowTop - Height;
                             OffsetY = 0;
                             y = 0;
-                            SetNewAnimation(iBorderAnimation);
+                            nextAnimation = iBorderAnimation;
                             bNewAnimation = true;
-                            if (CurrentAnimation.Start.Y.Value != 0)
-                            {
-                                hwndWindow = (IntPtr)0;
-                            }
+                            landedOnWindow = true;
                         }
                     }
                 }
@@ -675,7 +714,7 @@ namespace DesktopPet
                     {
                         PositionY = ScreenArea.Y;
                         y = 0;
-                        SetNewAnimation(iBorderAnimation);
+                        nextAnimation = iBorderAnimation;
                         bNewAnimation = true;
                     }
                     else
@@ -685,7 +724,7 @@ namespace DesktopPet
                 }
             }
 
-            if (AnimationStep >= CurrentAnimation.Sequence.TotalSteps) // animation over
+            if (!bNewAnimation && AnimationStep >= CurrentAnimation.Sequence.TotalSteps) // animation over
             {
                 int iNextAni;
                 if(CurrentAnimation.Sequence.Action == "flip")
@@ -726,11 +765,12 @@ namespace DesktopPet
                     if (op <= 0.1)
                     {
                         Close();
+                        return;
                     }
                 }
                 else if (iNextAni >= 0)
                 {
-                    SetNewAnimation(iNextAni);
+                    nextAnimation = iNextAni;
                     bNewAnimation = true;
                 }
                 else
@@ -740,6 +780,7 @@ namespace DesktopPet
                     {
                         StartUp.AddDebugInfo(StartUp.DEBUG_TYPE.info, "removing child");
                         Close();
+                        return;
                     }
                     else
                     {
@@ -749,7 +790,7 @@ namespace DesktopPet
                 }
             }
                 // If there is a Gravity-Next animation, check if gravity is present.
-            else if(CurrentAnimation.Gravity)
+            else if(!bNewAnimation && CurrentAnimation.Gravity)
             {
                 if(hwndWindow == (IntPtr)0)
                 {
@@ -761,7 +802,7 @@ namespace DesktopPet
                         }
                         else
                         {
-                            SetNewAnimation(Animations.SetNextGravityAnimation(CurrentAnimation.ID, TNextAnimation.TOnly.NONE));
+                            nextAnimation = Animations.SetNextGravityAnimation(CurrentAnimation.ID, TNextAnimation.TOnly.NONE);
                             bNewAnimation = true;
                         }
                     }
@@ -774,20 +815,11 @@ namespace DesktopPet
                         if (!FollowWindow())
                         {
                             hwndWindow = (IntPtr)0;
-                            SetNewAnimation(Animations.SetNextGravityAnimation(CurrentAnimation.ID, TNextAnimation.TOnly.WINDOW));
+                            nextAnimation = Animations.SetNextGravityAnimation(CurrentAnimation.ID, TNextAnimation.TOnly.WINDOW);
                             bNewAnimation = true;
                         }
                     }
                 }
-            }
-
-                // If a new animation was started, set the interval and the first animation frame image.
-            if(bNewAnimation)
-            {
-                timer1.Interval = 1;    // execute immediately the first step of the next animation.
-                //x = 0;                  // don't move the pet, if a new animation must be started
-                //y = 0;                  //  if falling, set the pet to the new position
-                pictureBox1.Image = GetSprite(CurrentAnimation.Sequence.Frames[0]);
             }
 
 			// Set the new pet position (and offset) in the screen.
@@ -857,8 +889,7 @@ namespace DesktopPet
                 pictureBox1.Left = 0;
                 Width = pictureBox1.Width;
                 Height = pictureBox1.Height;
-                Location = new Point((int)PositionX, (int)(PositionY + OffsetY));
-                ResetMotion();
+                CommitLogicalPosition();
             }
             else
             {
@@ -868,11 +899,35 @@ namespace DesktopPet
                 }
                 else
                 {
-					Left = (int)PositionX;
-					Top = (int)(PositionY + OffsetY);
+					CommitLogicalPosition();
 				}
             }
             if (bLeavingScreen) ResetMotion();
+            if (bNewAnimation)
+            {
+                if (UseSmoothMovements && !IsLeaving && motion.IsMoving(motionClock.Elapsed.TotalMilliseconds))
+                {
+                    pendingAnimation = nextAnimation;
+                    pendingWindowLanding = landedOnWindow;
+                    transitionPending = true;
+                    timer1.Interval = movementDuration;
+                }
+                else
+                    CompleteNaturalTransition(nextAnimation, landedOnWindow);
+            }
+        }
+
+        // Natural sequence/border/gravity transitions share first-frame publication
+        // and the next sprite tick. Explicit drag/toss/respawn callers own their timing.
+        private void CompleteNaturalTransition(int animation, bool landedOnWindow)
+        {
+            SetNewAnimation(animation);
+            if (animation < 0 || IsDisposed) return; // respawn/disposal owns its timing
+            // SetNewAnimation evaluates dynamic XML values for the selected display.
+            if (landedOnWindow && CurrentAnimation.Start.Y.Value != 0)
+                hwndWindow = (IntPtr)0;
+            timer1.Interval = 1;
+            pictureBox1.Image = GetSprite(CurrentAnimation.Sequence.Frames[0]);
         }
 
             /// <summary>
