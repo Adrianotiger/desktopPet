@@ -64,7 +64,7 @@ jobs:
       shell: pwsh
       run: |
         $dir = "build/DesktopPetPortable/bin/${{ github.event.inputs.configuration }}/${{ github.event.inputs.platform }}/signed/"
-        if (!(Test-Path $dir)) New-Item -ItemType Directory -Force -Path $dir
+        if (!(Test-Path $dir)) { New-Item -ItemType Directory -Force -Path $dir }
 
     - name: Upload Unsigned Artifact
       id: upload-unsigned-artifact
