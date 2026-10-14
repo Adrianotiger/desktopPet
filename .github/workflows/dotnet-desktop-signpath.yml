@@ -60,29 +60,23 @@ jobs:
            -p:Platform=${{ github.event.inputs.platform }}
            -p:RestorePackages=false
 
-    - name: Install SignPath Module
-      shell: pwsh
-      run: Install-Module SignPath -Force -Scope CurrentUser
-
     - name: upload unsigned artifact
       id: upload-unsigned-artifact
       uses: actions/upload-artifact@v7
       with: 
         path: build/DesktopPetPortable/bin/${{ github.event.inputs.configuration }}/${{ github.event.inputs.platform }}/app.publish/DesktopPet.exe
         archive: false
-        
 
     - name: Sign DesktopPet
-      shell: pwsh
-      run: Submit-SigningRequest `
-        -InputArtifactPath "build/DesktopPetPortable/bin/${{ github.event.inputs.configuration }}/${{ github.event.inputs.platform }}/app.publish/DesktopPet.exe" `
-        -ApiToken "${{ secrets.SIGNPATH_API_TOKEN }}" `
-        -OrganizationId "dd17bc69-e331-421d-9e86-7fbb26a445d2" `
-        -ProjectSlug "desktopPet" `
-        -SigningPolicySlug "${{ github.event.inputs.signing }}" `
-        -github-artifact-id "${{ steps.upload-unsigned-artifact.outputs.artifact-id }}"
-        -OutputArtifactPath "build/DesktopPetPortable/bin/${{ github.event.inputs.configuration }}/${{ github.event.inputs.platform }}/signed/DesktopPet.exe" `
-        -WaitForCompletion
+      uses: SignPath/github-action-submit-signing-request@v1
+      with:
+        api-token: "${{ secrets.SIGNPATH_API_TOKEN }}" `
+        organization-id: "dd17bc69-e331-421d-9e86-7fbb26a445d2" `
+        project-slug: "desktopPet" `
+        signing-policy-slug: "${{ github.event.inputs.signing }}" `
+        github-artifact-id: "${{ steps.upload-unsigned-artifact.outputs.artifact-id }}"
+        output-artifact-path: "build/DesktopPetPortable/bin/${{ github.event.inputs.configuration }}/${{ github.event.inputs.platform }}/signed/DesktopPet.exe" `
+        wait-for-completion: true
 
     - name: Upload signed EXE artifact
       uses: actions/upload-artifact@v4
