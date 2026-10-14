@@ -75,7 +75,7 @@ jobs:
         project-slug: "desktopPet"
         signing-policy-slug: "${{ github.event.inputs.signing }}"
         github-artifact-id: "${{ steps.upload-unsigned-artifact.outputs.artifact-id }}"
-        output-artifact-path: "build/DesktopPetPortable/bin/${{ github.event.inputs.configuration }}/${{ github.event.inputs.platform }}/signed/DesktopPet.exe"
+        output-artifact-directory: "build/DesktopPetPortable/bin/${{ github.event.inputs.configuration }}/${{ github.event.inputs.platform }}/signed/DesktopPet.exe"
         wait-for-completion: true
 
     - name: Upload signed EXE artifact
