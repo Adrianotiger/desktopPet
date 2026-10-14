@@ -65,7 +65,7 @@ jobs:
       uses: actions/upload-artifact@v4
       with: 
         name: unsigned-exe
-        path: build/DesktopPetPortable/bin/${{ github.event.inputs.configuration }}/${{ github.event.inputs.platform }}/app.publish/DesktopPet.exe
+        path: build/DesktopPetPortable/bin/${{ github.event.inputs.configuration }}/${{ github.event.inputs.platform }}/DesktopPet.exe
 
     - name: Sign DesktopPet
       uses: SignPath/github-action-submit-signing-request@v1
