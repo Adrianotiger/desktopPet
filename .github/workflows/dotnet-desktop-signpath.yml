@@ -62,7 +62,7 @@ jobs:
 
     - name: upload unsigned artifact
       id: upload-unsigned-artifact
-      uses: actions/upload-artifact@v4
+      uses: actions/upload-artifact@v7
       with: 
         name: unsigned-exe
         path: build/DesktopPetPortable/bin/${{ github.event.inputs.configuration }}/${{ github.event.inputs.platform }}/app.publish/DesktopPet.exe
