@@ -64,6 +64,14 @@ jobs:
       shell: pwsh
       run: Install-Module SignPath -Force -Scope CurrentUser
 
+    - name: upload unsigned artifact
+      id: upload-unsigned-artifact
+      uses: actions/upload-artifact@v7
+      with: 
+        path: build/DesktopPetPortable/bin/${{ github.event.inputs.configuration }}/${{ github.event.inputs.platform }}/app.publish/DesktopPet.exe
+        archive: false
+        
+
     - name: Sign DesktopPet
       shell: pwsh
       run: Submit-SigningRequest `
@@ -75,7 +83,7 @@ jobs:
         -OutputArtifactPath "build/DesktopPetPortable/bin/${{ github.event.inputs.configuration }}/${{ github.event.inputs.platform }}/signed/DesktopPet.exe" `
         -WaitForCompletion
 
-    - name: Upload unsigned EXE artifact
+    - name: Upload signed EXE artifact
       uses: actions/upload-artifact@v4
       with:
         name: DesktopPet_Portable
