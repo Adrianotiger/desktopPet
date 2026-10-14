@@ -80,7 +80,7 @@ jobs:
         -OrganizationId "dd17bc69-e331-421d-9e86-7fbb26a445d2" `
         -ProjectSlug "desktopPet" `
         -SigningPolicySlug "${{ github.event.inputs.signing }}" `
-        -GithubArtifactId "${{ steps.upload-unsigned-artifact.outputs.artifact-id }}"
+        -github-artifact-id "${{ steps.upload-unsigned-artifact.outputs.artifact-id }}"
         -OutputArtifactPath "build/DesktopPetPortable/bin/${{ github.event.inputs.configuration }}/${{ github.event.inputs.platform }}/signed/DesktopPet.exe" `
         -WaitForCompletion
 
