@@ -83,6 +83,7 @@ jobs:
         signing-policy-slug: "${{ github.event.inputs.signing }}"
         github-artifact-id: "${{ steps.upload-unsigned-artifact.outputs.artifact-id }}"
         output-artifact-directory: "build/DesktopPetPortable/bin/${{ github.event.inputs.configuration }}/${{ github.event.inputs.platform }}/signed/"
+        skip-decompress: true
         wait-for-completion: true
 
     - name: Upload signed EXE artifact
