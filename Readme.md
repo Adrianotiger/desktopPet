@@ -41,7 +41,7 @@ Version 1.6.0 (store version: 2.6.**150**) is a new version and removed all UA a
 |---|---|
 | Version |  2.6.160 (1.6.0) | 
 | Last update | october 2026 | 
-| Link | <a href='https://www.microsoft.com/store/apps/9MX2V0TQT6RM'><img width="128" height="45" alt="image" src="https://github.com/user-attachments/assets/6c9aac7d-5830-4695-a954-647e116c7aa6" /></a> |
+| Link | <a href='https://www.microsoft.com/store/apps/9MX2V0TQT6RM'><img width="128" height="45" alt="image" src="https://github.com/user-attachments/assets/6c9aac7d-5830-4695-a954-647e116c7aa6" /><br><img width="108" height="20" alt="image" src="https://github.com/user-attachments/assets/7eadf384-1277-4d3d-99c4-706756652bd3" /></a> |
 
 ## Android (Store)
 Just a simple port, based on Version 1.4.0 for Android and with a nostalgic Windows95 look.  
@@ -53,7 +53,7 @@ It contains only 2 pets for the moment. In future, all GitHub pets will be integ
 |---|---|
 | Version |  1.4.0 | 
 | Last update | september 2026 | 
-| Link | <a href='https://play.google.com/store/apps/details?id=ch.petrucci.androsheep'><img width="128" height="41" alt="image" src="https://github.com/user-attachments/assets/8609a885-8e26-4e87-a0c5-e2f0e785d5bb" /><br><img width="108" height="20" alt="image" src="https://github.com/user-attachments/assets/7eadf384-1277-4d3d-99c4-706756652bd3" /></a> |
+| Link | <a href='https://play.google.com/store/apps/details?id=ch.petrucci.androsheep'><img width="128" height="41" alt="image" src="https://github.com/user-attachments/assets/8609a885-8e26-4e87-a0c5-e2f0e785d5bb" /></a> |
 
 ## MAC OS (GitHub)
 [iappyx](https://github.com/iappyx) created a macOS-Version with Swift/AppKit.
