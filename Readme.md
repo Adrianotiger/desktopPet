@@ -24,7 +24,7 @@ Compiled with .NET4.7, this application is just an exe and works on every 64-bit
 |---|---|
 | Version |  1.6.0 | 
 | Last update | october 2026 | 
-| Link | <a href='https://github.com/Adrianotiger/desktopPet/releases/latest'><img src='https://img.shields.io/github/downloads/adrianotiger/desktopPet/total.svg' style='vertical-align:middle'> &nbsp; Download Page</a> |
+| Link | <a href='https://github.com/Adrianotiger/desktopPet/releases/latest'>Download Page<br><img src='https://img.shields.io/github/downloads/adrianotiger/desktopPet/total.svg' style='vertical-align:middle'></a> |
 
 ### SignPath Foundation (pending)
 This project is applying to the SignPath Foundation program.  
@@ -53,7 +53,7 @@ It contains only 2 pets for the moment. In future, all GitHub pets will be integ
 |---|---|
 | Version |  1.4.0 | 
 | Last update | september 2026 | 
-| Link | <a href='https://play.google.com/store/apps/details?id=ch.petrucci.androsheep'><img width="128" height="41" alt="image" src="https://github.com/user-attachments/assets/8609a885-8e26-4e87-a0c5-e2f0e785d5bb" /></a> |
+| Link | <a href='https://play.google.com/store/apps/details?id=ch.petrucci.androsheep'><img width="128" height="41" alt="image" src="https://github.com/user-attachments/assets/8609a885-8e26-4e87-a0c5-e2f0e785d5bb" /><br><img width="108" height="20" alt="image" src="https://github.com/user-attachments/assets/7eadf384-1277-4d3d-99c4-706756652bd3" /></a> |
 
 ## MAC OS (GitHub)
 [iappyx](https://github.com/iappyx) created a macOS-Version with Swift/AppKit.
