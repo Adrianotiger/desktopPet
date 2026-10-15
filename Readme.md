@@ -53,7 +53,7 @@ It contains only 2 pets for the moment. In future, all GitHub pets will be integ
 |---|---|
 | Version |  1.4.0 | 
 | Last update | september 2026 | 
-| Link | <a href='https://play.google.com/store/apps/details?id=ch.petrucci.androsheep'><img width="128" height="41" alt="image" src="https://github.com/user-attachments/assets/8609a885-8e26-4e87-a0c5-e2f0e785d5bb" /></a> |
+| Link | <a href='https://play.google.com/store/apps/details?id=ch.petrucci.androsheep'><img width="128" height="41" alt="image" src="https://github.com/user-attachments/assets/8609a885-8e26-4e87-a0c5-e2f0e785d5bb" /><br><img width="110" height="18" alt="image" src="https://github.com/user-attachments/assets/2675cdfb-2fa3-4978-938f-e7bef0c39b90" /></a> |
 
 ## MAC OS (GitHub)
 [iappyx](https://github.com/iappyx) created a macOS-Version with Swift/AppKit.
