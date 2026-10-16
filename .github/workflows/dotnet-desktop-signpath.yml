@@ -3,6 +3,12 @@ name: Build DesktopPet Portable - SignPath
 on:
   workflow_dispatch:
     inputs:
+      source_version:
+        description: "Branch or tag"
+        required: true
+        default: "1.6.0"
+        type: string
+  
       configuration:
         description: Build Configuration
         required: true
@@ -44,6 +50,8 @@ jobs:
     steps:
     - name: Checkout repository
       uses: actions/checkout@v4
+      with:
+        ref: v${{ github.event.inputs.source_version }}
 
     - name: Setup MSBuild
       uses: microsoft/setup-msbuild@v2
