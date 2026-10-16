@@ -214,6 +214,14 @@ namespace DesktopPet
             SetMotionTimer(true);
         }
 
+        private void CommitLogicalPosition()
+        {
+            // Keep the track current even when interpolation is disabled. Window
+            // following always transforms this track along with logical coordinates.
+            Location = new Point((int)PositionX, (int)(PositionY + OffsetY));
+            ResetMotion();
+        }
+
         private void RenderMotion(double now)
         {
             PointF p = motion.Sample(now);
@@ -231,6 +239,11 @@ namespace DesktopPet
                 return;
             }
             if (IsTossing) AdvanceToss(now);
+            else if (!UseSmoothMovements && !IsLeaving)
+            {
+                // The option may change in the middle of an interpolation segment.
+                CommitLogicalPosition();
+            }
             else
             {
                 SyncFollowHook();
