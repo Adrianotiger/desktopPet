@@ -1,4 +1,5 @@
 name: Build DesktopPet Portable - SignPath
+run-name: DesktopPet v${{ github.event.inputs.source_version }} - ${{ github.event.inputs.signing }}
 
 on:
   workflow_dispatch:
