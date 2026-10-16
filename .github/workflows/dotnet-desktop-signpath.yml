@@ -101,7 +101,7 @@ jobs:
         skip-decompress: true
         wait-for-completion: true
         parameters: |
-          version: $${{ github.event.inputs.source_version }}
+          version: ${{ github.event.inputs.source_version }}
 
     - name: Upload signed EXE artifact
       uses: actions/upload-artifact@v7
