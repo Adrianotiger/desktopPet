@@ -48,6 +48,13 @@ jobs:
       Solution_Dir: src/
 
     steps:
+    - name: Validate version
+      shell: pwsh
+      run: |
+        if ('${{ github.event.inputs.source_version }}' -notmatch '^\d+\.\d+\.\d+$') {
+          throw "Version must be in the format X.Y.Z"
+        }
+    
     - name: Checkout repository
       uses: actions/checkout@v4
       with:
@@ -93,6 +100,8 @@ jobs:
         output-artifact-directory: "build/DesktopPetPortable/bin/${{ github.event.inputs.configuration }}/${{ github.event.inputs.platform }}/signed/"
         skip-decompress: true
         wait-for-completion: true
+        parameters: |
+          version: $${{ github.event.inputs.source_version }}
 
     - name: Upload signed EXE artifact
       uses: actions/upload-artifact@v7
