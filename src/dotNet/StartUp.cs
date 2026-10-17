@@ -44,7 +44,7 @@ namespace DesktopPet
         /// <summary>
         /// Each sheep is in a different form.
         /// </summary>
-        readonly FormPet[] sheeps = new FormPet[MAX_SHEEPS];
+        public readonly FormPet[] sheeps = new FormPet[MAX_SHEEPS];
 
         /// <summary>
         /// Debug window, used only if SHIFT was pressed by starting the application.
