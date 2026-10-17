@@ -137,7 +137,7 @@ This project integrated other Open Source (-friendly) projects:
 ## Coding - Thanks to
 - [Sergi](https://github.com/Grunwaldt) - for the Tray Icon
 - [Robin](https://github.com/rluiten) - implementing the [Graphviz tool](https://github.com/Adrianotiger/desktopPet/issues/6)
-- [Zecheriah](https://github.com/ZechsVariety) - implementing [Tossing code](https://github.com/Adrianotiger/desktopPet/pull/150)
+- [Zecheriah](https://github.com/ZechsVariety) - implementing [Tossing code](https://github.com/Adrianotiger/desktopPet/pull/150), Window-Edge Collisions and Pet Interaction code
 - [Xhonye](https://github.com/xhonye) - improving speed and implementing [Test scripts](https://github.com/Adrianotiger/desktopPet/pull/161)
 
 
