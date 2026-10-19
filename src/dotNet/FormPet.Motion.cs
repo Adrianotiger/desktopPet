@@ -66,17 +66,32 @@ namespace DesktopPet
             double dt = Math.Max(0, Math.Min(50, now - tossUpdatedAt)) / 30.0;
             tossUpdatedAt = now;
             if (dt == 0) return;
+
+            // Check for any window side collisions
+            double windowSide = TossWindowSideCollision(dt);
+
             Rectangle area = ScreenArea;
             double nextX = PositionX + TossForce.X * dt;
-            double right = area.Right - Width;
-            if (nextX < area.Left || nextX > right)
+            double areaRight = area.Right - Width;
+
+            // bounce if hitting left/right screen border or a windowSide border
+            if (nextX < area.Left || nextX > areaRight || windowSide != 0)
             {
-                double edge = nextX < area.Left ? area.Left : right;
+                double edge = 0;
+
+                // Set edge to the X of whichever border was hit
+                if (nextX < area.Left)
+                    edge = area.Left;
+                else if (nextX > areaRight)
+                    edge = areaRight;
+                else
+                    edge = windowSide;
+
                 // Consume the remaining travel after impact instead of pausing a frame.
-                nextX = edge - (nextX - edge) * .3;
-                TossForce.X *= -.3f;
+                nextX = edge - (nextX - edge) * .5;
+                TossForce.X *= -.5f;
             }
-            PositionX = Math.Max(area.Left, Math.Min(right, nextX));
+            PositionX = Math.Max(area.Left, Math.Min(areaRight, nextX));
             double dy = tossVertVel * dt + .75 * dt * dt;
             tossVertVel += 1.5 * dt;
             int windowTop = dy > 0 ? FallDetect((int)Math.Ceiling(dy)) : -1;
@@ -103,6 +118,64 @@ namespace DesktopPet
                 pictureBox1.Image = GetSprite(CurrentAnimation.Sequence.Frames[0]);
                 SyncFollowHook();
             }
+        }
+
+            /// <summary>
+            /// Check if tossed pet collides with the sides of any windows
+            /// </summary>
+            /// <param name="dt">Deltatime</param>
+            /// <returns>
+            /// X coord if there's a collision. Otherwise, return 0
+            /// </returns>
+        private double TossWindowSideCollision(double dt)
+        {
+            if (TossForce.X == 0)
+                return 0;
+
+            // Retrieve valid windows
+            Dictionary<IntPtr, string> windows = EnumerateWindows();
+            // For each valid window found:
+            foreach (KeyValuePair<IntPtr, string> window in windows)
+            {
+                // Get size and position of window
+                if (NativeMethods.GetWindowRect(new HandleRef(this, window.Key), out NativeMethods.RECT rct))
+                {
+                    // moving left
+                    if (TossForce.X < 0)
+                    {
+                        // window right border!
+                        if (PositionX + TossForce.X * dt <= rct.Right
+                            && PositionX + TossForce.X * dt >= rct.Right + TossForce.X * dt // A little bit of wiggle-room so the sheep doesn't phase through the window
+                            && PositionY + tossVertVel * dt < rct.Bottom // Ignore if below window. REMINDER: Y is inverted
+                            && PositionY + tossVertVel * dt + Height > rct.Top // Ignore if above window
+                            && !CheckTopWindow(false, window.Key) // Ignore windows that aren't visible on top
+                            && rct.Right < ScreenArea.Right - Width // Ignore collision if the sheep doesn't have enough space to make it past the right screen border (ex: if an application is covering the entire screen)
+                            )
+                        {
+                            // teleport position
+                            return rct.Right;
+                        }
+                    }
+                    // moving right
+                    else if (TossForce.X > 0)
+                    {
+                        // window left border!
+                        if (PositionX + TossForce.X * dt + Width >= rct.Left
+                            && PositionX + TossForce.X * dt + Width <= rct.Left + TossForce.X * dt // A little bit of wiggle-room so the sheep doesn't phase through the window
+                            && PositionY + tossVertVel * dt < rct.Bottom // Ignore if below window. REMINDER: Y is inverted
+                            && PositionY + tossVertVel * dt + Height > rct.Top // Ignore if above window
+                            && !CheckTopWindow(false, window.Key) // Ignore windows that aren't visible on top
+                            && rct.Left > ScreenArea.Left + Width // Ignore collision if the sheep doesn't have enough space to make it past the left screen border (ex: if an application is covering the entire screen)
+                            )
+                        {
+                            // teleport position
+                            return rct.Left - Width;
+                        }
+                    }
+                }
+            }
+
+            return 0;
         }
 
         private bool timerResolutionRequested;

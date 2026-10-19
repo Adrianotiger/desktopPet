@@ -170,9 +170,12 @@ namespace PetEditor
                         {
                             case "taskbar": where = TNextAnimation.TOnly.TASKBAR; break;
                             case "window": where = TNextAnimation.TOnly.WINDOW; break;
+                            case "windowSide": where = TNextAnimation.TOnly.WINDOWSIDE; break;
                             case "horizontal": where = TNextAnimation.TOnly.HORIZONTAL; break;
                             case "horizontal+": where = TNextAnimation.TOnly.HORIZONTAL_; break;
                             case "vertical": where = TNextAnimation.TOnly.VERTICAL; break;
+                            case "vertical+": where = TNextAnimation.TOnly.VERTICAL_; break;
+                            case "petSide": where = TNextAnimation.TOnly.PETSIDE; break;
                             default: where = TNextAnimation.TOnly.NONE; break;
                         }
 
@@ -195,9 +198,12 @@ namespace PetEditor
                         {
                             case "taskbar": where = TNextAnimation.TOnly.TASKBAR; break;
                             case "window": where = TNextAnimation.TOnly.WINDOW; break;
+                            case "windowSide": where = TNextAnimation.TOnly.WINDOWSIDE; break;
                             case "horizontal": where = TNextAnimation.TOnly.HORIZONTAL; break;
                             case "horizontal+": where = TNextAnimation.TOnly.HORIZONTAL_; break;
                             case "vertical": where = TNextAnimation.TOnly.VERTICAL; break;
+                            case "vertical+": where = TNextAnimation.TOnly.VERTICAL_; break;
+                            case "petSide": where = TNextAnimation.TOnly.PETSIDE; break;
                             default: where = TNextAnimation.TOnly.NONE; break;
                         }
                         ani.Border = true;
@@ -220,9 +226,12 @@ namespace PetEditor
                         {
                             case "taskbar": where = TNextAnimation.TOnly.TASKBAR; break;
                             case "window": where = TNextAnimation.TOnly.WINDOW; break;
+                            case "windowSide": where = TNextAnimation.TOnly.WINDOWSIDE; break;
                             case "horizontal": where = TNextAnimation.TOnly.HORIZONTAL; break;
                             case "horizontal+": where = TNextAnimation.TOnly.HORIZONTAL_; break;
                             case "vertical": where = TNextAnimation.TOnly.VERTICAL; break;
+                            case "vertical+": where = TNextAnimation.TOnly.VERTICAL_; break;
+                            case "petSide": where = TNextAnimation.TOnly.PETSIDE; break;
                             default: where = TNextAnimation.TOnly.NONE; break;
                         }
                         ani.Gravity = true;

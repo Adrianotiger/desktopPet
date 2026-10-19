@@ -251,7 +251,7 @@
             this.label12.Name = "label12";
             this.label12.Size = new System.Drawing.Size(437, 16);
             this.label12.TabIndex = 12;
-            this.label12.Text = "Pet Tossing code by Zecheriah";
+            this.label12.Text = "Pet Tossing and Window/Pet Collisions code by Zecheriah";
             this.label12.TextAlign = System.Drawing.ContentAlignment.TopCenter;
             // 
             // label11

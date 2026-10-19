@@ -655,9 +655,9 @@ namespace PetEditor
                 {
                     foreach(var n in animation.Border.Next)
                     {
-                        if(n.Probability == 0)
+                        if(n.Probability == 0 && n.OnlyFlag != "petSide")
                         {
-                            listView2.Items.Add("ANIMATION " + animation.Id).SubItems.Add("Probability for Border-Next:" + n.Value + " is 0, this should never be set");
+                            listView2.Items.Add("ANIMATION " + animation.Id).SubItems.Add("Probability for Border-Next:" + n.Value + " is 0, this should never be set, unless this animation has its only-flag set to petSide");
                         }
                         if(!XmlTools.GetAnimationsId().Contains(n.Value))
                         {

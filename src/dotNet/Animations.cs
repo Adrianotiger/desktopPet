@@ -121,17 +121,29 @@ namespace DesktopPet
                 /// </summary>
             WINDOW      = 0x02,
                 /// <summary>
+                /// Window-side borders - next animation will be executed only if pet hits the left or right of a window
+                /// </summary>
+            WINDOWSIDE  = 0x04,
+                /// <summary>
                 /// Only horizontal screen borders - next animation will be executed only if pet is on the top or bottom
                 /// </summary>
-            HORIZONTAL  = 0x04,
+            HORIZONTAL  = 0x06,
                 /// <summary>
                 /// Horizontal or Window borders - net animation will be executed only if pet detected an horizontal border
                 /// </summary>
-            HORIZONTAL_ = 0x06,
+            HORIZONTAL_ = 0x08,
                 /// <summary>
                 /// Vertical screen borders - next animation will be executed only if pet is on the left or right screen border
                 /// </summary>
-            VERTICAL    = 0x08,
+            VERTICAL    = 0x0A,
+                /// <summary>
+                /// Vertical screen, window side and pet side borders - next animation will be executed only if pet hits any vertical border
+                /// </summary>
+            VERTICAL_   = 0x0C,
+                /// <summary>
+                /// Pet-side borders - next animation will be executed only if pet hits the left or right of another pet
+                /// </summary>
+            PETSIDE     = 0x0E,
         }
             /// <summary>
             /// ID of the next animation to play
@@ -773,6 +785,18 @@ namespace DesktopPet
         }
 
             /// <summary>
+            /// Start the next animation once a pet border is hit and matching pet animation is found
+            /// </summary>
+            /// <param name="animations">Matching animations between both pets.</param>
+            /// <param name="where">Where the pet is "walking"</param>
+            /// <returns>ID of the next animation to play. -1 if there is no animation.</returns>
+        public int SetNextInteractAnimation(List<TNextAnimation> animations, TNextAnimation.TOnly where)
+        {
+            StartUp.AddDebugInfo(StartUp.DEBUG_TYPE.info, "pet interaction detected");
+            return SetNextGeneralAnimation(animations, where);
+        }
+
+            /// <summary>
             /// Set the next animation, once the last one was finished.
             /// </summary>
             /// <param name="list">List of animations that can be executed.</param>
@@ -783,19 +807,37 @@ namespace DesktopPet
             int iDefaultID = -1;
             if (list.Count > 0)     // Find the next animation only if there is at least 1 animation in the list
             {
+                // Determine if all horizontal+ or vertical+ animations should be considered
+                bool isHorizontal_ = (where == TNextAnimation.TOnly.HORIZONTAL || where == TNextAnimation.TOnly.WINDOW || where == TNextAnimation.TOnly.TASKBAR) ? true : false; // horizontal+ counts for horizontal, window and taskbar collisions
+                bool isVertical_ = (where == TNextAnimation.TOnly.VERTICAL || where == TNextAnimation.TOnly.WINDOWSIDE || where == TNextAnimation.TOnly.PETSIDE) ? true : false; // vertical+ counts for vertical, windowSide and petSide collisions
+
                 int iVal;
                 int iSum = 0;
                 int iRandMax = 0;
                 foreach (TNextAnimation anim in list)
                 {
-                    if (anim.only != TNextAnimation.TOnly.NONE && (anim.only & where) == 0) continue;
+                    // Skip if this animation has the wrong "only" value
+                    if (anim.only != TNextAnimation.TOnly.NONE // none anims are considered for every collision
+                        && !(isHorizontal_ && anim.only == TNextAnimation.TOnly.HORIZONTAL_) // horizontal+ anims are considered for every horizontal anim
+                        && !(isVertical_ && anim.only == TNextAnimation.TOnly.VERTICAL_) // vertical+ anims are considered for every vertical anim
+                        && anim.only != where) // intended "only" value
+                    {
+                        continue;
+                    }
 
                     iRandMax += anim.Probability;
                 }
                 iVal = rand.Next(1, iRandMax+1);
                 foreach (TNextAnimation anim in list)
                 {
-                    if (anim.only != TNextAnimation.TOnly.NONE && (anim.only & where) == 0) continue;
+                    // Skip if this animation has the wrong "only" value
+                    if (anim.only != TNextAnimation.TOnly.NONE
+                        && !(isHorizontal_ && anim.only == TNextAnimation.TOnly.HORIZONTAL_)
+                        && !(isVertical_ && anim.only == TNextAnimation.TOnly.VERTICAL_)
+                        && anim.only != where)
+                    {
+                        continue;
+                    }
 
                     iSum += anim.Probability;
                     if (iSum >= iVal)
@@ -804,6 +846,7 @@ namespace DesktopPet
                         break;
                     }
                 }
+
                     // If an animation was found, re-calculate the values (if there are some Random values, they must be evaluated again)
                 if (iDefaultID > 0)
                 {
