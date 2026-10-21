@@ -115,7 +115,10 @@ namespace DesktopPet
                 }
                 IsTossing = false;
                 SetNewAnimation(tossVertVel < 40 ? Animations.AnimationFallSoft : Animations.AnimationFallHard);
-                pictureBox1.Image = GetSprite(CurrentAnimation.Sequence.Frames[0]);
+                
+                if (Xml.AnimationXML.Header.Petname != "Skywire Bean")
+                    pictureBox1.Image = GetSprite(CurrentAnimation.Sequence.Frames[0]);
+
                 SyncFollowHook();
             }
         }

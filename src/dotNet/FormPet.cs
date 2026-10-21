@@ -293,6 +293,10 @@ namespace DesktopPet
                 }
             }
 
+            // If the pet is a Skywire Bean, choose a random sprite
+            if (Xml.AnimationXML.Header.Petname == "Skywire Bean")
+                pictureBox1.Image = imageList1.Images[rand.Next(0, imageList1.Images.Count)];
+
             TSpawn spawn;
             if (forceSpawn < 0) spawn = Animations.GetRandomSpawn(); // Get a random SPAWN, to setting the form properties
             else
@@ -537,15 +541,20 @@ namespace DesktopPet
             int spriteStep = AnimationStep;
             if (!IsDragging && !IsTossing && CurrentAnimation.ID != Animations.AnimationKill)
                 spriteStep = Math.Min(spriteStep, CurrentAnimation.Sequence.TotalSteps - 1);
+
+            // Skip sprite-setting if pet is Skywire Bean
+            if(Xml.AnimationXML.Header.Petname != "Skywire Bean")
+            {
                 // If there is no repeat, we don't need to calculate the frame index.
-            if (spriteStep < CurrentAnimation.Sequence.Frames.Count)
-            {
-                pictureBox1.Image = GetSprite(CurrentAnimation.Sequence.Frames[spriteStep]);
-            }
-            else
-            {
-                int index = ((spriteStep - CurrentAnimation.Sequence.Frames.Count + CurrentAnimation.Sequence.RepeatFrom) % (CurrentAnimation.Sequence.Frames.Count - CurrentAnimation.Sequence.RepeatFrom)) + CurrentAnimation.Sequence.RepeatFrom;
-                pictureBox1.Image = GetSprite(CurrentAnimation.Sequence.Frames[index]);
+                if (spriteStep < CurrentAnimation.Sequence.Frames.Count)
+                {
+                    pictureBox1.Image = GetSprite(CurrentAnimation.Sequence.Frames[spriteStep]);
+                }
+                else
+                {
+                    int index = ((spriteStep - CurrentAnimation.Sequence.Frames.Count + CurrentAnimation.Sequence.RepeatFrom) % (CurrentAnimation.Sequence.Frames.Count - CurrentAnimation.Sequence.RepeatFrom)) + CurrentAnimation.Sequence.RepeatFrom;
+                    pictureBox1.Image = GetSprite(CurrentAnimation.Sequence.Frames[index]);
+                }
             }
 
                 // Get interval (if not in tossing mode), opacity and offset interpolated from START and END values.
@@ -1002,7 +1011,9 @@ namespace DesktopPet
             if (landedOnWindow && CurrentAnimation.Start.Y.Value != 0)
                 hwndWindow = (IntPtr)0;
             timer1.Interval = 1;
-            pictureBox1.Image = GetSprite(CurrentAnimation.Sequence.Frames[0]);
+
+            if (Xml.AnimationXML.Header.Petname != "Skywire Bean")
+                pictureBox1.Image = GetSprite(CurrentAnimation.Sequence.Frames[0]);
         }
 
             /// <summary>
