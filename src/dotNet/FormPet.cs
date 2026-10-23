@@ -9,7 +9,9 @@ using System.Diagnostics;
 using System.Threading;
 using System.Linq;
 using System.Numerics;
+
 using DesktopPet.Properties;
+using System.Xml;
 
 namespace DesktopPet
 {
@@ -35,7 +37,7 @@ namespace DesktopPet
             /// Structure with all informations about the current animation.
             /// </summary>
         TAnimation CurrentAnimation;
-        private bool transitionPending;
+        private bool pendingTransition;
         private int pendingAnimation;
         private bool pendingWindowLanding;
             /// <summary>
@@ -438,8 +440,8 @@ namespace DesktopPet
             /// <param name="id">Animation ID to play.</param>
         private void SetNewAnimation(int id)
         {
-            // Explicit actions (drag, sync, kill or respawn) replace a queued transition.
-            transitionPending = false;
+			// Explicit actions (drag, sync, kill or respawn) replace a queued transition.
+			pendingTransition = false;
             if (CurrentAnimation.ID == Animations.AnimationKill) return;
             // Settle the outgoing endpoint while its animation is still current.
             // This also owns endpoint commitment for a completed pending transition.
@@ -515,7 +517,7 @@ namespace DesktopPet
             /// </summary>
         private void NextStep()
         {
-            if (transitionPending)
+            if (pendingTransition)
             {
                 // The previous tick reserved a complete interval for its final
                 // displacement. Publish the successor only after that interval.
@@ -984,7 +986,7 @@ namespace DesktopPet
                 {
                     pendingAnimation = nextAnimation;
                     pendingWindowLanding = landedOnWindow;
-                    transitionPending = true;
+					pendingTransition = true;
                     timer1.Interval = movementDuration;
                 }
                 else
@@ -1607,35 +1609,71 @@ namespace DesktopPet
 
         /// <summary>
         /// Pet allows dropping other files. If you drop a XML animation file, the mouse icon will change.
+        /// Drops are allowed for files (windows drag&drop) and text (webbrowser drag&drop)
         /// </summary>
         /// <param name="sender">Caller object.</param>
         /// <param name="e">Mouse event values.</param>
         private void Form2_DragEnter(object sender, DragEventArgs e)
         {
             StartUp.AddDebugInfo(StartUp.DEBUG_TYPE.info, "dragging file...");
-            if (e.Data.GetDataPresent(DataFormats.FileDrop)) e.Effect = DragDropEffects.Copy;
-        }
+            if (e.Data.GetDataPresent(DataFormats.FileDrop) ||
+				e.Data.GetDataPresent(DataFormats.Text)) e.Effect = DragDropEffects.Copy;
+		}
 
-            /// <summary>
-            /// Pet allows dropping other files. If a XML file was dropped, this one will be loaded.
-            /// </summary>
-            /// <param name="sender">Caller object.</param>
-            /// <param name="e">Dragging event values.</param>
-        private void Form2_DragDrop(object sender, DragEventArgs e)
+		/// <summary>
+		/// Pet allows dropping other files. If a XML file was dropped, this one will be loaded.
+		/// It can be a XML file, but it can be also a Browser-XML-string (see https://adrianotiger.github.io/web-esheep/tools/minecraft.html webpage)
+		/// </summary>
+		/// <example>
+        /// Javascript example to generate a xml string (file would also be possible, but some browsers will not allow it)
+		/// myElement.addEventListener("dragstart", (e)=> {
+		///   e.dataTransfer.setData(
+		///     "text/plain",
+		///     `${xmlString}`
+		///   );
+		///   e.dataTransfer.setData("text/xml", xmlString);
+		///   e.dataTransfer.effectAllowed = "copy";
+		/// });
+		/// </example>
+		/// <param name="sender">Caller object.</param>
+		/// <param name="e">Dragging event values.</param>
+		private void Form2_DragDrop(object sender, DragEventArgs e)
         {
-            StartUp.AddDebugInfo(StartUp.DEBUG_TYPE.info, "files dragged:");
-            string[] files = (string[])e.Data.GetData(DataFormats.FileDrop);
-            foreach (string file in files)
+            var files = (string[])e.Data.GetData(DataFormats.FileDrop);
+			var xmlString = e.Data.GetData(DataFormats.Text);
+            // If a file was dropped (XML as a file)
+			if (files != null)
             {
-                if (file.Contains(".xml"))
+				StartUp.AddDebugInfo(StartUp.DEBUG_TYPE.info, "files dragged:");
+				foreach (string file in files)
                 {
-                    Program.Mainthread.KillSheep(this);
-                    Program.MyData.SetXml(File.ReadAllText(file), "..");
-                    Program.Mainthread.LoadNewXMLFromString(File.ReadAllText(file));
-                    break;  // Currently only 1 file, in future maybe more animations at the same time
+                    if (file.Contains(".xml"))
+                    {
+                        Program.Mainthread.KillSheep(this);
+                        Program.MyData.SetXml(File.ReadAllText(file), "..");
+                        Program.Mainthread.LoadNewXMLFromString(File.ReadAllText(file));
+                        break;  // Currently only 1 file, in future maybe more animations at the same time
+                    }
                 }
             }
+			// If a string was dropped (XML as a string)
+			else if (xmlString != null)
+            {
+				StartUp.AddDebugInfo(StartUp.DEBUG_TYPE.info, "xml string dragged:");
+				try
+				{
+					var doc = new XmlDocument();
+					doc.LoadXml(xmlString as String);
 
+					Program.Mainthread.KillSheep(this);
+					Program.MyData.SetXml(xmlString as String, "..");
+					Program.Mainthread.LoadNewXMLFromString(xmlString as String);
+				}
+				catch
+				{
+					StartUp.AddDebugInfo(StartUp.DEBUG_TYPE.error, "invalid animation xml");
+				}
+			}
         }
 
         private void Form2_FormClosed(object sender, FormClosedEventArgs e)

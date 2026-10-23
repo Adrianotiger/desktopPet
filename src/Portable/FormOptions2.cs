@@ -607,6 +607,9 @@ namespace DesktopPet
 		{
 			base.OnPaint(e);
 
+			// Todo: check if Dpi calculation is neccessary on HDPI monitors...
+			float scale = DeviceDpi / 96f;
+
 			var g = e.Graphics;
 			g.TextRenderingHint = System.Drawing.Text.TextRenderingHint.SingleBitPerPixelGridFit;
 
@@ -981,7 +984,8 @@ namespace DesktopPet
 			}
 
 			var pets = Newtonsoft.Json.JsonConvert.DeserializeObject<OptionsPets>(jsonString);
-			//pets.Reorder();
+			// Order by date, as this is the default selection in the option window
+			pets.Reorder(MenuItemIndex.View_Date);
 
 			pets.pets.ForEach(p =>
 			{
@@ -991,15 +995,6 @@ namespace DesktopPet
 					progress.Report(p);
 				}
 			});
-			/*
-			for (int j = 0; j < pets.pets.Count; j++)
-			{
-				using (Stream stream = GetOrDownload(pets.pets[j].folder, "icon.png"))
-				{
-					pets.pets[j].Image = Image.FromStream(stream);
-
-				}
-			}*/
 		}
 
 		/// <summary>
