@@ -37,6 +37,10 @@ namespace DesktopPet
             /// Structure with all informations about the current animation.
             /// </summary>
         TAnimation CurrentAnimation;
+            /// <summary>
+            /// Current skin index. Is always 0 for pets without multiple skins.
+            /// </summary>
+        int CurrentSkin = 0;
         private bool pendingTransition;
         private int pendingAnimation;
         private bool pendingWindowLanding;
@@ -279,6 +283,54 @@ namespace DesktopPet
 		/// <param name="forceSpawn">Set a spawn animation, or leave empty if a random spawn can be used.</param>
 		public void Play(bool first, int forceSpawn = -1)
         {
+            // Choose a random skin. Picks a unique skin if there aren't too many pets onscreen
+            // EX: if you have only two Twin Shot pets, one will be pink and the other will be orange
+            int skins = Xml.AnimationXML.Image.Skins;
+            if (skins > 1)
+            {
+                // Populate a list of taken skins
+                List<int> takenSkins = new List<int>();
+                foreach (FormPet sheep in Program.Mainthread.sheeps)
+                {
+                    // Skip if the pet doesn't exist or if it's this pet
+                    if (sheep == null || sheep.IsDisposed || sheep == this)
+                        continue;
+                    // Skip if it's a different pet XML
+                    if (sheep.Animations != Animations)
+                        continue;
+                    // Prevent potential errors
+                    TAnimation sheepCurrentAnim = sheep.CurrentAnimation;
+                    // Skip if it's playing the kill animation
+                    if (sheepCurrentAnim.ID == Animations.AnimationKill)
+                        continue;
+
+                    takenSkins.Add(sheep.CurrentSkin);
+                }
+
+                // Get a random skin
+                int potentialSkin = rand.Next(0, skins);
+
+                // If there are less pets than skins, find a unique skin
+                if (takenSkins.Count < skins)
+                {
+                    for (int i = 0; i < skins; i++)
+                    {
+                        // If the randomly picked skin is already taken, skip to the next one
+                        if (takenSkins.Contains(potentialSkin))
+                        {
+                            potentialSkin += 1;
+                            // Loop back to 0
+                            if (potentialSkin >= skins)
+                                potentialSkin = 0;
+                        }
+                    }
+                }
+
+                // Apply skin
+                CurrentSkin = potentialSkin;
+                StartUp.AddDebugInfo(StartUp.DEBUG_TYPE.warning, $"Skin {CurrentSkin} selected");
+            }
+            
             timer1.Enabled = false;                     // Stop the timer
 
 			AnimationStep = 0;                         // First step
@@ -498,7 +550,9 @@ namespace DesktopPet
 								child.Name = "child" + (int.Parse(Name.Substring(5)) + 1).ToString();
 							}
 
-							child.Show(Width, Height);
+                            child.CurrentSkin = CurrentSkin;
+
+                            child.Show(Width, Height);
 							child.PlayChild(id, childInfo);
 
                             childs.Add(child);
@@ -507,6 +561,33 @@ namespace DesktopPet
                 }
 
                 timer1.Interval = CurrentAnimation.Start.Interval.GetValue();
+            }
+        }
+
+            /// <summary>
+            /// Determine the animation ID for the selected skin, if applicable
+            /// </summary>
+            /// <remarks>
+            /// EX: If you have 100 sprites and 2 skins, skin 2's animation ID is offset by 50
+            /// </remarks>
+            /// <param name="animID">The intended Animation ID</param>
+            /// <returns>Offset Animation ID</returns>
+        int SkinOffset(int animID)
+        {
+            if (Xml.AnimationXML.Image.Skins <= 1)
+                return animID;
+            else
+            {
+                int range = imageList1.Images.Count / Xml.AnimationXML.Image.Skins;
+                int offset = range * CurrentSkin; // Reminder: CurrentSkin starts at 0
+
+                // Check if the given animation is from the first skin only (as it should be)
+                // If so, return the offset animation
+                if (animID < range)
+                    return animID + offset;
+                // If not, fall back on the original animation
+                else
+                    return animID;
             }
         }
 
@@ -542,12 +623,12 @@ namespace DesktopPet
                 // If there is no repeat, we don't need to calculate the frame index.
             if (spriteStep < CurrentAnimation.Sequence.Frames.Count)
             {
-                pictureBox1.Image = GetSprite(CurrentAnimation.Sequence.Frames[spriteStep]);
+                pictureBox1.Image = GetSprite(SkinOffset(CurrentAnimation.Sequence.Frames[spriteStep]));
             }
             else
             {
                 int index = ((spriteStep - CurrentAnimation.Sequence.Frames.Count + CurrentAnimation.Sequence.RepeatFrom) % (CurrentAnimation.Sequence.Frames.Count - CurrentAnimation.Sequence.RepeatFrom)) + CurrentAnimation.Sequence.RepeatFrom;
-                pictureBox1.Image = GetSprite(CurrentAnimation.Sequence.Frames[index]);
+                pictureBox1.Image = GetSprite(SkinOffset(CurrentAnimation.Sequence.Frames[index]));
             }
 
                 // Get interval (if not in tossing mode), opacity and offset interpolated from START and END values.
@@ -1004,7 +1085,7 @@ namespace DesktopPet
             if (landedOnWindow && CurrentAnimation.Start.Y.Value != 0)
                 hwndWindow = (IntPtr)0;
             timer1.Interval = 1;
-            pictureBox1.Image = GetSprite(CurrentAnimation.Sequence.Frames[0]);
+            pictureBox1.Image = GetSprite(SkinOffset(CurrentAnimation.Sequence.Frames[0]));
         }
 
             /// <summary>
