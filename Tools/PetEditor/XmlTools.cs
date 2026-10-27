@@ -242,6 +242,7 @@ namespace PetEditor
             if(Program.AnimationXML.Image.Png == null || Program.AnimationXML.Image.Png.Length < 20) Program.AnimationXML.Image.Png = "iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNk+P+/HgAFhAJ/wlseKgAAAABJRU5ErkJggg==";
             if (Program.AnimationXML.Image.TilesX <= 0) Program.AnimationXML.Image.TilesX = 1;
             if (Program.AnimationXML.Image.TilesY <= 0) Program.AnimationXML.Image.TilesY = 1;
+            if (Program.AnimationXML.Image.Skins <= 0) Program.AnimationXML.Image.Skins = 1;
             if (Program.AnimationXML.Image.Transparency == null || Program.AnimationXML.Image.Transparency == "") Program.AnimationXML.Image.Transparency = "Magenta";
 
             for(var k=0;k<Program.AnimationXML.Animations.Animation.Length;k++)

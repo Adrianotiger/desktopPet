@@ -107,6 +107,11 @@ namespace XmlData
         [XmlElement("tilesy")]
         public int TilesY;
         /// <summary>
+        ///  Quantity of skins.
+        /// </summary>
+        [XmlElement("skins")]
+        public int Skins;
+        /// <summary>
         ///  The sprite as base64 string.
         /// </summary>
         [XmlElement("png")]
