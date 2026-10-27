@@ -45,3 +45,10 @@ v1.0 (2026-10-20)
 * Sound effects
 * smoother drag animation
 
+
+
+v2.0 (WIP)
+
+* Added orange cat!
+* Fixed spawn animation getting undershot
+
