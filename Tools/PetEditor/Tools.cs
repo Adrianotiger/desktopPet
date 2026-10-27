@@ -495,6 +495,10 @@ namespace PetEditor
             {
                 listView2.Items.Add("IMAGE INFO").SubItems.Add("TilesY is not correct");
             }
+            if (image.Skins < 1 || image.Skins > image.TilesY)
+            {
+                listView2.Items.Add("IMAGE INFO").SubItems.Add("Skins is not correct");
+            }
             if(Program.AnimationXML.Spawns == null || Program.AnimationXML.Spawns.Spawn == null || Program.AnimationXML.Spawns.Spawn.Length == 0)
             {
                 listView2.Items.Add("SPAWNS").SubItems.Add("You need at least 1 spawn in your xml");
@@ -567,6 +571,10 @@ namespace PetEditor
                 if ((im.Height % image.TilesY) != 0)
                 {
                     listView2.Items.Add("IMAGE").SubItems.Add("Warning: image height (" + im.Height + ") is not divisible for tilesY (" + image.TilesY + "), please change the size of your image to avoid wrong cutting.");
+                }
+                if ((image.TilesY % image.Skins) != 0)
+                {
+                    listView2.Items.Add("IMAGE").SubItems.Add("Warning: tilesY (" + image.TilesY + ") is not divisible for skins (" + image.Skins + "), please change the size of your image to avoid wrong cutting.");
                 }
             }
         }

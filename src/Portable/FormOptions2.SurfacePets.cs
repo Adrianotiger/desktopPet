@@ -250,7 +250,7 @@ namespace DesktopPet
 			pety += 20;
 
 			var childs = selectedPet.Detail.ChildNodes[1].ChildNodes;
-			XmlNode xmlheader = null, xmlspawns = null, xmlimage=null, xmlanimations=null, xmlchilds=null, xmlsounds=null;
+			XmlNode xmlheader = null, xmlspawns = null, xmlimage=null, xmlanimations=null, xmlskins=null, xmlchilds=null, xmlsounds=null;
 			for(var j=0;j<childs.Count;j++)
 			{
 				var childX = childs[j];
@@ -260,7 +260,8 @@ namespace DesktopPet
 					case "image": xmlimage = childs[j]; break;
 					case "spawns": xmlspawns = childs[j]; break;
 					case "animations": xmlanimations = childs[j]; break;
-					case "childs": xmlchilds = childs[j]; break;
+                    case "skins": xmlskins = childs[j]; break;
+                    case "childs": xmlchilds = childs[j]; break;
 					case "sounds": xmlsounds = childs[j]; break;
 				}
 			}
@@ -311,7 +312,11 @@ namespace DesktopPet
 			g.DrawString(xmlanimations?.ChildNodes.Count.ToString() ?? "-", fontText, Brushes.Black, petx + 150, pety);
 			pety += 20;
 
-			g.DrawString("Total Childs: ", fontBold, Brushes.Black, petx, pety);
+            g.DrawString("Total Skins: ", fontBold, Brushes.Black, petx, pety);
+            g.DrawString(xmlskins?.ChildNodes.Count.ToString() ?? "-", fontText, Brushes.Black, petx + 150, pety);
+            pety += 20;
+
+            g.DrawString("Total Childs: ", fontBold, Brushes.Black, petx, pety);
 			g.DrawString(xmlchilds?.ChildNodes.Count.ToString() ?? "-", fontText, Brushes.Black, petx + 150, pety);
 			pety += 20;
 
