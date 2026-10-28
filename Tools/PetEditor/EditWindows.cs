@@ -167,7 +167,7 @@ namespace PetEditor
                 EditValues.Add("transparency", AddTextBoxToTable("Transparency Key: ", h.Transparency, tableLayoutPanel2));
                 image = AddImageToTable("Image: ", h.Png, tableLayoutPanel2);
 
-                for (var j=EditValues.Count - 3;j<EditValues.Count;j++)
+                for (var j=EditValues.Count - 4;j<EditValues.Count;j++)
                 {
                     var el = EditValues.ElementAt(j);
                     el.Value.TextChanged += (s, e) =>
