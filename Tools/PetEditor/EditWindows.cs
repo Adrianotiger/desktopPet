@@ -538,6 +538,7 @@ namespace PetEditor
 
                     flowLayoutPanel3.Controls.Add(newPB);
                 }
+                panel1.Height = (int)(XmlTools.AnimationImages.ImageSize.Height * 1.5);
 
                 EditAnimationNode.Clear();
                 EditAnimationNode.Add(node);
