@@ -59,18 +59,18 @@ namespace PetEditor.Properties {
                 resourceCulture = value;
             }
         }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to &lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot;?&gt;
-        ///&lt;animations xmlns:xsd=&quot;https://esheep.petrucci.ch/ https://raw.githubusercontent.com/Adrianotiger/desktopPet/master/Resources/animations.xsd&quot; xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot; xmlns=&quot;https://esheep.petrucci.ch/&quot;&gt;
-        ///  &lt;header&gt;
-        ///    &lt;author&gt;YOUR NAME&lt;/author&gt;
-        ///    &lt;title&gt;eSheep Template&lt;/title&gt;
-        ///    &lt;petname&gt;eSheepy&lt;/petname&gt;
-        ///    &lt;version&gt;0.1&lt;/version&gt;
-        ///    &lt;info&gt;Open source project for the lovely eSheep.[br] For more info, visit my webpage [link:htt [rest of string was truncated]&quot;;.
-        /// </summary>
-        internal static string animations {
+
+		/// <summary>
+		///   Looks up a localized string similar to &lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot;?&gt;
+		///&lt;animations xmlns:xsd=&quot;https://esheep.petrucci.ch/ https://adrianotiger.github.io/desktopPet/Resources/animations.xsd&quot; xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot; xmlns=&quot;https://esheep.petrucci.ch/&quot;&gt;
+		///  &lt;header&gt;
+		///    &lt;author&gt;YOUR NAME&lt;/author&gt;
+		///    &lt;title&gt;eSheep Template&lt;/title&gt;
+		///    &lt;petname&gt;eSheepy&lt;/petname&gt;
+		///    &lt;version&gt;0.1&lt;/version&gt;
+		///    &lt;info&gt;Open source project for the lovely eSheep.[br] For more info, visit my webpage [link:htt [rest of string was truncated]&quot;;.
+		/// </summary>
+		internal static string animations {
             get {
                 return ResourceManager.GetString("animations", resourceCulture);
             }

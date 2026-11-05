@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<animations xmlns:xsd="https://esheep.petrucci.ch/ https://raw.githubusercontent.com/Adrianotiger/desktopPet/master/Resources/animations.xsd" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="https://esheep.petrucci.ch/">
+<animations xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="https://esheep.petrucci.ch/ https://adrianotiger.github.io/desktopPet/Resources/animations.xsd" xmlns="https://esheep.petrucci.ch/">
   <header>
     <author>michelle!</author>
     <title>mareep</title>
@@ -12,6 +12,7 @@
   <image>
     <tilesx>4</tilesx>
     <tilesy>4</tilesy>
+    <skins>1</skins>
     <png><![CDATA[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]]></png>
     <transparency>Magenta</transparency>
   </image>
@@ -19,7 +20,7 @@
     <spawn id="1" probability="20">
       <x>screenW-imageW</x>
       <y>areaH-imageH</y>
-      <next probability="0">1</next>
+      <next>1</next>
     </spawn>
   </spawns>
   <animations>
@@ -41,6 +42,7 @@
       </end>
       <sequence repeatfrom="0" repeat="random/20+2">
         <frame>0</frame>
+        <action>none</action>
         <next probability="10" only="none">1</next>
         <next probability="10" only="none">2</next>
         <next probability="10" only="none">3</next>
@@ -50,7 +52,6 @@
         <next probability="10" only="none">9</next>
         <next probability="10" only="none">10</next>
         <next probability="10" only="none">11</next>
-        <action>none</action>
       </sequence>
     </animation>
     <animation id="2">
@@ -74,11 +75,11 @@
         <frame>1</frame>
         <frame>2</frame>
         <frame>3</frame>
+        <action>flip</action>
         <next probability="50" only="none">2</next>
         <next probability="50" only="none">1</next>
         <next probability="10" only="none">10</next>
         <next probability="10" only="none">11</next>
-        <action>flip</action>
       </sequence>
       <border>
         <next probability="10" only="none">1</next>
@@ -105,11 +106,11 @@
         <frame>13</frame>
         <frame>14</frame>
         <frame>15</frame>
+        <action>none</action>
         <next probability="50" only="none">3</next>
         <next probability="50" only="none">1</next>
         <next probability="10" only="none">8</next>
         <next probability="10" only="none">9</next>
-        <action>none</action>
       </sequence>
       <border>
         <next probability="10" only="none">1</next>
@@ -136,11 +137,11 @@
         <frame>5</frame>
         <frame>6</frame>
         <frame>7</frame>
+        <action>none</action>
         <next probability="50" only="none">4</next>
         <next probability="50" only="none">1</next>
         <next probability="10" only="none">8</next>
         <next probability="10" only="none">10</next>
-        <action>none</action>
       </sequence>
       <border>
         <next probability="10" only="none">1</next>
@@ -167,11 +168,11 @@
         <frame>9</frame>
         <frame>10</frame>
         <frame>11</frame>
+        <action>none</action>
         <next probability="50" only="none">1</next>
         <next probability="50" only="none">5</next>
         <next probability="10" only="none">9</next>
         <next probability="10" only="none">11</next>
-        <action>none</action>
       </sequence>
       <border>
         <next probability="10" only="none">1</next>
@@ -196,8 +197,8 @@
       <sequence repeatfrom="0" repeat="0">
         <frame>2</frame>
         <frame>3</frame>
-        <next probability="10" only="none">1</next>
         <action>none</action>
+        <next probability="10" only="none">1</next>
       </sequence>
     </animation>
     <animation id="7">
@@ -219,8 +220,8 @@
       <sequence repeatfrom="0" repeat="20">
         <frame>13</frame>
         <frame>12</frame>
-        <next probability="10" only="none">7</next>
         <action>none</action>
+        <next probability="10" only="none">7</next>
       </sequence>
       <border>
         <next probability="10" only="none">1</next>
@@ -247,11 +248,11 @@
         <frame>5</frame>
         <frame>6</frame>
         <frame>7</frame>
+        <action>none</action>
         <next probability="50" only="none">8</next>
         <next probability="50" only="none">1</next>
         <next probability="10" only="none">3</next>
         <next probability="10" only="none">4</next>
-        <action>none</action>
       </sequence>
       <border>
         <next probability="10" only="none">1</next>
@@ -278,11 +279,11 @@
         <frame>9</frame>
         <frame>10</frame>
         <frame>11</frame>
+        <action>none</action>
         <next probability="50" only="none">9</next>
         <next probability="50" only="none">1</next>
         <next probability="10" only="none">3</next>
         <next probability="10" only="none">5</next>
-        <action>none</action>
       </sequence>
       <border>
         <next probability="10" only="none">1</next>
@@ -309,11 +310,11 @@
         <frame>5</frame>
         <frame>6</frame>
         <frame>7</frame>
+        <action>none</action>
         <next probability="50" only="none">10</next>
         <next probability="50" only="none">1</next>
         <next probability="10" only="none">4</next>
         <next probability="10" only="none">2</next>
-        <action>none</action>
       </sequence>
       <border>
         <next probability="10" only="none">1</next>
@@ -340,11 +341,11 @@
         <frame>1</frame>
         <frame>2</frame>
         <frame>3</frame>
+        <action>none</action>
         <next probability="50" only="none">11</next>
         <next probability="50" only="none">1</next>
         <next probability="10" only="none">2</next>
         <next probability="10" only="none">5</next>
-        <action>none</action>
       </sequence>
       <border>
         <next probability="10" only="none">1</next>
@@ -390,8 +391,8 @@
       </end>
       <sequence repeatfrom="0" repeat="0">
         <frame>6</frame>
-        <next probability="10" only="none">1</next>
         <action>none</action>
+        <next probability="10" only="none">1</next>
       </sequence>
     </animation>
   </animations>

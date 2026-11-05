@@ -238,7 +238,7 @@ namespace PetEditor
                     if(XmlTools.GetXmlSpawnNode(j) == null)
                     {
                         node.Id = j;
-                        node.Next = new XmlData.NextNode();
+                        node.Next = 1;
                         node.Probability = 10;
                         node.X = "";
                         node.Y = "";

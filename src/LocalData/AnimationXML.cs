@@ -4,6 +4,7 @@ using System.ComponentModel;
 using System.Diagnostics;
 using System.IO;
 using System.Text;
+using System.Xml.Schema;
 using System.Xml.Serialization;
 
 namespace XmlData
@@ -15,10 +16,12 @@ namespace XmlData
     [XmlRoot("animations", Namespace = "https://esheep.petrucci.ch/", IsNullable = false)]
     public class RootNode
     {
-        /// <summary>
-        /// Main informations about the animation XML. 
-        /// </summary>
-        [XmlElement("header")]
+		[XmlAttribute(AttributeName = "schemaLocation", Namespace = XmlSchema.InstanceNamespace)]
+		public string SchemaLocation = "https://esheep.petrucci.ch/ https://adrianotiger.github.io/desktopPet/Resources/animations.xsd";
+		/// <summary>
+		/// Main informations about the animation XML. 
+		/// </summary>
+		[XmlElement("header")]
         public HeaderNode Header;
         /// <summary>
         /// Information about the sprite image.
@@ -196,11 +199,11 @@ namespace XmlData
         /// </summary>
         [XmlElement("y")]
         public string Y;
-        /// <summary>
-        ///  ID of the next animation.
-        /// </summary>
-        [XmlElement("next")]
-        public NextNode Next;
+		/// <summary>
+		///  ID of the next animation. This next is not a node (no probability) but a simple integer. The next animation will be executed once the spawn is over.
+		/// </summary>
+		[XmlElement("next")]
+        public int Next;
     }
 
     /// <summary>
@@ -356,15 +359,15 @@ namespace XmlData
         [XmlElement("frame")]
         public int[] Frame;
         /// <summary>
-        ///  The next animation, once the sequence is over.
-        /// </summary>
-        [XmlElement("next")]
-        public NextNode[] Next;
-        /// <summary>
         ///  Action to execute if this animation is over.
         /// </summary>
         [XmlElement("action")]
         public string Action;
+        /// <summary>
+        ///  The next animation, once the sequence is over.
+        /// </summary>
+        [XmlElement("next")]
+        public NextNode[] Next;
     }
 
     /// <summary>

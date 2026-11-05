@@ -323,7 +323,7 @@ namespace PetEditor
 
             for (var j = 0; j < comboBox1.Items.Count; j++)
             {
-                if (node.Next.Value == ((XmlNodeCombo)comboBox1.Items[j]).Id)
+                if (node.Next == ((XmlNodeCombo)comboBox1.Items[j]).Id)
                 {
                     comboBox1.SelectedIndex = j;
                     break;
@@ -335,11 +335,11 @@ namespace PetEditor
         private XmlData.SpawnNode FillNodeFromSpawnForm()
         {
             XmlData.SpawnNode node = new XmlData.SpawnNode();
-            node.Next = new XmlData.NextNode();
+            node.Next = 1;
 
             node.Id = int.Parse(tabPage3.Tag.ToString());
             if(comboBox1.SelectedItem != null)
-                node.Next.Value = ((XmlNodeCombo)comboBox1.SelectedItem).Id;
+                node.Next = ((XmlNodeCombo)comboBox1.SelectedItem).Id;
             node.Probability = (int)numericUpDown1.Value;
             node.X = richTextBox1.Text;
             node.Y = richTextBox2.Text;

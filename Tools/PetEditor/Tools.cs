@@ -102,7 +102,7 @@ namespace PetEditor
                 if (xmlSettings == null)
                 {
                     xmlSettings = new XmlReaderSettings();
-                    xmlSettings.Schemas.Add("https://esheep.petrucci.ch/", "https://raw.githubusercontent.com/Adrianotiger/desktopPet/master/Resources/animations.xsd");
+                    xmlSettings.Schemas.Add("https://esheep.petrucci.ch/", "https://adrianotiger.github.io/desktopPet/Resources/animations.xsd");
                     xmlSettings.ValidationFlags =
                         XmlSchemaValidationFlags.ProcessIdentityConstraints |
                         XmlSchemaValidationFlags.ProcessInlineSchema |
@@ -632,11 +632,11 @@ namespace PetEditor
                 {
                     listView2.Items.Add("SPAWN " + spawn.Id).SubItems.Add("spawn Y is not valid");
                 }
-                if (!XmlTools.GetAnimationsId().Contains(spawn.Next.Value))
+                if (!XmlTools.GetAnimationsId().Contains(spawn.Next))
                 {
-                    listView2.Items.Add("SPAWN " + spawn.Id).SubItems.Add("There is no animation with id " + spawn.Next.Value);
+                    listView2.Items.Add("SPAWN " + spawn.Id).SubItems.Add("There is no animation with id " + spawn.Next);
                 }
-                animationLinkTo[spawn.Next.Value]++;
+                animationLinkTo[spawn.Next]++;
                 spawnIds.Add(spawn.Id);
             }
             Thread.Sleep(300);

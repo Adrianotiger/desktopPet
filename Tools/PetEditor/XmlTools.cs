@@ -9,6 +9,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Xml.Schema;
 using System.Xml.Serialization;
 
 namespace PetEditor
@@ -43,7 +44,12 @@ namespace PetEditor
                     Program.AddLog("Old format (http) found as namespace, replacing it with https.", "LOAD FILE", Program.LOG_TYPE.WARNING, null);
                     AnimationXMLString = AnimationXMLString.Replace("http://esheep.petrucci.ch", "https://esheep.petrucci.ch");
                 }
-            }
+				if (AnimationXMLString.IndexOf("raw.githubusercontent.com") > 0)
+				{
+					Program.AddLog("Old link (raw.githubusercontent.com) found as namespace, replacing it with github.io.", "LOAD FILE", Program.LOG_TYPE.WARNING, null);
+					AnimationXMLString = AnimationXMLString.Replace("https://raw.githubusercontent.com/Adrianotiger/desktopPet/master/Resources/animations.xsd", "https://adrianotiger.github.io/desktopPet/Resources/animations.xsd");
+				}
+			}
             bool bError = false;
             // Construct an instance of the XmlSerializer with the type
             // of object that is being deserialized.
@@ -121,9 +127,7 @@ namespace PetEditor
             // set some default values:
             var ns = new XmlSerializerNamespaces();
             ns.Add("", "https://esheep.petrucci.ch/");
-            ns.Add("xsi", "http://www.w3.org/2001/XMLSchema-instance");
-            ns.Add("xsd", "https://esheep.petrucci.ch/ https://raw.githubusercontent.com/Adrianotiger/desktopPet/master/Resources/animations.xsd");
-            ns.Add("schemaLocation", "https://esheep.petrucci.ch/ https://raw.githubusercontent.com/Adrianotiger/desktopPet/master/Resources/animations.xsd");
+            ns.Add("xsi", XmlSchema.InstanceNamespace);
 
             mySerializer.Serialize(writer, Program.AnimationXML, ns);
 
@@ -138,18 +142,18 @@ namespace PetEditor
             sXml = sXml.Replace("</png>", "]]></png>");
 
             return sXml;
-            /*
+			/*
             var x = Program.AnimationXML;
-            string r = "<?xml version='1.0'?><animations xmlns='https://esheep.petrucci.ch/' xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance' xsi:schemaLocation='https://esheep.petrucci.ch/ https://raw.githubusercontent.com/Adrianotiger/desktopPet/master/Resources/animations.xsd'>";
+            string r = "<?xml version='1.0'?><animations xmlns='https://esheep.petrucci.ch/' xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance' xsi:schemaLocation='https://esheep.petrucci.ch/ https://adrianotiger.github.io/desktopPet/Resources/animations.xsd'>";
             r += "<header>";
             r += "<author>" + x.Header.Author + "</author>";
             r += "</header>";
             r += "</animations>";
             return r;
             */
-        }
+		}
 
-        static public XmlNodeCombo[] GetAnimationList()
+		static public XmlNodeCombo[] GetAnimationList()
         {
             List<XmlNodeCombo> animations = new List<XmlNodeCombo>();
             if (Program.AnimationXML.Animations != null && Program.AnimationXML.Animations.Animation != null)
@@ -364,7 +368,7 @@ namespace PetEditor
             {
                 foreach (var s in Program.AnimationXML.Spawns.Spawn)
                 {
-                    if (s.Next.Value == original.Id)
+                    if (s.Next == original.Id)
                     {
                         Program.AddLog("Spawn " + s.Id + " is using this ID", "Change Animation ID", Program.LOG_TYPE.WARNING, null);
                     }
