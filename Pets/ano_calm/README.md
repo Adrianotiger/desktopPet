@@ -13,8 +13,8 @@ Created by **Gregor Biswanger** (Microsoft MVP for Azure AI, generative AI consu
 * Standing height about 100 px (104 x 104 px cells).
 
 ## Other versions
-* [Ano Nym (Active)](https://github.com/Adrianotiger/desktopPet/tree/master/Pets/ano) - same behaviour, double the size
-* [Ano Nym XL (Don't distract)](https://github.com/Adrianotiger/desktopPet/tree/master/Pets/ano_xl_calm) - the full version with all gags and the brawl
+* [Ano Nym XL (Don't distract)](https://github.com/Adrianotiger/desktopPet/tree/master/Pets/ano_xl_calm) - same behaviour, double the size
+* [Ano Nym (Active)](https://github.com/Adrianotiger/desktopPet/tree/master/Pets/ano) - the full version with all gags and the brawl
 
 ## My Coding Zone
 * Who is Ano? [my-coding-zone.de/pages/wer-ist-eigentlich-ano](https://www.my-coding-zone.de/pages/wer-ist-eigentlich-ano)
