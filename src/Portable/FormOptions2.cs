@@ -907,7 +907,7 @@ namespace DesktopPet
 		/// <summary>
 		/// Base path to the pets
 		/// </summary>
-		public static string BaseGitUrl = "https://raw.githubusercontent.com/Adrianotiger/desktopPet/master/Pets/";
+		public static string BaseGitUrl = "https://adrianotiger.github.io/desktopPet/Pets/"; // WRONG PATH! >> "https://raw.githubusercontent.com/Adrianotiger/desktopPet/master/Pets/";
 		/// <summary>
 		/// Local temporary path, to store the github files.
 		/// </summary>

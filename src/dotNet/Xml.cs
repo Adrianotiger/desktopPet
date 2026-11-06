@@ -346,7 +346,7 @@ namespace DesktopPet
 
                     ani.Start.X = GetXMLCompute(node.X, "spawn " + node.Id + ": node.X");
                     ani.Start.Y = GetXMLCompute(node.Y, "spawn " + node.Id + ": node.X");
-                    ani.Next = node.Next.Value;
+                    ani.Next = node.Next;
 
                     animations.SaveSpawn(ani, node.Id);
                 }

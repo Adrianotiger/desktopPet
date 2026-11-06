@@ -140,8 +140,10 @@ namespace PetEditor
             sXml = sXml.Replace("</icon>", "]]></icon>");
             sXml = sXml.Replace("<png>", "<png><![CDATA[");
             sXml = sXml.Replace("</png>", "]]></png>");
+			sXml = sXml.Replace("<base64>", "<base64><![CDATA[");
+			sXml = sXml.Replace("</base64>", "]]></base64>");
 
-            return sXml;
+			return sXml;
 			/*
             var x = Program.AnimationXML;
             string r = "<?xml version='1.0'?><animations xmlns='https://esheep.petrucci.ch/' xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance' xsi:schemaLocation='https://esheep.petrucci.ch/ https://adrianotiger.github.io/desktopPet/Resources/animations.xsd'>";
