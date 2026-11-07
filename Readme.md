@@ -3,6 +3,9 @@
 Can you remember eSheep, the lovely desktop sheep? <img src='src/Images/esheep.png' />  
 **If you had a lot of them on the desktop... welcome to this page!**  
 
+<a href='https://github.com/Adrianotiger/desktopPet/releases/latest'><img width="100%" alt="image" src="https://github.com/user-attachments/assets/1cc40043-f8b8-4794-b8ee-be20e0ed75e1" /></a>
+
+
 This project gives you the possibility to add a pet to your desktop.  
 [![eSheep for 64bit systems](https://img.youtube.com/vi/xN90p16tKGE/0.jpg)](https://www.youtube.com/watch?v=xN90p16tKGE) 
 
@@ -22,8 +25,8 @@ Compiled with .NET4.7, this application is just an exe and works on every 64-bit
 
 | OS |  Windows 7/8/9/10/11 |
 |---|---|
-| Version |  1.6.0 | 
-| Last update | october 2026 | 
+| Version |  2.0.0 | 
+| Last update | november 2026 | 
 | Link | <a href='https://github.com/Adrianotiger/desktopPet/releases/latest'>Download Page<br><img src='https://img.shields.io/github/downloads/adrianotiger/desktopPet/total.svg' style='vertical-align:middle'></a> |
 
 ### SignPath Foundation (pending)
@@ -41,7 +44,7 @@ Version 1.6.0 (store version: 2.6.**150**) is a new version and removed all UA a
 |---|---|
 | Version |  2.6.160 (1.6.0) | 
 | Last update | october 2026 | 
-| Link | <a href='https://www.microsoft.com/store/apps/9MX2V0TQT6RM'><img width="128" height="45" alt="image" src="https://github.com/user-attachments/assets/6c9aac7d-5830-4695-a954-647e116c7aa6" /><br><img width="108" height="20" alt="image" src="https://github.com/user-attachments/assets/7eadf384-1277-4d3d-99c4-706756652bd3" /></a> |
+| Link | <a href='https://www.microsoft.com/store/apps/9MX2V0TQT6RM'><img width="128" height="45" alt="image" src="https://github.com/user-attachments/assets/6c9aac7d-5830-4695-a954-647e116c7aa6" /><br><img alt="store downloads" src="https://github.com/user-attachments/assets/ef15cc48-781b-4c9a-9eef-2436287c540a" /></a> |
 
 ## Android (Store)
 Just a simple port, based on Version 1.4.0 for Android and with a nostalgic Windows95 look.  
@@ -77,6 +80,9 @@ This version is really limited, but is able to show and animate every Pet from t
 
 
 # Tools
+
+<a href="https://adrianotiger.github.io/desktopPet-Editor/"><img width="947" height="525" alt="image" src="https://github.com/user-attachments/assets/f62bf4cb-4da0-46fe-b6b2-0c4a69d238d7" /></a>  
+
 
 Some tools, used to create new pet animations and spritesheets:
 
