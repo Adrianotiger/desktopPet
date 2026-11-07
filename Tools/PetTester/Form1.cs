@@ -390,7 +390,7 @@ namespace DesktopPet
                             errors++;
                         }
                         if (s.Probability > 0)
-                            aniExecution.Add(s.Next.Value);
+                            aniExecution.Add(s.Next);
                         spawns++;
                     }
 
