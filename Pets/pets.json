@@ -1,5 +1,25 @@
 {
   "pets" : [
+    {
+      "folder" : "ano",
+      "author" : "Gregor Biswanger",
+      "lastupdate" : "2026-11-06"
+    },
+    {
+      "folder" : "ano_xl",
+      "author" : "Gregor Biswanger",
+      "lastupdate" : "2026-11-06"
+    },
+    {
+      "folder" : "ano_calm",
+      "author" : "Gregor Biswanger",
+      "lastupdate" : "2026-11-06"
+    },
+    {
+      "folder" : "ano_xl_calm",
+      "author" : "Gregor Biswanger",
+      "lastupdate" : "2026-11-06"
+    },
 	{
       "folder" : "bbunny",
       "author" : "Adriano",
