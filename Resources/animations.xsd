@@ -5,7 +5,7 @@
     targetNamespace="https://esheep.petrucci.ch/"
     xmlns="https://esheep.petrucci.ch/"
     xmlns:xsd="http://www.w3.org/2001/XMLSchema"
-    version="2026.11.06">
+    version="2026.11.08">
 
   <xsd:annotation>
     <xsd:documentation>
@@ -65,9 +65,8 @@
               <xsd:element name='icon' type='xsd:string' minOccurs='1' maxOccurs='1'>
                 <xsd:annotation>
                   <xsd:documentation>
-                      Icon as CDATA base64 encoded (ICO format, shown in the taskbar and tray), 
-                      see https://adrianotiger.github.io/desktopPet-Editor/ to convert a PNG to ICO or get a base64 string.
-                      The icon has to be a 48x48 pixel icon.
+                      Icon as CDATA base64 encoded (ICO format: image/x-icon, shown in the taskbar and tray), 
+                      The icon has to be a 48x48 windows-valid pixel icon. The editor will convert it automatically.
                   </xsd:documentation>
                 </xsd:annotation>
               </xsd:element>
@@ -83,27 +82,35 @@
             <xsd:all>
               <xsd:element name='tilesx' type='xsd:integer' minOccurs='1' maxOccurs='1'>
                 <xsd:annotation>
-                  <xsd:documentation>How much images are on the x axis (tiles) of the sprite sheet.</xsd:documentation>
+                  <xsd:documentation>Quanity of images on the x axis (tiles) of the sprite sheet.</xsd:documentation>
                 </xsd:annotation>
               </xsd:element>
               <xsd:element name='tilesy' type='xsd:integer' minOccurs='1' maxOccurs='1'>
                 <xsd:annotation>
-                  <xsd:documentation>How much images are on the y axis (tiles) of the sprite sheet.</xsd:documentation>
+                  <xsd:documentation>Quantity of images on the y axis (tiles) of the sprite sheet.</xsd:documentation>
                 </xsd:annotation>
               </xsd:element>
               <xsd:element name='skins' type='xsd:integer' minOccurs='0' maxOccurs='1' default='0'>
                 <xsd:annotation>
-                  <xsd:documentation>How many different skins are present in the sprite sheet (optional). If not set, or value is 0, only 1 skin is used.</xsd:documentation>
+                  <xsd:documentation>
+                      How many different skins are present in the sprite sheet (optional). 
+                      If not set, or value is 0, only 1 skin is used. The spritesheet will be divided in this quantity.
+                      In the editor, you need to make all animations using skin 1. The others will be used randomly.
+                  </xsd:documentation>
                 </xsd:annotation>
               </xsd:element>
               <xsd:element name='png' type='xsd:string' minOccurs='1' maxOccurs='1'>
                 <xsd:annotation>
-                  <xsd:documentation>Sprite sheet as CDATA base64 encoded, see https://adrianotiger.github.io/desktopPet-Editor/ to convert it to a base64 string.</xsd:documentation>
+                  <xsd:documentation>Sprite sheet as CDATA base64 encoded. The editor converts it to a base64 string.</xsd:documentation>
                 </xsd:annotation>
               </xsd:element>
               <xsd:element name='transparency' type='xsd:string' minOccurs='1' maxOccurs='1'>
                 <xsd:annotation>
-                  <xsd:documentation>Transparency: color key used to show transparency. Default: Magenta</xsd:documentation>
+                  <xsd:documentation>
+                      Transparency: color key used to show transparency. Default: Magenta
+                      Windows can translate a single color in a .net application window to alpha. 
+                      The color set here is used as form-background-color in Windows.
+                  </xsd:documentation>
                 </xsd:annotation>
               </xsd:element>
             </xsd:all>
