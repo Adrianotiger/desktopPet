@@ -58,10 +58,11 @@ namespace DesktopPet
 		/// List of pets available to download from the web. This is updated every 24 hours, and stored in a temporary folder.
 		/// </summary>
 		public OptionsPets WebPets;
+		private string infoText = "Options";
 		/// <summary>
 		/// Infotext used to show some debug info or status on the status bar.
 		/// </summary>
-		public string InfoText = "Options";
+		public string InfoText { get { return infoText; } set { var different = (infoText != value);  infoText = value; if(different) this.Invalidate(new Rectangle(0,this.Height-25,this.Width,25)); } }
 		/// <summary>
 		/// A yellow filter to apply to the highlighted icons (like windows 95)
 		/// </summary>
@@ -814,11 +815,9 @@ namespace DesktopPet
 			catch(Exception ex)
 			{
 				InfoText = ex.Message;
-				Invalidate();
 			}
 
 			InfoText = WebPets.pets.Count + " pets available";
-			Invalidate();
 			extendedPanel.Invalidate();
 		}
 
@@ -855,7 +854,6 @@ namespace DesktopPet
 			{
 				InfoText = "Error downloading " + name + ": " + ex.Message;
 			}
-			Invalidate();
 		}
 
 		/// <summary>
@@ -894,7 +892,6 @@ namespace DesktopPet
 			{
 				InfoText = "Error downloading " + name + ": " + ex.Message;
 			}
-			Invalidate();
 		}
 	}
 

@@ -71,14 +71,14 @@ namespace DesktopPet.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to &lt;?xml version=&quot;1.0&quot;?&gt;
-        ///&lt;animations xmlns=&quot;https://esheep.petrucci.ch/&quot; xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot; xsi:schemaLocation=&quot;https://esheep.petrucci.ch/ https://raw.githubusercontent.com/Adrianotiger/desktopPet/master/Resources/animations.xsd&quot;&gt;
-        ///&lt;header&gt;
-        ///&lt;author&gt;Adriano&lt;/author&gt;
-        ///&lt;title&gt;eSheep 64bit&lt;/title&gt;
-        ///&lt;petname&gt;eSheep&lt;/petname&gt;
-        ///&lt;version&gt;1.8&lt;/version&gt;
-        ///&lt;info&gt;Open source project for the lovely eSheep.[br] For more info, visit my webpage [link:https://esheep.petrucci.ch] [br]Image r [rest of string was truncated]&quot;;.
+        ///   Looks up a localized string similar to &lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot;?&gt;
+        ///&lt;animations xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot; xsi:schemaLocation=&quot;https://esheep.petrucci.ch/ https://adrianotiger.github.io/desktopPet/Resources/animations.xsd&quot; xmlns=&quot;https://esheep.petrucci.ch/&quot;&gt;
+        ///  &lt;header&gt;
+        ///    &lt;author&gt;Adriano&lt;/author&gt;
+        ///    &lt;title&gt;eSheep 64bit&lt;/title&gt;
+        ///    &lt;petname&gt;Poe&lt;/petname&gt;
+        ///    &lt;version&gt;1.9&lt;/version&gt;
+        ///    &lt;info&gt;Open source project for the lovely eSheep.[br] For more info, visit my webpage [link:https://esheep.petrucci.ch [rest of string was truncated]&quot;;.
         /// </summary>
         internal static string animations {
             get {
@@ -95,16 +95,35 @@ namespace DesktopPet.Properties {
         ///    xmlns=&quot;https://esheep.petrucci.ch/&quot;
         ///    xmlns:xsd=&quot;http://www.w3.org/2001/XMLSchema&quot;&gt;
         ///
-        ///  &lt;xsd:element name=&apos;animations&apos;&gt;
-        ///    &lt;xsd:complexType&gt;
-        ///      &lt;xsd:sequence&gt;
-        ///        &lt;xsd:element name=&apos;header&apos; minOccurs=&apos;1&apos; maxOccurs=&apos;1&apos;&gt;
-        ///          &lt;xsd:annotation&gt;
-        ///            &lt;xsd:documentation&gt;Main informations about this Pet.&lt; [rest of string was truncated]&quot;;.
+        ///  &lt;xsd:annotation&gt;
+        ///    &lt;xsd:documentation&gt;
+        ///      Schema of the animation file (animations.xml) of a desktop pet.
+        ///      The file is read by the application (XmlData.RootNode, Xml.cs) and by the Pet Editor (XmlTools.cs).
+        ///      Structure [rest of string was truncated]&quot;;.
         /// </summary>
         internal static string animations1 {
             get {
                 return ResourceManager.GetString("animations1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap audiooff {
+            get {
+                object obj = ResourceManager.GetObject("audiooff", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap audioon {
+            get {
+                object obj = ResourceManager.GetObject("audioon", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
             }
         }
         

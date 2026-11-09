@@ -99,6 +99,18 @@ namespace DesktopPet
             item.Image = installForm.Icon.ToBitmap();
             menu.Items.Add(item);
 #endif
+			// Item: Audio.
+			item = new ToolStripMenuItem
+			{
+				Text = "&Play FX"
+			};
+			item.Click += new EventHandler(Audio_Click);
+			item.Image = Resources.audioon;
+			menu.Items.Add(item);
+
+			// Item: Separator.
+			sep = new ToolStripSeparator();
+			menu.Items.Add(sep);
 
 			// Item: About.
 			item = new ToolStripMenuItem
@@ -208,12 +220,36 @@ namespace DesktopPet
             }
         }
 
-        /// <summary>
-        /// Handles the Click event of the Help control. Open a dialog if no other dialog is still opened.
-        /// </summary>
-        /// <param name="sender">The source of the event.</param>
-        /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
-        void Help_Click(object sender, EventArgs e)
+		/// <summary>
+		/// Handles the Click event of the Audio control. It will mute the audio until deactivated or until the next start.
+		/// </summary>
+		/// <param name="sender">The source of the event.</param>
+		/// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
+		void Audio_Click(object sender, EventArgs e)
+		{
+            var item = sender as ToolStripMenuItem;
+            if(item != null)
+            {
+                if(Program.MyData.Mute)
+                {
+					Program.MyData.Mute = false;
+                    item.Image = Resources.audioon;
+
+				}
+                else
+                {
+					Program.MyData.Mute = true;
+					item.Image = Resources.audiooff;
+				}
+            }
+		}
+
+		/// <summary>
+		/// Handles the Click event of the Help control. Open a dialog if no other dialog is still opened.
+		/// </summary>
+		/// <param name="sender">The source of the event.</param>
+		/// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
+		void Help_Click(object sender, EventArgs e)
         {
             FormHelp help = new FormHelp();
             help.Show();
