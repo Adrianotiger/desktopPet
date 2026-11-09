@@ -21,7 +21,7 @@ Here a list of all screen mates that can be downloaded from your application.
 
 <ul>
 {% for page in site.pages %}
-  {% if page.name == "README.md" %}
+  {% if page.name == "README.md" and page.path contains "Pets/" %}
     <li>
       <a href="{{ site.url }}{{ page.url }}">
         <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8/x8AAwMCAO+ip1sAAAAASUVORK5CYII=" 

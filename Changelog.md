@@ -1,5 +1,18 @@
 # Changelog
 
+<h3>Version 2.0.0<sup>08 nov 2026</sup>:</h3>
+
+A major update focused on extensibility, customization, code quality and long-term maintainability.
+
+- Added support for Pet Skins.
+- Pet interaction and window collision detection.
+- Pets can now have multiple visual appearances while preserving existing animations and behavior.
+- New infrastructure for future pet customization.
+- Improved animation transition handling.
+- Fixed several smooth-motion related issues.
+- Fixed animation transition inconsistencies.
+- Working on a new online editor
+
 <h3>Version 1.6.0<sup>09 oct 2026</sup>:</h3> 
 
 - Revert smooth movements (still available under options)

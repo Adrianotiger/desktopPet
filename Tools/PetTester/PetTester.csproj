@@ -37,10 +37,13 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="LocalData, Version=1.0.0.0, Culture=neutral, processorArchitecture=AMD64">
-      <HintPath>bin\Debug\LocalData.dll</HintPath>
+      <HintPath>..\..\build\LocalData\bin\Debug\netstandard2.0\LocalData.dll</HintPath>
     </Reference>
     <Reference Include="NAudio, Version=1.8.5.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\NAudio.1.8.5\lib\net35\NAudio.dll</HintPath>
+    </Reference>
+    <Reference Include="Newtonsoft.Json">
+      <HintPath>C:\Users\adria\source\repos\Adrianotiger\desktopPet\src\Portable\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -55,7 +58,7 @@
     <Reference Include="System.Xml" />
     <Reference Include="Windows, Version=255.255.255.255, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>C:\Program Files (x86)\Windows Kits\10\UnionMetadata\10.0.17763.0\Windows.winmd</HintPath>
+      <HintPath>C:\Program Files (x86)\Windows Kits\10\UnionMetadata\10.0.26100.0\Windows.winmd</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
