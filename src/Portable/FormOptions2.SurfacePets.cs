@@ -57,15 +57,38 @@ namespace DesktopPet
 			AutoScrollMinSize = new Size(10, 200);
 		}
 
+		void DrawWords(string text, Graphics g, Font font, ref int x, ref int y, int maxX, int minX=25)
+		{
+			string[] words = text.Split(' ');
+
+			for (int i = 0; i < words.Length; i++)
+			{
+				if (words[i].Length == 0) continue;
+
+				var subr = g.MeasureString(words[i], fontText);
+				if (x + subr.Width > maxX)
+				{
+					x = minX;
+					y += (int)subr.Height + 2;
+				}
+				g.DrawString(words[i], fontText, Brushes.Black, x, y);
+				x += (int)(Math.Floor(subr.Width));
+			}
+		}
+
 		private int OnPaintReadme(Graphics g)
 		{
+			int startPetX = 25;
 			int petx = 25;
 			int pety = -VerticalScroll.Value;
+			int rightBorder = 50;
 
 			var regex = new Regex(@"(\*\*(.*?)\*\*)|(\*(.*?)\*)|(\[(.*?)\]\((.*?)\))|(https?://[^\s]+)");
 
 			links = new List<Links>();
 
+			// Use this for a debug-mode when you want to see, word for word, how the text is drawn.
+			//Graphics g = this.CreateGraphics();
 			g.Clear(Color.White);
 
 			// Controls
@@ -93,41 +116,69 @@ namespace DesktopPet
 
 				if (line.StartsWith("###"))
 				{
-					g.DrawString(line.Replace("###", ""), new Font(fontText.FontFamily, 15, FontStyle.Bold), Brushes.Black, rect);
+					g.DrawString(line.Replace("###", ""), new Font(fontText.FontFamily, 15, FontStyle.Bold), Brushes.Black, petx, pety);
 					pety += (int)g.MeasureString(line.Replace("###", ""), new Font(fontText.FontFamily, 15, FontStyle.Bold), sizeF).Height + 10;
 				}
 				else if (line.StartsWith("##"))
 				{
-					g.DrawString(line.Replace("##", ""), new Font(fontText.FontFamily, 18, FontStyle.Bold), Brushes.Black, rect);
+					pety += 10;
+					g.DrawString(line.Replace("##", ""), new Font(fontText.FontFamily, 18, FontStyle.Bold), Brushes.Black, petx, pety);
 					pety += (int)g.MeasureString(line.Replace("##", ""), new Font(fontText.FontFamily, 18, FontStyle.Bold), sizeF).Height + 15;
-					g.DrawLine(new Pen(Brushes.Gray, 1), 20, pety - 8, Width / 2, pety - 8);
+					g.DrawLine(new Pen(Brushes.Gray, 1), 20, pety - 11, Width / 2, pety - 11);
 				}
 				else if (line.StartsWith("#"))
 				{
-					g.DrawString(line.Replace("#", ""), new Font(fontText.FontFamily, 24, FontStyle.Bold), Brushes.Black, rect);
+					g.DrawString(line.Replace("#", ""), new Font(fontText.FontFamily, 24, FontStyle.Bold), Brushes.Black, petx, pety);
 					pety += (int)g.MeasureString(line.Replace("#", ""), new Font(fontText.FontFamily, 24, FontStyle.Bold), sizeF).Height + 15;
 					g.DrawLine(new Pen(Brushes.Gray, 1), 20, pety - 8, Width - 40, pety - 8);
 				}
-				else if (line.StartsWith("- ") || line.StartsWith("* "))
-				{
-					g.DrawString(line.Substring(2), fontText, Brushes.Black, petx + 16, pety);
-					g.FillEllipse(Brushes.Black, new Rectangle(petx, pety + 5, 8, 8));
-					pety += (int)g.MeasureString(line.Substring(2), fontText, sizeF).Height + 5;
-				}
 				else
 				{
-					var matches = regex.Matches(line);
 					int start = 0;
+					int startPetX2 = startPetX;
+
+					//if (line.StartsWith("- ") || line.StartsWith("* "))
+					var matchli = Regex.Match(line, @"^\s*([*-]|(\d+)\.)\s+(.+)$");
+					if (matchli.Success)
+					{
+						if (line[0] == ' ')
+						{
+							if (line[0] == '-' || line[0] == '*')
+							{
+								g.DrawEllipse(Pens.Black, new Rectangle(petx + 10, pety + 5, 8, 8));
+							}
+							else
+							{
+								g.DrawString(matchli.Groups[1].Value, new Font(fontText, FontStyle.Bold), Brushes.Black, startPetX + 15, pety);
+							}
+							startPetX2 += 15;
+						}
+						else
+						{
+							if (line[0] == '-' || line[0] == '*')
+							{
+								g.FillEllipse(Brushes.Black, new Rectangle(petx, pety + 5, 8, 8));
+							}
+							else
+							{
+								g.DrawString(matchli.Groups[1].Value, new Font(fontText, FontStyle.Bold), Brushes.Black, startPetX + 5, pety);
+							}
+						}
+						int charsQty = line.Length - matchli.Groups[3].Length;
+						line = line.Substring(charsQty);
+						startPetX2 += 20;
+						petx = startPetX2;
+					}
+
+					var matches = regex.Matches(line);
+
 					foreach (Match match in matches)
 					{
 						if (match.Index > start)
 						{
-							var s = g.MeasureString(line.Substring(0, match.Index - start), fontText, sizeF);
-							if (petx + s.Width > Width) { petx = 25; pety += (int)s.Height; rect = new RectangleF(petx, pety, Width - 30, 100); }
-							g.DrawString(line.Substring(0, match.Index - start), fontText, Brushes.Black, rect);
-
-							if (s.Height > 25 || s.Width > Width - 50) { petx = 25; pety += (int)s.Height; }
-							else petx += (int)s.Width;
+							// split normal string to words
+							var substr = line.Substring(start, match.Index - start);
+							DrawWords(substr, g, fontText, ref petx, ref pety, Width - rightBorder, startPetX2);
 							start = match.Index + match.Length;
 						}
 						else if(match.Index == start)
@@ -174,27 +225,15 @@ namespace DesktopPet
 							petx += (int)s.Width;
 						}
 					}
+					// Draw the rest of the line or the entire line when no special commands was found
 					if (start < line.Length)
 					{
-						var s = g.MeasureString(line.Substring(start), fontText);
-						if (petx + s.Width > Width)
-						{
-							petx = 25;
-							if (start > 20) pety += 20;
-							rect = new RectangleF(petx, pety, Width - 30, 100);
+						// split normal string to words
+						var substr = line.Substring(start);
 
-							g.DrawString(line.Substring(start), fontText, Brushes.Black, rect);
-							pety += (int)(s.Height * Math.Round(s.Width / Width));
-
-						}
-						else
-						{
-							g.DrawString(line.Substring(start), fontText, Brushes.Black, petx, pety);
-							petx += (int)s.Width;
-						}
+						DrawWords(substr, g, fontText, ref petx, ref pety, Width - rightBorder, startPetX2);
 					}
 
-					//g.DrawString(line, fontText, Brushes.Black, rect);
 					pety += (int)g.MeasureString(line, fontText).Height + 5;
 					petx = 25;
 				}
@@ -503,6 +542,7 @@ namespace DesktopPet
 					{
 						hasLink = true;
 						Cursor = Cursors.Hand;
+						form.InfoText = l.url;
 					}
 				});
 				buttons.ForEach(b =>

@@ -20,6 +20,9 @@ namespace DesktopPet
         Configuration AppConfiguration = null;
         KeyValueConfigurationCollection AppSettings = null;
 		readonly bool isInstalled = false;
+        // Application can be muted over the tray icon.
+        // This flag can mute or unmute all played sounds.
+        public bool Mute { get; set; } = false;
 
         /// <summary>
         /// Keys for valid Application Settings
@@ -114,7 +117,13 @@ namespace DesktopPet
 		/// <param name="volume">Value from 0 to 1.0</param>
 		public void SetVolume(double volume)
         {
-            int iVolume = (int)(volume * 100);
+            int iVolume = 0;
+			// Old value was from 0 to 1.0. New is from 0 to 100. If the value is greater than 1.0, it is already in the new format.
+			if (volume <= 1.0)
+                iVolume = (int)(volume * 100);
+            else
+                iVolume = (int)(Math.Min(volume, 100));
+
             if (iVolume.ToString() != AppSettings[SettingName.Volume].Value)
             {
                 Properties.Settings.Default.Volume = iVolume;
@@ -126,9 +135,12 @@ namespace DesktopPet
 		/// <summary>
 		/// Get the FX-Sound volume (0.0 - 1.0)
 		/// </summary>
+		/// <param name="asSetting">if true, the value is returned as stored in the settings, if false, the value is returned for the application (if mute, returns 0)</param>
 		/// <returns>Value from 0 for no sound to 1.0 for full sound</returns>
-		public float GetVolume()
+		public float GetVolume(bool asSetting=false)
         {
+            if (Mute && !asSetting) return 0;
+
 			int.TryParse(AppSettings[SettingName.Volume].Value, out int iVolume);
 			return (float)(iVolume / 100.0);
         }

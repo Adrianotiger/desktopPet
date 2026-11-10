@@ -12,7 +12,7 @@
       <Value Profile="(Default)" />
     </Setting>
     <Setting Name="Volume" Type="System.Single" Scope="User">
-      <Value Profile="(Default)">0.3</Value>
+      <Value Profile="(Default)">30</Value>
     </Setting>
     <Setting Name="WinForeground" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">False</Value>

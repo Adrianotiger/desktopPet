@@ -95,8 +95,8 @@ namespace DesktopPet
         private void FormOptions_Load(object sender, EventArgs e)
         {
                 // Set up audio values
-            checkBox1.Checked = (Program.MyData.GetVolume() > 0.0);
-			trackBar1.Value = (int)(Program.MyData.GetVolume() * 10);
+            checkBox1.Checked = (Program.MyData.GetVolume(true) > 0.0);
+			trackBar1.Value = (int)(Program.MyData.GetVolume(true) * 10);
             trackBar1.Enabled = checkBox1.Checked;
 			label2.Text = Program.Mainthread.ErrorMessages.AudioErrorMessage;
             if (label2.Text.Length > 1)
@@ -381,7 +381,7 @@ namespace DesktopPet
         private void trackBar1_Scroll(object sender, EventArgs e)
         {
             Program.MyData.SetVolume((float)(trackBar1.Value / 10.0));
-            if(Program.MyData.GetVolume() < 0.1f)
+            if(Program.MyData.GetVolume(true) < 0.01f)
             {
                 trackBar1.Enabled = false;
                 checkBox1.Checked = false;
