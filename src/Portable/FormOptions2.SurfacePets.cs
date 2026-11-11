@@ -414,7 +414,7 @@ namespace DesktopPet
 				allPets = new List<OptionsPetIcon>();
 				// Make copy of list as this is an async call!
 				allPets.AddRange(form.WebPets.pets.ToList().Select(a => new OptionsPetIcon(a)));
-				form.DevPets.ToList().ForEach( dev => allPets.AddRange(dev.pets.Select(a => new OptionsPetIcon(a))) );
+				form.DevPets.ForEach( dev => allPets.AddRange(dev.pets.ToList().Select(a => new OptionsPetIcon(a))) );
 				//List<OptionsPet> pets = form.WebPets.pets;
 			}
 
@@ -429,7 +429,7 @@ namespace DesktopPet
 						petx = 25;
 
 						ControlPaint.DrawBorder(g, new Rectangle(5, pety, Width - 25, 2), Color.LightGray, ButtonBorderStyle.Outset);
-						g.DrawString(path, new Font(fontText, FontStyle.Bold | FontStyle.Underline), Brushes.LightSteelBlue, petx - 20, pety + 5);
+						g.DrawString(petIcon.pet.WebPath.Trim('/'), new Font(fontText, FontStyle.Bold | FontStyle.Underline), Brushes.LightSteelBlue, petx - 20, pety + 5);
 						pety += 35;
 					}
 
