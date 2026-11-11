@@ -147,6 +147,16 @@ namespace DesktopPet
 				Description = "On HD monitors, the pet is really small. \nScale your pet to 1x, 2x or 4x."
 			});
 
+			options.Add(new OptionIcons
+			{
+				Title = "Developer Pet Path",
+				Setting = SettingName.DeveloperPetPath,
+				IsCheckbox = false,
+				ValuesText = new List<string> { Program.MyData.GetStringValue(SettingName.DeveloperPetPath) },
+				Image = Resources.ico_devpath,
+				Description = "Set the path to another pets web-folder. \nThe folder must contain pets.json and the pet animations."
+			});
+
 			selectedOption = options[0];
 			OnMouseDown(new MouseEventArgs(MouseButtons.Left, 1, 0, 0, 0));
 
@@ -299,40 +309,42 @@ namespace DesktopPet
 			{
 				var dialog = new FormOptions2(selectedOption.Title, FormOptions2.WindowType.Dialog);
 				int value = 0;
+				string valueStr = null;
+				// Checkbox
 				if (selectedOption.IsCheckbox)
 				{
 					value =  Program.MyData.GetIntValue(selectedOption.Setting);
 					dialog.AddDialogControl(value > 0);
 				}
-				else if(selectedOption.MaxValue > 0)
+				// int Range (scrollbar)
+				else if (selectedOption.MaxValue > 0)
 				{
 					value = Program.MyData.GetIntValue(selectedOption.Setting);
 					dialog.AddDialogControl(value, selectedOption.MaxValue);
 				}
+				// Listbox (options)
 				else if (selectedOption.Values.Count > 0)
 				{
 					value = Program.MyData.GetIntValue(selectedOption.Setting);
 					dialog.AddDialogControl(value, selectedOption.Values, selectedOption.ValuesText);
 				}
+				// String (text)
+				else if (selectedOption.ValuesText.Count == 1)
+				{
+					valueStr = Program.MyData.GetStringValue(selectedOption.Setting);
+					dialog.AddDialogControl(valueStr);
+				}
+
+
 				if (dialog.ShowDialog() == DialogResult.OK)
 				{
-					int value2 = dialog.GetDialogControl();
-					if(value != value2)
+					if (valueStr != null) // string dialog opened
 					{
-						if (selectedOption.Setting == SettingName.Undefined)
+						string value2 = dialog.GetDialogControlString();
+						if (valueStr != value2)
 						{
-							switch(selectedOption.Title)
-							{
-								case SpecialOptions.RestorePet:
-									form.DialogResult = DialogResult.Retry;
-									form.Close();
-									break;
-							}
-						}
-						else
-						{
-							Program.MyData.SetIntValue(selectedOption.Setting, value2);
-							selectedOption.Value = value2;
+							Program.MyData.SetStringValue(selectedOption.Setting, value2);
+							selectedOption.ValuesText[0] = value2;
 							if (selectedOption.NeedRestart)
 							{
 								Program.RestartApp();
@@ -340,6 +352,36 @@ namespace DesktopPet
 							else
 							{
 								OnMouseDown(new MouseEventArgs(MouseButtons.Left, 1, 0, 0, 0));
+							}
+						}
+					}
+					else
+					{
+						int value2 = dialog.GetDialogControl();
+						if (value != value2)
+						{
+							if (selectedOption.Setting == SettingName.Undefined)
+							{
+								switch (selectedOption.Title)
+								{
+									case SpecialOptions.RestorePet:
+										form.DialogResult = DialogResult.Retry;
+										form.Close();
+										break;
+								}
+							}
+							else
+							{
+								Program.MyData.SetIntValue(selectedOption.Setting, value2);
+								selectedOption.Value = value2;
+								if (selectedOption.NeedRestart)
+								{
+									Program.RestartApp();
+								}
+								else
+								{
+									OnMouseDown(new MouseEventArgs(MouseButtons.Left, 1, 0, 0, 0));
+								}
 							}
 						}
 					}
@@ -384,7 +426,8 @@ namespace DesktopPet
 		/// </summary>
 		public List<int> Values { get; set; } = new List<int>();
 		/// <summary>
-		/// If Option is a combobox, set the possible text/description for each value
+		/// If Option is a combobox, set the possible text/description for each value.
+		/// If Options is a text, set Value to 0 and ValuesText[0] to the text.
 		/// </summary>
 		public List<string> ValuesText { get; set; } = new List<string>();
 		/// <summary>
