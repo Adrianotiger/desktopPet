@@ -189,7 +189,7 @@ namespace PetEditor
                     }
                 }
 
-                if (ani.Border)
+                if (ani.Border && node.Border.Next != null)
                 {
                     foreach (XmlData.NextNode nextNode in node.Border.Next)
                     {
@@ -217,7 +217,7 @@ namespace PetEditor
                     }
                 }
 
-                if (ani.Gravity)
+                if (ani.Gravity && node.Gravity.Next != null)
                 {
                     foreach (XmlData.NextNode nextNode in node.Gravity.Next)
                     {
@@ -249,7 +249,7 @@ namespace PetEditor
             }
 
             // for each spawn
-            if (AnimationXML.Spawns.Spawn != null)
+            if (AnimationXML.Spawns != null && AnimationXML.Spawns.Spawn != null)
             {
                 foreach (XmlData.SpawnNode node in AnimationXML.Spawns.Spawn)
                 {
@@ -266,7 +266,7 @@ namespace PetEditor
             }
 
             // for each child
-            if (AnimationXML.Childs.Child != null)
+            if (AnimationXML.Childs != null && AnimationXML.Childs.Child != null)
             {
                 foreach (XmlData.ChildNode node in AnimationXML.Childs.Child)
                 {
