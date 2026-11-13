@@ -17,6 +17,7 @@ namespace DesktopPet
         private double tossUpdatedAt;
         private bool spritesFlipped;
         private readonly Dictionary<int, Image> flippedSprites = new Dictionary<int, Image>();
+        private readonly Dictionary<int, Image> normalSprites = new Dictionary<int, Image>();
         private Timer followFallback;
         private IntPtr followHook, hookedWindow;
         private WinEventCallback followCallback;
@@ -31,13 +32,14 @@ namespace DesktopPet
 
         private Image GetSprite(int index)
         {
-            if (!spritesFlipped) return imageList1.Images[index];
+            // ImageList.Images[i] allocates a new Bitmap on each call, so cache them and dispose them with the pet.
+            Dictionary<int, Image> cache = spritesFlipped ? flippedSprites : normalSprites;
             Image image;
-            if (!flippedSprites.TryGetValue(index, out image))
+            if (!cache.TryGetValue(index, out image))
             {
                 image = imageList1.Images[index];
-                image.RotateFlip(RotateFlipType.RotateNoneFlipX);
-                flippedSprites.Add(index, image);
+                if (spritesFlipped) image.RotateFlip(RotateFlipType.RotateNoneFlipX);
+                cache.Add(index, image);
             }
             return image;
         }
@@ -209,8 +211,11 @@ namespace DesktopPet
             if (motionTimer != null) SetMotionTimer(false);
             if (followFallback != null) followFallback.Stop();
             if (followHook != IntPtr.Zero) { UnhookWinEvent(followHook); followHook = IntPtr.Zero; }
+            pictureBox1.Image = null;
             foreach (Image image in flippedSprites.Values) image.Dispose();
             flippedSprites.Clear();
+            foreach (Image image in normalSprites.Values) image.Dispose();
+            normalSprites.Clear();
         }
 
         private void DisplaySettingsChanged(object sender, EventArgs e)
