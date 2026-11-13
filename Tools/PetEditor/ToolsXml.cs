@@ -351,6 +351,7 @@ namespace PetEditor
             parsingText = parsingText.Replace("imageY", (parentY).ToString(CultureInfo.InvariantCulture));
             parsingText = parsingText.Replace("random", rand.Next(0, 100).ToString(CultureInfo.InvariantCulture));
             parsingText = parsingText.Replace("randS", iRandomSpawn.ToString(CultureInfo.InvariantCulture));
+            parsingText = parsingText.Replace("scale", "1");
             
             var v = dt.Compute(parsingText, "");
             double dv;
