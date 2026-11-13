@@ -73,6 +73,11 @@ namespace DesktopPet
         readonly ProcessIcon pi;
 
         bool isRealoadingSettings = false;
+
+        /// <summary>
+        /// Hidden control, created on the UI thread, used to marshal calls even when no pet exists.
+        /// </summary>
+        readonly Control uiMarshal;
         
         /// <summary>
         /// Error message for exceptions. It is shown in the options if an error occurs.
@@ -97,6 +102,9 @@ namespace DesktopPet
         public StartUp(ProcessIcon processIcon)
         {
             pi = processIcon;
+
+            uiMarshal = new Control();
+            _ = uiMarshal.Handle;   // force handle creation on the UI thread
                         
                 // Init XML class
             xml = new Xml((int)Math.Pow(2, Program.MyData.GetScale() - 1));
@@ -258,6 +266,7 @@ namespace DesktopPet
                 {
                     sheeps[i].Kill();
                     for (int j = i; j < iSheeps - 1; j++) sheeps[j] = sheeps[j + 1];
+                    sheeps[iSheeps - 1] = null;     // do not keep a stale reference to a removed pet
                     iSheeps--;
                     Application.DoEvents();
                     bSheepRemoved = true;
@@ -322,24 +331,40 @@ namespace DesktopPet
             /// Load new XML (from XML string).
             /// </summary>
             /// <param name="strXml">A string with the xml content.</param>
-        async public void LoadNewXMLFromString(string strXml)
+        public Task LoadNewXMLFromString(string strXml)
         {
             AddDebugInfo(DEBUG_TYPE.info, "load new XML string");
 
-            if (sheeps[0].InvokeRequired)
+                // There may be no pet at all (e.g. the last one was just removed), so marshal on a dedicated control.
+            if (uiMarshal != null && uiMarshal.IsHandleCreated && uiMarshal.InvokeRequired)
             {
-                sheeps[0].BeginInvoke(new MethodInvoker(delegate{
-                    LoadNewXMLFromString(strXml);
+                var tcs = new TaskCompletionSource<bool>();
+                uiMarshal.BeginInvoke(new MethodInvoker(async delegate
+                {
+                    try
+                    {
+                        await LoadNewXMLFromStringCore(strXml);
+                        tcs.SetResult(true);
+                    }
+                    catch (Exception ex)
+                    {
+                        tcs.SetException(ex);
+                    }
                 }));
-                return;
+                return tcs.Task;
             }
 
+            return LoadNewXMLFromStringCore(strXml);
+        }
+
+        private async Task LoadNewXMLFromStringCore(string strXml)
+        {
             // Close all sheeps
             Random rand = new Random();
             for (int i = 0; i < iSheeps; i++)
             {
                 await Task.Delay(rand.Next(50, 200));
-                sheeps[i].Kill();
+                sheeps[i]?.Kill();
                 /*
                 sheeps[i].Close();
                 sheeps[i].Dispose();
