@@ -621,6 +621,7 @@ namespace PetEditor
                 parsingText = parsingText.Replace("randS", dimensions.SRandom.ToString(CultureInfo.InvariantCulture));
             else
                 parsingText = parsingText.Replace("randS", 50.ToString());
+            parsingText = parsingText.Replace("scale", "1");
 
             try
             {

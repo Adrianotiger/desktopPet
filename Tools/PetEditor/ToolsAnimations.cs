@@ -649,6 +649,7 @@ namespace PetEditor
 				TAnimation tempAnimation = new TAnimation("NULL", 0);
                 tempAnimation.Start.Interval.Value = 1000;
                 tempAnimation.End.Interval.Value = 1000;
+                return tempAnimation;
             }
             return SheepAnimations[id];
         }

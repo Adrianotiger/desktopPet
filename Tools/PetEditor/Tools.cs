@@ -280,9 +280,11 @@ namespace PetEditor
 
                 PetValues.Images = XmlTools.AnimationImages;
 
-                pictureBox6.Image = PetValues.Images.Images[0];
+                if (PetValues.Images != null && PetValues.Images.Images.Count > 0)
+                    pictureBox6.Image = PetValues.Images.Images[0];
                 spawnsToolStripMenuItem.DropDownItems.Clear();
-                foreach (var s in Program.AnimationXML.Spawns.Spawn)
+                var spawnNodes = Program.AnimationXML.Spawns?.Spawn ?? new XmlData.SpawnNode[0];
+                foreach (var s in spawnNodes)
                 {
                     var spawnItem = spawnsToolStripMenuItem.DropDownItems.Add("Spawn #" + s.Id + " -> " + XmlTools.GetXmlAnimationNode(s.Id).Name);
                     spawnItem.Click += (se, ev) =>
@@ -309,14 +311,16 @@ namespace PetEditor
         {
             WindowDimensions.Screen = new Point(tabPage3.Width, tabPage3.Height);
             WindowDimensions.Area = new Point(tabPage3.Width, tabPage3.Height - tableLayoutPanel1.Height);
-            WindowDimensions.Image = new Point(pictureBox6.Image.Width, pictureBox6.Image.Height);
+            var petWidth = pictureBox6.Image?.Width ?? pictureBox6.Width;
+            var petHeight = pictureBox6.Image?.Height ?? pictureBox6.Height;
+            WindowDimensions.Image = new Point(petWidth, petHeight);
 
             label10.Text = "Screen Width: " + tabPage3.Width + "px";
             label11.Text = "Screen Height: " + tabPage3.Height + "px";
             label13.Text = "Working Area W.: " + (tabPage3.Width) + "px";
             label12.Text = "Working Area H.: " + (tabPage3.Height - tableLayoutPanel1.Height) + "px";
-            label15.Text = "Pet Width: " + (pictureBox6.Image.Width) + "px";
-            label14.Text = "Pet Height: " + (pictureBox6.Image.Height) + "px";
+            label15.Text = "Pet Width: " + petWidth + "px";
+            label14.Text = "Pet Height: " + petHeight + "px";
         }
 
         private void SetNewAnimationRequest(bool next, bool border, bool gravity, TNextAnimation.TOnly only)
@@ -1228,7 +1232,9 @@ namespace PetEditor
 
         private void pictureBox6_MouseDown(object sender, MouseEventArgs e)
         {
-            if (petAnimations.AnimationDrag >= 0)
+            if (petAnimations != null && petAnimations.AnimationDrag >= 0 &&
+                petAnimations.SheepAnimations.ContainsKey(petAnimations.AnimationDrag) &&
+                XmlTools.GetXmlAnimationNode(petAnimations.AnimationDrag) != null)
             {
                 SetNewAnimationWithId(petAnimations.AnimationDrag);
                 PetValues.IsDragging = true;

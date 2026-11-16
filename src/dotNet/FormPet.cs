@@ -122,6 +122,31 @@ namespace DesktopPet
         private readonly List<FormPet> childs = new List<FormPet>(4);
 
         /// <summary>
+        /// Hard cap on live pet windows (parents and children). Every pet owns window, bitmap and hook handles,
+        /// so a runaway spawn rule in the XML must not be allowed to exhaust the 10,000 GDI handle limit of the process.
+        /// </summary>
+        public static int MaxPets = 50;
+
+        private static int livePets = 0;
+        private bool petCounted = false;
+
+        /// <summary>
+        /// Count this pet as alive. Released again in <see cref="ReleasePet"/>.
+        /// </summary>
+        private void RegisterPet()
+        {
+            petCounted = true;
+            livePets++;
+        }
+
+        private void ReleasePet()
+        {
+            if (!petCounted) return;
+            petCounted = false;
+            livePets--;
+        }
+
+        /// <summary>
         /// Form constructor. This is never called. <br />
         /// Form2(Animations animations, Xml xml) -> Called when a new sheep is generated<br />
         /// Form2(Animations animations, Xml xml, Point parentPos, bool parentFlipped) -> Called when a Child is generated<br />
@@ -130,6 +155,7 @@ namespace DesktopPet
         {
             InitializeComponent();
             InitializeMotion();
+            RegisterPet();
         }
 
             /// <summary>
@@ -143,6 +169,7 @@ namespace DesktopPet
             Xml = xml;
             InitializeComponent();
             InitializeMotion();
+            RegisterPet();
             Visible = false;            // Is invisible at beginning (we don't know where this sprite should be positioned)
             Opacity = 0.0;
             Screen[] screens = Screen.AllScreens;
@@ -175,6 +202,7 @@ namespace DesktopPet
 			IsMovingLeft = !parentFlipped;
             InitializeComponent();
             InitializeMotion();
+            RegisterPet();
             Visible = false;            // Is invisible at beginning (we don't know where this sprite should be positioned)
             Opacity = 0.0;
             rand = new Random();
@@ -414,7 +442,7 @@ namespace DesktopPet
             /// </remarks>
         public void Kill()
         {
-            foreach(var c in childs)
+            foreach(var c in childs.ToArray())  // closing a child removes it from this list
             {
                 if(c != null && !c.IsDisposed)
                 {
@@ -535,6 +563,11 @@ namespace DesktopPet
                     {
 						foreach (TChild childInfo in Animations.GetAnimationChild(id))
 						{
+							if (livePets >= MaxPets)
+							{
+								StartUp.AddDebugInfo(StartUp.DEBUG_TYPE.warning, "max live pets (" + MaxPets + ") reached, child not created for animation " + id);
+								break;
+							}
 							FormPet child = new FormPet(Animations, Xml, new Point(Left - ScreenBounds.X, Top - ScreenBounds.Y), !IsMovingLeft, DisplayIndex);
 							for (int i = 0; i < imageList1.Images.Count; i++)
 							{
@@ -552,10 +585,12 @@ namespace DesktopPet
 
                             child.CurrentSkin = CurrentSkin;
 
+                            // Forget the child once it is gone, otherwise this list keeps every closed child alive.
+                            child.FormClosed += (s, e) => childs.Remove(child);
+                            childs.Add(child);
+
                             child.Show(Width, Height);
 							child.PlayChild(id, childInfo);
-
-                            childs.Add(child);
                         }
                     }
                 }
@@ -1718,8 +1753,10 @@ namespace DesktopPet
 		/// </example>
 		/// <param name="sender">Caller object.</param>
 		/// <param name="e">Dragging event values.</param>
-		private void Form2_DragDrop(object sender, DragEventArgs e)
+		private async void Form2_DragDrop(object sender, DragEventArgs e)
         {
+            try
+            {
             var files = (string[])e.Data.GetData(DataFormats.FileDrop);
 			var xmlString = e.Data.GetData(DataFormats.Text);
             // If a file was dropped (XML as a file)
@@ -1732,7 +1769,7 @@ namespace DesktopPet
                     {
                         Program.Mainthread.KillSheep(this);
                         Program.MyData.SetXml(File.ReadAllText(file), "..");
-                        Program.Mainthread.LoadNewXMLFromString(File.ReadAllText(file));
+                        await Program.Mainthread.LoadNewXMLFromString(File.ReadAllText(file));
                         break;  // Currently only 1 file, in future maybe more animations at the same time
                     }
                 }
@@ -1748,13 +1785,18 @@ namespace DesktopPet
 
 					Program.Mainthread.KillSheep(this);
 					Program.MyData.SetXml(xmlString as String, "..");
-					Program.Mainthread.LoadNewXMLFromString(xmlString as String);
+					await Program.Mainthread.LoadNewXMLFromString(xmlString as String);
 				}
 				catch
 				{
 					StartUp.AddDebugInfo(StartUp.DEBUG_TYPE.error, "invalid animation xml");
 				}
 			}
+            }
+            catch (Exception ex)
+            {
+                StartUp.AddDebugInfo(StartUp.DEBUG_TYPE.error, "drag drop failed: " + ex.Message);
+            }
         }
 
         private void Form2_FormClosed(object sender, FormClosedEventArgs e)
