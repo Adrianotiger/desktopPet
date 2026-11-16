@@ -20,12 +20,12 @@
       "author" : "Gregor Biswanger",
       "lastupdate" : "2026-11-06"
     },
-	{
+	  {
       "folder" : "bbunny",
       "author" : "Adriano",
       "lastupdate" : "2019-02-25"
     },
-	{
+	  {
       "folder" : "blue_ham_ham",
       "author" : "Michelle!",
       "lastupdate" : "2025-12-08"
@@ -70,7 +70,7 @@
       "author" : "Zecheriah",
       "lastupdate" : "2026-10-20"
     },
-	{
+	  {
       "folder" : "mareep",
       "author" : "Michelle!",
       "lastupdate" : "2025-12-08"
@@ -100,7 +100,7 @@
       "author" : "Oliver B.",
       "lastupdate" : "2021-05-02"
     },
-	{
+	  {
       "folder" : "pikachu",
       "author" : "Michelle!",
       "lastupdate" : "2025-12-08"
@@ -115,12 +115,12 @@
       "author" : "Zecheriah",
       "lastupdate" : "2026-10-20"
     },
-	{
+	  {
       "folder" : "pink_fox",
       "author" : "Michelle!",
       "lastupdate" : "2025-12-08"
     },
-	{
+	  {
       "folder" : "pink_neko",
       "author" : "Michelle!",
       "lastupdate" : "2025-12-08"
@@ -140,7 +140,12 @@
       "author" : "Oliver B.",
       "lastupdate" : "2021-05-02"
     },
-	{
+    {
+      "folder" : "sheep_mate",
+      "author" : "TheSuperCat",
+      "lastupdate" : "2026-11-16"
+    },
+	  {
       "folder" : "shiny_sylveon",
       "author" : "Michelle!",
       "lastupdate" : "2025-12-08"
@@ -165,7 +170,7 @@
       "author" : "Zecheriah",
       "lastupdate" : "2026-10-26"
     },
-	{
+	  {
       "folder" : "yellow_neko",
       "author" : "Michelle!",
       "lastupdate" : "2025-12-08"
@@ -179,11 +184,6 @@
       "folder" : "zombie",
       "author" : "RedSparr0w",
       "lastupdate" : "2026-08-14"
-    }
-    {
-      "folder" : "sheep_mate",
-      "author" : "TheSuperCat",
-      "lastupdate" : "2026-11-16"
     }
   ]
 }
