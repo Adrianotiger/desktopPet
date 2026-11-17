@@ -869,6 +869,8 @@ namespace DesktopPet
 					pets = new List<OptionsPet>()
 				};
 			}
+			// reset errors
+			WebPets.Error = "";
 			var devPetList = Program.MyData.GetStringValue(LocalData.SettingName.DeveloperPetPath).Split(';').ToArray();
 			for(int j=0;j< devPetList.Count();j++)
 			{
@@ -878,7 +880,8 @@ namespace DesktopPet
 						new OptionsPets
 						{
 							pets = new List<OptionsPet>(),
-							BasePath = devPetList[j].Trim() + "/"
+							BasePath = devPetList[j].Trim() + "/",
+							Error = ""
 						}
 					);
 				}
@@ -888,26 +891,41 @@ namespace DesktopPet
 			{
 				var petsSurface = (extendedPanel as FormOptions2SurfacePets);
 
-				var progress = new Progress<OptionsPet>(async pet =>
+				try
 				{
-					WebPets.pets.Add(pet);
-					if(WebPets.pets.Count == 1 || (WebPets.pets.Count % 3) == 0)
+					var progress = new Progress<OptionsPet>(async pet =>
 					{
-						petsSurface?.ReloadPets();
-					}
-						//extendedPanel?.Invalidate();
-				});
-				await OptionsGit.GetPetList(progress);
-
-				for(int j=0;j<DevPets.Count();j++)
-				{
-					var progressDev = new Progress<OptionsPet>(async pet =>
-					{
-						DevPets[j].pets.Add(pet);
-						if ((DevPets[j].pets.Count % 3) == 0)
-							extendedPanel?.Invalidate();
+						WebPets.pets.Add(pet);
+						if (WebPets.pets.Count == 1 || (WebPets.pets.Count % 3) == 0)
+						{
+							petsSurface?.ReloadPets();
+						}
 					});
-					await OptionsGit.GetPetList(progressDev, j);
+					await OptionsGit.GetPetList(progress);
+				}
+				catch(Exception ex)
+				{
+					WebPets.Error = "[Pets.json] " + ex.Message;
+				}
+
+				for (int j = 0; j < DevPets.Count(); j++)
+				{
+					DevPets[j].Error = ""; // reset errors
+					try
+					{
+						int ji = j;
+						var progressDev = new Progress<OptionsPet>(async pet =>
+						{
+							DevPets[ji].pets.Add(pet);
+							if ((DevPets[ji].pets.Count % 3) == 0)
+								extendedPanel?.Invalidate();
+						});
+						await OptionsGit.GetPetList(progressDev, ji);
+					}
+					catch (Exception ex)
+					{
+						DevPets[j].Error = DevPets[j].BasePath + "\n -> " + ex.Message;
+					}
 				}
 				InfoText = WebPets.pets.Count + " pets available";
 				petsSurface?.ReloadPets();
@@ -954,6 +972,7 @@ namespace DesktopPet
 			catch(Exception ex)
 			{
 				InfoText = "Error downloading " + pet.folder + ": " + ex.Message;
+				pet.Error += "[animations.xml]" + ex.Message + "\n";
 			}
 		}
 
@@ -987,6 +1006,7 @@ namespace DesktopPet
 			catch (Exception ex)
 			{
 				InfoText = "Error downloading " + pet.folder + ": " + ex.Message;
+				pet.Error += "[animations.xml]" + ex.Message + "\n";
 			}
 		}
 	}
@@ -1060,7 +1080,7 @@ namespace DesktopPet
 				{
 					var onlinePets = Newtonsoft.Json.JsonConvert.DeserializeObject<OptionsPets>(jsonString);
 					var localPets = Newtonsoft.Json.JsonConvert.DeserializeObject<OptionsPets>(File.ReadAllText(jsonFile));
-					var isDifferent = false;
+					//var isDifferent = false;
 					localPets.pets.ForEach(lp =>
 					{
 						onlinePets.pets.ForEach(op =>
@@ -1070,12 +1090,13 @@ namespace DesktopPet
 								File.Delete(Path.Combine(BaseLocalPath, lp.folder + ".png"));
 								File.Delete(Path.Combine(BaseLocalPath, lp.folder + ".xml"));
 								File.Delete(Path.Combine(BaseLocalPath, lp.folder + ".md"));
-								isDifferent = true;
+								//isDifferent = true;
 							}
 						});
 					});
-					if (isDifferent)
+					//if (isDifferent)
 					{
+						// Write it every time, as we need to update the lastwritetime
 						File.WriteAllText(jsonFile, jsonString);
 					}
 				}
@@ -1091,10 +1112,19 @@ namespace DesktopPet
 
 			pets.pets.ForEach(p =>
 			{
-				p.WebPath = webPath;
-				using (Stream stream = GetOrDownload(p, "icon.png"))
+				try
 				{
-					p.Image = Image.FromStream(stream);
+					p.WebPath = webPath;
+					using (Stream stream = GetOrDownload(p, "icon.png"))
+					{
+						p.Image = Image.FromStream(stream);
+						progress.Report(p);
+					}
+				}
+				catch(Exception ex)
+				{
+					p.Image = Resources.exit;
+					p.Error += "[icon.png] " + ex.Message + "\n";
 					progress.Report(p);
 				}
 			});

@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json.Linq;
+﻿using NAudio.Gui;
+using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -63,6 +64,8 @@ namespace DesktopPet
 		/// If pet details should be shawn.
 		/// </summary>
 		public bool showDetails = false;
+
+		private string strErrors = "";
 
 		public FormOptions2SurfacePets(FormOptions2 formOption)
 		{
@@ -129,6 +132,19 @@ namespace DesktopPet
 			});
 
 			pety += 55;
+
+			if (selectedPet.Error.Length > 0)
+			{
+				pety += 60;
+				g.DrawString("Errors: ", new Font(fontText, FontStyle.Bold | FontStyle.Underline), Brushes.DarkRed, petx, pety);
+				selectedPet.Error.Split('\n').ToList().ForEach(line =>
+				{
+					pety += 20;
+					g.DrawString(line, fontText, Brushes.DarkRed, petx, pety);
+				});
+				pety += 50;
+				return pety;
+			}
 
 			selectedPet.Readme.ForEach(line =>
 			{
@@ -411,14 +427,18 @@ namespace DesktopPet
 
 			if(allPets == null)
 			{
+				strErrors = form.WebPets.Error;
+
 				allPets = new List<OptionsPetIcon>();
 				// Make copy of list as this is an async call!
 				allPets.AddRange(form.WebPets.pets.ToList().Select(a => new OptionsPetIcon(a)));
-				form.DevPets.ForEach( dev => allPets.AddRange(dev.pets.ToList().Select(a => new OptionsPetIcon(a))) );
-				//List<OptionsPet> pets = form.WebPets.pets;
+
+				form.DevPets.ForEach( dev => {
+					strErrors += dev.Error;
+					allPets.AddRange(dev.pets.ToList().Select(a => new OptionsPetIcon(a)));
+				});
 			}
 
-			//for (int j = 0; j < allPets.Count; j++)
 			allPets.ForEach(petIcon =>
 			{
 				if(petIcon.pet.WebPath != path)
@@ -486,22 +506,19 @@ namespace DesktopPet
 				if (petx > Width - petIcon.w) { petx = 25; pety += 60; }
 			});
 
-			/*
-				if (devIndex >= form.DevPets.Count())
+			if(strErrors.Length > 0)
+			{
+				pety += 60;
+				g.DrawString("Errors: ", new Font(fontText, FontStyle.Bold | FontStyle.Underline), Brushes.DarkRed, petx, pety);
+				strErrors.Split('\n').ToList().ForEach(line =>
 				{
-					pets = null;
-				}
-				else
-				{
-					pety += 60;
-					petx = 25;
-					pets = form.DevPets[0].pets;
-					ControlPaint.DrawBorder(g, new Rectangle(5, pety, Width - 25, 2), Color.LightGray, ButtonBorderStyle.Outset);
-					g.DrawString(form.DevPets[devIndex].BasePath, new Font(fontText, FontStyle.Bold |FontStyle.Underline), Brushes.DarkBlue, petx - 20, pety + 5);
-					pety += 35;
-				}
-				devIndex++;
-			*/
+					pety += 20;
+					g.DrawString(line, fontText, Brushes.DarkRed, petx, pety);
+				});
+				pety += 50;
+			}
+
+
 			return pety;
 		}
 
@@ -649,10 +666,12 @@ namespace DesktopPet
 					try
 					{
 						selectedPet.Readme = OptionsGit.GetReadMe(selectedPet);
-					}catch(Exception ex)
+					}
+					catch(Exception ex)
 					{
 						form.InfoText = ex.Message;
 						form.Invalidate();
+						selectedPet.Error += "[readme.md]" + ex.Message + "\n";
 						return;
 					}
 				}
@@ -696,8 +715,14 @@ namespace DesktopPet
 		/// Detail XML, loaded directly from XML animation file
 		/// </summary>
 		public XmlDocument Detail { get; set; } = null;
-
+		/// <summary>
+		/// A path on the web (can be also a custom path from the user, it is set over the option menu)
+		/// </summary>
 		public String WebPath { get; set; } = "";
+		/// <summary>
+		/// If an error is present, this can be reported here
+		/// </summary>
+		public String Error { get; set; } = "";
 	}
 	/// <summary>
 	/// Class conaining a list of pets and a method to reorder them by last update date.
@@ -712,6 +737,10 @@ namespace DesktopPet
 		/// Base path on the web (gitHub folder)
 		/// </summary>
 		public string BasePath { get; set; } = "";
+		/// <summary>
+		/// If an error is present, this can be reported here
+		/// </summary>
+		public String Error { get; set; } = "";
 		/// <summary>
 		/// Reorder the pets, once loaded, by last update date, so the most recent ones are on top.
 		/// </summary>
