@@ -61,6 +61,10 @@ namespace DesktopPet
             /// Smooth animations-Key
             /// </summary>
 			public const string SmoothMovements = "Smooth";
+			/// <summary>
+			/// Developer Path animations-Key
+			/// </summary>
+			public const string DeveloperPetPath = "DevPetPath";
 		};
 
 		/// <summary>
@@ -341,6 +345,45 @@ namespace DesktopPet
 				}
 			}
             return false;
+		}
+
+		/// <summary>
+		/// To "serialize" the settings, every setting can be retrieved as integer (or string)
+		/// </summary>
+		/// <param name="setting">Name of the setting, <see cref="SettingName"/></param>
+		/// <returns>Value of the setting, or null</returns>
+		public string GetStringValue(string setting)
+		{
+			if (AppSettings.AllKeys.Contains(setting) && setting != SettingName.Undefined)
+			{
+				if (AppSettings[setting] == null) // If setting is not present in the local machine, create it
+				{
+					AppSettings.Add(setting, "");
+				}
+				return AppSettings[setting].Value;
+			}
+			return "";
+		}
+
+		/// <summary>
+		/// Set a setting with key and value
+		/// </summary>
+		/// <param name="setting">Name of the setting, <see cref="SettingName"/></param>
+		/// <param name="value">string Value of the setting</param>
+		/// <returns>true if setting was set successfully</returns>
+		public bool SetStringValue(string setting, string value)
+		{
+			if (AppSettings.AllKeys.Contains(setting) && setting != SettingName.Undefined)
+			{
+				if(AppSettings[setting].Value.GetType() == typeof(string))
+				{
+					Properties.Settings.Default[setting] = value;
+					AppSettings[setting].Value = value;
+					Save();
+					return true;
+				}
+			}
+			return false;
 		}
 
 		/// <summary>

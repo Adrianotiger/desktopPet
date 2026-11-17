@@ -11,6 +11,9 @@
 # User-specific files (MonoDevelop/Xamarin Studio)
 *.userprefs
 
+# DesktopPet Temporary animations
+Pets/*/[0-9]*.xml
+
 # Build results
 [Dd]ebug/
 [Dd]ebugPublic/
