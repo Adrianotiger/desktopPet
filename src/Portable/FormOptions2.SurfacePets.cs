@@ -1,24 +1,12 @@
-﻿using NAudio.Gui;
-using Newtonsoft.Json.Linq;
-using System;
+﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Drawing.Imaging;
-using System.IO;
 using System.Linq;
-using System.Net;
-using System.Net.Http.Headers;
-using System.Runtime.Remoting.Contexts;
-using System.Security.Policy;
-using System.Text;
 using System.Text.RegularExpressions;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Xml;
-using static System.Windows.Forms.LinkLabel;
-using static System.Windows.Forms.VisualStyles.VisualStyleElement.Window;
 
 namespace DesktopPet
 {
@@ -79,7 +67,7 @@ namespace DesktopPet
 
 		public void ReloadPets()
 		{
-			allPets = null;
+			form.ForceUpdatePets = true;
 			Invalidate();
 		}
 
@@ -135,6 +123,7 @@ namespace DesktopPet
 
 			if (selectedPet.Error.Length > 0)
 			{
+				petx = 25;
 				pety += 60;
 				g.DrawString("Errors: ", new Font(fontText, FontStyle.Bold | FontStyle.Underline), Brushes.DarkRed, petx, pety);
 				selectedPet.Error.Split('\n').ToList().ForEach(line =>
@@ -425,7 +414,7 @@ namespace DesktopPet
 
 			g.Clear(Color.White);
 
-			if(allPets == null)
+			if(allPets == null || form.ForceUpdatePets)
 			{
 				strErrors = form.WebPets.Error;
 
@@ -437,6 +426,8 @@ namespace DesktopPet
 					strErrors += dev.Error;
 					allPets.AddRange(dev.pets.ToList().Select(a => new OptionsPetIcon(a)));
 				});
+
+				form.ForceUpdatePets = false;
 			}
 
 			allPets.ForEach(petIcon =>
@@ -508,6 +499,7 @@ namespace DesktopPet
 
 			if(strErrors.Length > 0)
 			{
+				petx = 25;
 				pety += 60;
 				g.DrawString("Errors: ", new Font(fontText, FontStyle.Bold | FontStyle.Underline), Brushes.DarkRed, petx, pety);
 				strErrors.Split('\n').ToList().ForEach(line =>
@@ -672,6 +664,7 @@ namespace DesktopPet
 						form.InfoText = ex.Message;
 						form.Invalidate();
 						selectedPet.Error += "[readme.md]" + ex.Message + "\n";
+						form.ForceUpdatePets = true;
 						return;
 					}
 				}

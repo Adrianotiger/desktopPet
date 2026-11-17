@@ -119,6 +119,7 @@ namespace DesktopPet
 				Setting = SettingName.AutostartPets,
 				IsCheckbox = false,
 				MaxValue = 16,
+				NeedRestart = true,
 				Value = Program.MyData.GetIntValue(SettingName.AutostartPets),
 				Image = Resources.ico_quantity,
 				Description = "Select the quantity of pets to start when the application starts."
@@ -154,6 +155,7 @@ namespace DesktopPet
 				IsCheckbox = false,
 				ValuesText = new List<string> { Program.MyData.GetStringValue(SettingName.DeveloperPetPath) },
 				Image = Resources.ico_devpath,
+				NeedPetReload = true,
 				Description = "Set the path to another pets web-folder. \nThe folder must contain pets.json and the pet animations."
 			});
 
@@ -349,6 +351,11 @@ namespace DesktopPet
 							{
 								Program.RestartApp();
 							}
+							else if (selectedOption.NeedPetReload)
+							{
+								form.ForceUpdatePets = true;
+								form.DialogResult = DialogResult.OK;
+							}
 							else
 							{
 								OnMouseDown(new MouseEventArgs(MouseButtons.Left, 1, 0, 0, 0));
@@ -377,6 +384,11 @@ namespace DesktopPet
 								if (selectedOption.NeedRestart)
 								{
 									Program.RestartApp();
+								}
+								else if (selectedOption.NeedPetReload)
+								{
+									form.ForceUpdatePets = true;
+									form.DialogResult = DialogResult.OK;
 								}
 								else
 								{
@@ -438,6 +450,10 @@ namespace DesktopPet
 		/// If the application will be restarted, once the option is changed (for example when you scale the pets)
 		/// </summary>
 		public bool NeedRestart { get; set; } = false;
+		/// <summary>
+		/// If the pets need to be reloaded after the setting changed.
+		/// </summary>
+		public bool NeedPetReload { get; set; } = false;
 	}
 
 }

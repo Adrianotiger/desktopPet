@@ -9,7 +9,6 @@ using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Reflection;
-using System.Security.AccessControl;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Xml;
@@ -17,8 +16,6 @@ using System.Xml.Linq;
 using XmlData;
 using static DesktopPet.FormOptions2;
 using static DesktopPet.FormOptions2SurfaceMenu;
-using static System.Windows.Forms.VisualStyles.VisualStyleElement;
-using static System.Windows.Forms.VisualStyles.VisualStyleElement.Window;
 
 
 
@@ -68,6 +65,10 @@ namespace DesktopPet
 		/// Infotext used to show some debug info or status on the status bar.
 		/// </summary>
 		public string InfoText { get { return infoText; } set { var different = (infoText != value);  infoText = value; if(different) this.Invalidate(new Rectangle(0,this.Height-25,this.Width,25)); } }
+		/// <summary>
+		/// A configuration can force to update the pet list if something changed
+		/// </summary>
+		public bool ForceUpdatePets { get; set; } = true;
 		/// <summary>
 		/// A yellow filter to apply to the highlighted icons (like windows 95)
 		/// </summary>
@@ -973,6 +974,7 @@ namespace DesktopPet
 			{
 				InfoText = "Error downloading " + pet.folder + ": " + ex.Message;
 				pet.Error += "[animations.xml]" + ex.Message + "\n";
+				this.ForceUpdatePets = true;
 			}
 		}
 
@@ -1007,6 +1009,7 @@ namespace DesktopPet
 			{
 				InfoText = "Error downloading " + pet.folder + ": " + ex.Message;
 				pet.Error += "[animations.xml]" + ex.Message + "\n";
+				this.ForceUpdatePets = true;
 			}
 		}
 	}
