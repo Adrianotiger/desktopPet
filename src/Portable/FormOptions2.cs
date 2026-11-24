@@ -508,7 +508,13 @@ namespace DesktopPet
 						FormOptions2 formoptions = new FormOptions2("Application Configurations", WindowType.AppConfiguration);
 						switch (formoptions.ShowDialog())
 						{
-							case DialogResult.Retry:
+							case DialogResult.Retry: // Reload form
+								// Opening a new Option form, is too fast and will not load the new configuration. 
+								//this.Visible = false;
+								//FormOptions2 formoptions2 = new FormOptions2("Pet List", FormOptions2.WindowType.Pets);
+								//formoptions2.ShowDialog();
+								this.DialogResult = DialogResult.Retry;
+								this.Close();
 								break;
 						}
 						break;

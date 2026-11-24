@@ -354,7 +354,7 @@ namespace DesktopPet
 							else if (selectedOption.NeedPetReload)
 							{
 								form.ForceUpdatePets = true;
-								form.DialogResult = DialogResult.OK;
+								form.DialogResult = DialogResult.Retry; // << Reload form!
 							}
 							else
 							{
@@ -388,7 +388,7 @@ namespace DesktopPet
 								else if (selectedOption.NeedPetReload)
 								{
 									form.ForceUpdatePets = true;
-									form.DialogResult = DialogResult.OK;
+									form.DialogResult = DialogResult.Retry; // << Reload form!
 								}
 								else
 								{
