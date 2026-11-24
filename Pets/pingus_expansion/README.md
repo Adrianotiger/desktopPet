@@ -17,11 +17,15 @@ Play Pingus here: [https://pingus.seul.org/](https://pingus.seul.org/)
   * Tumble and splat after a big fall
   * Turn to angels when they die :'(
   * Sprint (maybe a little too fast...)
+  * Stop other Pingus from passing
+  * Shoot each other, and sometimes dodge/deflect the bullets
   * Moonwalk..?
   * Walk up screen borders and fly around
 
     * NOTE: this was already a feature in Adriano's version, but it never played. I literally changed one single line of code.
   * Dig through windows and screen borders
+  * Fall off window corners
+  * Exit through a cave, one after the other
   * Do five secret rare events...
   * And more!
 * More interaction:
@@ -32,7 +36,6 @@ Play Pingus here: [https://pingus.seul.org/](https://pingus.seul.org/)
   * When they're on the ground, left-click them to make them jump
   * You can throw them around like fireworks!
 * 30+ sound effects!
-* Restored screen climbing functionality - now the Pingus can waltz up the side of the screen again, and even fly around like a bug! (Literally changed one line of code from Adriano's version)
 * Other tweaks to make the Pingus feel more polished and lively, without being TOO distracting
 
 

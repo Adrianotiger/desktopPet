@@ -2,7 +2,7 @@
 
 
 
-The little pink angel cats can now play around on your screen! Be careful though, they're pretty trigger-happy >:)
+The little pink and orange angel cats can now play around on your screen! Be careful though, they're pretty trigger-happy >:)
 
 
 
@@ -12,8 +12,9 @@ Support Nitrome by playing [Twin Shot Deluxe](https://store.steampowered.com/app
 
 ## Features
 
+* Player 1 and Player 2 cats!
 * They smoothly fly in and out
-* They shoot arrows to try and reach higher places!
+* They shoot arrows to try and reach higher places! But the arrows might hit other angels...
 
   * Click them while they're on ground to make them shoot
 * If they walk off screen, they wrap to the other side

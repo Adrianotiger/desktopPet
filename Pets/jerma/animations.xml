@@ -59,6 +59,10 @@
       <gravity>
         <next probability="10" only="none">9</next>
       </gravity>
+      <interact>
+        <next probability="10" only="none" trigger="5" direction="infront">5</next>
+        <next probability="10" only="window" trigger="21" direction="infront">5</next>
+      </interact>
     </animation>
     <animation id="2">
       <name>idle</name>
@@ -239,6 +243,7 @@
         <frame>0</frame>
         <action>none</action>
         <next probability="10" only="none">2</next>
+        <next probability="10" only="none">3</next>
       </sequence>
       <gravity>
         <next probability="10" only="none">9</next>

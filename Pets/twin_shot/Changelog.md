@@ -47,8 +47,12 @@ v1.0 (2026-10-20)
 
 
 
-v2.0 (WIP)
+v2.0 (2026-10-22)
 
 * Added orange cat!
 * Fixed spawn animation getting undershot
+
+v2.1 (2026-11-23)
+
+* They can shoot each other now >:)
 

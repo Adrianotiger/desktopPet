@@ -22,3 +22,7 @@ v2.1 (2026-10-20)
 * Death animation and voiceline
 * Halved rare animation chance
 
+v2.1.1 (2026-11-23)
+
+* They can twerk together like bros
+
