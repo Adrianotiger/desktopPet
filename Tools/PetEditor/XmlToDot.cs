@@ -67,17 +67,25 @@ namespace PetEditor
                     returnString += ProcessNext(Next.Gravity, totalProbability, anim, anim.Gravity.Next);
                 }
 
+                if (anim.Interact != null && anim.Interact.Next != null)
+                {
+                    //returnString += $"# {anim.Id} Interact {anim.Interact.Next.Length}\r\n";
+                    var totalProbability = anim.Interact.Next.Sum(n => n.Probability);
+                    returnString += ProcessNext(Next.Interact, totalProbability, anim, anim.Interact.Next);
+                }
+
                 returnString += $"  anim_{anim.Id} [ label=\"{anim.Name} ({anim.Id})\" ]";
             }
             returnString += $"}}";
             return returnString;
         }
 
-        private enum Next { Sequence, Border, Gravity };
+        private enum Next { Sequence, Border, Gravity, Interact };
 
         private const string sequenceColor = "black";
         private const string borderColor = "#5555DDFF";
         private const string gravityColor = "#55DD55FF";
+        private const string interactColor = "#DBDD55";
 
         static private string ProcessNext(Next type, int totalProbability, XmlData.AnimationNode anim, XmlData.NextNode[] nexts)
         {
@@ -86,6 +94,7 @@ namespace PetEditor
             var typeMarker = "S";
             if (type == Next.Border) { edgeColor = borderColor; typeMarker = "B"; }
             if (type == Next.Gravity) { edgeColor = gravityColor; typeMarker = "G"; }
+            if (type == Next.Interact) { edgeColor = interactColor; typeMarker = "Y"; }
 
             foreach (var next in nexts)
             {
@@ -93,7 +102,7 @@ namespace PetEditor
                 edgeColor = type == Next.Sequence ? convertProbabilityToGray(relative) : edgeColor;
                 var relative2Decimal = relative.ToString("00%");
                 var probability = relative2Decimal == "100%" ? "" : $"({next.Probability})";
-                var label = $"[ label=\"{relative2Decimal}{probability} {next.OnlyFlag} {typeMarker}\" color=\"{edgeColor}\" fontcolor=\"{edgeColor}\" penwidth=\"1\" ]";
+                var label = $"[ label=\"{relative2Decimal}{probability} {next.OnlyFlag} {(type == Next.Interact ? next.Trigger + " " + next.Direction : "")} {typeMarker}\" color=\"{edgeColor}\" fontcolor=\"{edgeColor}\" penwidth=\"1\" ]";
                 returnString += $"  anim_{anim.Id} -> anim_{next.Value} {label}";
             }
             return returnString;

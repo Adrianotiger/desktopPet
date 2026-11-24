@@ -92,13 +92,15 @@ namespace PetEditor
     /// Information about next animation
     /// </summary>
     /// <remarks>
-    /// On each animation sequence, there are 3 different NEXT:<br />
+    /// On each animation sequence, there are 4 different NEXT:<br />
     /// 1- end of sequence<br />
     /// 2- gravity detected<br />
     /// 3- border detected<br />
+    /// 4- another pet detected<br />
     /// If all frames where played, Next-"end of sequence" will be executed.<br />
     /// If Next-"gravity" is set, pet will fall if no gravity is detected.<br />
     /// If a border is detected, Next-"border" will be executed.<br />
+    /// If pet hits another pet, Next-"interact" will be executed.<br />
     /// <b>Note: if sequence is over or border was detected but you don't have a next statement for it, pet will re-spawn!</b><br />
     /// </remarks>
     public struct TNextAnimation
@@ -147,6 +149,25 @@ namespace PetEditor
             PETSIDE     = 0x0E,
         }
             /// <summary>
+            /// Enumeration about the Direction structure.
+            /// Used for pet interactions.
+            /// </summary>
+        public enum TDirection
+        {
+                /// <summary>
+                /// Any - next animation will happen from any direction
+                /// </summary>
+            ANY        = 0x7F,
+                /// <summary>
+                /// Infront - next animation will happen if other pet is infront of this one
+                /// </summary>
+            INFRONT     = 0x01,
+                /// <summary>
+                /// Behind - next animation will happen if other pet is behind this one
+                /// </summary>
+            BEHIND      = 0x02,
+        }
+            /// <summary>
             /// ID of the next animation to play
             /// </summary>
         public int ID;
@@ -160,16 +181,28 @@ namespace PetEditor
             /// </summary>
         public TOnly only;
             /// <summary>
+            /// ID of the trigger animation
+            /// </summary>
+        public int TriggerID;
+            /// <summary>
+            /// One of the values of TDirection. Default: ANY
+            /// </summary>
+        public TDirection Direction;
+            /// <summary>
             /// Initialisation of the Next structure
             /// </summary>
             /// <param name="id">ID of the next animation</param>
             /// <param name="probability">Probability the next animation will be executed</param>
             /// <param name="where">Where the pet must be if you want this animation to be executed</param>
-        public TNextAnimation(int id, int probability, TOnly where) 
+            /// <param name="triggerID">ID of the trigger animation. Default: -1</param>
+            /// <param name="direction">Where the other pet must be if you want a trigger animation to execute. Default: ANY</param>
+        public TNextAnimation(int id, int probability, TOnly where, int triggerID = -1, TDirection direction = default(TDirection))
         { 
             ID = id; 
             Probability = probability;
             only = where;
+            TriggerID = triggerID;
+            Direction = direction;
         }
     }
 
@@ -242,6 +275,10 @@ namespace PetEditor
             /// </summary>
         public List<TNextAnimation> EndGravity;
             /// <summary>
+            /// List of possible animations to execute, when the pet should interact with another pet.
+            /// </summary>
+        public List<TNextAnimation> EndInteract;
+            /// <summary>
             /// Sequence of frames to play for this animation.
             /// </summary>
         public TSequence Sequence;
@@ -249,6 +286,10 @@ namespace PetEditor
             /// If an animation for the gravity is set, the pet will fall if no window is detected.
             /// </summary>
         public bool Gravity;
+            /// <summary>
+            /// If an animation for interact is set, the pet will play this animation if another pet with the correct trigger is detected.
+            /// </summary>
+        public bool Interact;
             /// <summary>
             /// If an animation for the border is set, the pet will automatically jump to this animation if a border is detected.
             /// </summary>
@@ -271,9 +312,11 @@ namespace PetEditor
             EndAnimation = new List<TNextAnimation>(8);
             EndBorder = new List<TNextAnimation>(8);
             EndGravity = new List<TNextAnimation>(8);
+            EndInteract = new List<TNextAnimation>(8);
             Sequence = new TSequence();
             Sequence.Frames = new List<int>(16);
             Gravity = false;
+            Interact = false;
             Border = false;
             ID = id;
         }
@@ -454,6 +497,27 @@ namespace PetEditor
             /// Animation ID once the cancel button on the about box was pressed (default: 1)
             /// </summary>
         public int AnimationSync = 1;
+            /// <summary>
+            /// Animation ID for the tossing animation (default: -1)
+            /// </summary>
+            /// <remarks>
+            /// Does not play if it doesn't exist in the pet XML, in which case the pet continues the drag animation
+            /// </remarks>
+        public int AnimationToss = -1;
+            /// <summary>
+            /// Animation ID for the soft land animation after the pet was tossed (default: 1)
+            /// </summary>
+            /// <remarks>
+            /// This is named based on eSheep64's "fall soft" animation
+            /// </remarks>
+        public int AnimationFallSoft = 1;
+            /// <summary>
+            /// Animation ID for the hard land animation after the pet was tossed (default: 1)
+            /// </summary>
+            /// <remarks>
+            /// This is named based on eSheep64's "fall hard" animation
+            /// </remarks>
+        public int AnimationFallHard = 1;
 
             /// <summary>
             /// Constructor, initialize member variables
@@ -707,6 +771,17 @@ namespace PetEditor
         }
 
             /// <summary>
+            /// Start the next animation if a pet border is hit
+            /// </summary>
+            /// <param name="animations">Available animations, as determined in <see cref="FormPet.SetPetInteractAnimations(NativeMethods.RECT)"/></param>
+            /// <param name="where">Where the pet is "walking". Defaults to NONE for triggered animations</param>
+            /// <returns>ID of the next animation to play. -1 if there is no animation.</returns>
+        public int SetNextInteractAnimation(List<TNextAnimation> animations, TNextAnimation.TOnly where = TNextAnimation.TOnly.NONE)
+        {
+            return SetNextGeneralAnimation(animations, where);
+        }
+
+            /// <summary>
             /// Set the next animation, once the last one was finished.
             /// </summary>
             /// <param name="list">List of animations that can be executed.</param>
@@ -717,19 +792,39 @@ namespace PetEditor
             int iDefaultID = -1;
             if (list.Count > 0)     // Find the next animation only if there is at least 1 animation in the list
             {
+                // Determine if all horizontal+ or vertical+ animations should be considered
+                bool isHorizontal_ = (where == TNextAnimation.TOnly.HORIZONTAL || where == TNextAnimation.TOnly.WINDOW || where == TNextAnimation.TOnly.TASKBAR) ? true : false; // horizontal+ counts for horizontal, window and taskbar collisions
+                bool isVertical_ = (where == TNextAnimation.TOnly.VERTICAL || where == TNextAnimation.TOnly.WINDOWSIDE || where == TNextAnimation.TOnly.PETSIDE) ? true : false; // vertical+ counts for vertical, windowSide and petSide collisions
+
                 int iVal;
                 int iSum = 0;
                 int iRandMax = 0;
                 foreach (TNextAnimation anim in list)
                 {
-                    if (anim.only != TNextAnimation.TOnly.NONE && (anim.only & where) == 0) continue;
+                    // Skip if this animation has the wrong "only" value
+                    if (anim.only != TNextAnimation.TOnly.NONE // none anims are considered for every collision
+                        && where != TNextAnimation.TOnly.NONE // if where is none, ALL animations are considered (used for triggered animations)
+                        && !(isHorizontal_ && anim.only == TNextAnimation.TOnly.HORIZONTAL_) // horizontal+ anims are considered for every horizontal anim
+                        && !(isVertical_ && anim.only == TNextAnimation.TOnly.VERTICAL_) // vertical+ anims are considered for every vertical anim
+                        && anim.only != where) // intended "only" value
+                    {
+                        continue;
+                    }
 
                     iRandMax += anim.Probability;
                 }
-                iVal = rand.Next(0, iRandMax);
+                iVal = rand.Next(1, iRandMax+1);
                 foreach (TNextAnimation anim in list)
                 {
-                    if (anim.only != TNextAnimation.TOnly.NONE && (anim.only & where) == 0) continue;
+                    // Skip if this animation has the wrong "only" value
+                    if (anim.only != TNextAnimation.TOnly.NONE
+                        && where != TNextAnimation.TOnly.NONE
+                        && !(isHorizontal_ && anim.only == TNextAnimation.TOnly.HORIZONTAL_)
+                        && !(isVertical_ && anim.only == TNextAnimation.TOnly.VERTICAL_)
+                        && anim.only != where)
+                    {
+                        continue;
+                    }
 
                     iSum += anim.Probability;
                     if (iSum >= iVal)
@@ -804,7 +899,7 @@ namespace PetEditor
             /// <param name="includeBorder">Include all animations if the pet detected a border.</param>
             /// <param name="includeGravity">Include all animations if the pet detected a gravity.</param>
             /// <returns></returns>
-        public List<TNextAnimation> GetNextAnimations(int currentID, bool includeNext, bool includeBorder, bool includeGravity)
+        public List<TNextAnimation> GetNextAnimations(int currentID, bool includeNext, bool includeBorder, bool includeGravity, bool includeInteract)
         {
             List<TNextAnimation> list = new List<TNextAnimation>();
 
@@ -814,6 +909,8 @@ namespace PetEditor
                 list.AddRange(SheepAnimations[currentID].EndBorder);
             if (includeGravity)
                 list.AddRange(SheepAnimations[currentID].EndGravity);
+            if (includeInteract)
+                list.AddRange(SheepAnimations[currentID].EndInteract);
 
             return list;
         }
