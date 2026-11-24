@@ -133,7 +133,7 @@ This project integrated other Open Source (-friendly) projects:
 - [SignPath Foundation](https://signpath.org/) - Open Source Certificate
 
 ## Sprites - Thanks to
-- [Oliver](https://github.com/OliverPets) - for the rainbow sheeps and the many sheep animations
+- [Oliver](https://github.com/OliverPets) - for the rainbow sheep and the many sheep animations
 - [RedSparr0w](https://github.com/RedSparr0w) - for the minecraft tools and spritesheet generator
 - Michelle for the cats animations
 
@@ -147,7 +147,7 @@ This project integrated other Open Source (-friendly) projects:
 # Want to help?
 
 ## Create your own mate/pet
-You can download the Editor and create your own Mate! Please contibute, uploading your work to the Pet-Folder.  
+You can download the Editor and create your own Mate! Please contribute, uploading your work to the Pet-Folder.  
 What you need:
 - 1 application icon (or a png that will be converted to an icon)
 - 1 animation image: an image with transparency with all possible positions. (.png not too big... Something like 1000x500 px)

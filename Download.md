@@ -24,7 +24,7 @@ Once executed, you can choose if you want install it (for the autostart option) 
 ## Javascript
 You can download also a script for your webpage, this project is hosted in GitHub.
 
-Currenty this script is not able to download the pets from this project.
+Currently this script is not able to download the pets from this project.
 
 ## Editor
 If you want more mates or are a designer, why not create your own pet? 
