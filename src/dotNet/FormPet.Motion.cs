@@ -140,37 +140,21 @@ namespace DesktopPet
                 // Get size and position of window
                 if (NativeMethods.GetWindowRect(new HandleRef(this, window.Key), out NativeMethods.RECT rct))
                 {
+                    // continue if not hitting this window's side
+                    if (!GetWindowSideHitCondition(TossForce.X, tossVertVel, window, rct))
+                        continue;
+
                     // moving left
                     if (TossForce.X < 0)
                     {
-                        // window right border!
-                        if (PositionX + TossForce.X * dt <= rct.Right
-                            && PositionX + TossForce.X * dt >= rct.Right + TossForce.X * dt // A little bit of wiggle-room so the sheep doesn't phase through the window
-                            && PositionY + tossVertVel * dt < rct.Bottom // Ignore if below window. REMINDER: Y is inverted
-                            && PositionY + tossVertVel * dt + Height > rct.Top // Ignore if above window
-                            && !CheckTopWindow(false, window.Key) // Ignore windows that aren't visible on top
-                            && rct.Right < ScreenArea.Right - Width // Ignore collision if the sheep doesn't have enough space to make it past the right screen border (ex: if an application is covering the entire screen)
-                            )
-                        {
-                            // teleport position
-                            return rct.Right;
-                        }
+                        // teleport position
+                        return rct.Right;
                     }
                     // moving right
                     else if (TossForce.X > 0)
                     {
-                        // window left border!
-                        if (PositionX + TossForce.X * dt + Width >= rct.Left
-                            && PositionX + TossForce.X * dt + Width <= rct.Left + TossForce.X * dt // A little bit of wiggle-room so the sheep doesn't phase through the window
-                            && PositionY + tossVertVel * dt < rct.Bottom // Ignore if below window. REMINDER: Y is inverted
-                            && PositionY + tossVertVel * dt + Height > rct.Top // Ignore if above window
-                            && !CheckTopWindow(false, window.Key) // Ignore windows that aren't visible on top
-                            && rct.Left > ScreenArea.Left + Width // Ignore collision if the sheep doesn't have enough space to make it past the left screen border (ex: if an application is covering the entire screen)
-                            )
-                        {
-                            // teleport position
-                            return rct.Left - Width;
-                        }
+                        // teleport position
+                        return rct.Left - Width;
                     }
                 }
             }

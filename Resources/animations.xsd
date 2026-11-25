@@ -266,6 +266,16 @@
                         </xsd:sequence>
                       </xsd:complexType>
                     </xsd:element>
+					<xsd:element name='interact' minOccurs='0' maxOccurs='1'>
+					  <xsd:annotation>
+                        <xsd:documentation>Next animations to play if the pet hits another pet. If the other pet's animation triggers one of these animations, it plays. If missing, the pet continues like normal.</xsd:documentation>
+                      </xsd:annotation>
+					  <xsd:complexType>
+					    <xsd:choice maxOccurs="10">
+						  <xsd:element ref='next' />
+						</xsd:choice>
+					  </xsd:complexType>
+					</xsd:element>
                   </xsd:all>
                   <xsd:attribute name="id" type="xsd:integer">
                     <xsd:annotation>
@@ -492,6 +502,26 @@
       </xsd:enumeration>
     </xsd:restriction>
   </xsd:simpleType>
+	
+  <xsd:simpleType name="directionType">
+	<xsd:restriction base="xsd:string">
+      <xsd:enumeration value="any">
+		<xsd:annotation>
+          <xsd:documentation>No restriction: this next animation is triggered regardless of the other pet's position (default).</xsd:documentation>
+        </xsd:annotation>
+	  </xsd:enumeration>
+      <xsd:enumeration value="infront">
+		  <xsd:annotation>
+			  <xsd:documentation>Only if the other pet is infront of this one.</xsd:documentation>
+		  </xsd:annotation>
+	  </xsd:enumeration>
+	  <xsd:enumeration value="behind">
+		  <xsd:annotation>
+			  <xsd:documentation>Only if the other pet is behind this one.</xsd:documentation>
+		  </xsd:annotation>
+	  </xsd:enumeration>
+	</xsd:restriction>
+  </xsd:simpleType>
 
   <xsd:group name="step">
     <xsd:annotation>
@@ -549,6 +579,16 @@
               <xsd:documentation>Execute this next animation only for the selected kind of border or surface (see borderType). Default: none.</xsd:documentation>
             </xsd:annotation>
           </xsd:attribute>
+		  <xsd:attribute name="trigger" type="xsd:integer">
+			<xsd:annotation>
+		      <xsd:documentation>For Interact next animations, execute this animation only if the other pet's animation matches this one.</xsd:documentation>
+			</xsd:annotation>
+		  </xsd:attribute>
+		  <xsd:attribute name="direction" type="directionType">
+			<xsd:annotation>
+		      <xsd:documentation>For Interact next animations, execute this animation only if the other pet is located in this direction.</xsd:documentation>
+			</xsd:annotation>
+		  </xsd:attribute>
         </xsd:extension>
       </xsd:simpleContent>
     </xsd:complexType>
@@ -563,5 +603,14 @@
         <xsd:element ref="next" />
       </xsd:choice>
     </xsd:complexType>
+  </xsd:element>
+	
+  
+  <xsd:element name="direction">
+    <xsd:complexType>
+	  <xsd:choice minOccurs="0" maxOccurs="unbounded">
+		<xsd:element ref="next" />
+	  </xsd:choice>
+	</xsd:complexType>
   </xsd:element>
 </xsd:schema>

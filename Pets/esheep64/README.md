@@ -16,7 +16,9 @@ Other '90 screen mates in this project:
 
 v1.8 first version for UWP app
 
-v1.9 pet interaction support (bump into each other when running, sleep in flocks) and toss animation implemented by [Zecheriah](https://github.com/ZechsVariety)
+v1.9 pet interaction and mimicking support (bump into each other when running, sleep in flocks) and toss animation implemented by [Zecheriah](https://github.com/ZechsVariety)
+
+v1.10 replaced pet-mimicking animations with improved pet-interaction ones, implemented by [Zecheriah](https://github.com/ZechsVariety)
 
 ## About pet
 

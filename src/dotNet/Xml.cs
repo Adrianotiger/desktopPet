@@ -215,6 +215,7 @@ namespace DesktopPet
                 TAnimation ani = animations.AddAnimation(node.Id, node.Id.ToString());
                 ani.Border = node.Border != null;
                 ani.Gravity = node.Gravity != null;
+                ani.Interact = node.Interact != null;
 
                 ani.Name = node.Name;
                 switch (ani.Name)
@@ -332,6 +333,43 @@ namespace DesktopPet
                     }
                 }
                 
+                if (ani.Interact)
+                {
+                    foreach (XmlData.NextNode nextNode in node.Interact.Next)
+                    {
+                        TNextAnimation.TOnly where;
+                        switch (nextNode.OnlyFlag)
+                        {
+                            case "taskbar": where = TNextAnimation.TOnly.TASKBAR; break;
+                            case "window": where = TNextAnimation.TOnly.WINDOW; break;
+                            case "windowSide": where = TNextAnimation.TOnly.WINDOWSIDE; break;
+                            case "horizontal": where = TNextAnimation.TOnly.HORIZONTAL; break;
+                            case "horizontal+": where = TNextAnimation.TOnly.HORIZONTAL_; break;
+                            case "vertical": where = TNextAnimation.TOnly.VERTICAL; break;
+                            case "vertical+": where = TNextAnimation.TOnly.VERTICAL_; break;
+                            case "petSide": where = TNextAnimation.TOnly.PETSIDE; break;
+                            default: where = TNextAnimation.TOnly.NONE; break;
+                        }
+                        TNextAnimation.TDirection direction;
+                        switch (nextNode.Direction)
+                        {
+                            case "infront": direction = TNextAnimation.TDirection.INFRONT; break;
+                            case "behind": direction = TNextAnimation.TDirection.BEHIND; break;
+                            default: direction = TNextAnimation.TDirection.ANY; break;
+                        }
+                        ani.Interact = true;
+                        ani.EndInteract.Add(
+                            new TNextAnimation(
+                                nextNode.Value,
+                                nextNode.Probability,
+                                where,
+                                int.Parse(nextNode.Trigger),
+                                direction
+                            )
+                        );
+                    }
+                }
+
                 animations.SaveAnimation(ani, node.Id);
             }
 

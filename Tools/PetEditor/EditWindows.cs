@@ -494,6 +494,7 @@ namespace PetEditor
                 listView2.SmallImageList = XmlTools.AnimationIcons;
                 listView3.SmallImageList = XmlTools.AnimationIcons;
                 listView4.SmallImageList = XmlTools.AnimationIcons;
+                listView5.SmallImageList = XmlTools.AnimationIcons;
             }
             /*
             var listItems = XmlTools.GetAnimationList();
@@ -506,6 +507,10 @@ namespace PetEditor
             */
             toolStripComboBox2.Items.Clear();
             toolStripComboBox2.Items.AddRange(XmlTools.GetAnimationList());
+            toolStripComboBox4.Items.Clear();
+            toolStripComboBox4.Items.AddRange(XmlTools.GetAnimationList());
+            toolStripComboBox5.Items.Clear();
+            toolStripComboBox5.Items.AddRange(XmlTools.GetAnimationList());
             tabPage4.Tag = null;
             groupBox5.Enabled = false;
             groupBox6.Enabled = false;
@@ -667,6 +672,32 @@ namespace PetEditor
             }
             listView4.Height = (listView4.Items.Count + 2) * 33;
 
+            listView5.Items.Clear();
+            if (node.Interact != null && node.Interact.Next != null)
+            {
+                foreach (var n in node.Interact.Next)
+                {
+                    var lvi = listView5.Items.Add(n.Value.ToString());
+                    var n2 = XmlTools.GetXmlAnimationNode(n.Value);
+                    try
+                    {
+                        lvi.ImageIndex = n2.Sequence.Frame[0];
+                        lvi.SubItems.Add(n2.Name);
+                    }
+                    catch (Exception)
+                    {
+                        Program.AddLog("Animation " + n.Value + " does not have frame Index", "Open Node " + n.Value, Program.LOG_TYPE.ERROR, tabPage4);
+                        lvi.SubItems.Add("--");
+                    }
+                    lvi.SubItems.Add(n.Probability.ToString());
+                    lvi.SubItems.Add(n.OnlyFlag);
+                    lvi.SubItems.Add(XmlTools.GetXmlAnimationNode(int.Parse(n.Trigger)).Id.ToString());
+                    lvi.SubItems.Add(XmlTools.GetXmlAnimationNode(int.Parse(n.Trigger)).Name);
+                    lvi.SubItems.Add(n.Direction);
+                }
+            }
+            listView5.Height = (listView5.Items.Count + 2) * 33;
+
             groupBox8.Height = flowLayoutPanel1.Height + 50;
 
             UpdateAnimationStatistics(node);
@@ -755,6 +786,24 @@ namespace PetEditor
             else
             {
                 node.Gravity = null;
+            }
+            if (listView5.Items.Count > 0)
+            {
+                node.Interact = new XmlData.HitNode();
+                node.Interact.Next = new XmlData.NextNode[listView5.Items.Count];
+                for (var k = 0; k < listView5.Items.Count; k++)
+                {
+                    node.Interact.Next[k] = new XmlData.NextNode();
+                    node.Interact.Next[k].Value = int.Parse(listView5.Items[k].SubItems[0].Text);
+                    node.Interact.Next[k].Probability = int.Parse(listView5.Items[k].SubItems[2].Text);
+                    node.Interact.Next[k].OnlyFlag = listView5.Items[k].SubItems[3].Text;
+                    node.Interact.Next[k].Trigger = listView5.Items[k].SubItems[4].Text;
+                    node.Interact.Next[k].Direction = listView5.Items[k].SubItems[6].Text;
+                }
+            }
+            else
+            {
+                node.Interact = null;
             }
             node.Start = new XmlData.MovingNode();
             node.Start.Interval = richTextBox6.Text;
@@ -1350,18 +1399,36 @@ namespace PetEditor
                 toolStripComboBox1.SelectedIndex = -1;
                 foreach (var k in toolStripComboBox1.Items)
                 {
-                    if(k.ToString() == lv.SelectedItems[0].SubItems[3].Text)
+                    try
                     {
-                        toolStripComboBox1.SelectedItem = k;
+                        if (k.ToString() == lv.SelectedItems[0].SubItems[3].Text)
+                        {
+                            toolStripComboBox1.SelectedItem = k;
+                            break;
+                        }
+                    }
+                    catch (ArgumentOutOfRangeException)
+                    {
+                        toolStripComboBox1.SelectedIndex = 0;
+                        lv.SelectedItems[0].SubItems.Add(toolStripComboBox1.Text);
                         break;
                     }
                 }
                 toolStripComboBox2.SelectedIndex = -1;
                 foreach (var k in toolStripComboBox2.Items)
                 {
-                    if((k as XmlNodeCombo).Id.ToString() == lv.SelectedItems[0].SubItems[0].Text)
+                    try
                     {
-                        toolStripComboBox2.SelectedItem = k;
+                        if ((k as XmlNodeCombo).Id.ToString() == lv.SelectedItems[0].SubItems[0].Text)
+                        {
+                            toolStripComboBox2.SelectedItem = k;
+                            break;
+                        }
+                    }
+                    catch (ArgumentOutOfRangeException)
+                    {
+                        toolStripComboBox2.SelectedIndex = -1;
+                        lv.SelectedItems[0].SubItems.Add(toolStripComboBox2.Text);
                         break;
                     }
                 }
@@ -1373,9 +1440,9 @@ namespace PetEditor
         {
             var cms = contextMenuStrip2;
             var lv = cms.SourceControl as ListView;
-            if (lv.SelectedIndices.Count == 0)
+            if (toolStripComboBox2.SelectedIndex >= 0 && toolStripComboBox1.SelectedIndex >= 0)
             {
-                if (toolStripComboBox2.SelectedIndex >= 0 && toolStripComboBox1.SelectedIndex >= 0)
+                if (lv.SelectedIndices.Count == 0)
                 {
                     var lvi = lv.Items.Add((toolStripComboBox2.SelectedItem as XmlNodeCombo).Id.ToString());
                     var n2 = XmlTools.GetXmlAnimationNode((toolStripComboBox2.SelectedItem as XmlNodeCombo).Id);
@@ -1392,22 +1459,22 @@ namespace PetEditor
                 }
                 else
                 {
-                    MessageBox.Show("Not all parameters are set.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    var lvi = lv.SelectedItems[0];
+                    lvi.SubItems[0].Text = (toolStripComboBox2.SelectedItem as XmlNodeCombo).Id.ToString();
+                    var n2 = XmlTools.GetXmlAnimationNode((toolStripComboBox2.SelectedItem as XmlNodeCombo).Id);
+                    try
+                    {
+                        lvi.ImageIndex = n2.Sequence.Frame[0];
+                    }
+                    catch (Exception) { }
+                    lvi.SubItems[1].Text = (toolStripComboBox2.SelectedItem as XmlNodeCombo).Name;
+                    lvi.SubItems[2].Text = toolStripTextBox1.Text;
+                    lvi.SubItems[3].Text = toolStripComboBox1.Text;
                 }
             }
             else
             {
-                var lvi = lv.SelectedItems[0];
-                lvi.SubItems[0].Text = (toolStripComboBox2.SelectedItem as XmlNodeCombo).Id.ToString();
-                var n2 = XmlTools.GetXmlAnimationNode((toolStripComboBox2.SelectedItem as XmlNodeCombo).Id);
-                try
-                {
-                    lvi.ImageIndex = n2.Sequence.Frame[0];
-                }
-                catch (Exception) { }
-                lvi.SubItems[1].Text = (toolStripComboBox2.SelectedItem as XmlNodeCombo).Name;
-                lvi.SubItems[2].Text = toolStripTextBox1.Text;
-                lvi.SubItems[3].Text = toolStripComboBox1.Text;
+                MessageBox.Show("Not all parameters are set.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
             animation_Edited(sender, e);
         }
@@ -1802,6 +1869,168 @@ namespace PetEditor
         private void toolStripMenuItem7_Click(object sender, EventArgs e)
         {
             var cms = contextMenuStrip2;
+            var lv = cms.SourceControl as ListView;
+            if (lv.SelectedIndices.Count > 0)
+            {
+                lv.Items.Remove(lv.SelectedItems[0]);
+                animation_Edited(sender, e);
+            }
+        }
+
+        // Context menu for "if another pet is detected" box (interact animations)
+        private void contextMenuStrip4_Opening(object sender, CancelEventArgs e)
+        {
+            var cms = sender as ContextMenuStrip;
+            var lv = cms.SourceControl as ListView;
+            if (lv.SelectedIndices.Count == 0)
+            {
+                toolStripMenuItem12.Enabled = false;
+                toolStripMenuItem11.Text = "ADD NEW";
+                toolStripTextBox2.Text = "10";
+                toolStripComboBox3.SelectedIndex = 0;
+                toolStripComboBox4.SelectedIndex = -1;
+                toolStripComboBox5.SelectedIndex = -1;
+                toolStripComboBox6.SelectedIndex = 0;
+            }
+            else
+            {
+                toolStripMenuItem12.Enabled = true;
+                toolStripMenuItem11.Text = "SAVE";
+                toolStripTextBox2.Text = lv.SelectedItems[0].SubItems[2].Text;
+                toolStripComboBox3.SelectedIndex = -1;
+                foreach (var k in toolStripComboBox3.Items)
+                {
+                    try
+                    {
+                        if (k.ToString() == lv.SelectedItems[0].SubItems[3].Text)
+                        {
+                            toolStripComboBox3.SelectedItem = k;
+                            break;
+                        }
+                    }
+                    catch (ArgumentOutOfRangeException)
+                    {
+                        toolStripComboBox3.SelectedIndex = 0;
+                        lv.SelectedItems[0].SubItems.Add(toolStripComboBox3.Text);
+                        break;
+                    }
+                }
+                toolStripComboBox4.SelectedIndex = -1;
+                foreach (var k in toolStripComboBox4.Items)
+                {
+                    try
+                    {
+                        if ((k as XmlNodeCombo).Id.ToString() == lv.SelectedItems[0].SubItems[0].Text)
+                        {
+                            toolStripComboBox4.SelectedItem = k;
+                            break;
+                        }
+                    }
+                    catch (ArgumentOutOfRangeException)
+                    {
+                        toolStripComboBox4.SelectedIndex = -1;
+                        lv.SelectedItems[0].SubItems.Add(toolStripComboBox4.Text);
+                        break;
+                    }
+                }
+                toolStripComboBox5.SelectedIndex = -1;
+                foreach (var k in toolStripComboBox5.Items)
+                {
+                    try
+                    {
+                        if ((k as XmlNodeCombo).Id.ToString() == lv.SelectedItems[0].SubItems[4].Text)
+                        {
+                            toolStripComboBox5.SelectedItem = k;
+                            break;
+                        }
+                    }
+                    catch (ArgumentOutOfRangeException)
+                    {
+                        toolStripComboBox5.SelectedIndex = -1;
+                        lv.SelectedItems[0].SubItems.Add((toolStripComboBox5.SelectedItem as XmlNodeCombo).Id.ToString());
+                        lv.SelectedItems[0].SubItems.Add((toolStripComboBox5.SelectedItem as XmlNodeCombo).Name);
+                        break;
+                    }
+                }
+                toolStripComboBox6.SelectedIndex = -1;
+                foreach (var k in toolStripComboBox6.Items)
+                {
+                    try
+                    {
+                        if (k.ToString() == lv.SelectedItems[0].SubItems[6].Text)
+                        {
+                            toolStripComboBox6.SelectedItem = k;
+                            break;
+                        }
+                    }
+                    catch (ArgumentOutOfRangeException)
+                    {
+                        toolStripComboBox6.SelectedIndex = 0;
+                        lv.SelectedItems[0].SubItems.Add(toolStripComboBox6.Text);
+                        break;
+                    }
+                }
+            }
+        }
+
+        // Add or save next node (interact animations)
+        private void toolStripMenuItem11_Click(object sender, EventArgs e)
+        {
+            var cms = contextMenuStrip4;
+            var lv = cms.SourceControl as ListView;
+
+            // Check that all values were set
+            if (toolStripComboBox3.SelectedIndex >= 0 && toolStripComboBox4.SelectedIndex >= 0 && toolStripComboBox5.SelectedIndex >= 0 && toolStripComboBox6.SelectedIndex >= 0)
+            {
+                // If animation is new
+                if (lv.SelectedIndices.Count == 0)
+                {
+                    var lvi = lv.Items.Add((toolStripComboBox4.SelectedItem as XmlNodeCombo).Id.ToString());
+                    var n2 = XmlTools.GetXmlAnimationNode((toolStripComboBox4.SelectedItem as XmlNodeCombo).Id);
+                    try
+                    {
+                        lvi.ImageIndex = n2.Sequence.Frame[0];
+                    }
+                    catch (Exception) { }
+                    lvi.SubItems.Add((toolStripComboBox4.SelectedItem as XmlNodeCombo).Name);
+                    lvi.SubItems.Add(toolStripTextBox2.Text);
+                    lvi.SubItems.Add(toolStripComboBox3.Text);
+                    lvi.SubItems.Add((toolStripComboBox5.SelectedItem as XmlNodeCombo).Id.ToString());
+                    lvi.SubItems.Add((toolStripComboBox5.SelectedItem as XmlNodeCombo).Name);
+                    lvi.SubItems.Add(toolStripComboBox6.Text);
+                    lv.Height += 30;
+                    lv.Parent.Height += 30;
+                }
+                // If animation already exists and is being editted
+                else
+                {
+                    var lvi = lv.SelectedItems[0];
+                    lvi.SubItems[0].Text = (toolStripComboBox4.SelectedItem as XmlNodeCombo).Id.ToString();
+                    var n2 = XmlTools.GetXmlAnimationNode((toolStripComboBox4.SelectedItem as XmlNodeCombo).Id);
+                    try
+                    {
+                        lvi.ImageIndex = n2.Sequence.Frame[0];
+                    }
+                    catch (Exception) { }
+                    lvi.SubItems[1].Text = (toolStripComboBox4.SelectedItem as XmlNodeCombo).Name;
+                    lvi.SubItems[2].Text = toolStripTextBox2.Text;
+                    lvi.SubItems[3].Text = toolStripComboBox3.Text;
+                    lvi.SubItems[4].Text = (toolStripComboBox5.SelectedItem as XmlNodeCombo).Id.ToString();
+                    lvi.SubItems[5].Text = (toolStripComboBox5.SelectedItem as XmlNodeCombo).Name;
+                    lvi.SubItems[6].Text = toolStripComboBox6.Text;
+                }
+            }
+            else
+            {
+                MessageBox.Show("Not all parameters were set.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+            animation_Edited(sender, e);
+        }
+
+        // Remove node (interact animations)
+        private void toolStripMenuItem12_Click(object sender, EventArgs e)
+        {
+            var cms = contextMenuStrip4;
             var lv = cms.SourceControl as ListView;
             if (lv.SelectedIndices.Count > 0)
             {

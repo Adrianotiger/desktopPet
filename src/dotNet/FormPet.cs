@@ -664,11 +664,20 @@ namespace DesktopPet
             bool bLeavingScreen = false;
                 // If the pet is "flipped", mirror the movement
             if (!IsMovingLeft) x = -x;
-            
-            if(x < 0)   // moving left (detect left borders)
+
+            // Border conditions that are accessed multiple times
+            bool hittingLeftBorder = PositionX + x <= ScreenArea.X;
+            bool hittingRightBorder = PositionX + x >= ScreenArea.X + ScreenArea.Width - Width;
+            bool hittingTaskbar = PositionY + y >= ScreenArea.Y + ScreenArea.Height - Height;
+            bool hittingTopBorder = PositionY + y < ScreenArea.Y;
+
+            // Retrieve valid windows
+            Dictionary<IntPtr, string> windows = EnumerateWindows();
+
+            if (x < 0)   // moving left (detect left borders)
             {
                 CheckFullScreen();  // used to check if another window is in full screen
-                if (PositionX + x < ScreenArea.X)    // left screen border!
+                if (hittingLeftBorder)    // left screen border!
                 {
                     int iBorderAnimation = Animations.SetNextBorderAnimation(CurrentAnimation.ID, TNextAnimation.TOnly.VERTICAL);
                     if (iBorderAnimation >= 0)
@@ -685,9 +694,6 @@ namespace DesktopPet
                 }
                 else    // run window border detection setup and then check right border of all valid windows!
                 {
-                    // Retrieve valid windows
-                    Dictionary<IntPtr, string> windows = EnumerateWindows();
-
                     // For each valid window found:
                     foreach (KeyValuePair<IntPtr, string> window in windows)
                     {
@@ -695,19 +701,30 @@ namespace DesktopPet
                         if (NativeMethods.GetWindowRect(new HandleRef(this, window.Key), out NativeMethods.RECT rct))
                         {
                             // window right border!
-                            if (PositionX + x <= rct.Right
-                                && PositionX + x >= rct.Right + x // A little bit of wiggle-room so the sheep doesn't phase through the window
-                                && PositionY + y < rct.Bottom // Ignore if below window. REMINDER: Y is inverted
-                                && PositionY + y + Height > rct.Top // Ignore if above window
-                                && !CheckTopWindow(false, window.Key) // Ignore windows that aren't visible on top
-                                && rct.Right < ScreenArea.Right - Width // Ignore collision if the sheep doesn't have enough space to make it past the right screen border (ex: if an application is covering the entire screen)
-                                )
+                            if (GetWindowSideHitCondition(x, y, window, rct))
                             {
-                                // Set border animation with correct "only" value
-                                int iBorderAnimation = window.Value == "Sheep" ? SetPetInteractionAnimations(rct) : Animations.SetNextBorderAnimation(CurrentAnimation.ID, TNextAnimation.TOnly.WINDOWSIDE);
+                                int iBorderAnimation = -1;
 
-                                // If a "none", "vertical+" or "petSide"/"windowSide" border animation exists, play it. Otherwise, pet ignores this collision and continues as normal.
-                                if (iBorderAnimation >= 0)
+                                if (window.Value == "Sheep")
+                                {
+                                    // Determine which "only" value the pet interaction can use
+                                    TNextAnimation.TOnly only = TNextAnimation.TOnly.NONE;
+                                    if (hittingTaskbar)
+                                        only = TNextAnimation.TOnly.TASKBAR;
+                                    else if (hittingTopBorder)
+                                        only = TNextAnimation.TOnly.HORIZONTAL;
+                                    else if (hwndWindow != (IntPtr)0)
+                                        only = TNextAnimation.TOnly.WINDOW;
+
+                                    iBorderAnimation = SetPetInteractAnimations(rct, only);
+                                }
+                                else // Regular window
+                                {
+                                    iBorderAnimation = Animations.SetNextBorderAnimation(CurrentAnimation.ID, TNextAnimation.TOnly.WINDOWSIDE);
+                                }
+
+                                // If a "none", "vertical+" or "petSide"/"windowSide" border animation exists, play it. Otherwise, pet ignores this collision and continues as normal. It also ignores it if it's already playing the animation.
+                                if (iBorderAnimation >= 0 && iBorderAnimation != CurrentAnimation.ID)
                                 {
                                     PositionX = rct.Right;
                                     x = 0;
@@ -748,7 +765,7 @@ namespace DesktopPet
             else if (x > 0)   // moving right (detect right borders)
             {
                 CheckFullScreen();  // used to check if another window is in full screen
-                if (PositionX + x + Width > ScreenArea.X + ScreenArea.Width)    // right screen border!
+                if (hittingRightBorder)    // right screen border!
                 {
                     int iBorderAnimation = Animations.SetNextBorderAnimation(CurrentAnimation.ID, TNextAnimation.TOnly.VERTICAL);
                     if (iBorderAnimation >= 0)
@@ -765,9 +782,6 @@ namespace DesktopPet
                 }
                 else    // run window border detection setup and then check left border of all valid windows!
                 {
-                    // Retrieve valid windows
-                    Dictionary<IntPtr, string> windows = EnumerateWindows();
-
                     // For each valid window found:
                     foreach (KeyValuePair<IntPtr, string> window in windows)
                     {
@@ -775,19 +789,30 @@ namespace DesktopPet
                         if (NativeMethods.GetWindowRect(new HandleRef(this, window.Key), out NativeMethods.RECT rct))
                         {
                             // window left border!
-                            if (PositionX + x + Width >= rct.Left
-                                && PositionX + x + Width <= rct.Left + x // A little bit of wiggle-room so the sheep doesn't phase through the window
-                                && PositionY + y < rct.Bottom // Ignore if below window. REMINDER: Y is inverted
-                                && PositionY + y + Height > rct.Top // Ignore if above window
-                                && !CheckTopWindow(false, window.Key) // Ignore windows that aren't visible on top
-                                && rct.Left > ScreenArea.Left + Width // Ignore collision if the sheep doesn't have enough space to make it past the left screen border (ex: if an application is covering the entire screen)
-                                )
+                            if (GetWindowSideHitCondition(x, y, window, rct))
                             {
-                                // Set border animation with correct "only" value
-                                int iBorderAnimation = window.Value == "Sheep" ? SetPetInteractionAnimations(rct) : Animations.SetNextBorderAnimation(CurrentAnimation.ID, TNextAnimation.TOnly.WINDOWSIDE);
+                                int iBorderAnimation = -1;
+
+                                if (window.Value == "Sheep")
+                                {
+                                    // Determine which "only" value the pet interaction can use
+                                    TNextAnimation.TOnly only = TNextAnimation.TOnly.NONE;
+                                    if (hittingTaskbar)
+                                        only = TNextAnimation.TOnly.TASKBAR;
+                                    else if (hittingTopBorder)
+                                        only = TNextAnimation.TOnly.HORIZONTAL;
+                                    else if (hwndWindow != (IntPtr)0)
+                                        only = TNextAnimation.TOnly.WINDOW;
+
+                                    iBorderAnimation = SetPetInteractAnimations(rct, only);
+                                }
+                                else // Regular window
+                                {
+                                    iBorderAnimation = Animations.SetNextBorderAnimation(CurrentAnimation.ID, TNextAnimation.TOnly.WINDOWSIDE);
+                                }
 
                                 // If a "none", "vertical+" or "petSide"/"windowSide" border animation exists, play it. Otherwise, pet ignores this collision and continues as normal.
-                                if (iBorderAnimation >= 0)
+                                if (iBorderAnimation >= 0 && iBorderAnimation != CurrentAnimation.ID)
                                 {
                                     PositionX = rct.Left - Width;
                                     x = 0;
@@ -831,14 +856,12 @@ namespace DesktopPet
             }
             else if(y > 0)   // moving down (detect taskbar and windows)
             {
-                int bottomY = ScreenArea.Y + ScreenArea.Height;
-
-                if (PositionY + y > bottomY - Height) // border detected!
+                if (hittingTaskbar) // border detected!
                 {
                     int iBorderAnimation = Animations.SetNextBorderAnimation(CurrentAnimation.ID, TNextAnimation.TOnly.TASKBAR);
                     if (iBorderAnimation >= 0)
                     {
-                        PositionY = bottomY - Height;
+                        PositionY = ScreenArea.Y + ScreenArea.Height - Height;
                         OffsetY = 0;
                         y = 0;
                         nextAnimation = iBorderAnimation;
@@ -865,7 +888,7 @@ namespace DesktopPet
             }
             else if(y < 0)  // moving up, detect upper screen border
             {
-                if (PositionY + y < ScreenArea.Y) // border detected!
+                if (hittingTopBorder) // border detected!
                 {
                     int iBorderAnimation = Animations.SetNextBorderAnimation(CurrentAnimation.ID, TNextAnimation.TOnly.HORIZONTAL);
                     if (iBorderAnimation >= 0)
@@ -952,7 +975,7 @@ namespace DesktopPet
             {
                 if(hwndWindow == (IntPtr)0)
                 {
-                    if(PositionY + y < ScreenArea.Y + ScreenArea.Height - Height)
+                    if(!hittingTaskbar)
                     {
                         if(PositionY + y + 3 >= ScreenArea.Y + ScreenArea.Height - Height) // allow 3 pixels to move without fall
                         {
@@ -1089,19 +1112,50 @@ namespace DesktopPet
         }
 
             /// <summary>
-            /// When pets collide, this function decides what both of the pets should do
-            /// <para>Type 1: Both pets play the same random animation</para>
-            /// <para>Type 2: Otherwise, this pet has a 50% chance to mimic the animation that the other pet is already playing</para>
-            /// <para>Type 3: As a last resort, both pets play different random animations, but Pet2's animation stays the same if they aren't facing each other</para>
+            /// WindowSide collision detection
             /// </summary>
-            /// <remarks>
-            /// Pro tip: to make pets mimic each other, add some "petSide" border animations with their probabilities at 0
-            /// </remarks>
-            /// <param name="rct">Rect of other pet window (the pet that this pet collided with)</param>
-            /// <returns>ID of the next animation for this sheep to play. -1 if there is no animation.</returns>
-        private int SetPetInteractionAnimations(NativeMethods.RECT rct)
+            /// <param name="x">Pet's X movement this tic</param>
+            /// <param name="y">Pet's Y movement this tic</param>
+            /// <param name="window">The window being checked for collision</param>
+            /// <param name="rct">The window's rect</param>
+            /// <returns>True or False if pet is colliding with the window's side</returns>
+        private bool GetWindowSideHitCondition(double x, double y, KeyValuePair<IntPtr, string> window, NativeMethods.RECT rct)
         {
-            // NOTE: For readability, this pet is referred to as sheep1, and the other pet it collides with is called sheep2
+            // Conditions that aren't affected by horizontal movement
+            bool condition =
+                PositionY + y < rct.Bottom // Ignore if below window. REMINDER: Y is inverted
+                && PositionY + y + Height > rct.Top // Ignore if above window
+                && !CheckTopWindow(false, window.Key); // Ignore windows that aren't visible on top
+
+            if (condition && x != 0)
+            {
+                // Conditions that are different based on horizontal movement
+                condition = condition &&
+                    (x < 0 ? // Moving left
+                        PositionX + x <= rct.Right // Main condition
+                        && PositionX + x >= rct.Right + x // A little bit of wiggle-room so the sheep doesn't phase through the window
+                        && rct.Right < ScreenArea.Right - Width // Ignore collision if the sheep doesn't have enough space to make it past the right screen border (ex: if an application is covering the entire screen)
+                    : // Moving right
+                        PositionX + x + Width >= rct.Left
+                        && PositionX + x + Width <= rct.Left + x
+                        && rct.Left > ScreenArea.Left + Width);
+            }
+            else
+                condition = false;
+
+            return condition;
+        }
+
+            /// <summary>
+            /// When sheeps collide, this function runs for one sheep only, but decides what BOTH sheeps should do
+            /// <para>1. First, the program checks if either sheep triggers the other one's interact animations</para>
+            /// <para>2. If not, the program tries to randomly pick a petSide border animation that both sheeps have. If they don't have any in common, each sheep gets a different random one.<br />In this case, if sheeps are facing/moving in the same direction, sheep2 will not change its animation</para>
+            /// </summary>
+            /// <param name="rct">Rect of sheep2's window</param>
+            /// <returns>ID of the next animation for sheep1 to play. -1 if there is no animation.</returns>
+        private int SetPetInteractAnimations(NativeMethods.RECT rct, TNextAnimation.TOnly only)
+        {
+            // NOTE: For readability, this pet is referred to as "sheep1", and the other pet it collides with is called "sheep2"
 
             FormPet[] sheeps = Program.Mainthread.sheeps; // List of sheep objects
             FormPet sheep2 = null; // The sheep/child object that is being collided with
@@ -1114,7 +1168,7 @@ namespace DesktopPet
                 // Break the loop if there are no more sheeps to run through
                 if (sheeps[i] == null) break;
 
-                // If position matches the rect's position, it is sheep2
+                // If sheep position matches the rect's position, it is sheep2
                 if(sheeps[i].Left == rct.Left && sheeps[i].Bottom == rct.Bottom)
                 {
                     sheep2 = sheeps[i];
@@ -1135,7 +1189,7 @@ namespace DesktopPet
                     }
                 }
 
-                // Break out of loop if sheep2 was found
+                // Break out of loop if sheep2 was found as a child
                 if (sheep2 != null)
                     break;
             }
@@ -1144,103 +1198,185 @@ namespace DesktopPet
             if (sheep2 == null)
                 return Animations.SetNextBorderAnimation(CurrentAnimation.ID, TNextAnimation.TOnly.PETSIDE);
 
-            // Get data for deciding which animation type will happen
+            int animationID = -1;
+            int sheep2AnimationID = -1;
+
+            // Get data for deciding how to pick the animations
 
             TAnimation sheep2CurrentAnim = sheep2.CurrentAnimation; // Initialized here to prevent runtime errors
 
-            List<TNextAnimation> commonBorderAnims = new List<TNextAnimation>(); // List of all next end-border animations that both sheep have in common
-            int mimicAnimID = -1; // If sheep2 is currently playing an animation that is also in sheep1's end-border animations, its ID is stored here
+            // 1. Look for valid interact animations
+
+            // Lists of all next end-interact animations whose triggers match the animation of the other sheep
+            List<TNextAnimation> sheep1ValidInteractAnims = new List<TNextAnimation>();
+            List<TNextAnimation> sheep2ValidInteractAnims = new List<TNextAnimation>();
+
+            // Determine where each sheep is in relation to each other
+            // Sheep1
+            TNextAnimation.TDirection sheep1InteractDirection;
+            if((IsMovingLeft && sheep2.Left < Left) || (!IsMovingLeft && sheep2.Right > Right))
+                sheep1InteractDirection = TNextAnimation.TDirection.INFRONT;
+            else
+                sheep1InteractDirection = TNextAnimation.TDirection.BEHIND;
+            //Sheep2
+            TNextAnimation.TDirection sheep2InteractDirection;
+            if (sheep2.IsMovingLeft && Left < sheep2.Left || (!sheep2.IsMovingLeft && Right > sheep2.Right))
+                sheep2InteractDirection = TNextAnimation.TDirection.INFRONT;
+            else
+                sheep2InteractDirection = TNextAnimation.TDirection.BEHIND;
+
+            // Determine if all horizontal+ animations should be considered
+            bool isHorizontal_ = (only == TNextAnimation.TOnly.HORIZONTAL || only == TNextAnimation.TOnly.WINDOW || only == TNextAnimation.TOnly.TASKBAR) ? true : false; // horizontal+ counts for horizontal, window and taskbar collisions
+
+            // Determine if sheep1 has any valid interact anims
+            foreach (TNextAnimation interactAnim in CurrentAnimation.EndInteract)
+            {
+                // Ignore animation if the probability is 0
+                if (interactAnim.Probability == 0)
+                    continue;
+
+                // Ignore animation if it has the wrong TOnly value
+                if (interactAnim.only != only
+                    && interactAnim.only != TNextAnimation.TOnly.NONE
+                    && interactAnim.only != TNextAnimation.TOnly.PETSIDE
+                    && interactAnim.only != TNextAnimation.TOnly.VERTICAL_
+                    && !(isHorizontal_ && interactAnim.only == TNextAnimation.TOnly.HORIZONTAL_))
+                    continue;
+
+                // Ignore animation if sheep2 isn't in the intended direction
+                if (interactAnim.Direction != sheep1InteractDirection && interactAnim.Direction != TNextAnimation.TDirection.ANY)
+                    continue;
+
+                // If sheep2's current animation matches the intended trigger, add this animation to the list of randomly picked animations
+                if (interactAnim.TriggerID == sheep2CurrentAnim.ID)
+                    sheep1ValidInteractAnims.Add(interactAnim);
+            }
+            // Determine if sheep2 has any valid interact anims
+            foreach (TNextAnimation interactAnim in sheep2CurrentAnim.EndInteract)
+            {
+                // Ignore animation if the probability is 0
+                if (interactAnim.Probability == 0)
+                    continue;
+
+                // Ignore animation if it has the wrong TOnly value. Sheep2 is assumed to have the same only value so that it doesn't have to be recalculated
+                if (interactAnim.only != only
+                    && interactAnim.only != TNextAnimation.TOnly.NONE
+                    && interactAnim.only != TNextAnimation.TOnly.PETSIDE
+                    && interactAnim.only != TNextAnimation.TOnly.VERTICAL_
+                    && !(isHorizontal_ && interactAnim.only == TNextAnimation.TOnly.HORIZONTAL_))
+                    continue;
+
+                // Ignore animation if sheep1 isn't in the intended direction
+                if (interactAnim.Direction != sheep2InteractDirection && interactAnim.Direction != TNextAnimation.TDirection.ANY)
+                    continue;
+
+                // If sheep1's current animation matches the intended trigger, add this animation to the list of randomly picked animations
+                if (interactAnim.TriggerID == CurrentAnimation.ID)
+                    sheep2ValidInteractAnims.Add(interactAnim);
+            }
+
+            // Play sheep1 interact anims
+            if (sheep1ValidInteractAnims.Count > 0)
+            {
+                animationID = Animations.SetNextInteractAnimation(sheep1ValidInteractAnims);
+                StartUp.AddDebugInfo(StartUp.DEBUG_TYPE.warning, "Pet1 interact anim: " + animationID);
+            }
+            // Play sheep2 interact anims
+            if (sheep2ValidInteractAnims.Count > 0)
+            {
+                sheep2AnimationID = Animations.SetNextInteractAnimation(sheep2ValidInteractAnims);
+                StartUp.AddDebugInfo(StartUp.DEBUG_TYPE.warning, "Pet2 interact anim: " + animationID);
+            }
+
+            // Return if both sheep had their animations set
+            if (animationID >= 0 && sheep2AnimationID >= 0)
+            {
+                sheep2.SetNewAnimation(sheep2AnimationID);
+                return animationID;
+            }
+
+            // 2. Look for valid PetSide border animations
+
+            // List of all next end-border animations that both sheeps have in common
+            List<TNextAnimation> commonBorderAnims = new List<TNextAnimation>();
 
             // Determine if sheeps are both facing/moving in the same direction
             bool sameDirection = IsMovingLeft == sheep2.IsMovingLeft // check if they're facing the same direction
-                    || (IsMovingLeft && sheep2.PositionX > PositionX) // or, check that sheep2 is infront of sheep1 in the correct direction (fixes infinite loops if sheep1 is moving backwards)
+                    || (IsMovingLeft && sheep2.PositionX > PositionX) // or, check if sheep2 is behind sheep1 (prevents infinite loops if sheep1 is moving backwards)
                     || (!IsMovingLeft && sheep2.PositionX < PositionX);
 
-            // Run through sheep1's end-border animations to see if sheep2 has them
-            foreach (TNextAnimation borderAnim in CurrentAnimation.EndBorder)
+            // Don't bother looking for a common animation if sheeps are moving in the same direction, or if one of the sheeps is already going to play an interact animation
+            if (!sameDirection && sheep1ValidInteractAnims.Count + sheep2ValidInteractAnims.Count == 0)
             {
-                // Skip this animation if it isn't set to petSide, none or vertical+
-                if (borderAnim.only != TNextAnimation.TOnly.PETSIDE && borderAnim.only != TNextAnimation.TOnly.NONE && borderAnim.only != TNextAnimation.TOnly.VERTICAL_)
-                    continue;
-
-                // If sheep2's current animation matches this sheep1 border animation, update mimicAnimID
-                if (sheep2CurrentAnim.ID == borderAnim.ID)
-                    mimicAnimID = borderAnim.ID;
-
-                // Ignore border animation if sheeps are moving in same direction
-                if (sameDirection)
+                // Run through sheep1's end-border animations to see if sheep2 has them
+                foreach (TNextAnimation borderAnim in CurrentAnimation.EndBorder)
                 {
-                    // If a mimic anim was already found, it's pointless to continue the loop
-                    if (mimicAnimID != -1)
-                        break;
-                    else
+                    // Skip this animation if it isn't set to None/PetSide/Vertical+
+                    if (borderAnim.only != TNextAnimation.TOnly.PETSIDE && borderAnim.only != TNextAnimation.TOnly.NONE && borderAnim.only != TNextAnimation.TOnly.VERTICAL_)
                         continue;
-                }
 
-                // Ignore border animation if the probability is 0
-                if (borderAnim.Probability == 0)
-                    continue;
-
-                // Run through each of sheep2's end-border animations to find any in common
-                foreach (TNextAnimation sheep2BorderAnim in sheep2CurrentAnim.EndBorder)
-                {
                     // Ignore border animation if the probability is 0
-                    if (sheep2BorderAnim.Probability == 0)
+                    if (borderAnim.Probability == 0)
                         continue;
 
-                    // If the IDs match and the "only" values are correct, add this animation to the commonBorderAnims list
-                    if (sheep2BorderAnim.ID == borderAnim.ID && (sheep2BorderAnim.only == TNextAnimation.TOnly.PETSIDE || sheep2BorderAnim.only == TNextAnimation.TOnly.NONE || sheep2BorderAnim.only == TNextAnimation.TOnly.VERTICAL_))
+                    // Run through each of sheep2's end-border animations to find a single match
+                    foreach (TNextAnimation sheep2BorderAnim in sheep2CurrentAnim.EndBorder)
                     {
-                        commonBorderAnims.Add(borderAnim);
-                        break;
+                        // Ignore border animation if the probability is 0
+                        if (sheep2BorderAnim.Probability == 0)
+                            continue;
+
+                        // If the IDs match and the "only" values are correct, add this animation to the commonBorderAnims list
+                        if (sheep2BorderAnim.ID == borderAnim.ID && (sheep2BorderAnim.only == TNextAnimation.TOnly.PETSIDE || sheep2BorderAnim.only == TNextAnimation.TOnly.NONE || sheep2BorderAnim.only == TNextAnimation.TOnly.VERTICAL_))
+                        {
+                            commonBorderAnims.Add(borderAnim);
+                            break;
+                        }
                     }
                 }
             }
 
-            // Play correct animation type
+            // Pick random border animations
 
-            int animationID = -1;
-
-            // Type 1: if both sheep have some of the same end-border animations, randomly pick one of them and apply it to both sheep
+            // If both sheep have some of the same valid end-border animations, and neither are doing an interact anim instead, make both sheep play the same random animation
             if (commonBorderAnims.Count > 0)
             {
-                //Console.WriteLine("Type-1 interaction: both pets do same thing");
-                StartUp.AddDebugInfo(StartUp.DEBUG_TYPE.warning, "Type-1 interaction");
-
-                // Apply to sheep1
+                // Pick random animation to be applied to both sheep
                 animationID = Animations.SetNextInteractAnimation(commonBorderAnims, TNextAnimation.TOnly.PETSIDE);
-                // Apply to sheep2 if not -1 (which should never be the case)
-                if(animationID >= 0)
-                    sheep2.SetNewAnimation(animationID);
-            }
-            // Type 2: otherwise, if sheep2 is currently playing an animation that sheep1 has as an end-border animation (ex: sleeping), there's a 50% chance for sheep1 to "mimic" sheep2
-            else if(mimicAnimID > 0 && rand.Next(0, 99) < 50)
-            {
-                //Console.WriteLine("Type-2 interaction: pet1 mimics pet2");
-                StartUp.AddDebugInfo(StartUp.DEBUG_TYPE.warning, "Type-2 interaction");
 
-                animationID = mimicAnimID;
-                SetNewAnimation(animationID);
+                // Apply to sheep2 if not -1 (which should never be the case)
+                if (animationID >= 0)
+                    sheep2AnimationID = animationID;
+
+                StartUp.AddDebugInfo(StartUp.DEBUG_TYPE.warning, "Common PetSide border anim: " + animationID);
             }
-            // Type 3: if all else fails, set both sheep to random end-border petSide animations
+            // If sheeps have different end-border animations, or one of them is doing an interact anim instead, pick a random one for whomever needs it
             else
             {
-                //Console.WriteLine("Type-3 interaction: Both sheeps play different random animations, but sheep2's animation is ignored if they aren't facing each other");
-                StartUp.AddDebugInfo(StartUp.DEBUG_TYPE.warning, "Type-3 interaction");
-
                 // Sheep1 animation
-                animationID = Animations.SetNextBorderAnimation(CurrentAnimation.ID, TNextAnimation.TOnly.PETSIDE);
+                if (sheep1ValidInteractAnims.Count == 0)
+                {
+                    animationID = Animations.SetNextBorderAnimation(CurrentAnimation.ID, TNextAnimation.TOnly.PETSIDE);
+
+                    if (animationID >= 0)
+                        StartUp.AddDebugInfo(StartUp.DEBUG_TYPE.warning, "Pet1 PetSide border anim: " + animationID);
+                }
 
                 // Sheep2 animation (only if it is facing sheep1)
-                if (!sameDirection)
+                if (sheep2ValidInteractAnims.Count == 0 && !sameDirection)
                 {
-                    int sheep2AnimationID = sheep2.Animations.SetNextBorderAnimation(sheep2CurrentAnim.ID, TNextAnimation.TOnly.PETSIDE);
+                    sheep2AnimationID = sheep2.Animations.SetNextBorderAnimation(sheep2CurrentAnim.ID, TNextAnimation.TOnly.PETSIDE);
                     // Only set new animation if one was found
                     if (sheep2AnimationID >= 0)
-                        sheep2.SetNewAnimation(sheep2AnimationID);
+                    {
+                        StartUp.AddDebugInfo(StartUp.DEBUG_TYPE.warning, "Pet2 PetSide border anim: " + sheep2AnimationID);
+                    }
                 }
             }
 
+            // Apply animations for both sheeps
+            if (sheep2AnimationID >= 0)
+                sheep2.SetNewAnimation(sheep2AnimationID);
             return animationID;
         }
 
@@ -1547,10 +1683,11 @@ namespace DesktopPet
                 MenuItem menuNext = cm.MenuItems.Add("Next");
                 MenuItem menuBorder = cm.MenuItems.Add("Border");
                 MenuItem menuGravity = cm.MenuItems.Add("Gravity");
+                MenuItem menuInteract = cm.MenuItems.Add("Interact");
                 cm.MenuItems.Add("-");
                 MenuItem menuSpawn = cm.MenuItems.Add("Spawns");
 
-                List<TNextAnimation> list = Animations.GetNextAnimations(CurrentAnimation.ID, true, false, false);
+                List<TNextAnimation> list = Animations.GetNextAnimations(CurrentAnimation.ID, true, false, false, false);
                 foreach (TNextAnimation ani in list)
                 {
                     MenuItem menu = menuNext.MenuItems.Add("ID." + ani.ID + " - " + Animations.SheepAnimations[ani.ID].Name + "\t (Prob: " + ani.Probability + ") only:" + ani.only.ToString());
@@ -1558,7 +1695,7 @@ namespace DesktopPet
                 }
                 if (list.Count == 0) menuNext.Enabled = false;
 
-                list = Animations.GetNextAnimations(CurrentAnimation.ID, false, true, false);
+                list = Animations.GetNextAnimations(CurrentAnimation.ID, false, true, false, false);
                 foreach (TNextAnimation ani in list)
                 {
                     MenuItem menu = menuBorder.MenuItems.Add("ID." + ani.ID + " - " + Animations.SheepAnimations[ani.ID].Name + "\t (Prob: " + ani.Probability + ") only: " + ani.only.ToString());
@@ -1566,13 +1703,21 @@ namespace DesktopPet
                 }
                 if (list.Count == 0) menuBorder.Enabled = false;
 
-                list = Animations.GetNextAnimations(CurrentAnimation.ID, false, false, true);
+                list = Animations.GetNextAnimations(CurrentAnimation.ID, false, false, true, false);
                 foreach (TNextAnimation ani in list)
                 {
                     MenuItem menu = menuGravity.MenuItems.Add("ID." + ani.ID + " - " + Animations.SheepAnimations[ani.ID].Name + "\t (Prob: " + ani.Probability + ") only:" + ani.only.ToString());
                     menu.Click += (ms, me) =>{ SetNewAnimation(ani.ID); };
                 }
                 if (list.Count == 0) menuGravity.Enabled = false;
+
+                list = Animations.GetNextAnimations(CurrentAnimation.ID, false, false, false, true);
+                foreach (TNextAnimation ani in list)
+                {
+                    MenuItem menu = menuInteract.MenuItems.Add("ID." + ani.ID + " - " + Animations.SheepAnimations[ani.ID].Name + " | Trigger: " + ani.TriggerID + " - " + Animations.SheepAnimations[ani.TriggerID].Name + "\t (Prob: " + ani.Probability + ") only:" + ani.only.ToString() + " dir:" + ani.Direction.ToString());
+                    menu.Click += (ms, me) => { SetNewAnimation(ani.ID); };
+                }
+                if (list.Count == 0) menuInteract.Enabled = false;
 
                 List<TSpawn> listS = Animations.GetNextSpawns();
                 foreach (TSpawn spa in listS)
