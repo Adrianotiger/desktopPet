@@ -5,7 +5,7 @@
     targetNamespace="https://esheep.petrucci.ch/"
     xmlns="https://esheep.petrucci.ch/"
     xmlns:xsd="http://www.w3.org/2001/XMLSchema"
-    version="2026.11.08">
+    version="2026.11.22">
 
   <xsd:annotation>
     <xsd:documentation>
