@@ -226,7 +226,6 @@
     </Compile>
     <Compile Include="Portable\FormOptions2.SurfacePets.cs">
       <DependentUpon>FormOptions2.cs</DependentUpon>
-      <SubType>Component</SubType>
     </Compile>
     <Compile Include="Portable\FormOptions2.SurfaceOptions.cs">
       <DependentUpon>FormOptions2.cs</DependentUpon>

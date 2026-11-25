@@ -16,8 +16,6 @@ using System.Xml.Linq;
 using XmlData;
 using static DesktopPet.FormOptions2;
 using static DesktopPet.FormOptions2SurfaceMenu;
-using static System.Windows.Forms.VisualStyles.VisualStyleElement;
-using static System.Windows.Forms.VisualStyles.VisualStyleElement.Window;
 
 
 
@@ -58,11 +56,19 @@ namespace DesktopPet
 		/// List of pets available to download from the web. This is updated every 24 hours, and stored in a temporary folder.
 		/// </summary>
 		public OptionsPets WebPets;
+		/// <summary>
+		/// Pets in development (set path on Options)
+		/// </summary>
+		public List<OptionsPets> DevPets = new List<OptionsPets>();
 		private string infoText = "Options";
 		/// <summary>
 		/// Infotext used to show some debug info or status on the status bar.
 		/// </summary>
 		public string InfoText { get { return infoText; } set { var different = (infoText != value);  infoText = value; if(different) this.Invalidate(new Rectangle(0,this.Height-25,this.Width,25)); } }
+		/// <summary>
+		/// A configuration can force to update the pet list if something changed
+		/// </summary>
+		public bool ForceUpdatePets { get; set; } = true;
 		/// <summary>
 		/// A yellow filter to apply to the highlighted icons (like windows 95)
 		/// </summary>
@@ -226,6 +232,8 @@ namespace DesktopPet
 					if (c.Values != null) extraHeight = Math.Max(extraHeight, y + c.Values.Count * 22 + 50 + 30);
 					y += 50;
 				});
+				for (int i = 0; i < Controls.Count; i++)
+					y += Controls[i].Height;
 				Height = y + 30;
 
 				if (Height < extraHeight) Height = extraHeight;
@@ -284,6 +292,47 @@ namespace DesktopPet
 		}
 
 		/// <summary>
+		/// Add a control to the dialog window [string]
+		/// </summary>
+		/// <param name="value">Default value</param>
+		public void AddDialogControl(string value)
+		{
+			var t = new TControl
+			{
+				Value = 0,
+				ValuesText = new List<string> { value },
+				IsCheckbox = false
+			};
+			controls.Add(t);
+
+			if (value.Length > 90) Width = 1000;
+			else if (value.Length > 60) Width = 800;
+			else if (value.Length > 30) Width = 400;
+
+			// calc titlebar size
+			RecalculateSizes();
+
+			RichTextBox tb = new RichTextBox();
+			tb.BorderStyle = BorderStyle.None;
+			//tb.BackColor = Color.Red;
+			tb.Left = t.Rect.X + 25;
+			tb.Top = t.Rect.Y + 10;
+			tb.Width = Width - 70;
+			tb.Height = 25+t.ValuesText[0].Split(';').Count() * 25;
+			tb.Text = value;
+			tb.Font = new Font(FontFamily.GenericSansSerif, 12);
+			this.Controls.Add(tb);
+
+			RecalculateSizes();
+
+			tb.Focus();
+			tb.TextChanged += (s, e) =>
+			{
+				t.ValuesText[0] = tb.Text;
+			};
+		}
+
+		/// <summary>
 		/// Get the value of a control. Normally, only 1 control is present in the dialog.
 		/// </summary>
 		/// <param name="index"></param>
@@ -291,6 +340,16 @@ namespace DesktopPet
 		public int GetDialogControl(int index = 0)
 		{
 			return controls[index].Value;
+		}
+
+		/// <summary>
+		/// Get the value of a control if it is a string.
+		/// </summary>
+		/// <param name="index"></param>
+		/// <returns></returns>
+		public string GetDialogControlString(int index = 0)
+		{
+			return controls[index].ValuesText[0];	
 		}
 
 		/// <summary>
@@ -408,6 +467,7 @@ namespace DesktopPet
 						var petsSurface = (extendedPanel as FormOptions2SurfacePets);
 
 						WebPets.Reorder(menu);
+						DevPets.ForEach(devPet => { devPet.Reorder(menu); });
 						if (petsSurface != null && !petsSurface.showReadme) petsSurface.Invalidate();
 						break;
 					}
@@ -448,7 +508,13 @@ namespace DesktopPet
 						FormOptions2 formoptions = new FormOptions2("Application Configurations", WindowType.AppConfiguration);
 						switch (formoptions.ShowDialog())
 						{
-							case DialogResult.Retry:
+							case DialogResult.Retry: // Reload form
+								// Opening a new Option form, is too fast and will not load the new configuration. 
+								//this.Visible = false;
+								//FormOptions2 formoptions2 = new FormOptions2("Pet List", FormOptions2.WindowType.Pets);
+								//formoptions2.ShowDialog();
+								this.DialogResult = DialogResult.Retry;
+								this.Close();
 								break;
 						}
 						break;
@@ -678,12 +744,14 @@ namespace DesktopPet
 				g.DrawString("Cancel", fontText, Brushes.Black, ClientRectangle.Width / 4 * 3 - 25, ClientRectangle.Height - 35);
 				controls.ForEach(c =>
 				{
+					// checkbox
 					if(c.IsCheckbox)
 					{
 						ControlPaint.DrawCheckBox(g, new Rectangle(c.Rect.X + 20, c.Rect.Y, 24, 24), c.Value == 1 ? ButtonState.Checked : ButtonState.Normal);
 						g.DrawString("Enable", fontText, Brushes.Black, c.Rect.X + 50, c.Rect.Y + 5);
 					}
-					else if(c.Max > 0)
+					// scrollbar (range)
+					else if (c.Max > 0)
 					{
 						ControlPaint.DrawBorder(g, new Rectangle(c.Rect.X + 20, c.Rect.Y + 10, c.Rect.Width - 40, 3), Color.Black, ButtonBorderStyle.Outset);
 						ControlPaint.DrawScrollButton(g, c.Rect.X + 10, c.Rect.Y, 24, 24, ScrollButton.Left, ButtonState.Normal);
@@ -700,7 +768,8 @@ namespace DesktopPet
 							34,
 							8);
 					}
-					else if(c.Values.Count > 0)
+					// combobox
+					else if (c.Values?.Count > 0)
 					{
 						ControlPaint.DrawBorder(g, new Rectangle(c.Rect.X + 20, c.Rect.Y + 10, c.Rect.Width - 40, 24), SystemColors.WindowFrame, ButtonBorderStyle.Solid);
 						g.FillRectangle(Brushes.White, c.Rect.X + 20 + 1, c.Rect.Y + 10 + 1, c.Rect.Width - 42, 24 - 2);
@@ -717,6 +786,12 @@ namespace DesktopPet
 								g.DrawString(c.ValuesText[k], new Font(fontText, FontStyle.Bold), Brushes.Black, c.Rect.X + 30, c.Rect.Y + 13 + 24 + k*24);
 							}
 						}
+					}
+					else if(c.ValuesText?.Count == 1) // string
+					{
+						//g.DrawString(c.ValuesText[0], new Font(fontText, FontStyle.Bold), Brushes.Black, c.Rect.X + 20, c.Rect.Y + 13);
+						g.FillRectangle(Brushes.White, new Rectangle(c.Rect.X + 20, c.Rect.Y + 7, c.Rect.Width - 40, this.Controls[0].Height + 7));
+						ControlPaint.DrawBorder3D(g, new Rectangle(c.Rect.X + 20, c.Rect.Y + 7, c.Rect.Width - 40, this.Controls[0].Height + 7), Border3DStyle.Sunken);
 					}
 				});
 				return;
@@ -801,23 +876,72 @@ namespace DesktopPet
 					pets = new List<OptionsPet>()
 				};
 			}
+			// reset errors
+			WebPets.Error = "";
+			var devPetList = Program.MyData.GetStringValue(LocalData.SettingName.DeveloperPetPath).Split(';').ToArray();
+			for(int j=0;j< devPetList.Count();j++)
+			{
+				if (DevPets.Count < j + 1 && devPetList[j].Length > 10 && devPetList[j].StartsWith("http"))
+				{
+					DevPets.Add(
+						new OptionsPets
+						{
+							pets = new List<OptionsPet>(),
+							BasePath = devPetList[j].Trim() + "/",
+							Error = ""
+						}
+					);
+				}
+			}
 
 			try
 			{
-				var progress = new Progress<OptionsPet>(async pet =>
+				var petsSurface = (extendedPanel as FormOptions2SurfacePets);
+
+				try
 				{
-					WebPets.pets.Add(pet);
-					if(WebPets.pets.Count == 1 || (WebPets.pets.Count % 3) == 0)
-						extendedPanel?.Invalidate();
-				});
-				await OptionsGit.GetPetList(progress);
+					var progress = new Progress<OptionsPet>(async pet =>
+					{
+						WebPets.pets.Add(pet);
+						if (WebPets.pets.Count == 1 || (WebPets.pets.Count % 3) == 0)
+						{
+							petsSurface?.ReloadPets();
+						}
+					});
+					await OptionsGit.GetPetList(progress);
+				}
+				catch(Exception ex)
+				{
+					WebPets.Error = "[Pets.json] " + ex.Message;
+				}
+
+				for (int j = 0; j < DevPets.Count(); j++)
+				{
+					DevPets[j].Error = ""; // reset errors
+					try
+					{
+						int ji = j;
+						var progressDev = new Progress<OptionsPet>(async pet =>
+						{
+							DevPets[ji].pets.Add(pet);
+							if ((DevPets[ji].pets.Count % 3) == 0)
+								extendedPanel?.Invalidate();
+						});
+						await OptionsGit.GetPetList(progressDev, ji);
+					}
+					catch (Exception ex)
+					{
+						DevPets[j].Error = DevPets[j].BasePath + "\n -> " + ex.Message;
+					}
+				}
+				InfoText = WebPets.pets.Count + " pets available";
+				petsSurface?.ReloadPets();
 			}
 			catch(Exception ex)
 			{
 				InfoText = ex.Message;
 			}
 
-			InfoText = WebPets.pets.Count + " pets available";
 			extendedPanel.Invalidate();
 		}
 
@@ -827,20 +951,22 @@ namespace DesktopPet
 		/// Once downloaded, the pet will be set as default mate in the application.
 		/// </summary>
 		/// <param name="name">folder (ID) of the pet</param>
-		public async void DownloadPet(string name)
+		public async void DownloadPet(OptionsPet pet)
 		{
-			InfoText = "Downloading " + name + "...";
+			InfoText = "Downloading " + pet.folder + "...";
 			var petsSurface = (extendedPanel as FormOptions2SurfacePets);
 			if (petsSurface != null)
 			{
 				petsSurface.showReadme = false;
 				Invalidate();
-				petsSurface.Invalidate();
+
+				petsSurface.ReloadPets();
+				//petsSurface.Invalidate();
 			}
 
 			try
 			{
-				var content = await OptionsGit.GetPetXml(name);
+				var content = await OptionsGit.GetPetXml(pet);
 
 				var xml = new XmlDocument();
 				xml.LoadXml(content);
@@ -848,11 +974,13 @@ namespace DesktopPet
 				Program.MyData.SetXml(xml.OuterXml, "");
 				Program.Mainthread.LoadNewXMLFromString(xml.OuterXml);
 
-				InfoText = "Enjoy " + name + "!";
+				InfoText = "Enjoy " + pet.folder + "!";
 			}
 			catch(Exception ex)
 			{
-				InfoText = "Error downloading " + name + ": " + ex.Message;
+				InfoText = "Error downloading " + pet.folder + ": " + ex.Message;
+				pet.Error += "[animations.xml]" + ex.Message + "\n";
+				this.ForceUpdatePets = true;
 			}
 		}
 
@@ -862,35 +990,32 @@ namespace DesktopPet
 		/// Once downloaded, the details of this pet will be filled.
 		/// </summary>
 		/// <param name="name">folder (ID) of the pet</param>
-		public async void PetDetails(string name)
+		public async void PetDetails(OptionsPet pet)
 		{
-			InfoText = "Downloading " + name + "...";
+			InfoText = "Downloading " + pet.folder + "...";
 			var petsSurface = (extendedPanel as FormOptions2SurfacePets);
 			if (petsSurface != null)
 			{
 				petsSurface.showDetails = true;
 				Invalidate();
+				//petsSurface.ReloadPets();
 				petsSurface.Invalidate();
 			}
 
 			try
 			{
-				var content = await OptionsGit.GetPetXml(name);
+				var content = await OptionsGit.GetPetXml(pet);
 
-				WebPets.pets.ForEach(wp =>
-				{
-					if(wp.folder == name)
-					{
-						wp.Detail = new XmlDocument();
-						wp.Detail.LoadXml(content);
-					}
-				});
+				pet.Detail = new XmlDocument();
+				pet.Detail.LoadXml(content);
 
-				InfoText = name + " details";
+				InfoText = pet.folder + " details";
 			}
 			catch (Exception ex)
 			{
-				InfoText = "Error downloading " + name + ": " + ex.Message;
+				InfoText = "Error downloading " + pet.folder + ": " + ex.Message;
+				pet.Error += "[animations.xml]" + ex.Message + "\n";
+				this.ForceUpdatePets = true;
 			}
 		}
 	}
@@ -904,23 +1029,32 @@ namespace DesktopPet
 		/// <summary>
 		/// Base path to the pets
 		/// </summary>
-		public static string BaseGitUrl = "https://adrianotiger.github.io/desktopPet/Pets/"; // WRONG PATH! >> "https://raw.githubusercontent.com/Adrianotiger/desktopPet/master/Pets/";
+		public static string BaseGitUrl = "https://adrianotiger.github.io/desktopPet/Pets/";
 		/// <summary>
 		/// Local temporary path, to store the github files.
 		/// </summary>
 		public static string BaseLocalPath = Path.Combine(Path.GetTempPath(), "esheep64");
 
+		private static string WebPath2LocalFolder(string webPath)
+		{
+			return Path.Combine(BaseLocalPath, webPath.Replace("/", "_").Replace(":", ""));
+		}
+
 		/// <summary>
 		/// Get the list of pets, from Github or locally.
 		/// </summary>
 		/// <returns>List of OptionsPets pets</returns>
-		public static async Task GetPetList(IProgress<OptionsPet> progress)
+		public static async Task GetPetList(IProgress<OptionsPet> progress, int settingPath = -1)
 		{
 			bool updateList = true;
 			bool downloadList = false;
 
+			string webPath = BaseGitUrl;
+			if (settingPath >= 0) webPath = Program.MyData.GetStringValue(LocalData.SettingName.DeveloperPetPath).Split(';')[settingPath] + "/";
+
 			string jsonString = "";
-			string jsonFile = Path.Combine(BaseLocalPath, "pets.json");
+			string localPath = WebPath2LocalFolder(webPath);
+			string jsonFile = Path.Combine(localPath, "pets.json");
 
 			if (Directory.Exists(BaseLocalPath))
 			{
@@ -945,8 +1079,8 @@ namespace DesktopPet
 				var client = new HttpClient();
 				client.DefaultRequestHeaders.Add("User-Agent", "DesktopPet");
 
-
-				jsonString = await client.GetStringAsync(BaseGitUrl + "pets.json");
+				jsonString = await client.GetStringAsync(webPath + "pets.json");
+				Directory.CreateDirectory(Path.GetDirectoryName(jsonFile));
 				if (downloadList)
 				{
 					File.WriteAllText(jsonFile, jsonString);
@@ -955,7 +1089,7 @@ namespace DesktopPet
 				{
 					var onlinePets = Newtonsoft.Json.JsonConvert.DeserializeObject<OptionsPets>(jsonString);
 					var localPets = Newtonsoft.Json.JsonConvert.DeserializeObject<OptionsPets>(File.ReadAllText(jsonFile));
-					var isDifferent = false;
+					//var isDifferent = false;
 					localPets.pets.ForEach(lp =>
 					{
 						onlinePets.pets.ForEach(op =>
@@ -965,12 +1099,13 @@ namespace DesktopPet
 								File.Delete(Path.Combine(BaseLocalPath, lp.folder + ".png"));
 								File.Delete(Path.Combine(BaseLocalPath, lp.folder + ".xml"));
 								File.Delete(Path.Combine(BaseLocalPath, lp.folder + ".md"));
-								isDifferent = true;
+								//isDifferent = true;
 							}
 						});
 					});
-					if (isDifferent)
+					//if (isDifferent)
 					{
+						// Write it every time, as we need to update the lastwritetime
 						File.WriteAllText(jsonFile, jsonString);
 					}
 				}
@@ -986,9 +1121,19 @@ namespace DesktopPet
 
 			pets.pets.ForEach(p =>
 			{
-				using (Stream stream = GetOrDownload(p.folder, "icon.png"))
+				try
 				{
-					p.Image = Image.FromStream(stream);
+					p.WebPath = webPath;
+					using (Stream stream = GetOrDownload(p, "icon.png"))
+					{
+						p.Image = Image.FromStream(stream);
+						progress.Report(p);
+					}
+				}
+				catch(Exception ex)
+				{
+					p.Image = Resources.exit;
+					p.Error += "[icon.png] " + ex.Message + "\n";
 					progress.Report(p);
 				}
 			});
@@ -997,12 +1142,12 @@ namespace DesktopPet
 		/// <summary>
 		/// Get (if neccessary, download) the README.md file for a pet, and return it as a list of strings, one string per line.
 		/// </summary>
-		/// <param name="folder">folder on Github or name of the pet</param>
+		/// <param name="pet">The pet used to retrieve the readme</param>
 		/// <returns>list of lines, markdown formatted</returns>
-		public static List<string> GetReadMe(string folder)	
+		public static List<string> GetReadMe(OptionsPet pet)	
 		{
 			List<string> readme = new List<string>();
-			using (var stream = GetOrDownload(folder, "README.md"))
+			using (var stream = GetOrDownload(pet, "README.md"))
 			{
 				using (StreamReader reader = new StreamReader(stream))
 				{
@@ -1016,12 +1161,12 @@ namespace DesktopPet
 		/// <summary>
 		/// Get (if neccessary, download) the animations.xml file for a pet, and return it as a string.
 		/// </summary>
-		/// <param name="folder">folder on Github or name of the pet</param>
+		/// <param name="pet">Pet used to retrieve the XML</param>
 		/// <returns>the xml as string</returns>
-		public static async Task<string> GetPetXml(string folder)
+		public static async Task<string> GetPetXml(OptionsPet pet)
 		{
 			var xmlStr = "";
-			using (var stream = GetOrDownload(folder, "animations.xml"))
+			using (var stream = GetOrDownload(pet, "animations.xml"))
 			{
 				using (StreamReader reader = new StreamReader(stream))
 				{
@@ -1034,20 +1179,20 @@ namespace DesktopPet
 		/// <summary>
 		/// Get the file, if not present locally, download it from Github and store it in the local temporary folder. Return the file as a stream.
 		/// </summary>
-		/// <param name="folder">folder on Github or name of the pet</param>
+		/// <param name="pet">The pet used to retrieve the file</param>
 		/// <param name="filename">name of the file to get</param>
 		/// <returns>the file as a stream</returns>
-		static private Stream GetOrDownload(string folder, string filename)
+		static private Stream GetOrDownload(OptionsPet pet, string filename)
 		{
-			string localFile = Path.Combine(BaseLocalPath, folder + "." + filename.Substring(filename.IndexOf(".") + 1));
+			string localFile = Path.Combine(Path.Combine(BaseLocalPath, WebPath2LocalFolder(pet.WebPath)), pet.folder + "." + filename.Substring(filename.IndexOf(".") + 1));
 			if (!File.Exists(localFile))//BaseGitUrl + folder + "/" + filename
 			{
-				//using (WebResponse wrFileResponse = WebRequest.Create(url + WebPets.pets[j].folder + "/icon.png").GetResponse())
-				using (WebResponse wrFileResponse = WebRequest.Create(BaseGitUrl + folder + "/" + filename).GetResponse())
+				Directory.CreateDirectory(Path.GetDirectoryName(localFile));
+				using (WebResponse wrFileResponse = WebRequest.Create(pet.WebPath + pet.folder + "/" + filename).GetResponse())
 				{
 					using (Stream stream = wrFileResponse.GetResponseStream())
 					{
-						using (FileStream file = File.Create(localFile))
+						using (FileStream file = File.Create(localFile, 1024))
 						{
 							stream.CopyTo(file);
 						}

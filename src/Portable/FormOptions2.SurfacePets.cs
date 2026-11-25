@@ -1,24 +1,29 @@
-﻿using Newtonsoft.Json.Linq;
-using System;
+﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Drawing.Imaging;
-using System.IO;
 using System.Linq;
-using System.Net;
-using System.Security.Policy;
-using System.Text;
 using System.Text.RegularExpressions;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Xml;
-using static System.Windows.Forms.LinkLabel;
-using static System.Windows.Forms.VisualStyles.VisualStyleElement.Window;
 
 namespace DesktopPet
 {
+	public class OptionsPetIcon
+	{
+		public OptionsPet pet;
+		public int x = 0;
+		public int y = 0;
+		public int w = 82;
+		public int h = 48;
+
+		public OptionsPetIcon(OptionsPet pet)
+		{
+			this.pet = pet;
+		}
+	};
+
 	/// <summary>
 	/// This class represents the surface for displaying pets in the options form.
 	/// </summary>
@@ -38,6 +43,7 @@ namespace DesktopPet
 		/// Selected PET, for the readme or for the highligt.
 		/// </summary>
 		public OptionsPet selectedPet = null;
+		public List<OptionsPetIcon> allPets = null;
 		/// <summary>
 		/// If readme should be shawn.
 		/// </summary>
@@ -47,6 +53,8 @@ namespace DesktopPet
 		/// </summary>
 		public bool showDetails = false;
 
+		private string strErrors = "";
+
 		public FormOptions2SurfacePets(FormOptions2 formOption)
 		{
 			DoubleBuffered = true;
@@ -55,6 +63,12 @@ namespace DesktopPet
 			Dock = DockStyle.None;
 			AutoScroll = true;
 			AutoScrollMinSize = new Size(10, 200);
+		}
+
+		public void ReloadPets()
+		{
+			form.ForceUpdatePets = true;
+			Invalidate();
 		}
 
 		void DrawWords(string text, Graphics g, Font font, ref int x, ref int y, int maxX, int minX=25)
@@ -106,6 +120,20 @@ namespace DesktopPet
 			});
 
 			pety += 55;
+
+			if (selectedPet.Error.Length > 0)
+			{
+				petx = 25;
+				pety += 60;
+				g.DrawString("Errors: ", new Font(fontText, FontStyle.Bold | FontStyle.Underline), Brushes.DarkRed, petx, pety);
+				selectedPet.Error.Split('\n').ToList().ForEach(line =>
+				{
+					pety += 20;
+					g.DrawString(line, fontText, Brushes.DarkRed, petx, pety);
+				});
+				pety += 50;
+				return pety;
+			}
 
 			selectedPet.Readme.ForEach(line =>
 			{
@@ -285,87 +313,95 @@ namespace DesktopPet
 			g.DrawLine(new Pen(Brushes.Gray, 1), 20, pety - 8, Width - 40, pety - 8);
 
 			g.DrawString("Size: ", fontBold, Brushes.Black, petx, pety);
-			g.DrawString((int)(selectedPet.Detail.InnerText.Length / 1024) + " kb", fontText, Brushes.Black, petx + 110, pety);
-			pety += 20;
-
-			var childs = selectedPet.Detail.ChildNodes[1].ChildNodes;
-			XmlNode xmlheader = null, xmlspawns = null, xmlimage=null, xmlanimations=null, xmlchilds=null, xmlsounds=null;
-			for(var j=0;j<childs.Count;j++)
+			if (selectedPet.Detail == null)
 			{
-				var childX = childs[j];
-				switch(childs[j].Name)
-				{
-					case "header": xmlheader = childs[j]; break;
-					case "image": xmlimage = childs[j]; break;
-					case "spawns": xmlspawns = childs[j]; break;
-					case "animations": xmlanimations = childs[j]; break;
-                    case "childs": xmlchilds = childs[j]; break;
-					case "sounds": xmlsounds = childs[j]; break;
-				}
+				g.DrawString("Error loading XML!", fontText, Brushes.DarkRed, petx + 110, pety);
 			}
-
-			for(var j=0;j<xmlheader?.ChildNodes.Count;j++)
+			else
 			{
-				switch(xmlheader.ChildNodes[j].Name)
+				g.DrawString((int)(selectedPet.Detail.InnerText.Length / 1024) + " kb", fontText, Brushes.Black, petx + 110, pety);
+				pety += 20;
+
+				var childs = selectedPet.Detail.ChildNodes[1].ChildNodes;
+				XmlNode xmlheader = null, xmlspawns = null, xmlimage = null, xmlanimations = null, xmlchilds = null, xmlsounds = null;
+				for (var j = 0; j < childs.Count; j++)
 				{
-					case "author":
-					case "title":
-					case "petname":
-					case "version":
-						g.DrawString(xmlheader.ChildNodes[j].Name.Substring(0,1).ToUpper() + xmlheader.ChildNodes[j].Name.Substring(1) + ": ", fontBold, Brushes.Black, petx, pety);
-						g.DrawString(xmlheader.ChildNodes[j].InnerText, fontText, Brushes.Black, petx + 110, pety);
-						pety += 20;
-						break;
-					case "info":
-						var splits = new string[] { "[br]", "\n\r", "\n", "<br>" };
-						var lines = xmlheader.ChildNodes[j].InnerText.Split(splits, StringSplitOptions.RemoveEmptyEntries);
-						g.DrawString("Info: ", fontBold, Brushes.Black, petx, pety);
-						for (var k = 0; k < lines.Length; k++)
-						{
+					var childX = childs[j];
+					switch (childs[j].Name)
+					{
+						case "header": xmlheader = childs[j]; break;
+						case "image": xmlimage = childs[j]; break;
+						case "spawns": xmlspawns = childs[j]; break;
+						case "animations": xmlanimations = childs[j]; break;
+						case "childs": xmlchilds = childs[j]; break;
+						case "sounds": xmlsounds = childs[j]; break;
+					}
+				}
+
+				for (var j = 0; j < xmlheader?.ChildNodes.Count; j++)
+				{
+					switch (xmlheader.ChildNodes[j].Name)
+					{
+						case "author":
+						case "title":
+						case "petname":
+						case "version":
+							g.DrawString(xmlheader.ChildNodes[j].Name.Substring(0, 1).ToUpper() + xmlheader.ChildNodes[j].Name.Substring(1) + ": ", fontBold, Brushes.Black, petx, pety);
+							g.DrawString(xmlheader.ChildNodes[j].InnerText, fontText, Brushes.Black, petx + 110, pety);
 							pety += 20;
-							g.DrawString(lines[k], fontText, Brushes.Black, petx, pety);
-						}
-						pety += 20;
-						break;
+							break;
+						case "info":
+							var splits = new string[] { "[br]", "\n\r", "\n", "<br>" };
+							var lines = xmlheader.ChildNodes[j].InnerText.Split(splits, StringSplitOptions.RemoveEmptyEntries);
+							g.DrawString("Info: ", fontBold, Brushes.Black, petx, pety);
+							for (var k = 0; k < lines.Length; k++)
+							{
+								pety += 20;
+								g.DrawString(lines[k], fontText, Brushes.Black, petx, pety);
+							}
+							pety += 20;
+							break;
+					}
 				}
-			}
 
-			int tilesx = 0, tilesy = 0, skins = 0;
-			for (var j = 0; j < xmlimage?.ChildNodes.Count; j++)
-			{
-				switch (xmlimage.ChildNodes[j].Name)
+				int tilesx = 0, tilesy = 0, skins = 0;
+				for (var j = 0; j < xmlimage?.ChildNodes.Count; j++)
 				{
-					case "tilesx": tilesx = int.Parse(xmlimage.ChildNodes[j].InnerText); break;
-					case "tilesy": tilesy = int.Parse(xmlimage.ChildNodes[j].InnerText);
-						g.DrawString("Spritesheet size: ", fontBold, Brushes.Black, petx, pety);
-						g.DrawString((tilesx * tilesy) + " images", fontText, Brushes.Black, petx + 150, pety);
-						pety += 20;
-						break;
-                    case "skins":
-                        skins = int.Parse(xmlimage.ChildNodes[j].InnerText);
-                        g.DrawString(skins + " skin(s)", fontText, Brushes.Black, petx + 150, pety);
-                        pety += 20;
-                        break;
-                }
+					switch (xmlimage.ChildNodes[j].Name)
+					{
+						case "tilesx": tilesx = int.Parse(xmlimage.ChildNodes[j].InnerText); break;
+						case "tilesy":
+							tilesy = int.Parse(xmlimage.ChildNodes[j].InnerText);
+							g.DrawString("Spritesheet size: ", fontBold, Brushes.Black, petx, pety);
+							g.DrawString((tilesx * tilesy) + " images", fontText, Brushes.Black, petx + 150, pety);
+							pety += 20;
+							break;
+						case "skins":
+							skins = int.Parse(xmlimage.ChildNodes[j].InnerText);
+							g.DrawString(skins + " skin(s)", fontText, Brushes.Black, petx + 150, pety);
+							pety += 20;
+							break;
+					}
+				}
+
+				pety += 20;
+
+				g.DrawString("Total Animations: ", fontBold, Brushes.Black, petx, pety);
+				g.DrawString(xmlanimations?.ChildNodes.Count.ToString() ?? "-", fontText, Brushes.Black, petx + 150, pety);
+				pety += 20;
+
+				g.DrawString("Total Childs: ", fontBold, Brushes.Black, petx, pety);
+				g.DrawString(xmlchilds?.ChildNodes.Count.ToString() ?? "-", fontText, Brushes.Black, petx + 150, pety);
+				pety += 20;
+
+				g.DrawString("Total Spawns: ", fontBold, Brushes.Black, petx, pety);
+				g.DrawString(xmlspawns?.ChildNodes.Count.ToString() ?? "-", fontText, Brushes.Black, petx + 150, pety);
+				pety += 20;
+
+				g.DrawString("Total Sounds: ", fontBold, Brushes.Black, petx, pety);
+				g.DrawString(xmlsounds?.ChildNodes.Count.ToString() ?? "-", fontText, Brushes.Black, petx + 150, pety);
+				pety += 20;
 			}
-
-			pety += 20;
-
-			g.DrawString("Total Animations: ", fontBold, Brushes.Black, petx, pety);
-			g.DrawString(xmlanimations?.ChildNodes.Count.ToString() ?? "-", fontText, Brushes.Black, petx + 150, pety);
-			pety += 20;
-
-            g.DrawString("Total Childs: ", fontBold, Brushes.Black, petx, pety);
-			g.DrawString(xmlchilds?.ChildNodes.Count.ToString() ?? "-", fontText, Brushes.Black, petx + 150, pety);
-			pety += 20;
-
-			g.DrawString("Total Spawns: ", fontBold, Brushes.Black, petx, pety);
-			g.DrawString(xmlspawns?.ChildNodes.Count.ToString() ?? "-", fontText, Brushes.Black, petx + 150, pety);
-			pety += 20;
-
-			g.DrawString("Total Sounds: ", fontBold, Brushes.Black, petx, pety);
-			g.DrawString(xmlsounds?.ChildNodes.Count.ToString() ?? "-", fontText, Brushes.Black, petx + 150, pety);
-			pety += 20;
 
 			return pety;
 		}
@@ -373,56 +409,108 @@ namespace DesktopPet
 		private int OnPaintPets(Graphics g)
 		{
 			int petx = 25;
-			int pety = -VerticalScroll.Value;
-
-			List<OptionsPet> pets = form.WebPets.pets;
+			int pety = 10-VerticalScroll.Value;
+			string path = "";
 
 			g.Clear(Color.White);
 
-			for (int j = 0; j < pets.Count; j++)
+			if(allPets == null || form.ForceUpdatePets)
 			{
-				if (selectedPet == pets[j])
+				strErrors = form.WebPets.Error;
+
+				allPets = new List<OptionsPetIcon>();
+				// Make copy of list as this is an async call!
+				allPets.AddRange(form.WebPets.pets.ToList().Select(a => new OptionsPetIcon(a)));
+
+				form.DevPets.ForEach( dev => {
+					strErrors += dev.Error;
+					allPets.AddRange(dev.pets.ToList().Select(a => new OptionsPetIcon(a)));
+				});
+
+				form.ForceUpdatePets = false;
+			}
+
+			allPets.ForEach(petIcon =>
+			{
+				if(petIcon.pet.WebPath != path)
 				{
-					g.FillRectangle(Brushes.Yellow, petx - 25, pety + 34, 82, 17);
+					if (path != "")
+					{
+						pety += 60;
+						petx = 25;
+
+						ControlPaint.DrawBorder(g, new Rectangle(5, pety, Width - 25, 2), Color.LightGray, ButtonBorderStyle.Outset);
+						g.DrawString(petIcon.pet.WebPath.Trim('/'), new Font(fontText, FontStyle.Bold | FontStyle.Underline), Brushes.LightSteelBlue, petx - 20, pety + 5);
+						pety += 35;
+					}
+
+					path = petIcon.pet.WebPath;
+					
+				}
+
+				// calc position:
+				petIcon.x = petx;
+				petIcon.y = pety;
+
+				if (selectedPet == petIcon.pet)
+				{
+					g.FillRectangle(Brushes.Yellow, petIcon.x, petIcon.y + petIcon.h - fontText.Height + 2, petIcon.w, fontText.Height);
 					using (Pen pen = new Pen(Color.Black, 1))
 					{
 						pen.DashStyle = DashStyle.Dot;
-						g.DrawRectangle(pen, petx - 25, pety + 34, 82, 16);
+						g.DrawRectangle(pen, petIcon.x, petIcon.y + petIcon.h - fontText.Height + 2, petIcon.w, fontText.Height);
 					}
 				}
-				if (pets[j].Image == null)
+
+				if (petIcon.pet.Image == null)
 				{
-					g.FillRectangle(Brushes.AliceBlue, petx, pety, 32, 32);
+					g.FillRectangle(Brushes.AliceBlue, petIcon.x + 10, petIcon.y, petIcon.w - 20, petIcon.h - 15);
 				}
 				else
 				{
-					if (selectedPet == pets[j])
+					if (selectedPet == petIcon.pet)
 					{
 						ImageAttributes attributes = new ImageAttributes();
 						attributes.SetColorMatrix(form.IconHighlightMatrix);
 
 						g.DrawImage(
-							pets[j].Image,
-							new Rectangle(petx, pety, 32, 32),
+							selectedPet.Image,
+							new Rectangle(petIcon.x + (petIcon.w-32)/2, petIcon.y, 32, 32),
 							0,
 							0,
-							pets[j].Image.Width,
-							pets[j].Image.Height,
+							selectedPet.Image.Width,
+							selectedPet.Image.Height,
 							GraphicsUnit.Pixel,
 							attributes);
 					}
 					else
 					{
-						g.DrawImage(pets[j].Image, petx, pety, 32, 32);
+						g.DrawImage(petIcon.pet.Image, petIcon.x + (petIcon.w - 32) / 2, petIcon.y, 32, 32);
 					}
 				}
 
-				var text = pets[j].folder;
+				var text = petIcon.pet.folder;
 				if (text.Length > 10) text = text.Substring(0, 8) + "...";
-				g.DrawString(text, fontText, Brushes.Black, new Point(petx + 16 - (int)(g.MeasureString(text, fontText).Width / 2), pety + 32));
+				g.DrawString(text, fontText, Brushes.Black, new Point(petIcon.x + petIcon.w / 2 - (int)(g.MeasureString(text, fontText).Width / 2), petIcon.y + petIcon.h - fontText.Height));
+
 				petx += 90;
-				if (petx > Width - 54) { petx = 25; pety += 60; }
+				if (petx > Width - petIcon.w) { petx = 25; pety += 60; }
+			});
+
+			if(strErrors.Length > 0)
+			{
+				petx = 25;
+				pety += 60;
+				g.DrawString("Errors: ", new Font(fontText, FontStyle.Bold | FontStyle.Underline), Brushes.DarkRed, petx, pety);
+				strErrors.Split('\n').ToList().ForEach(line =>
+				{
+					pety += 20;
+					g.DrawString(line, fontText, Brushes.DarkRed, petx, pety);
+				});
+				pety += 50;
 			}
+
+
 			return pety;
 		}
 
@@ -483,9 +571,9 @@ namespace DesktopPet
 					{
 						switch(b.url)
 						{
-							case "Download": form.DownloadPet(selectedPet.folder); break;
+							case "Download": form.DownloadPet(selectedPet); break;
 							case "Back": showReadme = false; showDetails = false; Invalidate(); break;
-							case "Detail": form.PetDetails(selectedPet.folder); break;
+							case "Detail": form.PetDetails(selectedPet); break;
 						}
 						
 					}
@@ -494,26 +582,21 @@ namespace DesktopPet
 				return;
 			}
 
-			List<OptionsPet> pets = form.WebPets.pets;
 			var oldSelected = selectedPet;
 
 			selectedPet = null;
 
-			int petx = 25;
-			int pety = -VerticalScroll.Value;
-			for (int j = 0; j < pets.Count; j++)
+			allPets.ForEach(p =>
 			{
-				if (e.Location.X > petx - 10 && e.Location.X < petx + 52)
+				if(e.Location.Y >= p.y && e.Location.Y <= p.y + p.h)
 				{
-					if (e.Location.Y > pety && e.Location.Y < pety + 52)
+					if(e.Location.X >= p.x && e.Location.X <= p.x + p.w)
 					{
-						selectedPet = pets[j];
-						break;
+						selectedPet = p.pet;
+						return;
 					}
 				}
-				petx += 90;
-				if (petx > Width - 48) { petx = 25; pety += 60; }
-			}
+			});
 
 			if (oldSelected != selectedPet)
 			{
@@ -574,17 +657,22 @@ namespace DesktopPet
 				{
 					try
 					{
-						selectedPet.Readme = OptionsGit.GetReadMe(selectedPet.folder);
-					}catch(Exception ex)
+						selectedPet.Readme = OptionsGit.GetReadMe(selectedPet);
+					}
+					catch(Exception ex)
 					{
 						form.InfoText = ex.Message;
 						form.Invalidate();
+						selectedPet.Error += "[readme.md]" + ex.Message + "\n";
+						form.ForceUpdatePets = true;
 						return;
 					}
 				}
+
+				form.InfoText = selectedPet.folder + " Readme.md";
+				VerticalScroll.Value = 0;
 			}
 
-			form.InfoText = selectedPet.folder + " Readme.md";
 			Invalidate();
 		}
 	}
@@ -620,6 +708,14 @@ namespace DesktopPet
 		/// Detail XML, loaded directly from XML animation file
 		/// </summary>
 		public XmlDocument Detail { get; set; } = null;
+		/// <summary>
+		/// A path on the web (can be also a custom path from the user, it is set over the option menu)
+		/// </summary>
+		public String WebPath { get; set; } = "";
+		/// <summary>
+		/// If an error is present, this can be reported here
+		/// </summary>
+		public String Error { get; set; } = "";
 	}
 	/// <summary>
 	/// Class conaining a list of pets and a method to reorder them by last update date.
@@ -630,6 +726,14 @@ namespace DesktopPet
 		/// List of pets
 		/// </summary>
 		public List<OptionsPet> pets { get; set; }
+		/// <summary>
+		/// Base path on the web (gitHub folder)
+		/// </summary>
+		public string BasePath { get; set; } = "";
+		/// <summary>
+		/// If an error is present, this can be reported here
+		/// </summary>
+		public String Error { get; set; } = "";
 		/// <summary>
 		/// Reorder the pets, once loaded, by last update date, so the most recent ones are on top.
 		/// </summary>
