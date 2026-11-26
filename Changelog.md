@@ -1,5 +1,13 @@
 # Changelog
 
+<h3>Version 2.1.0<sup>26 nov 2026</sup>:</h3>
+
+- New pet interaction system. Pets can react with other pets.
+- Pet editor improved (v0.9.0 should be used from now)
+- Improved stability and resource use
+- Developer path added (to play pets from your repository)
+- Sound can be muted from tray icon
+
 <h3>Version 2.0.0<sup>08 nov 2026</sup>:</h3>
 
 A major update focused on extensibility, customization, code quality and long-term maintainability.
