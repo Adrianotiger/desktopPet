@@ -4,7 +4,7 @@
     <author>Zecheriah</author>
     <title>Pingus Expansion</title>
     <petname>Pingus</petname>
-    <version>2.0</version>
+    <version>2.0.1</version>
     <info>This is a huge expansion of the Pingus screenmate by Andriano Petrucci! I added tons of animations, gimmicks and sound effects!</info>
     <application>1</application>
     <icon><![CDATA[AAABAAEAMDAAAAAAIACHCAAAFgAAAIlQTkcNChoKAAAADUlIRFIAAAAwAAAAMAgGAAAAVwL5hwAAAAFzUkdCAK7OHOkAAAAEZ0FNQQAAsY8L/GEFAAAACXBIWXMAAA7DAAAOwwHHb6hkAAAIHElEQVRoQ+2Zf4hUVRTHRWnJFKPoF0pLVmwmYiS1ReKSGkZhGxhJsLhgRZmRhlGEhUPtvBkzC6kQ+sc/I/aP6C//qfyjfwKNggWFNDYQylxn3mxGSxR7X+dz3jt378w+Z3bW1fxjLxzee/fed873/LznzcyZHbNjdszsSJLBeUny6VWQO/3B/JCSpNCR0uC8bPuVMQCkAM8WFrpKYZEbLVyfjJavc+ejG5Pz+2/wJHNK8d5r3Zn3F6RK/Y/KqDUNNGDP7rvFVYpLXHXgViiplW9ztYGlXPWeuXhvpzv33mLdyzuiDDzglbG99EOEzdWwEOBYFkAKenTgDnfu3btcZe/drhqtyCXWRkpdupd3UAbv4JXL4RGNb6wGcLG2WhZAAozlqZKLy/eoMqKw8sAI4hE1yqXyhrc67jeLi1VlyQMb/yduSeF+VQTPZB6Btxrol8LVsj5zQ91LYv4e3awWw3oiXJYmAbe5PMrb586V7jePaL5gICkEyJT1ix8ePG7GUoCvFVdJCD0oy/mg4lJfSsX+lEp9tha+o3tr0Vp4pTyFt+aS5AYyL1YJrTQkmFjeQkYFVQceEsHr2QLlKZFHeftctfhYUik/kvIMlEDmxeSE1ndKZBg2Cj5arQLj0kZXKT/FVqMQ4IUo3K9eqkWb4JUqEa02JVSmV2Ia1YlEymp1p4FnOiQNj2r5eRH8UuNaM3K10qsCevvk+Wh9qIQmNhWv3VDCbWr9LO6ZMvrk4wNK9uzi6BUJg9cF0Fs219vbmyy+vcvTtm0v+/3j1dI74d5GfpDmBImtOSeHY7uhpKcjBwxuzErl90ePJfHwD0nl5LHkj9NDyddffaPCkjh6UwAVuIc6rlmgNHduh5LdL1+50gMcr0ZFrvCAFzzhjQzmNbGpThZKetIXFspa60G8aeJifTmkmIJ+Pf6dCjJhCLa18UqpzNXA/nj8ZNLV1aUAufK8al3PJEuH4Lkiw9Y0qeNopR6UYJlqLhBveipK/MmjMhse+laFGCEYYp51CYsDXAE7NjamgKG/45/1OjISK3hCK+RpfELexhMyL4BFMU0lF7RBy8omj2Z5A/7nbyeSsZGTnthjhAInjhxK3NCOZPijZVSZZPjwBn0+uGtznQK8a7y4miKhJzShs1zQU7pVGOWFD8xC4FjVyISzj9A5tKMzcQc7EjfYpaBdfET3oYg72pv099+k+5rxQpZXII7WaEXSfkt6L9qMZmGkBxcnYBA+5loYI+jfv8544pnEs9hXqx/pUbCeVBFRQAgF2Xv4y89zeYWeMPlutHifJjPlnG+NZtWoUQGLfRibQDuQTChlEvDQsiXzk13rOpSe7e5INi1Pr/a8aHnqgTU9axRoHj9kIdNyQUuq5UErBbTvkfIpt976CMK9CGgUiDAD393d7e8hLE3pREHzEFf2UZFO/XQql6eFUp0XpJT7ctqsU7XTl1vcDBMDzxwUCuOAMquaAlx3796jJZQKRIhxv6Vvq1cA4t0QvPE3JZANBuamrEDogf3RHq8Az40Ec0IBCxt4QAKWUsozVYfrmHNqcdZNSd6FB3IaeRNKeN7WTIGWbUVeCNm9JGGfMHpR6DWbM2tiWQsTwE5SQJ45C7i3vXiOdyf4R3tctbTLnvNCSLuDpiEkCaKJIhnPo3dhXH4yVABhzOcpEJIpYGT7IPMcfMbj0j5TABl1siulB9qqQqECRgJ+ozB+RjvPONopz9qMAcByII9MgRC4rYUeoDeCp/KuRM/VyQ5P49YKZN8AdIAcHhwiHCZ8dFTLT0sbvFUEbaf7ZDsADFAjUAgFGufC/RMKSIeadrTbkaGyqqXHxfM9/iDjK63VQcYIWwk9xrU/lz49CyNh/gL9PFtNAaqOVRmIe82FjBrX7D1TQIz0tlqfECVURZb/SmunlWBYKVWX4TpxoSTQw8J4Y+gFtlIKTYEQsCdJXktgyung4BdKFlr2nSDA36izPrKQmZ3CiqVVCbXR2A95L1SLj5oXwjg1IIBUwAKceyPKp50Fnx06qF2pecB4iPXlo4j8Sq0vibvBW7+d8LHh+O0SL9QGlgr4Fd4LkgvZN+wW3C1b9bSFAGmAjZgz8GZ9vEUoBeGzU8MSnvAm35A13Q8aBpmuXiCZLRekJ7GP+dTNxX62QvRAxDYAAWtkoCGzPspifRo73k3jvtjvQwcZlM4s9ie60DY+KRl2qPlcoBpkP6c0KkEXSsOGVVEEK4dEiBH3lE6s/+HmtOXm3QnwxSd84tbK91rstzy8LjR8Sa37WUUYiwDzBC5nq34DCAHMuk8+YLA6CtkcpC03+6XV1nfrflYBvBhKZQ0s9T81TjX2G4cebJkSqTvNE1lplXhlm37ADGLVjAQg80amoCfZ49f8D1vwzCyPLAw3ndBpHBpKfCNoPpTu9Eroz4HRWtmSAgH44YwygGGeGPA68FJtNGEbf1pUWTP8+6gyDMOJJKNSiNtliwcVkpZEodw1fjrB6vDQIhH8GjeT4G2oJ6hMqWulscpCKlBE7uXoF2ASXhoWhFk9rU1bE9nLIZUBhxc8LeZnHLwNX145IzhcsJh+cGeKEAZav/kMNKKbzO4BzR4Drv2WnDUcmvBs9xe46QytTuYNFSrxqp2ieMSUgTgAQ7J59kguqRcxAqWaQgHP6Vab6QytUHJio4iCIHbTQ6dTwYV/8HFv81ibMKS+866csJfc6s2G9whdLJYkASG8QwsAUBSUOaoZoLVVudwWn8oAkOZJ9ke3drZyTcHyBzhrVxjo2THtMWfOf6X0BVTZyRvJAAAAAElFTkSuQmCC]]></icon>
@@ -2469,7 +2469,7 @@
         <opacity>1</opacity>
         <interval>100</interval>
       </end>
-      <sequence repeatfrom="0" repeat="58">
+      <sequence repeatfrom="0" repeat="(screenH-areaH)/2+imageH-4">
         <frame>245</frame>
         <next probability="10" only="none">78</next>
         <action>none</action>
@@ -2491,7 +2491,7 @@
         <opacity>1</opacity>
         <interval>100</interval>
       </end>
-      <sequence repeatfrom="0" repeat="58">
+      <sequence repeatfrom="0" repeat="(screenH-areaH)/2+imageH-4">
         <frame>246</frame>
         <next probability="10" only="none">79</next>
         <action>none</action>
@@ -2513,7 +2513,7 @@
         <opacity>1</opacity>
         <interval>100</interval>
       </end>
-      <sequence repeatfrom="0" repeat="58">
+      <sequence repeatfrom="0" repeat="(screenH-areaH)/2+imageH-4">
         <frame>247</frame>
         <next probability="10" only="none">80</next>
         <action>none</action>
@@ -2535,7 +2535,7 @@
         <opacity>1</opacity>
         <interval>100</interval>
       </end>
-      <sequence repeatfrom="0" repeat="58">
+      <sequence repeatfrom="0" repeat="(screenH-areaH)/2+imageH-4">
         <frame>248</frame>
         <next probability="10" only="none">81</next>
         <action>none</action>
@@ -2645,7 +2645,7 @@
         <opacity>1</opacity>
         <interval>100</interval>
       </end>
-      <sequence repeatfrom="0" repeat="58">
+      <sequence repeatfrom="0" repeat="(screenH-areaH)/2+imageH-4">
         <frame>245</frame>
         <action>none</action>
       </sequence>
@@ -2666,7 +2666,7 @@
         <opacity>1</opacity>
         <interval>100</interval>
       </end>
-      <sequence repeatfrom="0" repeat="58">
+      <sequence repeatfrom="0" repeat="(screenH-areaH)/2+imageH-4">
         <frame>246</frame>
         <action>none</action>
       </sequence>
@@ -2687,7 +2687,7 @@
         <opacity>1</opacity>
         <interval>100</interval>
       </end>
-      <sequence repeatfrom="0" repeat="58">
+      <sequence repeatfrom="0" repeat="(screenH-areaH)/2+imageH-4">
         <frame>247</frame>
         <action>none</action>
       </sequence>
@@ -2708,7 +2708,7 @@
         <opacity>1</opacity>
         <interval>100</interval>
       </end>
-      <sequence repeatfrom="0" repeat="58">
+      <sequence repeatfrom="0" repeat="(screenH-areaH)/2+imageH-4">
         <frame>248</frame>
         <action>none</action>
       </sequence>

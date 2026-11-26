@@ -88,11 +88,15 @@ v2.0 (2026-11-23)
 
   * \*An exit cave can spawn for the Pingus to enter! Finally they can escape each other's wrath
   * Pingus can fall off window edges (finally)
-  * Christmas Pingus' hats can now fall off :'(
+  * You can knock off Christmas Pingus' hats :'(
 * Ported other old interaction anims to the new system
 * Rare events now work when Pingus are facing to the right :D
 * Stopper lasts way longer and also doesn't randomly explode lmao
 * Pingus can get hit by bullets during almost every animation, rather than just walking
 * Increased chance to shoot and to be a stopper, and decreased chance to moonwalk
 * Many other adjustments
+
+v2.0.1
+
+* Made cave spawn consistent between screen sizes. Thank you Adriano for help with the formula!
 
