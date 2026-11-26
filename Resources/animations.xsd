@@ -5,7 +5,7 @@
     targetNamespace="https://esheep.petrucci.ch/"
     xmlns="https://esheep.petrucci.ch/"
     xmlns:xsd="http://www.w3.org/2001/XMLSchema"
-    version="2026.11.22">
+    version="2026.11.26">
 
   <xsd:annotation>
     <xsd:documentation>
@@ -57,10 +57,15 @@
                   </xsd:documentation>
                 </xsd:annotation>
               </xsd:element>
-              <xsd:element name='application' type='xsd:integer' minOccurs='1' maxOccurs='1'>
+              <xsd:element name='application' minOccurs='1' maxOccurs='1'>
                 <xsd:annotation>
                   <xsd:documentation>Application version, this must be set to 1, because this is the current and only version.</xsd:documentation>
                 </xsd:annotation>
+                <xsd:simpleType>
+                  <xsd:restriction base="xsd:int">
+                    <xsd:enumeration value="1"/>
+                  </xsd:restriction>
+                </xsd:simpleType>
               </xsd:element>
               <xsd:element name='icon' type='xsd:string' minOccurs='1' maxOccurs='1'>
                 <xsd:annotation>
@@ -80,17 +85,17 @@
           </xsd:annotation>
           <xsd:complexType>
             <xsd:all>
-              <xsd:element name='tilesx' type='xsd:integer' minOccurs='1' maxOccurs='1'>
+              <xsd:element name='tilesx' minOccurs='1' maxOccurs='1' type='xsd:positiveInteger'>
                 <xsd:annotation>
                   <xsd:documentation>Quanity of images on the x axis (tiles) of the sprite sheet.</xsd:documentation>
                 </xsd:annotation>
               </xsd:element>
-              <xsd:element name='tilesy' type='xsd:integer' minOccurs='1' maxOccurs='1'>
+              <xsd:element name='tilesy' minOccurs='1' maxOccurs='1' type='xsd:positiveInteger'>
                 <xsd:annotation>
                   <xsd:documentation>Quantity of images on the y axis (tiles) of the sprite sheet.</xsd:documentation>
                 </xsd:annotation>
               </xsd:element>
-              <xsd:element name='skins' type='xsd:integer' minOccurs='0' maxOccurs='1' default='0'>
+              <xsd:element name='skins' minOccurs='0' maxOccurs='1' default='0'>
                 <xsd:annotation>
                   <xsd:documentation>
                       How many different skins are present in the sprite sheet (optional). 
@@ -139,7 +144,7 @@
                         <xsd:documentation>Y start position of the pet, in pixels. Can be an expression (see expressionType), for example: areaH-imageH</xsd:documentation>
                       </xsd:annotation>
                     </xsd:element>
-                    <xsd:element name='next' maxOccurs='1'>
+                    <xsd:element name='next' minOccurs='1' maxOccurs='1' type='xsd:integer'>
                       <xsd:annotation>
                         <xsd:documentation>ID of the first animation to play after the pet was spawned.</xsd:documentation>
                       </xsd:annotation>
@@ -164,7 +169,7 @@
                       <xsd:documentation>Relative probability to use this spawn. If there are 3 spawns with probability 5, 12 and 3, the chances are: 25%, 60% and 15%.</xsd:documentation>
                     </xsd:annotation>
                   </xsd:attribute>
-                  <xsd:attribute name="id" type="xsd:int">
+                  <xsd:attribute name="id" type="xsd:integer" use="required">
                     <xsd:annotation>
                       <xsd:documentation>Unique ID of the spawn.</xsd:documentation>
                     </xsd:annotation>
@@ -232,7 +237,10 @@
                               <xsd:documentation>Action to execute once the sequence is over: "flip" mirrors the pet (and its walking direction), "none" does nothing.</xsd:documentation>
                             </xsd:annotation>
                           </xsd:element>
-                          <xsd:element ref='next' />
+                          <xsd:sequence>
+                              <xsd:element name="next" type="nextSequence" minOccurs="0" maxOccurs="unbounded"/>
+                          </xsd:sequence>
+                          <!--<xsd:element ref='nextSequence' />-->
                         </xsd:choice>
                         <xsd:attribute name="repeat" type="expressionType">
                           <xsd:annotation>
@@ -252,7 +260,7 @@
                       </xsd:annotation>
                       <xsd:complexType>
                         <xsd:sequence>
-                          <xsd:element ref='next' maxOccurs='unbounded' />
+                          <xsd:element name="next" type="nextBorder" minOccurs="0" maxOccurs="unbounded"/>
                         </xsd:sequence>
                       </xsd:complexType>
                     </xsd:element>
@@ -262,22 +270,22 @@
                       </xsd:annotation>
                       <xsd:complexType>
                         <xsd:sequence>
-                          <xsd:element ref='next' maxOccurs='unbounded' />
+                          <xsd:element name="next" type="nextGravity" minOccurs="0" maxOccurs="unbounded"/>
                         </xsd:sequence>
                       </xsd:complexType>
                     </xsd:element>
-					<xsd:element name='interact' minOccurs='0' maxOccurs='1'>
-					  <xsd:annotation>
+                    <xsd:element name='interact' minOccurs='0' maxOccurs='1'>
+                      <xsd:annotation>
                         <xsd:documentation>Next animations to play if the pet hits another pet. If the other pet's animation triggers one of these animations, it plays. If missing, the pet continues like normal.</xsd:documentation>
-                      </xsd:annotation>
-					  <xsd:complexType>
-					    <xsd:choice maxOccurs="10">
-						  <xsd:element ref='next' />
-						</xsd:choice>
-					  </xsd:complexType>
-					</xsd:element>
+                        </xsd:annotation>
+                      <xsd:complexType>
+                        <xsd:sequence>
+                          <xsd:element name="next" type="nextInteract" minOccurs="0" maxOccurs="unbounded"/>
+                        </xsd:sequence>
+                      </xsd:complexType>
+                    </xsd:element>
                   </xsd:all>
-                  <xsd:attribute name="id" type="xsd:integer">
+                  <xsd:attribute name="id" type="xsd:integer" use="required">
                     <xsd:annotation>
                       <xsd:documentation>Unique ID of the animation, used by the next nodes, spawns, childs and sounds to reference it.</xsd:documentation>
                     </xsd:annotation>
@@ -310,7 +318,7 @@
                         <xsd:documentation>Y position of the child when it is created, in pixels. Can be an expression (see expressionType). imageY is the Y position of the parent.</xsd:documentation>
                       </xsd:annotation>
                     </xsd:element>
-                    <xsd:element name='next' maxOccurs='1'>
+                    <xsd:element name='next' minOccurs='1' maxOccurs='1'>
                       <xsd:annotation>
                         <xsd:documentation>ID of the first animation to play for the child.</xsd:documentation>
                       </xsd:annotation>
@@ -327,7 +335,7 @@
                       </xsd:complexType>
                     </xsd:element>
                   </xsd:all>
-                  <xsd:attribute name="animationid" type="xsd:int">
+                  <xsd:attribute name="animationid" type="xsd:int" use="required">
                     <xsd:annotation>
                       <xsd:documentation>ID of the animation which creates this child, once it is executed.</xsd:documentation>
                     </xsd:annotation>
@@ -372,7 +380,7 @@
                       </xsd:annotation>
                     </xsd:element>
                   </xsd:all>
-                  <xsd:attribute name="animationid" type="xsd:int">
+                  <xsd:attribute name="animationid" type="xsd:int" use="required">
                     <xsd:annotation>
                       <xsd:documentation>ID of the animation which plays this sound, once it is executed.</xsd:documentation>
                     </xsd:annotation>
@@ -404,7 +412,6 @@
         imageY: Y position of the parent (only for childs, -1 if the pet is not a child).
         random: random value between 0 and 99, a new one each time the expression is evaluated.
         randS: random value between 10 and 89, chosen once each time the animation file is loaded (same value for all expressions).
-        scale: scale factor of the pet (used on HD monitors).
         Examples: "5+random/10", "screenW-imageW", "areaH-imageH", "-imageW".
         The result is truncated to an integer.
       </xsd:documentation>
@@ -561,7 +568,9 @@
       </xsd:element>
     </xsd:all>
   </xsd:group>
-
+<!--
+  Next is a way more complicated with the new version. Each node has other attributes for this next node. 
+  It is slitted to nextSequence, nextBorder, nextGravity and nextInteract now. (spawn and child have just an integer as node, so they are not listed)
   <xsd:element name="next">
     <xsd:annotation>
       <xsd:documentation>ID of the next animation to play. Used in a sequence (when the sequence is over), in border (when a border is hit) and in gravity (when the pet falls). If more next nodes are available, one is chosen randomly using the probability, considering only the nodes which match the "only" attribute.</xsd:documentation>
@@ -579,38 +588,120 @@
               <xsd:documentation>Execute this next animation only for the selected kind of border or surface (see borderType). Default: none.</xsd:documentation>
             </xsd:annotation>
           </xsd:attribute>
-		  <xsd:attribute name="trigger" type="xsd:integer">
-			<xsd:annotation>
-		      <xsd:documentation>For Interact next animations, execute this animation only if the other pet's animation matches this one.</xsd:documentation>
-			</xsd:annotation>
-		  </xsd:attribute>
-		  <xsd:attribute name="direction" type="directionType">
-			<xsd:annotation>
-		      <xsd:documentation>For Interact next animations, execute this animation only if the other pet is located in this direction.</xsd:documentation>
-			</xsd:annotation>
-		  </xsd:attribute>
+          <xsd:attribute name="trigger" type="xsd:integer">
+          <xsd:annotation>
+              <xsd:documentation>For Interact next animations, execute this animation only if the other pet's animation matches this one.</xsd:documentation>
+          </xsd:annotation>
+          </xsd:attribute>
+          <xsd:attribute name="direction" type="directionType">
+          <xsd:annotation>
+              <xsd:documentation>For Interact next animations, execute this animation only if the other pet is located in this direction.</xsd:documentation>
+          </xsd:annotation>
+          </xsd:attribute>
         </xsd:extension>
       </xsd:simpleContent>
     </xsd:complexType>
   </xsd:element>
-
-  <xsd:element name="only">
+-->
+  <xsd:complexType  name="nextSequence">
     <xsd:annotation>
-      <xsd:documentation>Container of next nodes. Not read by the application.</xsd:documentation>
+      <xsd:documentation>ID of the next animation to play. Used in a sequence. It contains a probability and the only flag for the sequence next-type.</xsd:documentation>
     </xsd:annotation>
-    <xsd:complexType>
-      <xsd:choice minOccurs="0" maxOccurs="unbounded">
-        <xsd:element ref="next" />
-      </xsd:choice>
-    </xsd:complexType>
-  </xsd:element>
-	
-  
-  <xsd:element name="direction">
-    <xsd:complexType>
-	  <xsd:choice minOccurs="0" maxOccurs="unbounded">
-		<xsd:element ref="next" />
-	  </xsd:choice>
-	</xsd:complexType>
-  </xsd:element>
+    <xsd:simpleContent>
+      <xsd:extension base='xsd:integer'>
+        <xsd:attribute name="probability" type="probabilityType">
+          <xsd:annotation>
+            <xsd:documentation>Relative probability that this will be the next animation. If there are 3 next nodes with probability 5, 12 and 3, the chances are: 25%, 60% and 15%.</xsd:documentation>
+          </xsd:annotation>
+        </xsd:attribute>
+        <xsd:attribute name="only" type="borderType">
+          <xsd:annotation>
+            <xsd:documentation>Execute this next animation only for the selected kind of border or surface (see borderType). Default: none.</xsd:documentation>
+          </xsd:annotation>
+        </xsd:attribute>
+      </xsd:extension>
+    </xsd:simpleContent>
+  </xsd:complexType>
+
+  <xsd:complexType name="nextBorder">
+    <xsd:annotation>
+      <xsd:documentation>ID of the next animation to play. Used in a border. It contains a probability and the only flag for the sequence next-type.</xsd:documentation>
+    </xsd:annotation>
+    <xsd:simpleContent>
+      <xsd:extension base='xsd:integer'>
+        <xsd:attribute name="probability" type="probabilityType">
+          <xsd:annotation>
+            <xsd:documentation>Relative probability that this will be the next animation. If there are 3 next nodes with probability 5, 12 and 3, the chances are: 25%, 60% and 15%.</xsd:documentation>
+          </xsd:annotation>
+        </xsd:attribute>
+        <xsd:attribute name="only" type="borderType">
+          <xsd:annotation>
+            <xsd:documentation>Execute this next animation only for the selected kind of border or surface (see borderType). Default: none.</xsd:documentation>
+          </xsd:annotation>
+        </xsd:attribute>
+      </xsd:extension>
+    </xsd:simpleContent>
+  </xsd:complexType>
+
+  <xsd:complexType name="nextGravity">
+    <xsd:annotation>
+      <xsd:documentation>ID of the next animation to play. Used in a gravity. It contains a probability and the only flag (only none for the moment) for the sequence next-type.</xsd:documentation>
+    </xsd:annotation>
+    <xsd:simpleContent>
+      <xsd:extension base='xsd:integer'>
+        <xsd:attribute name="probability" type="probabilityType">
+          <xsd:annotation>
+            <xsd:documentation>Relative probability that this will be the next animation. If there are 3 next nodes with probability 5, 12 and 3, the chances are: 25%, 60% and 15%.</xsd:documentation>
+          </xsd:annotation>
+        </xsd:attribute>
+        <xsd:attribute name="only">
+          <xsd:simpleType>
+            <xsd:restriction base="xsd:string">
+              <xsd:enumeration value="">
+                <xsd:annotation>
+                  <xsd:documentation>Same as "none".</xsd:documentation>
+                </xsd:annotation>
+              </xsd:enumeration>
+              <xsd:enumeration value="none">
+                <xsd:annotation>
+                  <xsd:documentation>No restriction: this next animation is used on every border (default).</xsd:documentation>
+                </xsd:annotation>
+              </xsd:enumeration>
+            </xsd:restriction>
+          </xsd:simpleType>
+        </xsd:attribute>
+      </xsd:extension>
+    </xsd:simpleContent>
+  </xsd:complexType>
+
+  <xsd:complexType name="nextInteract">
+    <xsd:annotation>
+      <xsd:documentation>ID of the next animation to play. Used in a interact node. It contains a probability, the only flag, a trigger and a direction for the sequence next-type.</xsd:documentation>
+    </xsd:annotation>
+    <xsd:simpleContent>
+      <xsd:extension base='xsd:integer'>
+        <xsd:attribute name="probability" type="probabilityType">
+          <xsd:annotation>
+            <xsd:documentation>Relative probability that this will be the next animation. If there are 3 next nodes with probability 5, 12 and 3, the chances are: 25%, 60% and 15%.</xsd:documentation>
+          </xsd:annotation>
+        </xsd:attribute>
+        <xsd:attribute name="only" type="borderType">
+          <xsd:annotation>
+            <xsd:documentation>Execute this next animation only for the selected kind of border or surface (see borderType). Default: none.</xsd:documentation>
+          </xsd:annotation>
+        </xsd:attribute>
+        <xsd:attribute name="trigger" type="xsd:integer">
+          <xsd:annotation>
+              <xsd:documentation>For Interact next animations, execute this animation only if the other pet's animation matches this one.</xsd:documentation>
+          </xsd:annotation>
+        </xsd:attribute>
+        <xsd:attribute name="direction" type="directionType">
+          <xsd:annotation>
+              <xsd:documentation>For Interact next animations, execute this animation only if the other pet is located in this direction.</xsd:documentation>
+          </xsd:annotation>
+        </xsd:attribute>
+      </xsd:extension>
+    </xsd:simpleContent>
+  </xsd:complexType>
+
 </xsd:schema>
