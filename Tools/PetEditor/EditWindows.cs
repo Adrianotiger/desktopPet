@@ -1216,8 +1216,9 @@ namespace PetEditor
         private void richTextBox_KeyDown(object sender, KeyEventArgs e)
         {
             var rtb = (RichTextBox)sender;
-            List<int> accetptedChars = new List<int> {3, 8, 12, 16, 17, 18, 35, 36, 37, 38, 39, 40, 46, '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', ' ', '+', '-', '*', '/', '(', ')', 96, 97, 98, 99, 100, 101, 102, 103, 104, 105, 106, 107, 108, 109, 110, 111 };
-            if (!accetptedChars.Contains(e.KeyValue))
+            // https://learn.microsoft.com/en-us/dotnet/api/system.windows.forms.keys
+            List<int> acceptedKeys = new List<int> { 3, 8, 12, 16, 17, 18, 35, 36, 37, 38, 39, 40, 46, '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', ' ', 96, 97, 98, 99, 100, 101, 102, 103, 104, 105, 106, 107, 108, 109, 110, 111, 187, 189, 190, 191, 219, 220, 221, 226 };
+            if (!acceptedKeys.Contains(e.KeyValue))
             {
                 Point p = rtb.PointToScreen(rtb.GetPositionFromCharIndex(0));
                 p.Y += 20;
